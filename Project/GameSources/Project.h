@@ -6,9 +6,11 @@
 #pragma once
 
 
-#include "ProjectShader.h"
-#include "ProjectBehavior.h"
 #include "Scene.h"
+
+// オリジナルコンポーネント
+#include "Move.h"
+
 #include "Character.h"
 #include "Player.h"
 
