@@ -37,6 +37,7 @@ namespace basecross {
 
 			//ビューとライトの作成
 			CreateViewLight();
+			AddGameObject<Player>();
 		}
 		catch (...) {
 			throw;
