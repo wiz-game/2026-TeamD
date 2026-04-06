@@ -5,7 +5,11 @@ namespace basecross
 {
 	Bubble::Bubble(const shared_ptr<Stage>& stage, const shared_ptr<GameObject>& parent) :
 		GameObject(stage),
-		m_parent(parent)
+		m_parent(parent),
+		m_speed(1.0f),
+		m_initialVelocity(2.5f),
+		m_currentVelocity(m_initialVelocity),
+		m_upwardVelocity(0.0f)
 	{
 
 	}
@@ -37,7 +41,40 @@ namespace basecross
 
 	void Bubble::OnUpdate()
 	{
-
+		BubbleMove();
 	}
 
+	void Bubble::BubbleMove()
+	{
+		auto& app = App::GetApp();
+		auto elapsed = app->GetElapsedTime();
+
+		auto pos = m_trans->GetPosition();
+		float velocityZero = 0.0;
+		float decelerationStartRatio = 0.5f;
+
+		// 現在速度が0になるまで
+		if (m_currentVelocity > velocityZero)
+		{
+			// 減少速度
+			m_currentVelocity -= m_speed * elapsed;
+			// 速度の割合
+			auto speedRatio = m_currentVelocity / m_initialVelocity;
+			pos.z += m_currentVelocity * elapsed;
+
+			// 割合が浮遊させる割合になったら
+			if (speedRatio < decelerationStartRatio)
+			{
+				// 開始割合 - 現在の割合 / 開始割合
+				m_upwardVelocity = (decelerationStartRatio - speedRatio) / decelerationStartRatio;
+
+				// 上昇速度の最低が0、最大を1
+				m_upwardVelocity = clamp(m_upwardVelocity, 0.0f, 1.0f);
+
+				pos.y += m_upwardVelocity * elapsed;
+			}
+		}
+
+		m_trans->SetPosition(pos);
+	}
 }

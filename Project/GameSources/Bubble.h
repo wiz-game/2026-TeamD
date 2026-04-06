@@ -9,11 +9,20 @@ namespace basecross
 		weak_ptr<GameObject> m_parent;
 		Vec3 m_parentForward;
 
+		float m_speed;
+		float m_initialVelocity;
+		float m_currentVelocity;
+		float m_upwardVelocity;
+
 	public :
 		Bubble::Bubble(const shared_ptr<Stage>& stage,const shared_ptr<GameObject>& parent);
 		Bubble::~Bubble();
 
 		void OnCreate() override;
 		void OnUpdate() override;
+
+		//　泡の動きの挙動
+		void BubbleMove();
+
 	};
 }
