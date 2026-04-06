@@ -6,7 +6,8 @@
 #include "stdafx.h"
 #include "Project.h"
 
-namespace basecross{
+namespace basecross
+{
 	// プレイヤーの初期設定
 	void Player::OnCreate()
 	{
@@ -15,6 +16,9 @@ namespace basecross{
 
 		// ドローコンポーネントを追加
 		m_draw = AddComponent<PNTDXModelDraw>();
+		auto drawComp = AddComponent<PNTStaticDraw>();
+		drawComp->SetMeshResource(L"DEFAULT_CUBE");
+		drawComp->SetDrawActive(true);
 	}
 
 	// プレイヤーの更新処理
@@ -25,6 +29,7 @@ namespace basecross{
 
 		// 前回からの経過時間：デルタタイムを取得する
 		float delta = app->GetElapsedTime();
+		auto moveComp = AddComponent<Move>();
 	}
 }
 //end basecross

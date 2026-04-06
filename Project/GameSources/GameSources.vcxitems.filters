@@ -28,6 +28,9 @@
     <Filter Include="Components\Move">
       <UniqueIdentifier>{21c05402-873e-4dbc-b664-adaadc3eb6b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Bubble">
+      <UniqueIdentifier>{3fc01e5a-4f33-400a-96b0-d63ae82b3e41}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -69,6 +72,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Move.h">
       <Filter>Components\Move</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Bubble.h">
+      <Filter>Bubble</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -106,6 +112,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Move.cpp">
       <Filter>Components\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Bubble.cpp">
+      <Filter>Bubble</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
