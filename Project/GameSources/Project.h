@@ -13,6 +13,7 @@
 
 #include "Character.h"
 #include "Bubble.h"
+#include "TrampolineBubbles.h"
 #include "Player.h"
 
 #include "GameStage.h"

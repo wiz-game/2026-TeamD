@@ -31,6 +31,9 @@
     <Filter Include="Bubble">
       <UniqueIdentifier>{3fc01e5a-4f33-400a-96b0-d63ae82b3e41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TrampolineBubbles">
+      <UniqueIdentifier>{96f4d474-dd05-46ab-b853-d648037e1951}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -75,6 +78,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Bubble.h">
       <Filter>Bubble</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TrampolineBubbles.h">
+      <Filter>TrampolineBubbles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -115,6 +121,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Bubble.cpp">
       <Filter>Bubble</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TrampolineBubbles.cpp">
+      <Filter>TrampolineBubbles</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
