@@ -26,7 +26,7 @@ namespace basecross
 		Player(const std::shared_ptr<Stage>& stage) :
 			GameObject(stage), // ステージをGameObjectに渡す【必須】
 			m_Velocity(0.0f),
-			m_Position(0.0f, 0.0f, 0.0f),
+			m_Position(0.0f, 1.0f, 0.0f),
 			m_isJumping(false),
 			m_JumpPower(3.0f),
 			m_Gravity(9.8f)
@@ -35,7 +35,8 @@ namespace basecross
 
 		void OnCreate() override; // 初期設定用の関数(UnityのStartメソッドに相当)
 		void OnUpdate() override; // 毎フレーム実行される関数(UnityのUpdateメソッドに相当)
-		void Jump();
+		void Jump();	// ジャンプ
+		void LaunchofBubble();	// 泡の発射
 	};
 }
 //end basecross

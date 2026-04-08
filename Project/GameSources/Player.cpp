@@ -11,6 +11,7 @@ namespace basecross
 	// プレイヤーの初期設定
 	void Player::OnCreate()
 	{
+		AddTag(L"Player");
 		// トランスフォームコンポーネントを取得しておく
 		m_transform = GetComponent<Transform>();
 		m_transform->SetPosition(m_Position);
@@ -33,13 +34,15 @@ namespace basecross
 		// 前回からの経過時間：デルタタイムを取得する
 		float delta = app->GetElapsedTime();
 		Jump();
+		LaunchofBubble();
 	}
 
 	void Player::Jump()
 	{
+		auto transPos = m_transform->GetPosition();
 		auto device = App::GetApp()->GetInputDevice();
 		auto control = device.GetControlerVec();
-		auto transPos = m_transform->GetPosition();
+
 		// 重力は常に下に向き続けている
 		//m_Velocity -= App::GetApp()->GetElapsedTime();
 
@@ -63,6 +66,8 @@ namespace basecross
 		{
 			m_Velocity -= m_Gravity * App::GetApp()->GetElapsedTime();
 			float groundY = -0.1f;
+
+			// 足場の代わりに、地面(-0.1f)に着地したら
 			if (transPos.y <= groundY)
 			{
 				m_Velocity = 0.0f;
@@ -72,6 +77,23 @@ namespace basecross
 		}
 
 		m_transform->SetPosition(transPos);
+	}
+
+	void Player::LaunchofBubble()
+	{
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		auto device = App::GetApp()->GetInputDevice();
+		auto control = device.GetControlerVec();
+
+		if (!stage)
+		{
+			return;
+		}
+
+		if (control[0].wPressedButtons & XINPUT_GAMEPAD_B)
+		{
+			stage->AddGameObject<Bubble>(GetThis<Player>());
+		}
 	}
 }
 //end basecross
