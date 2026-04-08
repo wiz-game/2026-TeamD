@@ -6,14 +6,10 @@
 #include "stdafx.h"
 #include "Project.h"
 
-namespace basecross {
-
-	//--------------------------------------------------------------------------------------
-	//	ゲームステージクラス実体
-	//--------------------------------------------------------------------------------------
-
-	//ビューとライトの作成
-	void GameStage::CreateViewLight() {
+namespace basecross 
+{
+	void GameStage::CreateViewLight() 
+	{
 		// カメラの設定
 		auto camera = ObjectFactory::Create<Camera>();
 		camera->SetEye(Vec3(0.0f, 8.0f, -8.0f));
@@ -23,13 +19,15 @@ namespace basecross {
 		auto view = CreateView<SingleView>();
 		view->SetCamera(camera);
 
-		//マルチライトの作成
+		// マルチライトの作成
 		auto light = CreateLight<MultiLight>();
-		light->SetDefaultLighting(); //デフォルトのライティングを指定
+		light->SetDefaultLighting(); // デフォルトのライティングを指定
 	}
 
-	void GameStage::OnCreate() {
-		try {
+	void GameStage::OnCreate() 
+	{
+		try 
+		{
 			auto& app = App::GetApp();
 
 			// JoltPhysicsを初期化する
@@ -38,6 +36,40 @@ namespace basecross {
 			//ビューとライトの作成
 			CreateViewLight();
 			AddGameObject<Player>();
+
+			auto pash = App::GetApp()->GetDataDirWString() + L"StageObjDatas/";
+			wstring stageObjData = pash + L"Stage" + to_wstring(1) + L".csv";
+			ifstream ifsStageObjData(stageObjData);
+			if (!ifsStageObjData)
+			{
+				throw BaseException
+				(
+					L"ステージオブジェクトファイルが存在しません",
+					L"ifsStageObjData",
+					L"GameStageBase::CreateAllStageObject(wstring StageObjData)"
+				);
+			}
+			string rowBuf;
+
+			// 一行読む
+			// 1ループごとに1つオブジェクトを追加する
+			for (int row = 0; getline(ifsStageObjData, rowBuf); row++)
+			{
+				istringstream issObjParam(rowBuf);
+				string colBuf;
+
+				// 一列読んでオブジェクトタイプをみる
+				getline(issObjParam, colBuf, ',');
+				// タイプに応じた生成を行う
+				switch ((ENUM_ObjType)stoi(colBuf))
+				{
+				default:
+					break;
+				case ENUM_ObjType::Fixed:
+					AddFixedObj(GetFixedParams(issObjParam, colBuf));
+					break;
+				}
+			}
 		}
 		catch (...) {
 			throw;
@@ -59,5 +91,97 @@ namespace basecross {
 	void GameStage::OnDraw()
 	{
 	}
+
+
+	void GameStage::SetStageObjBaseParams(STRUCT_StageObjBaseParams& StageObjBaseParams, istringstream& IssObjParam, string& ColBuf)
+	{
+		for (int col = 0; getline(IssObjParam, ColBuf, ','); col++)
+		{
+			// 構造体に各パラメータを格納
+			switch (col)
+			{
+			default:
+				break;
+				// オブジェクト番号
+			case 0:
+				StageObjBaseParams.ObjNum = stoi(ColBuf);
+				break;
+				// サイズ情報
+			case 1:
+				StageObjBaseParams.Scale.setX(stof(ColBuf));
+				break;
+			case 2:
+				StageObjBaseParams.Scale.setY(stof(ColBuf));
+				break;
+			case 3:
+				StageObjBaseParams.Scale.setZ(stof(ColBuf));
+				break;
+				// 回転情報
+			case 4:
+				StageObjBaseParams.Quaternion.setX(stof(ColBuf));
+				break;
+			case 5:
+				StageObjBaseParams.Quaternion.setY(stof(ColBuf));
+				break;
+			case 6:
+				StageObjBaseParams.Quaternion.setZ(stof(ColBuf));
+				break;
+			case 7:
+				StageObjBaseParams.Quaternion.setW(stof(ColBuf));
+				break;
+				// 位置情報
+			case 8:
+				StageObjBaseParams.Position.setX(stof(ColBuf));
+				break;
+			case 9:
+				StageObjBaseParams.Position.setY(stof(ColBuf));
+				break;
+			case 10:
+				StageObjBaseParams.Position.setZ(stof(ColBuf));
+				return;
+			}
+		}
+	}
+
+	GameStage::STRUCT_FixedParams GameStage::GetFixedParams(istringstream& IssObjParam, string& ColBuf)
+	{
+		STRUCT_FixedParams objParams;
+		// StageObjBaseで共通のパラメータを読み込む
+		SetStageObjBaseParams(objParams.StageObjParams, IssObjParam, ColBuf);
+
+		// このオブジェクト専用パラメータを読み込む
+		for (int col = 0; getline(IssObjParam, ColBuf, ','); col++)
+		{
+			switch (col)
+			{
+			default:
+				break;
+			case 0:
+				objParams.VersionDeff = stoi(ColBuf);
+				break;
+			}
+		}
+
+		return objParams;
+	}
+
+	void GameStage::AddFixedObj(const STRUCT_FixedParams ObjParams)
+	{
+		switch (ObjParams.StageObjParams.ObjNum)
+		{
+		default:
+			break;
+			// 床
+		case 0:
+			AddGameObject<Ground>
+				(
+					ObjParams.StageObjParams.Scale,
+					ObjParams.StageObjParams.Quaternion,
+					ObjParams.StageObjParams.Position
+				);
+			break;
+		}
+	}
+
 }
 //end basecross
