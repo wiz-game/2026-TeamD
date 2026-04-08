@@ -12,6 +12,7 @@
 #include "Move.h"
 
 #include "Character.h"
+#include "Ground.h"
 #include "Bubble.h"
 #include "TrampolineBubbles.h"
 #include "Player.h"
