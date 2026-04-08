@@ -34,6 +34,9 @@
     <Filter Include="TrampolineBubbles">
       <UniqueIdentifier>{96f4d474-dd05-46ab-b853-d648037e1951}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Ground">
+      <UniqueIdentifier>{dfc850c2-9546-4026-913f-27c9ace8e23a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -81,6 +84,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)TrampolineBubbles.h">
       <Filter>TrampolineBubbles</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Ground.h">
+      <Filter>Ground</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -124,6 +130,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)TrampolineBubbles.cpp">
       <Filter>TrampolineBubbles</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Ground.cpp">
+      <Filter>Ground</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
