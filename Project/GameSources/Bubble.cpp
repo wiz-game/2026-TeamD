@@ -6,10 +6,13 @@ namespace basecross
 	Bubble::Bubble(const shared_ptr<Stage>& stage, const shared_ptr<GameObject>& parent) :
 		GameObject(stage),
 		m_parent(parent),
-		m_speed(1.0f),
+		m_speed(1.25f),
+		m_speedRatio(0.0f),
 		m_initialVelocity(2.5f),
 		m_currentVelocity(m_initialVelocity),
-		m_upwardVelocity(0.0f)
+		m_upwardVelocity(0.0f),
+		m_isTimeStart(false),
+		m_limitTime(2.0f)
 	{
 
 	}
@@ -27,8 +30,8 @@ namespace basecross
 		auto parentPos = parentLock->GetComponent<Transform>()->GetPosition();
 		
 		m_trans = GetComponent<Transform>();
-		m_trans->SetPosition(parentPos + (m_parentForward * 1.5f));
-		m_trans->SetScale(Vec3(0.1f));
+		m_trans->SetPosition(parentPos + (m_parentForward * 1.25f));
+		m_trans->SetScale(Vec3(0.75f));
 
 		auto ptrCol = AddComponent<CollisionSphere>();
 		ptrCol->SetDrawActive(false);
@@ -50,6 +53,7 @@ namespace basecross
 		auto elapsed = app->GetElapsedTime();
 
 		auto pos = m_trans->GetPosition();
+		
 		float velocityZero = 0.0;
 		float decelerationStartRatio = 0.5f;
 
@@ -59,20 +63,34 @@ namespace basecross
 			// 減少速度
 			m_currentVelocity -= m_speed * elapsed;
 			// 速度の割合
-			auto speedRatio = m_currentVelocity / m_initialVelocity;
+			m_speedRatio = m_currentVelocity / m_initialVelocity;
 			pos.z += m_currentVelocity * elapsed;
+		}
 
-			// 割合が浮遊させる割合になったら
-			if (speedRatio < decelerationStartRatio)
-			{
-				// 開始割合 - 現在の割合 / 開始割合
-				m_upwardVelocity = (decelerationStartRatio - speedRatio) / decelerationStartRatio;
+		// 現在の速度の割合が半分になったら上昇を始める
+		if (m_speedRatio < decelerationStartRatio)
+		{
+			m_isTimeStart = true;
 
-				// 上昇速度の最低が0、最大を1
-				m_upwardVelocity = clamp(m_upwardVelocity, 0.0f, 1.0f);
+			// 0.5 -> 0.0fに向かうほど t: 0 -> 1
+			auto t = (decelerationStartRatio - m_speedRatio) / decelerationStartRatio;
+			t = clamp(t,0.0f, 1.0f);
 
-				pos.y += m_upwardVelocity * elapsed;
-			}
+			// 1から2までの補間係数
+			m_upwardVelocity = 1.0f + (2.0f - 1.0f) * t;
+
+			pos.y += m_upwardVelocity * elapsed;
+		}
+
+		if (m_isTimeStart)
+		{
+			m_limitTime -= 1.0f * elapsed;
+		}
+
+		if (m_limitTime < 0.0f)
+		{
+			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
+			return;
 		}
 
 		m_trans->SetPosition(pos);
