@@ -14,6 +14,9 @@ namespace basecross
 	{
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
+
+		float m_angleY; // Y軸中心のカメラの回り込み
+
 		Vec3 m_Position;
 		// 重力の処理
 		float m_Velocity;
@@ -21,6 +24,8 @@ namespace basecross
 		// ジャンプの処理
 		float m_JumpPower;
 		bool m_isJumping; // 現在ジャンプしているかどうか
+		// カメラの傾き具合
+		float m_angleX;
 	public :
 		// ステージを引数にしたコンストラクタ【必須】
 		Player(const std::shared_ptr<Stage>& stage) :
@@ -37,6 +42,7 @@ namespace basecross
 		void OnUpdate() override; // 毎フレーム実行される関数(UnityのUpdateメソッドに相当)
 		void Jump();	// ジャンプ
 		void LaunchofBubble();	// 泡の発射
+		void Camera();		// カメラ移動
 	};
 }
 //end basecross
