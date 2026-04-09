@@ -42,6 +42,8 @@ namespace basecross {
 		STRUCT_FixedParams GetFixedParams(istringstream& IssObjParam, string& ColBuf);
 		void AddFixedObj(const STRUCT_FixedParams ObjParams);
 		// エディター用///////////////////////////////////////////////
+
+		void CreatePlayer();
 	public:
 		//構築と破棄
 		GameStage() :Stage(){}

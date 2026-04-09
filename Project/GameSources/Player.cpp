@@ -16,7 +16,7 @@ namespace basecross
 		m_transform = GetComponent<Transform>();
 		m_transform->SetPosition(m_Position);
 
-		auto moveComp = AddComponent<Move>();
+		m_move = AddComponent<Move>();
 
 		// ドローコンポーネントを追加
 		m_draw = AddComponent<PNTDXModelDraw>();
@@ -95,7 +95,7 @@ namespace basecross
 	void Player::Camera()
 	{
 		// ゲームパッドオブジェクトを取得
-		auto& pad = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		auto& control = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 
 		// カメラオブジェクトの取得
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
@@ -104,22 +104,48 @@ namespace basecross
 		// 自分自身（プレイヤー）の座標を直接取得する
 		auto targetPos = m_transform->GetPosition();
 
-		// 傾き具合
-		float slope = 5.5f;
+		if (control.wPressedButtons & XINPUT_GAMEPAD_X)
+		{
+			m_isTargetMode = !m_isTargetMode;
+		}
 
-		// カメラの位置の高さ
-		float eyeY = 5.0f;
+		if (m_isTargetMode == false)
+		{
+			// 傾き具合
+			float slope = 5.5f;
 
-		// 右スティックの傾きに応じて回り込ませる
-		m_angleY += pad.fThumbRX * App::GetApp()->GetElapsedTime();
+			// カメラの位置の高さ
+			float eyeY = 5.0f;
 
-		// カメラの注視点(At)とカメラの位置(Eye)を計算
-		Vec3 at = targetPos + Vec3(0.0f, 1.0f, 0.0f);
-		Vec3 eye = targetPos + Vec3(cosf(m_angleY) * slope, eyeY, sinf(m_angleY) * slope);
+			// 右スティックの傾きに応じて回り込ませる
+			m_angleY += control.fThumbRX * App::GetApp()->GetElapsedTime();
 
-		// カメラに設定を反映
-		camera->SetAt(at);
-		camera->SetEye(eye);
+			// カメラの注視点(At)とカメラの位置(Eye)を計算
+			Vec3 at = targetPos + Vec3(0.0f, 1.0f, 0.0f);
+			Vec3 eye = targetPos + Vec3(cosf(m_angleY) * slope, eyeY, sinf(m_angleY) * slope);
+
+			// カメラに設定を反映
+			camera->SetAt(at);
+			camera->SetEye(eye);
+		}
+		else if(m_isTargetMode == true)
+		{
+			// 右スティックの傾きに応じて回り込ませる
+			m_angleY += control.fThumbRX * App::GetApp()->GetElapsedTime();
+
+			// カメラの注視点(At)とカメラの位置(Eye)を計算
+			Vec3 at = targetPos + Vec3(0.0f, 1.0f, 0.0f);
+			Vec3 eye = targetPos + Vec3(cosf(m_angleY) * 2.0f, 2.0f, sinf(m_angleY) * 2.0f);
+
+			Vec3 forward = at - eye;
+
+			float angle = atan2f(forward.x, forward.z);
+			m_transform->SetRotation(0.0f, angle, 0.0f);
+
+			// カメラに設定を反映
+			camera->SetAt(at);
+			camera->SetEye(eye);
+		}
 	}
 }
 //end basecross

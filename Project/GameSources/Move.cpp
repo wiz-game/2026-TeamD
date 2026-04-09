@@ -44,6 +44,8 @@ namespace basecross
 		// Transformのあるゲームオブジェクトを取得する
 		auto transComp = GetGameObject()->GetComponent<Transform>();
 
+		auto player = stage->GetSharedGameObject<Player>(L"Player");
+
 		// 左スティックの傾き具合
 		float stickLPulsX = .7f, stickLMinusX = -.7f;
 		float stickLPulsY = .7f, stickLMinusY = -.7f;
@@ -88,9 +90,12 @@ namespace basecross
 				Vector.x += vectorx;
 				Vector.z += vectorz;
 
-				// 移動している方向に向かせるようにする
-				float angle = atan2f(vectorx, vectorz);
-				transComp->SetRotation(0.0f, angle, 0.0f);
+				if (player->GetTargetMode() == false)
+				{
+					// 移動している方向に向かせるようにする
+					float angle = atan2f(vectorx, vectorz);
+					transComp->SetRotation(0.0f, angle, 0.0f);
+				}
 			}
 		}
 		return Vector;
