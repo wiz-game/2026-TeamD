@@ -95,4 +95,17 @@ namespace basecross
 
 		m_trans->SetPosition(pos);
 	}
+
+	void Bubble::OnCollisionEnter(shared_ptr<GameObject>& Other)
+	{
+		if (!Other->FindTag(L"Ground"))return;
+
+		auto ground = dynamic_pointer_cast<Ground>(Other);
+		
+		if (ground)
+		{
+			GetStage()->AddGameObject<TrampolineBubbles>(m_trans->GetPosition());
+		}
+	}
+
 }
