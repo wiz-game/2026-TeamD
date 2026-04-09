@@ -27,6 +27,7 @@ namespace basecross
 		// 親の情報の取得
 		auto parentLock = m_parent.lock();
 		m_parentForward = parentLock->GetComponent<Transform>()->GetForward();
+		m_parentForward.normalize();
 		auto parentPos = parentLock->GetComponent<Transform>()->GetPosition();
 		
 		m_trans = GetComponent<Transform>();
@@ -51,10 +52,9 @@ namespace basecross
 	{
 		auto& app = App::GetApp();
 		auto elapsed = app->GetElapsedTime();
-
 		auto pos = m_trans->GetPosition();
 		
-		float velocityZero = 0.0;
+		float velocityZero = 0.0f;
 		float decelerationStartRatio = 0.5f;
 
 		// 現在速度が0になるまで
@@ -62,9 +62,10 @@ namespace basecross
 		{
 			// 減少速度
 			m_currentVelocity -= m_speed * elapsed;
+			m_currentVelocity = max(m_currentVelocity, velocityZero);
 			// 速度の割合
 			m_speedRatio = m_currentVelocity / m_initialVelocity;
-			pos.z += m_currentVelocity * elapsed;
+			pos += m_parentForward * (m_currentVelocity * elapsed);
 		}
 
 		// 現在の速度の割合が半分になったら上昇を始める
