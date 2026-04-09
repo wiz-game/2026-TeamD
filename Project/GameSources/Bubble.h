@@ -30,5 +30,6 @@ namespace basecross
 		// ----------------------------------
 		void BubbleMove();
 
+		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other);
 	};
 }
