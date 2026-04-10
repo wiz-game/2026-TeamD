@@ -35,6 +35,7 @@ namespace basecross
 
 		m_col = AddComponent<CollisionSphere>();
 		m_col->SetDrawActive(false);
+		m_col->SetAfterCollision(AfterCollision::None);
 
 		AddTag(L"TrampolineBubbles");
 	}
@@ -71,7 +72,9 @@ namespace basecross
 
 		if (Other->FindTag(L"Player"))
 		{
-			if (m_isTrampolineActive)
+			auto player = dynamic_pointer_cast<Player>(Other);
+
+			if (m_isTrampolineActive && player->GetIsJump())
 			{
 				GetStage()->RemoveGameObject<TrampolineBubbles>(GetThis<TrampolineBubbles>());
 			}
