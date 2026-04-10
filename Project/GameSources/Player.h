@@ -46,6 +46,8 @@ namespace basecross
 		void Jump();	// ジャンプ
 		void LaunchofBubble();	// 泡の発射
 		void Camera();		// カメラ移動
+		void OnCollisionEnter(shared_ptr<GameObject>& Other);	//	当たり判定
+		void OnCollisionExit(shared_ptr<GameObject>& Other);
 
 		// ジャンプのゲッターセッター
 		bool GetIsJump()

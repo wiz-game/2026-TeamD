@@ -23,6 +23,9 @@ namespace basecross
 		auto drawComp = AddComponent<PNTStaticDraw>();
 		drawComp->SetMeshResource(L"DEFAULT_CUBE");
 		drawComp->SetDrawActive(true);
+
+		// 当たり判定
+		auto obb = AddComponent<CollisionObb>();
 	}
 
 	// プレイヤーの更新処理
@@ -61,13 +64,13 @@ namespace basecross
 		if (m_isJumping)
 		{
 			m_Velocity -= m_Gravity * App::GetApp()->GetElapsedTime();
-			float groundY = -0.1f;
+			float groundY = 0.5f;
 
 			// 足場の代わりに、地面(-0.1f)に着地したら
 			if (transPos.y <= groundY)
 			{
 				m_Velocity = 0.0f;
-				transPos.y = 0.0f;
+				transPos.y = groundY;
 				m_isJumping = false;
 			}
 		}
@@ -147,6 +150,22 @@ namespace basecross
 			camera->SetEye(eye);
 		}
 	}
-}
+
+	void Player::OnCollisionEnter(shared_ptr<GameObject>& Other)
+	{
+		if (Other->FindTag(L"Bubble"))
+		{
+			m_Velocity = m_JumpPower * 1.5f;
+			m_isJumping = true;
+		}
+	}
+
+	void Player::OnCollisionExit(shared_ptr<GameObject>& Other)
+	{
+		//if (Other->FindTag(L"Bubble"))
+		//{
+		//	m_isJumping = true;
+		//}
+	}}
 //end basecross
 
