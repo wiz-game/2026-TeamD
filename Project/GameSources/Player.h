@@ -47,6 +47,16 @@ namespace basecross
 		void LaunchofBubble();	// 泡の発射
 		void Camera();		// カメラ移動
 
+		// ジャンプのゲッターセッター
+		bool GetIsJump()
+		{
+			return m_isJumping;
+		}
+		void SetIsJump(bool j)
+		{
+			m_isJumping = j;
+		}
+
 		// 照準モードのゲッターセッター
 		bool GetTargetMode()
 		{
