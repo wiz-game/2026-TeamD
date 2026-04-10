@@ -77,14 +77,17 @@ namespace basecross
 				// 移動の結果を格納するための変数
 				float vectorx = 0.0f;
 				float vectorz = 0.0f;
+
+				// 移動速度
+				float speed = 3.0f;
 				
 				// 前後移動
-				vectorx += forward.x * stickLY * deltaTime;
-				vectorz += forward.z * stickLY * deltaTime;
+				vectorx += forward.x * stickLY * deltaTime * speed;
+				vectorz += forward.z * stickLY * deltaTime * speed;
 
 				// 左右移動
-				vectorx += forwardMove.x * stickLX * deltaTime;
-				vectorz += forwardMove.z * stickLX * deltaTime;
+				vectorx += forwardMove.x * stickLX * deltaTime * speed;
+				vectorz += forwardMove.z * stickLX * deltaTime * speed;
 
 				// 前後左右で移動した計算結果をVectorに代入する
 				Vector.x += vectorx;
