@@ -35,7 +35,7 @@ namespace basecross
 
 			//ビューとライトの作成
 			CreateViewLight();
-			AddGameObject<Player>();
+			CreatePlayer();
 
 			auto pash = App::GetApp()->GetDataDirWString() + L"StageObjDatas/";
 			wstring stageObjData = pash + L"Stage" + to_wstring(1) + L".csv";
@@ -183,5 +183,11 @@ namespace basecross
 		}
 	}
 
+	// Playerを作成する
+	void GameStage::CreatePlayer()
+	{
+		auto player = AddGameObject<Player>();
+		SetSharedGameObject(L"Player", player);
+	}
 }
 //end basecross

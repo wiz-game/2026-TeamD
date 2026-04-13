@@ -17,6 +17,7 @@ namespace basecross
 		float m_upwardVelocity;
 		bool m_isTimeStart;
 		float m_limitTime;
+		bool m_isSpawnedTrampoline;
 
 	public :
 		Bubble::Bubble(const shared_ptr<Stage>& stage,const shared_ptr<GameObject>& parent);
@@ -30,5 +31,6 @@ namespace basecross
 		// ----------------------------------
 		void BubbleMove();
 
+		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other);
 	};
 }

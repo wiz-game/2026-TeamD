@@ -6,13 +6,14 @@ namespace basecross
 	Bubble::Bubble(const shared_ptr<Stage>& stage, const shared_ptr<GameObject>& parent) :
 		GameObject(stage),
 		m_parent(parent),
-		m_speed(1.25f),
+		m_speed(1.5f),
 		m_speedRatio(0.0f),
 		m_initialVelocity(2.5f),
 		m_currentVelocity(m_initialVelocity),
 		m_upwardVelocity(0.0f),
 		m_isTimeStart(false),
-		m_limitTime(2.0f)
+		m_limitTime(4.0f),
+		m_isSpawnedTrampoline(false)
 	{
 
 	}
@@ -23,10 +24,13 @@ namespace basecross
 	}
 
 	void Bubble::OnCreate()
-	{
+	{		
+		AddTag(L"Bubble");
+
 		// 親の情報の取得
 		auto parentLock = m_parent.lock();
 		m_parentForward = parentLock->GetComponent<Transform>()->GetForward();
+		m_parentForward.normalize();
 		auto parentPos = parentLock->GetComponent<Transform>()->GetPosition();
 		
 		m_trans = GetComponent<Transform>();
@@ -38,8 +42,6 @@ namespace basecross
 
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_SPHERE");
-
-		AddTag(L"Bubble");
 	}
 
 	void Bubble::OnUpdate()
@@ -51,20 +53,20 @@ namespace basecross
 	{
 		auto& app = App::GetApp();
 		auto elapsed = app->GetElapsedTime();
-
 		auto pos = m_trans->GetPosition();
 		
-		float velocityZero = 0.0;
-		float decelerationStartRatio = 0.5f;
+		float velocityZero = 0.0f;
+		float decelerationStartRatio = 0.2f;
 
 		// 現在速度が0になるまで
 		if (m_currentVelocity > velocityZero)
 		{
 			// 減少速度
 			m_currentVelocity -= m_speed * elapsed;
+			m_currentVelocity = max(m_currentVelocity, velocityZero);
 			// 速度の割合
 			m_speedRatio = m_currentVelocity / m_initialVelocity;
-			pos.z += m_currentVelocity * elapsed;
+			pos += m_parentForward * (m_currentVelocity * elapsed);
 		}
 
 		// 現在の速度の割合が半分になったら上昇を始める
@@ -95,4 +97,19 @@ namespace basecross
 
 		m_trans->SetPosition(pos);
 	}
+
+	void Bubble::OnCollisionEnter(shared_ptr<GameObject>& Other)
+	{
+		if (m_isSpawnedTrampoline) return;
+		if (!Other->FindTag(L"Ground")) return;
+
+		auto ground = dynamic_pointer_cast<Ground>(Other);
+		if (ground)
+		{
+			m_isSpawnedTrampoline = true;
+			GetStage()->AddGameObject<TrampolineBubbles>(m_trans->GetPosition());
+			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
+		}
+	}
+
 }
