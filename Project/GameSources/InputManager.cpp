@@ -76,6 +76,12 @@ namespace basecross
 				CameraFixedViewPointMove();
 			}
 
+			// 生成オブジェクト切替
+			if (m_key.m_bPressedKeyTbl['Y'] || m_key.m_bPressedKeyTbl['U'])
+			{
+				ChangeObject();
+			}
+			
 			// オブジェクト選択
 			if (m_key.m_bPressedKeyTbl[VK_LBUTTON])
 			{
@@ -111,20 +117,13 @@ namespace basecross
 			{
 				PressedRKey();
 			}
-
-			// 生成オブジェクト切替
-			if (m_key.m_bPressedKeyTbl['Y'])
-			{
-				PressedYKey();
-			}
-
 			break;
 		}
 
 		// エディターモード切替
-		if (m_key.m_bPressedKeyTbl['U'])
+		if (m_key.m_bPressedKeyTbl['C'])
 		{
-			PressedUKey();
+			PressedCKey();
 		}
 	}
 
@@ -169,6 +168,10 @@ namespace basecross
 	{
 	}
 
+	void InputManager::ChangeObject()
+	{
+	}
+
 	void InputManager::PressedLMouseButton()
 	{
 	}
@@ -193,12 +196,8 @@ namespace basecross
 	{
 	}
 
-	void InputManager::PressedYKey()
+	void InputManager::PressedCKey()
 	{
+		GameManager::Instance().SetGameMode(ENUM_GameMode::Editor);
 	}
-
-	void InputManager::PressedUKey()
-	{
-	}
-
 }
