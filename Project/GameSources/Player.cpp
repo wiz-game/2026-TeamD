@@ -117,8 +117,8 @@ namespace basecross
 			float vectorx = 0.0f;
 			float vectorz = 0.0f;
 
-			float vectorarrayx = 0.0f;
-			float vectorarrayz = 0.0f;
+			float vectorarrayx;
+			float vectorarrayz;
 
 			// スティックの情報を取得する
 			float stickLX = control.fThumbLX;
@@ -138,9 +138,11 @@ namespace basecross
 			vectorarrayx = vectorx;
 			vectorarrayz = vectorz;
 			
-			float angle = atan2f(vectorarrayx, vectorarrayz);
-			m_transform->SetRotation(0.0f, angle, 0.0f);
-
+			if (fabsf(stickLX) > 0.1f || fabsf(stickLY) > 0.1f)
+			{
+				float angle = atan2f(vectorarrayx, vectorarrayz);
+				m_transform->SetRotation(0.0f, angle, 0.0f);
+			}
 			// カメラに設定を反映
 			camera->SetAt(at);
 			camera->SetEye(eye);
