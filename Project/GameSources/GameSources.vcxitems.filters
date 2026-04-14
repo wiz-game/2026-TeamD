@@ -37,6 +37,12 @@
     <Filter Include="Ground">
       <UniqueIdentifier>{dfc850c2-9546-4026-913f-27c9ace8e23a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="InputManager">
+      <UniqueIdentifier>{345b9f9b-9935-428f-a1b3-486158b14cec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameManager">
+      <UniqueIdentifier>{320113fa-92c9-4239-a2ca-054d8c53265c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -87,6 +93,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Ground.h">
       <Filter>Ground</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h">
+      <Filter>GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)InputManager.h">
+      <Filter>InputManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -133,6 +145,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Ground.cpp">
       <Filter>Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp">
+      <Filter>GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)InputManager.cpp">
+      <Filter>InputManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
