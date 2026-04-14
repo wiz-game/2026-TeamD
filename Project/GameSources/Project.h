@@ -14,9 +14,16 @@
 
 // オリジナルコンポーネント
 #include "Move.h"
+#include "FurBubble.h"
 
+// キャラクター
 #include "Character.h"
+
+// ステージオブジェクト
 #include "Ground.h"
+#include "Tree.h"
+#include "Mushroom.h"
+
 #include "Bubble.h"
 #include "TrampolineBubbles.h"
 #include "Player.h"
