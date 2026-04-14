@@ -34,9 +34,6 @@
     <Filter Include="TrampolineBubbles">
       <UniqueIdentifier>{96f4d474-dd05-46ab-b853-d648037e1951}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Ground">
-      <UniqueIdentifier>{dfc850c2-9546-4026-913f-27c9ace8e23a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="InputManager">
       <UniqueIdentifier>{345b9f9b-9935-428f-a1b3-486158b14cec}</UniqueIdentifier>
     </Filter>
@@ -45,6 +42,21 @@
     </Filter>
     <Filter Include="StageEditor">
       <UniqueIdentifier>{08b470f4-4b4d-4c54-a4f0-2ceedb2520f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\FurBubble">
+      <UniqueIdentifier>{8674e8db-c4f2-4b05-b50b-96f8d7fdc5f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StageObjs">
+      <UniqueIdentifier>{89f1cea3-43a3-4c09-ba67-6155a09afe42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StageObjs\Ground">
+      <UniqueIdentifier>{dfc850c2-9546-4026-913f-27c9ace8e23a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StageObjs\Tree">
+      <UniqueIdentifier>{9ac04856-dc06-45e0-9aa7-d44ba717ea85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StageObjs\Mushroom">
+      <UniqueIdentifier>{45cb8b8a-fa28-45d1-b5c7-76cdb52820cc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -94,7 +106,7 @@
       <Filter>TrampolineBubbles</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Ground.h">
-      <Filter>Ground</Filter>
+      <Filter>StageObjs\Ground</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h">
       <Filter>GameManager</Filter>
@@ -104,6 +116,15 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)StageEditor.h">
       <Filter>StageEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FurBubble.h">
+      <Filter>Components\FurBubble</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Tree.h">
+      <Filter>StageObjs\Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Mushroom.h">
+      <Filter>StageObjs\Mushroom</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -150,7 +171,7 @@
       <Filter>TrampolineBubbles</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Ground.cpp">
-      <Filter>Ground</Filter>
+      <Filter>StageObjs\Ground</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp">
       <Filter>GameManager</Filter>
@@ -160,6 +181,15 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)StageEditor.cpp">
       <Filter>StageEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)FurBubble.cpp">
+      <Filter>Components\FurBubble</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Tree.cpp">
+      <Filter>StageObjs\Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Mushroom.cpp">
+      <Filter>StageObjs\Mushroom</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
