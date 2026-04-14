@@ -8,6 +8,10 @@
 
 #include "Scene.h"
 
+// マネージャークラス
+#include "GameManager.h"
+#include "InputManager.h"
+
 // オリジナルコンポーネント
 #include "Move.h"
 
@@ -18,3 +22,5 @@
 #include "Player.h"
 
 #include "GameStage.h"
+
+#include "StageEditor.h"

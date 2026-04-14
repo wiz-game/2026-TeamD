@@ -33,6 +33,13 @@ namespace basecross
 		}
 	}
 
+	void Scene::OnUpdate()
+	{
+		// InputManager‚ğæ‚ÉXV‚·‚é
+
+		SceneBase::OnUpdate();
+	}
+
 
 	Scene::~Scene()
 	{
