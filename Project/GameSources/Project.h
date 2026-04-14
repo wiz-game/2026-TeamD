@@ -22,3 +22,5 @@
 #include "Player.h"
 
 #include "GameStage.h"
+
+#include "StageEditor.h"

@@ -43,6 +43,9 @@
     <Filter Include="GameManager">
       <UniqueIdentifier>{320113fa-92c9-4239-a2ca-054d8c53265c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StageEditor">
+      <UniqueIdentifier>{08b470f4-4b4d-4c54-a4f0-2ceedb2520f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -99,6 +102,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)InputManager.h">
       <Filter>InputManager</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)StageEditor.h">
+      <Filter>StageEditor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -151,6 +157,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)InputManager.cpp">
       <Filter>InputManager</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)StageEditor.cpp">
+      <Filter>StageEditor</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
