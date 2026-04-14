@@ -19,6 +19,7 @@ namespace basecross
 		virtual ~Scene();
 
 		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
 		virtual void OnEvent(const shared_ptr<Event>& event) override;
 	};
 }
