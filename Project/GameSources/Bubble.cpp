@@ -35,13 +35,19 @@ namespace basecross
 		
 		m_trans = GetComponent<Transform>();
 		m_trans->SetPosition(parentPos + (m_parentForward * 1.25f));
-		m_trans->SetScale(Vec3(0.75f));
+		m_trans->SetScale(Vec3(0.5f));
 
 		auto ptrCol = AddComponent<CollisionSphere>();
 		ptrCol->SetDrawActive(false);
 
+		// 透明化処理
+		SetAlphaActive(true);
+
 		m_draw = AddComponent<PNTStaticDraw>();
-		m_draw->SetMeshResource(L"DEFAULT_SPHERE");
+		m_draw->SetMeshResource(L"M_Bubble");
+		m_draw->SetTextureResource(L"T_Bubble");
+		m_draw->SetDiffuse(Col4(1.0f, 1.0f, 1.0f, 0.3f));
+		// m_draw->SetSpecular(Col4(1.0f));
 	}
 
 	void Bubble::OnUpdate()
