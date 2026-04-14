@@ -43,15 +43,15 @@ namespace basecross
 			}
 
 			// 照準
-			if (m_pad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB)
+			if (m_pad.bLeftTrigger > LEFT_TRIGGER_DEADZONE)
 			{
-				PushLThumb();
+				PushLTrigger();
 			}
 
 			// 泡発射
-			if (m_pad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB)
+			if (m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE)
 			{
-				PushRThumb();
+				PushRTrigger();
 			}
 
 			// ポーズメニュー
@@ -77,18 +77,22 @@ namespace basecross
 
 	void InputManager::Moves()
 	{
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		if (!stage) return;
 
+		stage->GetSharedGameObject<Player>(L"Player")->GetComponent<Move>()
+			->VectorMove(Vec3(m_pad.fThumbLX, 0.0f, m_pad.fThumbLY));
 	}
 
 	void InputManager::MoveCamera()
 	{
 	}
 
-	void InputManager::PushLThumb()
+	void InputManager::PushLTrigger()
 	{
 	}
 
-	void InputManager::PushRThumb()
+	void InputManager::PushRTrigger()
 	{
 	}
 

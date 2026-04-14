@@ -18,6 +18,8 @@ namespace basecross
 		const float STACK_DEADZONE_L = 0.0f;
 		const float STACK_DEADZONE_R = 0.0f;
 
+		const char LEFT_TRIGGER_DEADZONE = 125;
+		const char RIGHT_TRIGGER_DEADZONE = 125;
 	private:
 		InputManager() {}
 		virtual ~InputManager() {}
@@ -39,8 +41,8 @@ namespace basecross
 		void MoveCamera();
 
 		// Push
-		void PushLThumb();
-		void PushRThumb();
+		void PushLTrigger();
+		void PushRTrigger();
 
 		// Pressed
 		void PressedA();
