@@ -62,17 +62,69 @@ namespace basecross
 			}
 			break;
 		case ENUM_GameMode::Editor:
-			// 注視点固定視点移動
+			// 焦点固定視点移動
+			if ((m_key.m_MouseClientPoint.x > 0 || m_key.m_MouseClientPoint.y > 0 &&
+				m_key.m_bPressedKeyTbl[VK_TAB] && m_key.m_bPressedKeyTbl[VK_LBUTTON]))
+			{
+				FocusFixedViewPointMove();
+			}
+
 			// カメラ位置固定視点移動
+			if ((m_key.m_MouseClientPoint.x > 0 || m_key.m_MouseClientPoint.y > 0) &&
+				m_key.m_bPushKeyTbl[VK_RBUTTON])
+			{
+				CameraFixedViewPointMove();
+			}
+
 			// オブジェクト選択
+			if (m_key.m_bPressedKeyTbl[VK_LBUTTON])
+			{
+				PressedLMouseButton();
+			}
+
 			// オブジェクト削除
+			if (m_key.m_bPressedKeyTbl[VK_DELETE])
+			{
+				PressedDelete();
+			}
+
 			// 選択解除
+			if (m_key.m_bPressedKeyTbl['Q'])
+			{
+				PressedQKey();
+			}
+
 			// 座標移動へ切替
+			if (m_key.m_bPressedKeyTbl['W'])
+			{
+				PressedWKey();
+			}
+
 			// 回転へ切替
+			if (m_key.m_bPressedKeyTbl['E'])
+			{
+				PressedEKey();
+			}
+
 			// サイズへ切替
+			if (m_key.m_bPressedKeyTbl['R'])
+			{
+				PressedRKey();
+			}
+
 			// 生成オブジェクト切替
-			// エディターモード切替
+			if (m_key.m_bPressedKeyTbl['Y'])
+			{
+				PressedYKey();
+			}
+
 			break;
+		}
+
+		// エディターモード切替
+		if (m_key.m_bPressedKeyTbl['U'])
+		{
+			PressedUKey();
 		}
 	}
 
@@ -108,4 +160,45 @@ namespace basecross
 	void InputManager::PressedStart()
 	{
 	}
+
+	void InputManager::FocusFixedViewPointMove()
+	{
+	}
+	
+	void InputManager::CameraFixedViewPointMove()
+	{
+	}
+
+	void InputManager::PressedLMouseButton()
+	{
+	}
+
+	void InputManager::PressedDelete()
+	{
+	}
+
+	void InputManager::PressedQKey()
+	{
+	}
+
+	void InputManager::PressedWKey()
+	{
+	}
+
+	void InputManager::PressedEKey()
+	{
+	}
+
+	void InputManager::PressedRKey()
+	{
+	}
+
+	void InputManager::PressedYKey()
+	{
+	}
+
+	void InputManager::PressedUKey()
+	{
+	}
+
 }
