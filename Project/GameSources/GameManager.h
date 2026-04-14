@@ -9,7 +9,7 @@
 
 namespace basecross 
 {
-	enum ENUM_GameMode
+	enum class ENUM_GameMode
 	{
 		Play,
 		Menu,
