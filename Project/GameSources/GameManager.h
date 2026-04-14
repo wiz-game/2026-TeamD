@@ -19,7 +19,7 @@ namespace basecross
 	class GameManager
 	{
 	private:
-		ENUM_GameMode m_gameMode = ENUM_GameMode::Menu;
+		ENUM_GameMode m_gameMode = ENUM_GameMode::Play;
 	private:
 		GameManager() {}
 		virtual ~GameManager() {}

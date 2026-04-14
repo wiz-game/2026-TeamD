@@ -5,12 +5,13 @@ namespace basecross
 {
 	void InputManager::Initialize()
 	{
-		m_pad = App::GetApp()->GetInputDevice().GetControlerVec()[0];
-		m_key = App::GetApp()->GetInputDevice().GetKeyState();
 	}
 
 	void InputManager::Update()
 	{
+		m_pad = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		m_key = App::GetApp()->GetInputDevice().GetKeyState();
+
 		switch (GameManager::Instance().GetGameMode())
 		{
 		default:
