@@ -23,6 +23,8 @@ namespace basecross
 	private:
 		GameManager() {}
 		virtual ~GameManager() {}
+		
+		void ExitGameMOde(ENUM_GameMode gameMode);
 	public:
 		static GameManager& Instance()
 		{
@@ -34,7 +36,7 @@ namespace basecross
 
 		// アクセサー
 		ENUM_GameMode GetGameMode() const { return m_gameMode; }
-		
+		void SetGameMode(ENUM_GameMode gameMode);
 	};
 
 }

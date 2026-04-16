@@ -50,6 +50,22 @@ namespace basecross
 		void PressedStart();
 
 		// GameMode：Editer用の入力関数
+		// 焦点固定視点移動
+		void FocusFixedViewPointMove();
+		
+		// カメラ位置固定視点移動
+		void CameraFixedViewPointMove();
+		
+		// 生成オブジェクト切替
+		void ChangeObject();
 
+		// Pressed
+		void PressedLMouseButton();
+		void PressedDelete();
+		void PressedQKey();
+		void PressedWKey();
+		void PressedEKey();
+		void PressedRKey();
+		void PressedCKey();
 	};
 }
