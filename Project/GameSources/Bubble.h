@@ -40,7 +40,6 @@ namespace basecross
 		shared_ptr<Transform> m_trans;
 		shared_ptr<PNTStaticInstanceDraw> m_draw;
 		const vector<Vec3> *m_vertices;
-		UINT m_numVertices;
 
 	public:
 		ViewBubble::ViewBubble(const shared_ptr<Stage>& stage, const vector<Vec3>* vertices, const shared_ptr<GameObject>& parent);

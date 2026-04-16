@@ -12,7 +12,7 @@ namespace basecross
 		m_currentVelocity(m_initialVelocity),
 		m_upwardVelocity(0.0f),
 		m_isTimeStart(false),
-		m_limitTime(4.0f),
+		m_limitTime(0.75f),
 		m_isSpawnedTrampoline(false)
 	{
 
@@ -35,7 +35,7 @@ namespace basecross
 		
 		m_trans = GetComponent<Transform>();
 		m_trans->SetPosition(parentPos + (m_parentForward * 1.25f));
-		m_trans->SetScale(Vec3(0.5f));
+		m_trans->SetScale(Vec3(1.25f));
 
 		auto ptrCol = AddComponent<CollisionSphere>();
 		ptrCol->SetDrawActive(false);
@@ -48,6 +48,17 @@ namespace basecross
 		m_draw->SetTextureResource(L"T_Bubble");
 		m_draw->SetDiffuse(Col4(1.0f, 1.0f, 1.0f, 0.3f));
 		// m_draw->SetSpecular(Col4(1.0f));
+
+		// モデルとトランスフォーム間の差分行列
+		Mat4x4 spanMat;
+		spanMat.affineTransformation(
+			Vec3(0.5f,  0.5f,   0.5f),
+			Vec3(0.0f,  0.0f,   0.0f),
+			Vec3(0.0f, XM_PI,   0.0f),
+			Vec3(0.0f, -0.5f,   0.0f)
+		);
+
+		m_draw->SetMeshToTransformMatrix(spanMat);
 	}
 
 	void Bubble::OnUpdate()
@@ -75,7 +86,7 @@ namespace basecross
 			pos += m_parentForward * (m_currentVelocity * elapsed);
 		}
 
-		// 現在の速度の割合が半分になったら上昇を始める
+		// 現在の速度の割合が始めるぐらいの割合になったら上昇を始める
 		if (m_speedRatio < decelerationStartRatio)
 		{
 			m_isTimeStart = true;
@@ -85,7 +96,7 @@ namespace basecross
 			t = clamp(t,0.0f, 1.0f);
 
 			// 1から2までの補間係数
-			m_upwardVelocity = 1.0f + (2.0f - 1.0f) * t;
+			m_upwardVelocity = 1.0f + (1.25f - 1.0f) * t;
 
 			pos.y += m_upwardVelocity * elapsed;
 		}
@@ -137,7 +148,8 @@ namespace basecross
 		if (!found && ground)
 		{
 			m_isSpawnedTrampoline = true;
-			GetStage()->AddGameObject<TrampolineBubbles>(m_trans->GetPosition());
+			auto bubblePos = m_trans->GetPosition();
+			GetStage()->AddGameObject<TrampolineBubbles>(Vec3(bubblePos));
 		}
 
 		GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
