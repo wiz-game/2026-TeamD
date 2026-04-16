@@ -88,6 +88,10 @@ namespace basecross
 
 		// カメラオブジェクトの取得
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		if (!stage)
+		{
+			return;
+		}
 		auto camera = stage->GetView()->GetTargetCamera();
 
 		// 自分自身（プレイヤー）の座標を直接取得する
@@ -107,11 +111,12 @@ namespace basecross
 			float eyeY = 5.0f;
 
 			// 右スティックの傾きに応じて回り込ませる
-			m_angleY += control.fThumbRX * App::GetApp()->GetElapsedTime();
+			m_stickRX += control.fThumbRX * App::GetApp()->GetElapsedTime();
+			m_stickRY += control.fThumbRY * App::GetApp()->GetElapsedTime();
 
 			// カメラの注視点(At)とカメラの位置(Eye)を計算
 			Vec3 at = targetPos + Vec3(0.0f, 1.0f, 0.0f);
-			Vec3 eye = targetPos + Vec3(cosf(m_angleY) * slope, eyeY, sinf(m_angleY) * slope);
+			Vec3 eye = targetPos + Vec3(cosf(m_stickRX) * slope, m_stickRY * 2.0f, sinf(m_stickRX) * slope);
 			Vec3 forward = at - eye;
 
 			float vectorx = 0.0f;
@@ -150,11 +155,26 @@ namespace basecross
 		else if(m_isTargetMode == true)
 		{
 			// 右スティックの傾きに応じて回り込ませる
-			m_angleY += control.fThumbRX * App::GetApp()->GetElapsedTime();
+			m_stickRX += control.fThumbRX * App::GetApp()->GetElapsedTime();
+			m_stickRY += control.fThumbRY * App::GetApp()->GetElapsedTime();
+
+			float cameraMoveSpeed = 2.0f;
+			float maxRY = 4.0f, minRY = -4.0f;
 
 			// カメラの注視点(At)とカメラの位置(Eye)を計算
 			Vec3 at = targetPos + Vec3(0.0f, 1.0f, 0.0f);
-			Vec3 eye = targetPos + Vec3(cosf(m_angleY) * 2.0f, 2.0f, sinf(m_angleY) * 2.0f);
+			Vec3 eye = targetPos + Vec3
+			(
+				cosf(m_stickRX) * cameraMoveSpeed,
+				m_stickRY,
+				sinf(m_stickRX) * cameraMoveSpeed
+			);
+
+			// カメラの調整制限
+			//if (m_stickRY >= maxRY)
+			//{
+			//	m_stickRY = maxRY;
+			//}
 
 			Vec3 forward = at - eye;
 

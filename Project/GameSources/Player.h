@@ -16,7 +16,8 @@ namespace basecross
 		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
 		std::shared_ptr<Move> m_move;
 
-		float m_angleY; // Y軸中心のカメラの回り込み
+		float m_stickRX; // X軸中心のカメラの回り込み
+		float m_stickRY; // Y軸中心のカメラの回り込み
 
 		Vec3 m_Position;
 		bool m_isTargetMode;
@@ -37,7 +38,9 @@ namespace basecross
 			m_isJumping(false),
 			m_JumpPower(6.0f),
 			m_Gravity(9.8f),
-			m_isTargetMode(true)
+			m_isTargetMode(true),
+			m_stickRY(0.0f),
+			m_stickRX(0.0f)
 		{
 		}
 

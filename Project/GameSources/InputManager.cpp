@@ -138,6 +138,13 @@ namespace basecross
 
 	void InputManager::MoveCamera()
 	{
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		if (stage == nullptr)
+		{
+			return;
+		}
+
+		auto camera = stage->GetView()->GetTargetCamera();
 	}
 
 	void InputManager::PushLTrigger()
