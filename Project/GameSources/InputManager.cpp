@@ -198,6 +198,13 @@ namespace basecross
 
 	void InputManager::PressedCKey()
 	{
-		GameManager::Instance().SetGameMode(ENUM_GameMode::Editor);
+		if (GameManager::Instance().GetGameMode() == ENUM_GameMode::Play)
+		{
+			GameManager::Instance().SetGameMode(ENUM_GameMode::Editor);
+		}
+		else
+		{
+			GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
+		}
 	}
 }
