@@ -15,17 +15,21 @@ namespace basecross
 		// トランスフォームコンポーネントを取得しておく
 		m_transform = GetComponent<Transform>();
 		m_transform->SetPosition(m_Position);
+		m_transform->SetScale(0.3, 0.3, 0.3);
 
 		m_move = AddComponent<Move>();
 
 		// ドローコンポーネントを追加
 		m_draw = AddComponent<PNTDXModelDraw>();
 		auto drawComp = AddComponent<PNTStaticDraw>();
-		drawComp->SetMeshResource(L"DEFAULT_CUBE");
+		drawComp->SetMeshResource(L"M_Alpaca");
+		drawComp->SetTextureResource(L"T_Alpaca");
 		drawComp->SetDrawActive(true);
 
 		// 当たり判定
 		auto obb = AddComponent<CollisionObb>();
+
+		auto gravity = AddComponent<Gravity>();
 	}
 
 	// プレイヤーの更新処理
@@ -42,9 +46,6 @@ namespace basecross
 		auto device = App::GetApp()->GetInputDevice();
 		auto control = device.GetControlerVec();
 
-		// 重力は常に下に向き続けている
-		//m_Velocity -= App::GetApp()->GetElapsedTime();
-
 		if (control[0].bConnected)
 		{
 			if (control[0].wPressedButtons & XINPUT_GAMEPAD_A)
@@ -59,21 +60,6 @@ namespace basecross
 		}
 
 		transPos.y += m_Velocity * App::GetApp()->GetElapsedTime();
-
-		// ジャンプしているとき
-		if (m_isJumping)
-		{
-			m_Velocity -= m_Gravity * App::GetApp()->GetElapsedTime();
-			float groundY = 0.5f;
-
-			// 足場の代わりに、地面(-0.1f)に着地したら
-			if (transPos.y <= groundY)
-			{
-				m_Velocity = 0.0f;
-				transPos.y = groundY;
-				m_isJumping = false;
-			}
-		}
 
 		m_transform->SetPosition(transPos);
 	}
@@ -126,7 +112,37 @@ namespace basecross
 			// カメラの注視点(At)とカメラの位置(Eye)を計算
 			Vec3 at = targetPos + Vec3(0.0f, 1.0f, 0.0f);
 			Vec3 eye = targetPos + Vec3(cosf(m_angleY) * slope, eyeY, sinf(m_angleY) * slope);
+			Vec3 forward = at - eye;
 
+			float vectorx = 0.0f;
+			float vectorz = 0.0f;
+
+			float vectorarrayx;
+			float vectorarrayz;
+
+			// スティックの情報を取得する
+			float stickLX = control.fThumbLX;
+			float stickLY = control.fThumbLY;
+
+			// 向いている方向に行くようにする
+			Vec3 forwardMove = Vec3(forward.z, 0.0f, -forward.x);
+
+			// 前後移動
+			vectorx += forward.x * stickLY;
+			vectorz += forward.z * stickLY;
+
+			// 左右移動
+			vectorx += forwardMove.x * stickLX;
+			vectorz += forwardMove.z * stickLX;
+
+			vectorarrayx = vectorx;
+			vectorarrayz = vectorz;
+			
+			if (fabsf(stickLX) > 0.1f || fabsf(stickLY) > 0.1f)
+			{
+				float angle = atan2f(vectorarrayx, vectorarrayz);
+				m_transform->SetRotation(0.0f, angle, 0.0f);
+			}
 			// カメラに設定を反映
 			camera->SetAt(at);
 			camera->SetEye(eye);
@@ -151,21 +167,29 @@ namespace basecross
 		}
 	}
 
+
+	// --- 当たり判定 ---
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
+		auto transPos = m_transform->GetPosition();
+		// バブル
 		if (Other->FindTag(L"Bubble"))
 		{
 			m_Velocity = m_JumpPower * 1.5f;
 			m_isJumping = true;
 		}
+
+		// 床
+		if (Other->FindTag(L"Ground"))
+		{
+			m_isJumping = false;
+			m_Velocity = 0.0f;
+		}
 	}
 
 	void Player::OnCollisionExit(shared_ptr<GameObject>& Other)
 	{
-		//if (Other->FindTag(L"Bubble"))
-		//{
-		//	m_isJumping = true;
-		//}
-	}}
+	}
+}
 //end basecross
 

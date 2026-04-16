@@ -35,7 +35,7 @@ namespace basecross
 			m_Velocity(0.0f),
 			m_Position(0.0f, 1.0f, 0.0f),
 			m_isJumping(false),
-			m_JumpPower(3.0f),
+			m_JumpPower(6.0f),
 			m_Gravity(9.8f),
 			m_isTargetMode(true)
 		{
@@ -46,8 +46,12 @@ namespace basecross
 		void Jump();	// ジャンプ
 		void LaunchofBubble();	// 泡の発射
 		void Camera();		// カメラ移動
+
+		// --- 当たり判定 ---
 		void OnCollisionEnter(shared_ptr<GameObject>& Other);	//	当たり判定
+		void OnCollisionExecute(shared_ptr<GameObject>& Other);
 		void OnCollisionExit(shared_ptr<GameObject>& Other);
+		// ------------------
 
 		// ジャンプのゲッターセッター
 		bool GetIsJump()
