@@ -109,13 +109,81 @@ namespace basecross
 		if (m_isSpawnedTrampoline) return;
 		if (!Other->FindTag(L"Ground")) return;
 
+		auto range = 1.0f;
+		auto stage = GetStage();
 		auto ground = dynamic_pointer_cast<Ground>(Other);
-		if (ground)
+		auto myPos = m_trans->GetPosition();
+		auto objvec = stage->GetGameObjectVec();
+
+		bool found = false;
+		for (auto& obj : objvec)
+		{
+			if (obj->FindTag(L"TrampolineBubbles"))
+			{
+				auto tramp = dynamic_pointer_cast<TrampolineBubbles>(obj);
+				auto trampTrans = tramp->GetComponent<Transform>();
+				if (trampTrans)
+				{
+					float dist = (myPos - trampTrans->GetPosition()).length();
+					if (dist < range)
+					{
+						found = true;
+						tramp->AddbubbleCount();
+						break;
+					}
+				}
+			}
+		}
+		if (!found && ground)
 		{
 			m_isSpawnedTrampoline = true;
 			GetStage()->AddGameObject<TrampolineBubbles>(m_trans->GetPosition());
-			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
 		}
+
+		GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
 	}
 
+	ViewBubble::ViewBubble(const shared_ptr<Stage>& stage, const vector<Vec3> *vertices,const shared_ptr<GameObject>& parent) :
+		GameObject(stage),
+		m_vertices(vertices),
+		m_parent(parent)
+	{
+
+	}
+
+	ViewBubble::~ViewBubble()
+	{
+	}
+
+	void ViewBubble::OnCreate()
+	{
+		m_trans = GetComponent<Transform>();
+		m_trans->SetScale(Vec3(0.1f));
+
+		m_draw = AddComponent<PNTStaticInstanceDraw>();
+		m_draw->SetMeshResource(L"M_Bubble");
+		m_draw->SetTextureResource(L"T_Bubble");
+	}
+
+	void ViewBubble::OnUpdate()
+	{		
+		CreateInstance();
+	}
+
+	void ViewBubble::CreateInstance()
+	{		
+		m_draw->ClearMatrixVec();
+
+		for (const auto& pos : *m_vertices)
+		{
+			Mat4x4 mat;
+			mat.affineTransformation(
+				Vec3(0.1f),
+				Vec3(0.0f),
+				Quat(0.0f),
+				pos
+			);
+			m_draw->AddMatrix(mat);
+		}
+	}
 }
