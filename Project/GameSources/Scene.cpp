@@ -23,6 +23,10 @@ namespace basecross
 			//リソース作成
 			RegisterMediaFiles(App::GetApp()->GetDataDirWString());
 
+			GameManager::Instance().Initialize();
+			InputManager::Instance().Initialize();
+			StageEditor::Instance().Initialize();
+
 			//自分自身にイベントを送る
 			//これによりゲームステージのオブジェクトがCreate時にシーンにアクセスできる
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStage");

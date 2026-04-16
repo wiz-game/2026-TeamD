@@ -8,6 +8,8 @@
 
 #include "Scene.h"
 
+#include "DebugLog.h"
+
 // マネージャークラス
 #include "GameManager.h"
 #include "InputManager.h"

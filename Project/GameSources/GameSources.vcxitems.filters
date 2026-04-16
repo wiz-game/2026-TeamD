@@ -58,6 +58,9 @@
     <Filter Include="StageObjs\Mushroom">
       <UniqueIdentifier>{45cb8b8a-fa28-45d1-b5c7-76cdb52820cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DebugLog">
+      <UniqueIdentifier>{f89c2eba-852e-4270-81d8-cbca4df35008}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -126,6 +129,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Mushroom.h">
       <Filter>StageObjs\Mushroom</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DebugLog.h">
+      <Filter>DebugLog</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -190,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Mushroom.cpp">
       <Filter>StageObjs\Mushroom</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DebugLog.cpp">
+      <Filter>DebugLog</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
