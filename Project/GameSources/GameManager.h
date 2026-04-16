@@ -19,12 +19,17 @@ namespace basecross
 	class GameManager
 	{
 	private:
+		shared_ptr<DebugLog> m_sPtrDebugLog = nullptr;
+
 		ENUM_GameMode m_gameMode = ENUM_GameMode::Play;
+
+		bool m_isDebug = false;
 	private:
 		GameManager() {}
 		virtual ~GameManager() {}
 		
-		void ExitGameMOde(ENUM_GameMode gameMode);
+		void EnterGameMode(ENUM_GameMode gameMode);
+		void ExitGameMode(ENUM_GameMode gameMode);
 	public:
 		static GameManager& Instance()
 		{
@@ -33,10 +38,16 @@ namespace basecross
 		}
 
 		void Initialize();
+		
+		void AddDebugStr(const wstring& debugStr);
+		void RemoveDebugLog();
 
 		// アクセサー
 		ENUM_GameMode GetGameMode() const { return m_gameMode; }
 		void SetGameMode(ENUM_GameMode gameMode);
+
+		bool GetIsDebug() const { return m_isDebug; }
+		void SetIsDebug(bool isDebug) { m_isDebug = isDebug; }
 	};
 
 }
