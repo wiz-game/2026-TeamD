@@ -8,7 +8,8 @@ namespace basecross
 		m_isTrampolineActive(false),
 		m_isInstanceCreated(false),
 		m_bubbleCount(0),
-		m_pos(pos)
+		m_pos(pos),
+		m_scale(Vec3(0.4))
 	{
 
 	}
@@ -22,7 +23,7 @@ namespace basecross
 	{
 		m_trans = GetComponent<Transform>();
 		m_trans->SetPosition(m_pos);
-		m_trans->SetScale(Vec3(0.5f));
+		m_trans->SetScale(m_scale);
 
 		m_chargeDraw = AddComponent<PNTStaticDraw>();
 		m_chargeDraw->SetMeshResource(L"M_Bubble");
@@ -89,7 +90,6 @@ namespace basecross
 
 		const int gridCount = 2;
 		const float spacing = 0.8f;
-		const float scale = 0.5f;
 		const float startOffsetX = -((gridCount - 1) * spacing) * 0.5f;
 		const float startOffsetZ = -((gridCount - 1) * spacing) * 0.5f;
 
@@ -98,9 +98,9 @@ namespace basecross
 			for (int x = 0; x < gridCount; x++)
 			{
 				Mat4x4 mat;
-				Vec3 instancePos = m_pos + Vec3(startOffsetX + (spacing * x), 0.0f, startOffsetZ + (spacing * z));
+				Vec3 instancePos = m_pos + Vec3(startOffsetX + (spacing * x), -0.3, startOffsetZ + (spacing * z));
 				mat.affineTransformation(
-					Vec3(scale),
+					Vec3(m_scale),
 					Vec3(0.0f),
 					Quat(),
 					instancePos

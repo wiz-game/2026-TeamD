@@ -15,6 +15,7 @@ namespace basecross
 		bool m_isInstanceCreated;
 		int m_bubbleCount;
 		Vec3 m_pos;
+		Vec3 m_scale;
 
 		void CreateActiveInstances();
 	
