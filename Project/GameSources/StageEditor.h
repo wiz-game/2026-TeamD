@@ -12,6 +12,8 @@ namespace basecross
 	class StageEditor
 	{
 	private:
+		shared_ptr<DebugLog> m_sPtrStageLog = nullptr;
+
 	private:
 		StageEditor() {}
 		virtual ~StageEditor() {}
@@ -24,7 +26,8 @@ namespace basecross
 
 		void Initialize();
 
-
+		void StartEditor();
+		void EndEditor();
 	};
 
 }
