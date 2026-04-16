@@ -3,23 +3,6 @@
 
 namespace basecross 
 {
-	void GameManager::ExitGameMode(ENUM_GameMode gameMode)
-	{
-		switch (gameMode)
-		{
-		case ENUM_GameMode::Play:
-			break;
-		case ENUM_GameMode::Menu:
-			break;
-		case ENUM_GameMode::Editor:
-			for (auto& gameObject : App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetGameObjectVec())
-				gameObject->SetUpdateActive(true);
-			break;
-		default:
-			break;
-		}
-	}
-
 	void GameManager::EnterGameMode(ENUM_GameMode gameMode)
 	{
 		switch (gameMode)
@@ -31,6 +14,27 @@ namespace basecross
 		case ENUM_GameMode::Editor:
 			for (auto& gameObject : App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetGameObjectVec()) 
 				gameObject->SetUpdateActive(false);
+
+			StageEditor::Instance().StartEditor();
+			break;
+		default:
+			break;
+		}
+	}
+
+	void GameManager::ExitGameMode(ENUM_GameMode gameMode)
+	{
+		switch (gameMode)
+		{
+		case ENUM_GameMode::Play:
+			break;
+		case ENUM_GameMode::Menu:
+			break;
+		case ENUM_GameMode::Editor:
+			for (auto& gameObject : App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetGameObjectVec())
+				gameObject->SetUpdateActive(true);
+			
+			StageEditor::Instance().EndEditor();
 			break;
 		default:
 			break;
@@ -39,6 +43,29 @@ namespace basecross
 
 	void GameManager::Initialize()
 	{
+	}
+	
+
+	void GameManager::AddDebugStr(const wstring& debugStr)
+	{
+		if (m_sPtrDebugLog)
+		{
+			m_sPtrDebugLog->AddDebugStr(debugStr);
+		}
+		else 
+		{
+			m_sPtrDebugLog = App::GetApp()->GetScene<Scene>()->GetActiveStage()->AddGameObject<DebugLog>();
+			AddDebugStr(debugStr);
+		}
+	}
+
+	void GameManager::RemoveDebugLog()
+	{
+		if (m_sPtrDebugLog) 
+		{
+			m_sPtrDebugLog->DestroyGameObject();
+			m_sPtrDebugLog = nullptr;
+		}
 	}
 
 	void GameManager::SetGameMode(ENUM_GameMode gameMode)
