@@ -22,16 +22,18 @@ namespace basecross
 	{
 		m_trans = GetComponent<Transform>();
 		m_trans->SetPosition(m_pos);
+		m_trans->SetScale(Vec3(0.5f));
 
 		m_chargeDraw = AddComponent<PNTStaticDraw>();
-		m_chargeDraw->SetMeshResource(L"DEFAULT_SPHERE");
+		m_chargeDraw->SetMeshResource(L"M_Bubble");
+		m_chargeDraw->SetTextureResource(L"T_Bubble");
 		m_chargeDraw->SetDrawActive(true);
 
 		// インスタンス描画用
-		m_activeDraw = AddComponent<PCTStaticInstanceDraw>();
-		m_activeDraw->SetMeshResource(L"DEFAULT_SPHERE");
+		m_activeDraw = AddComponent<PNTStaticInstanceDraw>();
+		m_activeDraw->SetMeshResource(L"M_Bubble");
+		m_activeDraw->SetTextureResource(L"T_Bubble");
 		m_activeDraw->SetDrawActive(false);
-		// m_activeDraw->SetDepthStencilState(DepthStencilState::Read);
 
 		m_col = AddComponent<CollisionSphere>();
 		m_col->SetDrawActive(false);
@@ -87,7 +89,7 @@ namespace basecross
 
 		const int gridCount = 2;
 		const float spacing = 0.8f;
-		const float scale = 0.7f;
+		const float scale = 0.5f;
 		const float startOffsetX = -((gridCount - 1) * spacing) * 0.5f;
 		const float startOffsetZ = -((gridCount - 1) * spacing) * 0.5f;
 

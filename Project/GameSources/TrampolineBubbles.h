@@ -8,7 +8,7 @@ namespace basecross
 	private:
 		shared_ptr<Transform> m_trans;
 		shared_ptr<PNTStaticDraw> m_chargeDraw;
-		shared_ptr<PCTStaticInstanceDraw> m_activeDraw;
+		shared_ptr<PNTStaticInstanceDraw> m_activeDraw;
 		shared_ptr<CollisionSphere> m_col;
 
 		bool m_isTrampolineActive;
@@ -26,5 +26,15 @@ namespace basecross
 		void OnUpdate()override;
 
 		void OnCollisionEnter(shared_ptr<GameObject>& Other);
+
+		void AddbubbleCount()
+		{
+			m_bubbleCount++;
+		}
+
+		int GetbubbleCount()
+		{
+			return m_bubbleCount;
+		}
 	};
 }
