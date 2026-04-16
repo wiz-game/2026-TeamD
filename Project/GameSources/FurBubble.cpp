@@ -15,16 +15,19 @@ namespace basecross
 
 	void FurBubble::OnCreate()
 	{
+		m_meshPosition = new vector<Vec3>();
+
 		m_trans = GetGameObject()->GetComponent<Transform>();
 
 		m_draw = GetGameObject()->GetComponent<PNTStaticDraw>();
-		m_vertices = m_draw->GetMeshResource()->GetNumVertices();
-		m_draw->GetStaticMeshWorldPositions(m_meshPosition);
+		GetStaticMeshWorldPositions(m_meshPosition);
 		CreateBubble();
+
 	}
 
 	void FurBubble::OnUpdate()
 	{
+		GetStaticMeshWorldPositions(m_meshPosition);
 	}
 
 	void FurBubble::OnDraw()
@@ -34,7 +37,25 @@ namespace basecross
 
 	void FurBubble::CreateBubble()
 	{
-		m_stage->AddGameObject<ViewBubble>(m_draw, m_vertices, GetGameObject());
+		m_stage->AddGameObject<ViewBubble>(m_meshPosition, GetGameObject());
+	}
+
+	void FurBubble::GetStaticMeshWorldPositions(vector<Vec3> *vertices)
+	{
+		if (vertices == nullptr)
+		{
+			return;
+		}
+
+ 		m_draw->GetStaticMeshLocalPositions(*vertices);
+
+		// ワールド行列の変換
+		auto worldMat = GetGameObject()->GetComponent<Transform>()->GetWorldMatrix();
+
+		for (auto& v : *vertices)
+		{
+			v *= worldMat;
+		}
 	}
 
 }

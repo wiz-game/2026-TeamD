@@ -9,8 +9,7 @@ namespace basecross
 		shared_ptr<Transform> m_trans;
 		shared_ptr<PNTStaticDraw> m_draw;
 		shared_ptr<Stage> m_stage;
-		vector<Vec3> m_meshPosition;
-		UINT m_vertices;
+		vector<Vec3> *m_meshPosition;
 
 	public:
 		FurBubble(const shared_ptr<GameObject>& gameObject,const shared_ptr<Stage>& stage);
@@ -21,5 +20,7 @@ namespace basecross
 		virtual void OnDraw();
 
 		void CreateBubble();
+
+		void GetStaticMeshWorldPositions(vector<Vec3> *vertices);
 	};
 }
