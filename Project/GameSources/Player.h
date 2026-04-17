@@ -34,12 +34,12 @@ namespace basecross
 		Player(const std::shared_ptr<Stage>& stage) :
 			GameObject(stage), // ステージをGameObjectに渡す【必須】
 			m_Velocity(0.0f),
-			m_Position(0.0f, 1.0f, 0.0f),
+			m_Position(0.0f, 80.0f, 0.0f),
 			m_isJumping(false),
 			m_JumpPower(6.0f),
 			m_Gravity(9.8f),
-			m_isTargetMode(true),
-			m_stickRY(0.0f),
+			m_isTargetMode(false),
+			m_stickRY(2.0f),
 			m_stickRX(0.0f)
 		{
 		}
@@ -49,6 +49,8 @@ namespace basecross
 		void Jump();	// ジャンプ
 		void LaunchofBubble();	// 泡の発射
 		void Camera();		// カメラ移動
+		void DebugString();
+		void ReSpawn();
 
 		// --- 当たり判定 ---
 		void OnCollisionEnter(shared_ptr<GameObject>& Other);	//	当たり判定
@@ -74,6 +76,12 @@ namespace basecross
 		void SetTargetMode(bool tm)
 		{
 			m_isTargetMode = tm;
+		}
+
+		// デバッグ用のゲッターセッター
+		float GetStickRY()
+		{
+			return m_stickRY;
 		}
 	};
 }
