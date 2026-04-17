@@ -33,7 +33,7 @@ namespace basecross
 		auto gravity = AddComponent<Gravity>();
 
 		// バブルのコンポーネント
-		auto fbComp = AddComponent<FurBubble>(GetThis<Player>());
+		auto fbComp = AddComponent<FurBubble>(GetStage());
 	}
 
 	// プレイヤーの更新処理
@@ -102,9 +102,9 @@ namespace basecross
 		// 自分自身（プレイヤー）の座標を直接取得する
 		auto targetPos = m_transform->GetPosition();
 
-		if (control.wButtons & XINPUT_GAMEPAD_X && m_isTargetMode == false)
+		if (control.wPressedButtons & XINPUT_GAMEPAD_X)
 		{
-			m_isTargetMode = true;
+			m_isTargetMode = !m_isTargetMode;
 		}
 
 		// 右スティックの傾きに応じて回り込ませる
@@ -174,12 +174,12 @@ namespace basecross
 			float cameraMoveSpeed = 2.0f;
 
 			// カメラの注視点(At)とカメラの位置(Eye)を計算
-			Vec3 at = targetPos + Vec3(0.0f, 1.0f, 0.0f) * 0.25f;
+			Vec3 at = targetPos + Vec3(0.0f, 1.0f, 0.0f);
 			Vec3 eye = targetPos + Vec3
 			(
-				cosf(m_stickRX) * cameraMoveSpeed * 0.25f,
+				cosf(m_stickRX) * cameraMoveSpeed,
 				m_stickRY,
-				sinf(m_stickRX) * cameraMoveSpeed * 0.25f
+				sinf(m_stickRX) * cameraMoveSpeed
 			);
 
 			Vec3 forward = at - eye;
