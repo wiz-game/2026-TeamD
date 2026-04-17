@@ -33,4 +33,20 @@ namespace basecross
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other);
 	};
+
+	class ViewBubble : public GameObject
+	{
+		weak_ptr<GameObject> m_parent;
+		shared_ptr<Transform> m_trans;
+		shared_ptr<PNTStaticInstanceDraw> m_draw;
+		const vector<Vec3> *m_vertices;
+
+	public:
+		ViewBubble::ViewBubble(const shared_ptr<Stage>& stage, const vector<Vec3>* vertices, const shared_ptr<GameObject>& parent);
+		ViewBubble::~ViewBubble();
+
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+		void CreateInstance();
+	};
 }
