@@ -38,7 +38,7 @@ namespace basecross
 			CreatePlayer();
 
 			auto pash = App::GetApp()->GetDataDirWString() + L"StageObjDatas/";
-			wstring stageObjData = pash + L"Stage" + to_wstring(1) + L".csv";
+			wstring stageObjData = pash + L"Stage" + to_wstring(0) + L".csv";
 			ifstream ifsStageObjData(stageObjData);
 			if (!ifsStageObjData)
 			{
