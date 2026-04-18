@@ -39,11 +39,11 @@ namespace basecross
 	// プレイヤーの更新処理
 	void Player::OnUpdate()
 	{
-		//Jump();
+		ReSpawn();
+		Jump();
 		LaunchofBubble();
 		Camera();
-		DebugString();
-		ReSpawn();
+		//DebugString();
 	}
 
 	void Player::Jump()
@@ -201,16 +201,25 @@ namespace basecross
 	{
 		auto scene = App::GetApp()->GetScene<Scene>();
 		wstringstream wss;
-		wss << L"CameraAngle：" << GetStickRY();
+		wss << L"CameraAngle：" << GetStickRY() << endl;
+
+		auto transPos = m_transform->GetPosition();
+		wss << L"PlayerPosition.y：" << transPos.y;
 		scene->SetDebugString(wss.str());
 	}
 
 	void Player::ReSpawn()
 	{
-		float fallPosition = -20.0f;
-		if (m_Position.y >= fallPosition)
+		// 落ちるときの位置
+		float fallPosition = 0.0f;
+		// リスポーンする位置
+		float reSpawnPosition = 80.0f;
+
+		auto transPos = m_transform->GetPosition();
+		if (transPos.y <= fallPosition)
 		{
-			m_Position = Vec3(0.0f, 80.0f, 0.0f);
+			transPos.y = reSpawnPosition;
+			m_transform->SetPosition(0.0f, transPos.y, 0.0f);
 		}
 	}
 
