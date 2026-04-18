@@ -42,8 +42,9 @@ namespace basecross
 		ReSpawn();
 		Jump();
 		LaunchofBubble();
-		Camera();
-		//DebugString();
+		//Camera();
+		DebugString();
+		//TargetCamera();
 	}
 
 	void Player::Jump()
@@ -83,116 +84,6 @@ namespace basecross
 		if (control[0].wPressedButtons & XINPUT_GAMEPAD_B)
 		{
 			stage->AddGameObject<Bubble>(GetThis<Player>());
-		}
-	}
-
-	void Player::Camera()
-	{
-		// ゲームパッドオブジェクトを取得
-		auto& control = App::GetApp()->GetInputDevice().GetControlerVec()[0];
-
-		// カメラオブジェクトの取得
-		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-		if (!stage)
-		{
-			return;
-		}
-		auto camera = stage->GetView()->GetTargetCamera();
-
-		// 自分自身（プレイヤー）の座標を直接取得する
-		auto targetPos = m_transform->GetPosition();
-
-		if (control.wPressedButtons & XINPUT_GAMEPAD_X)
-		{
-			m_isTargetMode = !m_isTargetMode;
-		}
-
-		// 右スティックの傾きに応じて回り込ませる
-		m_stickRX += control.fThumbRX * App::GetApp()->GetElapsedTime();
-		m_stickRY += control.fThumbRY * App::GetApp()->GetElapsedTime();
-		
-		// カメラの傾きの上限
-		const float MAXRY = 3.0f, MINRY = -0.5f;
-
-		if (m_stickRY >= MAXRY)
-		{
-			m_stickRY = MAXRY;
-		}
-		else if (m_stickRY <= MINRY)
-		{
-			m_stickRY = MINRY;
-		}
-
-		if (m_isTargetMode == false)
-		{
-			// 傾き具合
-			float slope = 5.5f;
-
-			// カメラの位置の高さ
-			float eyeY = 5.0f;
-
-			// カメラの注視点(At)とカメラの位置(Eye)を計算
-			Vec3 at = targetPos + Vec3(0.0f, 1.0f, 0.0f);
-			Vec3 eye = targetPos + Vec3(cosf(m_stickRX) * slope, m_stickRY * 2.0f, sinf(m_stickRX) * slope);
-			Vec3 forward = at - eye;
-
-			float vectorx = 0.0f;
-			float vectorz = 0.0f;
-
-			float vectorarrayx;
-			float vectorarrayz;
-
-			// スティックの情報を取得する
-			float stickLX = control.fThumbLX;
-			float stickLY = control.fThumbLY;
-
-			// 向いている方向に行くようにする
-			Vec3 forwardMove = Vec3(forward.z, 0.0f, -forward.x);
-
-			// 前後移動
-			vectorx += forward.x * stickLY;
-			vectorz += forward.z * stickLY;
-
-			// 左右移動
-			vectorx += forwardMove.x * stickLX;
-			vectorz += forwardMove.z * stickLX;
-
-			vectorarrayx = vectorx;
-			vectorarrayz = vectorz;
-			
-			if (fabsf(stickLX) > 0.1f || fabsf(stickLY) > 0.1f)
-			{
-				float angle = atan2f(vectorarrayx, vectorarrayz);
-				m_transform->SetRotation(0.0f, angle, 0.0f);
-			}
-			// カメラに設定を反映
-			camera->SetAt(at);
-			camera->SetEye(eye);
-		}
-		else if(m_isTargetMode == true)
-		{
-			float cameraMoveSpeed = 2.0f;
-
-			// カメラの注視点(At)とカメラの位置(Eye)を計算
-			Vec3 at = targetPos + Vec3(0.0f, 1.0f, 0.0f);
-			Vec3 eye = targetPos + Vec3
-			(
-				cosf(m_stickRX) * cameraMoveSpeed,
-				m_stickRY,
-				sinf(m_stickRX) * cameraMoveSpeed
-			);
-
-			Vec3 forward = at - eye;
-
-			float angle = atan2f(forward.x, forward.z);
-			m_transform->SetRotation(0.0f, angle, 0.0f);
-
-			at += Vec3(forward.z, 0.0f, -forward.x) * 0.25;
-			eye += Vec3(forward.z, 0.0f, -forward.x) * 0.25;
-
-			// カメラに設定を反映
-			camera->SetAt(at);
-			camera->SetEye(eye);
 		}
 	}
 
@@ -240,6 +131,11 @@ namespace basecross
 			m_isJumping = false;
 			m_Velocity = 0.0f;
 		}
+	}
+
+	void Player::OnCollisionExecute(shared_ptr<GameObject>& Other)
+	{
+
 	}
 
 	void Player::OnCollisionExit(shared_ptr<GameObject>& Other)
