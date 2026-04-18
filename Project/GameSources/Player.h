@@ -27,8 +27,6 @@ namespace basecross
 		// ジャンプの処理
 		float m_JumpPower;
 		bool m_isJumping; // 現在ジャンプしているかどうか
-		// カメラの傾き具合
-		float m_angleX;
 	public :
 		// ステージを引数にしたコンストラクタ【必須】
 		Player(const std::shared_ptr<Stage>& stage) :
@@ -48,7 +46,6 @@ namespace basecross
 		void OnUpdate() override; // 毎フレーム実行される関数(UnityのUpdateメソッドに相当)
 		void Jump();	// ジャンプ
 		void LaunchofBubble();	// 泡の発射
-		void Camera();		// カメラ移動
 		void DebugString();
 		void ReSpawn();
 
