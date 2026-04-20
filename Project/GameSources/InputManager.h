@@ -66,6 +66,7 @@ namespace basecross
 		void PressedWKey();
 		void PressedEKey();
 		void PressedRKey();
+		void PressedFKey();
 		void PressedCKey();
 	};
 }

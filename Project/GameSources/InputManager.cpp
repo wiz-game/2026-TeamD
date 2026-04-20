@@ -118,6 +118,12 @@ namespace basecross
 				PressedRKey();
 			}
 			break;
+
+			// オブジェクトを生成
+			if (m_key.m_bPressedKeyTbl['F'])
+			{
+				PressedFKey();
+			}
 		}
 
 		// エディターモード切替
@@ -297,6 +303,11 @@ namespace basecross
 
 	void InputManager::PressedRKey()
 	{
+	}
+
+	void InputManager::PressedFKey()
+	{
+		StageEditor::Instance().AddGameObject();
 	}
 
 	void InputManager::PressedCKey()

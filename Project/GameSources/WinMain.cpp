@@ -149,7 +149,7 @@ int MainLoop(HINSTANCE hInstance, HWND hWnd, bool isFullScreen, int iClientWidth
 			VK_LBUTTON, VK_RBUTTON, VK_MBUTTON,
 			VK_DELETE, VK_LSHIFT, VK_TAB,
 			'W','A','S','D',
-			'Q','E','R','T','Y','U','C',
+			'Q','E','R','T','Y','U','F','C',
 			'X','B'
 		};
 		while (WM_QUIT != msg.message) {
