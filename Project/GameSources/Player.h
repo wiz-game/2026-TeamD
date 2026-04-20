@@ -16,7 +16,8 @@ namespace basecross
 		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
 		std::shared_ptr<Move> m_move;
 
-		float m_angleY; // Y軸中心のカメラの回り込み
+		float m_stickRX; // X軸中心のカメラの回り込み
+		float m_stickRY; // Y軸中心のカメラの回り込み
 
 		Vec3 m_Position;
 		bool m_isTargetMode;
@@ -26,18 +27,18 @@ namespace basecross
 		// ジャンプの処理
 		float m_JumpPower;
 		bool m_isJumping; // 現在ジャンプしているかどうか
-		// カメラの傾き具合
-		float m_angleX;
 	public :
 		// ステージを引数にしたコンストラクタ【必須】
 		Player(const std::shared_ptr<Stage>& stage) :
 			GameObject(stage), // ステージをGameObjectに渡す【必須】
 			m_Velocity(0.0f),
-			m_Position(0.0f, 1.0f, 0.0f),
+			m_Position(0.0f, 80.0f, 0.0f),
 			m_isJumping(false),
 			m_JumpPower(6.0f),
 			m_Gravity(9.8f),
-			m_isTargetMode(true)
+			m_isTargetMode(false),
+			m_stickRY(2.0f),
+			m_stickRX(0.0f)
 		{
 		}
 
@@ -45,7 +46,8 @@ namespace basecross
 		void OnUpdate() override; // 毎フレーム実行される関数(UnityのUpdateメソッドに相当)
 		void Jump();	// ジャンプ
 		void LaunchofBubble();	// 泡の発射
-		void Camera();		// カメラ移動
+		void DebugString();
+		void ReSpawn();
 
 		// --- 当たり判定 ---
 		void OnCollisionEnter(shared_ptr<GameObject>& Other);	//	当たり判定
@@ -71,6 +73,12 @@ namespace basecross
 		void SetTargetMode(bool tm)
 		{
 			m_isTargetMode = tm;
+		}
+
+		// デバッグ用のゲッターセッター
+		float GetStickRY()
+		{
+			return m_stickRY;
 		}
 	};
 }
