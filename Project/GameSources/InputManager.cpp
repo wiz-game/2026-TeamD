@@ -117,13 +117,13 @@ namespace basecross
 			{
 				PressedRKey();
 			}
-			break;
 
 			// オブジェクトを生成
 			if (m_key.m_bPressedKeyTbl['F'])
 			{
 				PressedFKey();
 			}
+			break;
 		}
 
 		// エディターモード切替
