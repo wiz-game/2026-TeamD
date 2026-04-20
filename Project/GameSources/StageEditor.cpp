@@ -138,4 +138,23 @@ namespace basecross
 			m_isSelectedObj = false;
 		}
 	}
+
+	void StageEditor::AddGameObject()
+	{
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		if (!stage) return;
+
+		switch (m_addedObj)
+		{
+		default:
+			break;
+		case ENUM_AddedObj::Ground:
+			stage->AddGameObject<Ground>(Vec3(1.0f), Quat(), Vec3(0.0f, 0.0f, 0.0f));
+			break;
+		case ENUM_AddedObj::Mushroom:
+			break;
+		case ENUM_AddedObj::Tree:
+			break;
+		}
+	}
 }
