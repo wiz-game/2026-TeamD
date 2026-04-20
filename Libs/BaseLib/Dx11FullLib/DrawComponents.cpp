@@ -1805,6 +1805,18 @@ namespace basecross {
 		GetStaticMeshLocalPositions(vertices);
 		//ワールド行列の反映
 		auto WorldMat = GetGameObject()->GetComponent<Transform>()->GetWorldMatrix();
+		auto a = GetMeshToTransformMatrix();
+		WorldMat = a * WorldMat; 
+		for (auto& v : vertices) {
+			v *= WorldMat;
+		}
+	}
+
+	void SmBaseDraw::GetStaticMeshWorldPositionsToAffine(vector<bsm::Vec3>& vertices) {
+		GetStaticMeshLocalPositions(vertices);
+		//ワールド行列の反映
+		auto WorldMat = GetGameObject()->GetComponent<Transform>()->GetWorldMatrix();
+		WorldMat = GetMeshToTransformMatrix() * WorldMat;
 		for (auto& v : vertices) {
 			v *= WorldMat;
 		}
@@ -1813,6 +1825,35 @@ namespace basecross {
 	bool SmBaseDraw::HitTestStaticMeshSegmentTriangles(const bsm::Vec3& StartPos, const bsm::Vec3& EndPos, bsm::Vec3& HitPoint,
 		TRIANGLE& RetTri, size_t& RetIndex) {
 		GetStaticMeshWorldPositions(pImpl->m_SmDrawObject.m_TempPositions);
+		for (size_t i = 0; i < pImpl->m_SmDrawObject.m_TempPositions.size(); i += 3) {
+			TRIANGLE tri;
+			tri.m_A = pImpl->m_SmDrawObject.m_TempPositions[i];
+			tri.m_B = pImpl->m_SmDrawObject.m_TempPositions[i + 1];
+			tri.m_C = pImpl->m_SmDrawObject.m_TempPositions[i + 2];
+			if (!tri.IsValid()) {
+				//三角形が無効なら次にうつる
+				continue;
+			}
+			bsm::Vec3 ret;
+			float t;
+			if (HitTest::SEGMENT_TRIANGLE(StartPos, EndPos, tri, ret, t)) {
+				auto Len = length(EndPos - StartPos);
+				Len *= t;
+				auto Nomal = EndPos - StartPos;
+				Nomal.normalize();
+				Nomal *= Len;
+				HitPoint = StartPos + Nomal;
+				RetTri = tri;
+				RetIndex = i / 3;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool SmBaseDraw::HitTestStaticMeshSegmentTrianglesToAffine(const bsm::Vec3& StartPos, const bsm::Vec3& EndPos, bsm::Vec3& HitPoint, TRIANGLE& RetTri, size_t& RetIndex)
+	{
+		GetStaticMeshWorldPositionsToAffine(pImpl->m_SmDrawObject.m_TempPositions);
 		for (size_t i = 0; i < pImpl->m_SmDrawObject.m_TempPositions.size(); i += 3) {
 			TRIANGLE tri;
 			tri.m_A = pImpl->m_SmDrawObject.m_TempPositions[i];

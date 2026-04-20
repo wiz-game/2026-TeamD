@@ -61,6 +61,9 @@
     <Filter Include="DebugLog">
       <UniqueIdentifier>{f89c2eba-852e-4270-81d8-cbca4df35008}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyCamera">
+      <UniqueIdentifier>{ef82b8d1-cdad-4e66-b6da-df96825a2725}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -132,6 +135,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DebugLog.h">
       <Filter>DebugLog</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MyCamera.h">
+      <Filter>MyCamera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -199,6 +205,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)DebugLog.cpp">
       <Filter>DebugLog</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MyCamera.cpp">
+      <Filter>MyCamera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
