@@ -56,16 +56,7 @@ namespace basecross
 				// 衝突していたら選択
 				if (isHit)
 				{
-					if (m_selectedObj)
-					{
-						// 前に選択していたオブジェクトの色を元に戻す
-						auto prevStaticDrawComp = m_selectedObj->GetComponent<PNTStaticDraw>(false);
-						if (prevStaticDrawComp)
-						{
-							prevStaticDrawComp->SetDiffuse(m_defaultObjColor);
-						}
-					}
-
+					DeselectObj();
 					m_selectedObj = obj;
 					m_isSelectedObj = true;
 					staticDrawComp->SetDiffuse(m_selectedObjColor);
@@ -131,5 +122,20 @@ namespace basecross
 			view,
 			world
 		);
+	}
+
+	void StageEditor::DeselectObj()
+	{
+		if (m_selectedObj)
+		{
+			// 選択しているオブジェクトの色を元に戻す
+			auto staticDrawComp = m_selectedObj->GetComponent<PNTStaticDraw>(false);
+			if (staticDrawComp)
+			{
+				staticDrawComp->SetDiffuse(m_defaultObjColor);
+			}
+			m_selectedObj = nullptr;
+			m_isSelectedObj = false;
+		}
 	}
 }

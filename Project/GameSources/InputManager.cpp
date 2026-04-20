@@ -284,6 +284,7 @@ namespace basecross
 
 	void InputManager::PressedQKey()
 	{
+		StageEditor::Instance().DeselectObj();
 	}
 
 	void InputManager::PressedWKey()

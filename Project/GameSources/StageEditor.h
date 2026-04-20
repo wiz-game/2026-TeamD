@@ -48,6 +48,7 @@ namespace basecross
 
 		void SerectObj(const Point2D<int> mousePoint);
 		void GetMouseRey(Vec3& startPos, Vec3& endPos, const Point2D<int> mousePoint);
+		void DeselectObj();
 	};
 
 }
