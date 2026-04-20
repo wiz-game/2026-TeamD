@@ -30,6 +30,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltRigidBody.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mushroom.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Move.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MyCamera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Player.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Project.h" />
@@ -57,6 +58,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltRigidBody.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mushroom.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Move.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MyCamera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp" />

@@ -30,6 +30,8 @@
 #include "TrampolineBubbles.h"
 #include "Player.h"
 
+#include "MyCamera.h"
+
 #include "GameStage.h"
 
 #include "StageEditor.h"
