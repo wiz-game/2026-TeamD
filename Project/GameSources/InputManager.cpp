@@ -275,6 +275,7 @@ namespace basecross
 
 	void InputManager::PressedLMouseButton()
 	{
+		StageEditor::Instance().PressedLMouseButton(m_key.m_MouseClientPoint);
 	}
 
 	void InputManager::PressedDelete()
