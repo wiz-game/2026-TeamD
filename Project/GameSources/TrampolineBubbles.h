@@ -17,6 +17,7 @@ namespace basecross
 		Vec3 m_pos;
 		Vec3 m_scale;
 		Vec3 m_modelScale;
+		bool m_isCountedThisFrame;
 
 		void CreateActiveInstances();
 	
