@@ -20,6 +20,8 @@ namespace basecross
 
 		const char LEFT_TRIGGER_DEADZONE = 125;
 		const char RIGHT_TRIGGER_DEADZONE = 125;
+
+		Point2D<int> m_beforeMouseClientPoint = Point2D<int>();
 	public:
 		static InputManager& Instance()
 		{

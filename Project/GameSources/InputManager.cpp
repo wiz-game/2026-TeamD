@@ -5,13 +5,15 @@ namespace basecross
 {
 	void InputManager::Initialize()
 	{
+		m_key = App::GetApp()->GetInputDevice().GetKeyState();
+		m_beforeMouseClientPoint = m_key.m_MouseClientPoint;
 	}
 
 	void InputManager::Update()
 	{
 		m_pad = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 		m_key = App::GetApp()->GetInputDevice().GetKeyState();
-
+		
 		switch (GameManager::Instance().GetGameMode())
 		{
 		default:
@@ -68,14 +70,14 @@ namespace basecross
 			break;
 		case ENUM_GameMode::Editor:
 			// 焦点固定視点移動
-			if ((m_key.m_MouseClientPoint.x > 0 || m_key.m_MouseClientPoint.y > 0 &&
-				m_key.m_bPressedKeyTbl[VK_TAB] && m_key.m_bPressedKeyTbl[VK_LBUTTON]))
+			if ((m_key.m_MouseClientPoint != m_beforeMouseClientPoint) &&
+				m_key.m_bPushKeyTbl[VK_TAB] && m_key.m_bPushKeyTbl[VK_LBUTTON])
 			{
 				FocusFixedViewPointMove();
 			}
 
 			// カメラ位置固定視点移動
-			if ((m_key.m_MouseClientPoint.x > 0 || m_key.m_MouseClientPoint.y > 0) &&
+			if ((m_key.m_MouseClientPoint != m_beforeMouseClientPoint) &&
 				m_key.m_bPushKeyTbl[VK_RBUTTON])
 			{
 				CameraFixedViewPointMove();
@@ -88,7 +90,7 @@ namespace basecross
 			}
 			
 			// オブジェクト選択
-			if (m_key.m_bPressedKeyTbl[VK_LBUTTON])
+			if (m_key.m_bPressedKeyTbl[VK_LBUTTON] && !m_key.m_bPushKeyTbl[VK_TAB])
 			{
 				PressedLMouseButton();
 			}
@@ -136,6 +138,9 @@ namespace basecross
 		{
 			PressedCKey();
 		}
+
+		// マウスポイントの更新
+		m_beforeMouseClientPoint = m_key.m_MouseClientPoint;
 	}
 
 	void InputManager::Moves()
@@ -280,7 +285,12 @@ namespace basecross
 
 	void InputManager::FocusFixedViewPointMove()
 	{
-		GetMyCamera()->FocusFixedViewPointMove(m_key.m_MouseClientPoint);
+		auto mousePoint = Point2D<int>
+		(
+			m_key.m_MouseClientPoint.x - m_beforeMouseClientPoint.x, 
+			m_key.m_MouseClientPoint.y - m_beforeMouseClientPoint.y
+		);
+		GetMyCamera()->FocusFixedViewPointMove(mousePoint);
 	}
 	
 	void InputManager::CameraFixedViewPointMove()
