@@ -21,6 +21,8 @@ namespace basecross
 		virtual void OnUpdate() override;
 
 		void PlayModeMove();
+		void FocusFixedViewPointMove(const Point2D<int> mousePoint);
+		void CameraFixedViewPointMove(const Point2D<int> mousePoint);
 
 		bool GetIsAiming() const { return m_isAiming; }
 		void SetIsAiming(bool isAiming) { m_isAiming = isAiming; }
