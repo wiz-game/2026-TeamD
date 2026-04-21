@@ -13,6 +13,9 @@ namespace basecross
 	{
 	private:
 		bool m_isAiming = false;
+
+		float m_yaw = 0.0f;
+		float m_pitch = 0.0f;
 	public:
 		MyCamera();
 		virtual ~MyCamera();
