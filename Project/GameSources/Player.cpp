@@ -26,36 +26,42 @@ namespace basecross
 		drawComp->SetTextureResource(L"T_Alpaca");
 		drawComp->SetDrawActive(true);
 
-		// 当たり判定
+		// 当たり判定のコンポーネント
 		auto obb = AddComponent<CollisionObb>();
 
+		// 重力のコンポーネント
 		auto gravity = AddComponent<Gravity>();
+
+		// バブルのコンポーネント
+		auto fbComp = AddComponent<FurBubble>(GetStage());
 	}
 
 	// プレイヤーの更新処理
 	void Player::OnUpdate()
 	{
+		ReSpawn();
 		Jump();
 		LaunchofBubble();
-		Camera();
+		//Camera();
+		DebugString();
+		//TargetCamera();
 	}
 
 	void Player::Jump()
 	{
+		// 自身の位置情報を取得する
 		auto transPos = m_transform->GetPosition();
 		auto device = App::GetApp()->GetInputDevice();
+		// コントローラの情報を取得する
 		auto control = device.GetControlerVec();
 
+		// コントローラの1台目が接続されているとき
 		if (control[0].bConnected)
 		{
-			if (control[0].wPressedButtons & XINPUT_GAMEPAD_A)
+			// 1台目のコントローラのAボタンが押されたら または ジャンプしていなかったら
+			if ((control[0].wPressedButtons & XINPUT_GAMEPAD_A) && m_isJumping == false)
 			{
-				if (m_isJumping == false)
-				{
-					m_Velocity = m_JumpPower;
-					//m_Position.y += m_JumpPower * App::GetApp()->GetElapsedTime();
-					m_isJumping = true;
-				}
+				m_Velocity = m_JumpPower;
 			}
 		}
 
@@ -81,112 +87,32 @@ namespace basecross
 		}
 	}
 
-	void Player::Camera()
+	// デバッグ用の文字列
+	void Player::DebugString()
 	{
-		// ゲームパッドオブジェクトを取得
-		auto& control = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		auto scene = App::GetApp()->GetScene<Scene>();
+		wstringstream wss;
+		wss << L"CameraAngle：" << GetStickRY() << endl;
 
-		// カメラオブジェクトの取得
-		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-		if (!stage)
-		{
-			return;
-		}
-		auto camera = stage->GetView()->GetTargetCamera();
-
-		// 自分自身（プレイヤー）の座標を直接取得する
-		auto targetPos = m_transform->GetPosition();
-
-		if (control.wPressedButtons & XINPUT_GAMEPAD_X)
-		{
-			m_isTargetMode = !m_isTargetMode;
-		}
-
-		if (m_isTargetMode == false)
-		{
-			// 傾き具合
-			float slope = 5.5f;
-
-			// カメラの位置の高さ
-			float eyeY = 5.0f;
-
-			// 右スティックの傾きに応じて回り込ませる
-			m_stickRX += control.fThumbRX * App::GetApp()->GetElapsedTime();
-			m_stickRY += control.fThumbRY * App::GetApp()->GetElapsedTime();
-
-			// カメラの注視点(At)とカメラの位置(Eye)を計算
-			Vec3 at = targetPos + Vec3(0.0f, 1.0f, 0.0f);
-			Vec3 eye = targetPos + Vec3(cosf(m_stickRX) * slope, m_stickRY * 2.0f, sinf(m_stickRX) * slope);
-			Vec3 forward = at - eye;
-
-			float vectorx = 0.0f;
-			float vectorz = 0.0f;
-
-			float vectorarrayx;
-			float vectorarrayz;
-
-			// スティックの情報を取得する
-			float stickLX = control.fThumbLX;
-			float stickLY = control.fThumbLY;
-
-			// 向いている方向に行くようにする
-			Vec3 forwardMove = Vec3(forward.z, 0.0f, -forward.x);
-
-			// 前後移動
-			vectorx += forward.x * stickLY;
-			vectorz += forward.z * stickLY;
-
-			// 左右移動
-			vectorx += forwardMove.x * stickLX;
-			vectorz += forwardMove.z * stickLX;
-
-			vectorarrayx = vectorx;
-			vectorarrayz = vectorz;
-			
-			if (fabsf(stickLX) > 0.1f || fabsf(stickLY) > 0.1f)
-			{
-				float angle = atan2f(vectorarrayx, vectorarrayz);
-				m_transform->SetRotation(0.0f, angle, 0.0f);
-			}
-			// カメラに設定を反映
-			camera->SetAt(at);
-			camera->SetEye(eye);
-		}
-		else if(m_isTargetMode == true)
-		{
-			// 右スティックの傾きに応じて回り込ませる
-			m_stickRX += control.fThumbRX * App::GetApp()->GetElapsedTime();
-			m_stickRY += control.fThumbRY * App::GetApp()->GetElapsedTime();
-
-			float cameraMoveSpeed = 2.0f;
-			float maxRY = 4.0f, minRY = -4.0f;
-
-			// カメラの注視点(At)とカメラの位置(Eye)を計算
-			Vec3 at = targetPos + Vec3(0.0f, 1.0f, 0.0f);
-			Vec3 eye = targetPos + Vec3
-			(
-				cosf(m_stickRX) * cameraMoveSpeed,
-				m_stickRY,
-				sinf(m_stickRX) * cameraMoveSpeed
-			);
-
-			// カメラの調整制限
-			//if (m_stickRY >= maxRY)
-			//{
-			//	m_stickRY = maxRY;
-			//}
-
-			Vec3 forward = at - eye;
-
-			float angle = atan2f(forward.x, forward.z);
-			m_transform->SetRotation(0.0f, angle, 0.0f);
-
-			// カメラに設定を反映
-			camera->SetAt(at);
-			camera->SetEye(eye);
-		}
+		auto transPos = m_transform->GetPosition();
+		wss << L"PlayerPosition.y：" << transPos.y;
+		scene->SetDebugString(wss.str());
 	}
 
+	void Player::ReSpawn()
+	{
+		// 落ちるときの位置
+		float fallPosition = 0.0f;
+		// リスポーンする位置
+		float reSpawnPosition = 80.0f;
+
+		auto transPos = m_transform->GetPosition();
+		if (transPos.y <= fallPosition)
+		{
+			transPos.y = reSpawnPosition;
+			m_transform->SetPosition(0.0f, transPos.y, 0.0f);
+		}
+	}
 
 	// --- 当たり判定 ---
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& Other)
@@ -205,6 +131,11 @@ namespace basecross
 			m_isJumping = false;
 			m_Velocity = 0.0f;
 		}
+	}
+
+	void Player::OnCollisionExecute(shared_ptr<GameObject>& Other)
+	{
+
 	}
 
 	void Player::OnCollisionExit(shared_ptr<GameObject>& Other)
