@@ -10,7 +10,8 @@ namespace basecross
 		m_bubbleCount(0),
 		m_pos(pos),
 		m_scale(Vec3(1.0f)),
-		m_modelScale(Vec3(0.5f))
+		m_modelScale(Vec3(0.5f)),
+		m_isCountedThisFrame(false)
 	{
 
 	}
@@ -61,26 +62,28 @@ namespace basecross
 
 	void TrampolineBubbles::OnUpdate()
 	{
+		if (m_bubbleCount >= 2)
+		{
+			m_chargeDraw->SetDrawActive(false);
+			CreateActiveInstances();
+		}
+
 		if (m_bubbleCount >= 5 && !m_isTrampolineActive)
 		{
 			m_isTrampolineActive = true;
 			AddTag(L"TrampolineBubbles");
-			m_chargeDraw->SetDrawActive(false);
 		}
 
-		if (m_isTrampolineActive && !m_isInstanceCreated)
-		{
-			CreateActiveInstances();
-		}
 	}
 
 	void TrampolineBubbles::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
 		if (Other->FindTag(L"Bubble"))
 		{
-			if (!m_isTrampolineActive)
+			if (!m_isTrampolineActive && !m_isCountedThisFrame)
 			{
 				m_bubbleCount++;
+				m_isCountedThisFrame = true;
 			}
 
 			auto bubble = dynamic_pointer_cast<Bubble>(Other);
@@ -110,10 +113,14 @@ namespace basecross
 		const float startOffsetX = -((gridCount - 1) * spacing) * 0.5f;
 		const float startOffsetZ = -((gridCount - 1) * spacing) * 0.5f;
 
+		int index = 0;
+
 		for (int z = 0; z < gridCount; z++)
 		{
 			for (int x = 0; x < gridCount; x++)
 			{
+				if (index >= m_bubbleCount) break;
+
 				Mat4x4 mat;
 				Vec3 instancePos = m_pos + Vec3(startOffsetX + (spacing * x), -0.3f, startOffsetZ + (spacing * z));
 				mat.affineTransformation(
@@ -123,10 +130,11 @@ namespace basecross
 					instancePos
 				);
 				m_activeDraw->AddMatrix(mat);
+
+				index++;
 			}
 		}
 
 		m_activeDraw->SetDrawActive(true);
-		m_isInstanceCreated = true;
 	}
 }
