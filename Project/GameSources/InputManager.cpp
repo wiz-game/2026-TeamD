@@ -280,10 +280,12 @@ namespace basecross
 
 	void InputManager::FocusFixedViewPointMove()
 	{
+		GetMyCamera()->FocusFixedViewPointMove(m_key.m_MouseClientPoint);
 	}
 	
 	void InputManager::CameraFixedViewPointMove()
 	{
+		GetMyCamera()->CameraFixedViewPointMove(m_key.m_MouseClientPoint);
 	}
 
 	void InputManager::ChangeObject()

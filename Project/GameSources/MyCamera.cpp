@@ -45,6 +45,16 @@ namespace basecross
 		// 引数は必要に応じ追加してください
 		// Lトリガー（現在でいうXボタン）を押している時の処理はメンバ変数のm_isAimingで切り替えるようにしてください
 	}
+
+	void MyCamera::FocusFixedViewPointMove(const Point2D<int> mousePoint)
+	{
+
+	}
+
+	void MyCamera::CameraFixedViewPointMove(const Point2D<int> mousePoint)
+	{
+
+	}
 	
 	void MyCamera::UpdatePlayMode()
 	{
