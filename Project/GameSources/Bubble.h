@@ -9,6 +9,7 @@ namespace basecross
 		shared_ptr<PNTStaticDraw> m_draw;
 		weak_ptr<GameObject> m_parent;
 		Vec3 m_parentForward;
+		Vec3 m_dir;
 
 		float m_speed;
 		float m_speedRatio;
@@ -18,6 +19,7 @@ namespace basecross
 		bool m_isTimeStart;
 		float m_limitTime;
 		bool m_isSpawnedTrampoline;
+		bool m_isHit;
 
 	public :
 		Bubble::Bubble(const shared_ptr<Stage>& stage,const shared_ptr<GameObject>& parent);
@@ -30,8 +32,11 @@ namespace basecross
 		//　泡の動きの挙動
 		// ----------------------------------
 		void BubbleMove();
+		
+		Vec3 GetCameraForward();
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other);
+
 	};
 
 	class ViewBubble : public GameObject
@@ -42,7 +47,7 @@ namespace basecross
 		const vector<Vec3> *m_vertices;
 
 	public:
-		ViewBubble::ViewBubble(const shared_ptr<Stage>& stage, const vector<Vec3>* vertices, const shared_ptr<GameObject>& parent);
+		ViewBubble::ViewBubble(const shared_ptr<Stage>& stage, const vector<Vec3>* vertices);
 		ViewBubble::~ViewBubble();
 
 		virtual void OnCreate() override;

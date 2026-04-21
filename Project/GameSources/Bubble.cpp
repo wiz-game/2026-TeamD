@@ -13,7 +13,8 @@ namespace basecross
 		m_upwardVelocity(0.0f),
 		m_isTimeStart(false),
 		m_limitTime(0.75f),
-		m_isSpawnedTrampoline(false)
+		m_isSpawnedTrampoline(false),
+		m_isHit(false)
 	{
 
 	}
@@ -34,8 +35,12 @@ namespace basecross
 		auto parentPos = parentLock->GetComponent<Transform>()->GetPosition();
 		
 		m_trans = GetComponent<Transform>();
-		m_trans->SetPosition(parentPos + (m_parentForward * 1.25f));
-		m_trans->SetScale(Vec3(1.25f));
+		Vec3 spawnPos = Vec3(parentPos.x, parentPos.y/* + 1.0f*/, parentPos.z) + m_parentForward * 1.25f;
+		m_dir = GetCameraForward();
+
+		m_trans->SetPosition(spawnPos);
+		m_trans->SetScale(Vec3(1.3f));
+		// m_trans->SetQuaternion()
 
 		auto ptrCol = AddComponent<CollisionSphere>();
 		ptrCol->SetDrawActive(false);
@@ -83,7 +88,7 @@ namespace basecross
 			m_currentVelocity = max(m_currentVelocity, velocityZero);
 			// 速度の割合
 			m_speedRatio = m_currentVelocity / m_initialVelocity;
-			pos += m_parentForward * (m_currentVelocity * elapsed);
+			pos += m_dir * (m_currentVelocity * elapsed);
 		}
 
 		// 現在の速度の割合が始めるぐらいの割合になったら上昇を始める
@@ -115,10 +120,25 @@ namespace basecross
 		m_trans->SetPosition(pos);
 	}
 
+	Vec3 Bubble::GetCameraForward()
+	{
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		auto PtrCamera = stage->GetView()->GetTargetCamera();
+		Vec3 at = PtrCamera->GetAt();
+		Vec3 eye = PtrCamera->GetEye();
+		Vec3 forward = at - eye;
+		forward.normalize();
+		
+		return forward;
+	}
+
 	void Bubble::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
-		if (m_isSpawnedTrampoline) return;
 		if (!Other->FindTag(L"Ground")) return;
+
+		if (m_isSpawnedTrampoline) return;
+		if (m_isHit) return;
+		m_isHit = true;
 
 		auto range = 1.0f;
 		auto stage = GetStage();
@@ -127,9 +147,11 @@ namespace basecross
 		auto objvec = stage->GetGameObjectVec();
 
 		bool found = false;
+
+		// 地面に当たった瞬間近くのトランポリン泡を探す
 		for (auto& obj : objvec)
 		{
-			if (obj->FindTag(L"TrampolineBubbles"))
+			if (obj->FindTag(L"TranmpolineBase"))
 			{
 				auto tramp = dynamic_pointer_cast<TrampolineBubbles>(obj);
 				auto trampTrans = tramp->GetComponent<Transform>();
@@ -155,10 +177,9 @@ namespace basecross
 		GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
 	}
 
-	ViewBubble::ViewBubble(const shared_ptr<Stage>& stage, const vector<Vec3> *vertices,const shared_ptr<GameObject>& parent) :
+	ViewBubble::ViewBubble(const shared_ptr<Stage>& stage, const vector<Vec3> *vertices) :
 		GameObject(stage),
-		m_vertices(vertices),
-		m_parent(parent)
+		m_vertices(vertices)
 	{
 
 	}
