@@ -34,8 +34,8 @@ namespace basecross
 		auto parentPos = parentLock->GetComponent<Transform>()->GetPosition();
 		
 		m_trans = GetComponent<Transform>();
-		m_trans->SetPosition(parentPos + (m_parentForward * 1.25f));
-		m_trans->SetScale(Vec3(1.25f));
+		m_trans->SetPosition(Vec3(parentPos.x, parentPos.y/* + 0.5f*/, parentPos.z)+ (m_parentForward * 1.25f));
+		m_trans->SetScale(Vec3(1.3f));
 
 		auto ptrCol = AddComponent<CollisionSphere>();
 		ptrCol->SetDrawActive(false);
@@ -127,9 +127,11 @@ namespace basecross
 		auto objvec = stage->GetGameObjectVec();
 
 		bool found = false;
+
+		// 地面に当たった瞬間近くのトランポリン泡を探す
 		for (auto& obj : objvec)
 		{
-			if (obj->FindTag(L"TrampolineBubbles"))
+			if (obj->FindTag(L"TranmpolineBase"))
 			{
 				auto tramp = dynamic_pointer_cast<TrampolineBubbles>(obj);
 				auto trampTrans = tramp->GetComponent<Transform>();
