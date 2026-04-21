@@ -48,6 +48,11 @@ namespace basecross
 			{
 				PushLTrigger();
 			}
+			// 照準解除
+			else if (m_pad.bLeftTrigger <= LEFT_TRIGGER_DEADZONE)
+			{
+				ReleasedLTrigger();
+			}
 
 			// 泡発射
 			if (m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE)
@@ -116,6 +121,12 @@ namespace basecross
 			if (m_key.m_bPressedKeyTbl['R'])
 			{
 				PressedRKey();
+			}
+
+			// オブジェクトを生成
+			if (m_key.m_bPressedKeyTbl['F'])
+			{
+				PressedFKey();
 			}
 			break;
 		}
@@ -243,6 +254,7 @@ namespace basecross
 
 	void InputManager::PushLTrigger()
 	{
+		GetMyCamera()->SetIsAiming(true);
 	}
 
 	void InputManager::PushRTrigger()
@@ -261,12 +273,19 @@ namespace basecross
 	{
 	}
 
+	void InputManager::ReleasedLTrigger()
+	{
+		GetMyCamera()->SetIsAiming(false);
+	}
+
 	void InputManager::FocusFixedViewPointMove()
 	{
+		GetMyCamera()->FocusFixedViewPointMove(m_key.m_MouseClientPoint);
 	}
 	
 	void InputManager::CameraFixedViewPointMove()
 	{
+		GetMyCamera()->CameraFixedViewPointMove(m_key.m_MouseClientPoint);
 	}
 
 	void InputManager::ChangeObject()
@@ -275,6 +294,7 @@ namespace basecross
 
 	void InputManager::PressedLMouseButton()
 	{
+		StageEditor::Instance().PressedLMouseButton(m_key.m_MouseClientPoint);
 	}
 
 	void InputManager::PressedDelete()
@@ -283,6 +303,7 @@ namespace basecross
 
 	void InputManager::PressedQKey()
 	{
+		StageEditor::Instance().DeselectObj();
 	}
 
 	void InputManager::PressedWKey()
@@ -295,6 +316,11 @@ namespace basecross
 
 	void InputManager::PressedRKey()
 	{
+	}
+
+	void InputManager::PressedFKey()
+	{
+		StageEditor::Instance().AddGameObject();
 	}
 
 	void InputManager::PressedCKey()

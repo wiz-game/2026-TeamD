@@ -12,7 +12,6 @@
 
 // マネージャークラス
 #include "GameManager.h"
-#include "InputManager.h"
 
 // オリジナルコンポーネント
 #include "Move.h"
@@ -35,3 +34,5 @@
 #include "GameStage.h"
 
 #include "StageEditor.h"
+
+#include "InputManager.h"
