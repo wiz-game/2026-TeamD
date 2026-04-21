@@ -20,9 +20,6 @@ namespace basecross
 
 		const char LEFT_TRIGGER_DEADZONE = 125;
 		const char RIGHT_TRIGGER_DEADZONE = 125;
-	private:
-		InputManager() {}
-		virtual ~InputManager() {}
 	public:
 		static InputManager& Instance()
 		{
@@ -32,6 +29,20 @@ namespace basecross
 
 		void Initialize();
 		void Update();
+	private:
+		InputManager() {}
+		virtual ~InputManager() {}
+
+		shared_ptr<MyCamera> GetMyCamera() const
+		{
+			auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+			if (!stage) return nullptr;
+
+			auto camera = stage->GetView()->GetTargetCamera();
+			if (!camera) return nullptr;
+
+			return dynamic_pointer_cast<MyCamera>(camera);
+		}
 
 		// GameMode：Play用の入力関数
 		// 移動入力
@@ -48,6 +59,9 @@ namespace basecross
 		void PressedA();
 		void PressedB();
 		void PressedStart();
+
+		// Released
+		void ReleasedLTrigger();
 
 		// GameMode：Editer用の入力関数
 		// 焦点固定視点移動
