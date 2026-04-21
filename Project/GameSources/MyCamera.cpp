@@ -48,7 +48,17 @@ namespace basecross
 
 	void MyCamera::FocusFixedViewPointMove(const Point2D<int> mousePoint)
 	{
+		auto elapsedTime = App::GetApp()->GetElapsedTime();
+		m_yaw += mousePoint.x * elapsedTime;
+		m_pitch += mousePoint.y * elapsedTime;
+		
+		float radius = 5.5f;
+		float cosP = cosf(m_pitch);
 
+		auto offset = Vec3(radius * cosP * cosf(m_yaw), radius * sinf(m_pitch), radius * cosP * sinf(m_yaw));
+		auto eye = GetAt() + offset;
+
+		SetEye(eye);
 	}
 
 	void MyCamera::CameraFixedViewPointMove(const Point2D<int> mousePoint)
