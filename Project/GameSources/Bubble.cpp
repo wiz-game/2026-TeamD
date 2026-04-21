@@ -13,7 +13,8 @@ namespace basecross
 		m_upwardVelocity(0.0f),
 		m_isTimeStart(false),
 		m_limitTime(0.75f),
-		m_isSpawnedTrampoline(false)
+		m_isSpawnedTrampoline(false),
+		m_isHit(false)
 	{
 
 	}
@@ -133,8 +134,11 @@ namespace basecross
 
 	void Bubble::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
-		if (m_isSpawnedTrampoline) return;
 		if (!Other->FindTag(L"Ground")) return;
+
+		if (m_isSpawnedTrampoline) return;
+		if (m_isHit) return;
+		m_isHit = true;
 
 		auto range = 1.0f;
 		auto stage = GetStage();

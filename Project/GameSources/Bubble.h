@@ -19,6 +19,7 @@ namespace basecross
 		bool m_isTimeStart;
 		float m_limitTime;
 		bool m_isSpawnedTrampoline;
+		bool m_isHit;
 
 	public :
 		Bubble::Bubble(const shared_ptr<Stage>& stage,const shared_ptr<GameObject>& parent);
