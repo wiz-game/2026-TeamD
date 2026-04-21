@@ -48,6 +48,11 @@ namespace basecross
 			{
 				PushLTrigger();
 			}
+			// 照準解除
+			else if (m_pad.bLeftTrigger <= LEFT_TRIGGER_DEADZONE)
+			{
+				ReleasedLTrigger();
+			}
 
 			// 泡発射
 			if (m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE)
@@ -249,6 +254,7 @@ namespace basecross
 
 	void InputManager::PushLTrigger()
 	{
+		GetMyCamera()->SetIsAiming(true);
 	}
 
 	void InputManager::PushRTrigger()
@@ -265,6 +271,11 @@ namespace basecross
 
 	void InputManager::PressedStart()
 	{
+	}
+
+	void InputManager::ReleasedLTrigger()
+	{
+		GetMyCamera()->SetIsAiming(false);
 	}
 
 	void InputManager::FocusFixedViewPointMove()
