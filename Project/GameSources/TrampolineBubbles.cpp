@@ -27,21 +27,26 @@ namespace basecross
 		m_trans->SetPosition(m_pos);
 		m_trans->SetScale(m_scale);
 
+		// 透明化処理
+		SetAlphaActive(true);
+
+
 		m_chargeDraw = AddComponent<PNTStaticDraw>();
 		m_chargeDraw->SetMeshResource(L"M_Bubble");
 		m_chargeDraw->SetTextureResource(L"T_Bubble");
 		m_chargeDraw->SetDrawActive(true);
+		m_chargeDraw->SetDiffuse(Col4(1.0f,1.0f,1.0f, 0.3f));
 
 		// インスタンス描画用
 		m_activeDraw = AddComponent<PNTStaticInstanceDraw>();
 		m_activeDraw->SetMeshResource(L"M_Bubble");
 		m_activeDraw->SetTextureResource(L"T_Bubble");
 		m_activeDraw->SetDrawActive(false);
+		m_activeDraw->SetDiffuse(Col4(1.0f, 1.0f, 1.0f, 0.3f));
 
 		m_col = AddComponent<CollisionSphere>();
 		m_col->SetAfterCollision(AfterCollision::None);
 		m_col->SetDrawActive(false);
-
 
 		Mat4x4 spanMat;
 		spanMat.affineTransformation(
