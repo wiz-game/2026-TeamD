@@ -20,6 +20,8 @@ namespace basecross
 		float m_stickRY; // Y軸中心のカメラの回り込み
 
 		Vec3 m_Position;
+		Vec3 m_Rotation;
+		Vec3 m_Scale;
 		bool m_isTargetMode;
 		// 重力の処理
 		float m_Velocity;
@@ -33,6 +35,8 @@ namespace basecross
 			GameObject(stage), // ステージをGameObjectに渡す【必須】
 			m_Velocity(0.0f),
 			m_Position(0.0f, 60.2f, 0.0f),
+			m_Rotation(0.0f,1.5f,0.0f),
+			m_Scale(0.3f,0.3f,0.3f),
 			m_isJumping(false),
 			m_JumpPower(6.0f),
 			m_Gravity(9.8f),
