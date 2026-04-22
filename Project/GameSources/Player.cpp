@@ -95,7 +95,9 @@ namespace basecross
 		wss << L"CameraAngle：" << GetStickRY() << endl;
 
 		auto transPos = m_transform->GetPosition();
-		wss << L"PlayerPosition.y：" << transPos.y;
+		wss << L"PlayerPosition.x：" << transPos.x << endl;
+		wss << L"PlayerPosition.y：" << transPos.y << endl;
+		wss << L"PlayerPosition.z：" << transPos.z << endl;
 		scene->SetDebugString(wss.str());
 	}
 
@@ -104,13 +106,18 @@ namespace basecross
 		// 落ちるときの位置
 		float fallPosition = 0.0f;
 		// リスポーンする位置
-		float reSpawnPosition = 80.0f;
+		float reSpawnPositionX = 45.0f;
+		float reSpawnPositionY = 65.2f;
+		float reSpawnPositionZ = 0.0f;
 
 		auto transPos = m_transform->GetPosition();
 		if (transPos.y <= fallPosition)
 		{
-			transPos.y = reSpawnPosition;
-			m_transform->SetPosition(0.0f, transPos.y, 0.0f);
+			transPos.x = reSpawnPositionX;
+			transPos.y = reSpawnPositionY;
+			transPos.z = reSpawnPositionZ;
+
+			m_transform->SetPosition(transPos.x, transPos.y, transPos.z);
 		}
 	}
 
