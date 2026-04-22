@@ -43,7 +43,7 @@ namespace basecross
 		// m_trans->SetQuaternion()
 
 		auto ptrCol = AddComponent<CollisionSphere>();
-		ptrCol->SetDrawActive(false);
+		// ptrCol->SetDrawActive(true);
 
 		// 透明化処理
 		SetAlphaActive(true);
@@ -57,10 +57,10 @@ namespace basecross
 		// モデルとトランスフォーム間の差分行列
 		Mat4x4 spanMat;
 		spanMat.affineTransformation(
-			Vec3(0.5f,  0.5f,   0.5f),
+			Vec3(0.45f,  0.45f,   0.45f),
 			Vec3(0.0f,  0.0f,   0.0f),
 			Vec3(0.0f, XM_PI,   0.0f),
-			Vec3(0.0f, -0.5f,   0.0f)
+			Vec3(0.0f, -0.4f,   0.0f)
 		);
 
 		m_draw->SetMeshToTransformMatrix(spanMat);
