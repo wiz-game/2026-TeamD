@@ -36,14 +36,14 @@ namespace basecross
 		
 		m_trans = GetComponent<Transform>();
 		Vec3 spawnPos = Vec3(parentPos.x, parentPos.y + 1.0f, parentPos.z) + m_parentForward * 1.25f;
-		// m_dir = GetCameraForward();
+		m_dir = GetCameraForward();
 
 		m_trans->SetPosition(spawnPos);
-		m_trans->SetScale(Vec3(1.3f));
+		m_trans->SetScale(Vec3(1.25f));
 		// m_trans->SetQuaternion()
 
 		auto ptrCol = AddComponent<CollisionSphere>();
-		// ptrCol->SetDrawActive(true);
+		ptrCol->SetDrawActive(false);
 
 		// 透明化処理
 		SetAlphaActive(true);
@@ -76,7 +76,9 @@ namespace basecross
 		auto& app = App::GetApp();
 		auto elapsed = app->GetElapsedTime();
 		auto pos = m_trans->GetPosition();
-		
+		auto parent = m_parent.lock();
+		auto player = dynamic_pointer_cast<Player>(parent);
+
 		float velocityZero = 0.0f;
 		float decelerationStartRatio = 0.2f;
 
@@ -88,7 +90,15 @@ namespace basecross
 			m_currentVelocity = max(m_currentVelocity, velocityZero);
 			// 速度の割合
 			m_speedRatio = m_currentVelocity / m_initialVelocity;
-			pos += m_parentForward * (m_currentVelocity * elapsed);;
+
+			if (player->GetTargetMode())
+			{
+				pos += m_dir * (m_currentVelocity * elapsed);
+			}
+			else
+			{
+				pos += m_parentForward * (m_currentVelocity * elapsed);
+			}
 		}
 
 		// 現在の速度の割合が始めるぐらいの割合になったら上昇を始める
@@ -120,17 +130,17 @@ namespace basecross
 		m_trans->SetPosition(pos);
 	}
 
-	//Vec3 Bubble::GetCameraForward()
-	//{
-	//	auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-	//	auto PtrCamera = stage->GetView()->GetTargetCamera();
-	//	Vec3 at = PtrCamera->GetAt();
-	//	Vec3 eye = PtrCamera->GetEye();
-	//	Vec3 forward = at - eye;
-	//	forward.normalize();
-	//	
-	//	return forward;
-	//}
+	Vec3 Bubble::GetCameraForward()
+	{
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		auto PtrCamera = stage->GetView()->GetTargetCamera();
+		Vec3 at = PtrCamera->GetAt();
+		Vec3 eye = PtrCamera->GetEye();
+		Vec3 forward = at - eye;
+		forward.normalize();
+		
+		return forward;
+	}
 
 	void Bubble::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
@@ -140,7 +150,7 @@ namespace basecross
 		if (m_isHit) return;
 		m_isHit = true;
 
-		auto range = 1.0f;
+		auto range = 1.5f;
 		auto stage = GetStage();
 		auto ground = dynamic_pointer_cast<Ground>(Other);
 		auto myPos = m_trans->GetPosition();
@@ -158,6 +168,7 @@ namespace basecross
 				if (trampTrans)
 				{
 					float dist = (myPos - trampTrans->GetPosition()).length();
+					
 					if (dist < range)
 					{
 						found = true;
