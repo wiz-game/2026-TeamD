@@ -25,7 +25,7 @@ namespace basecross
 	{
 		AddTag(L"TranmpolineBase");
 		m_trans = GetComponent<Transform>();
-		m_trans->SetPosition(m_pos.x, m_pos.y - 0.75f, m_pos.z);
+		m_trans->SetPosition(m_pos.x, m_pos.y - 0.5f, m_pos.z);
 		m_trans->SetScale(m_scale);
 
 		// 透明化処理
@@ -53,7 +53,7 @@ namespace basecross
 			Vec3(m_modelScale),
 			Vec3(0.0f,  0.0f, 0.0f),
 			Vec3(0.0f, XM_PI, 0.0f),
-			Vec3(0.0f, -1.0f, 0.0f)
+			Vec3(0.0f, -0.5f, 0.0f)
 		);
 		
 		m_chargeDraw->SetMeshToTransformMatrix(spanMat);
