@@ -32,7 +32,7 @@ namespace basecross
 		Player(const std::shared_ptr<Stage>& stage) :
 			GameObject(stage), // ƒXƒe[ƒW‚ğGameObject‚É“n‚·y•K{z
 			m_Velocity(0.0f),
-			m_Position(0.0f, 80.0f, 0.0f),
+			m_Position(0.0f, 60.2f, 0.0f),
 			m_isJumping(false),
 			m_JumpPower(6.0f),
 			m_Gravity(9.8f),
@@ -48,6 +48,7 @@ namespace basecross
 		void LaunchofBubble();	// –A‚Ì”­Ë
 		void DebugString();
 		void ReSpawn();
+		void BubbleOre();
 
 		// --- “–‚½‚è”»’è ---
 		void OnCollisionEnter(shared_ptr<GameObject>& Other);	//	“–‚½‚è”»’è
