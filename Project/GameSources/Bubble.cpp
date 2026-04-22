@@ -35,8 +35,8 @@ namespace basecross
 		auto parentPos = parentLock->GetComponent<Transform>()->GetPosition();
 		
 		m_trans = GetComponent<Transform>();
-		Vec3 spawnPos = Vec3(parentPos.x, parentPos.y/* + 1.0f*/, parentPos.z) + m_parentForward * 1.25f;
-		m_dir = GetCameraForward();
+		Vec3 spawnPos = Vec3(parentPos.x, parentPos.y + 1.0f, parentPos.z) + m_parentForward * 1.25f;
+		// m_dir = GetCameraForward();
 
 		m_trans->SetPosition(spawnPos);
 		m_trans->SetScale(Vec3(1.3f));
@@ -88,7 +88,7 @@ namespace basecross
 			m_currentVelocity = max(m_currentVelocity, velocityZero);
 			// 速度の割合
 			m_speedRatio = m_currentVelocity / m_initialVelocity;
-			pos += m_dir * (m_currentVelocity * elapsed);
+			pos += m_parentForward * (m_currentVelocity * elapsed);;
 		}
 
 		// 現在の速度の割合が始めるぐらいの割合になったら上昇を始める
@@ -120,17 +120,17 @@ namespace basecross
 		m_trans->SetPosition(pos);
 	}
 
-	Vec3 Bubble::GetCameraForward()
-	{
-		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-		auto PtrCamera = stage->GetView()->GetTargetCamera();
-		Vec3 at = PtrCamera->GetAt();
-		Vec3 eye = PtrCamera->GetEye();
-		Vec3 forward = at - eye;
-		forward.normalize();
-		
-		return forward;
-	}
+	//Vec3 Bubble::GetCameraForward()
+	//{
+	//	auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+	//	auto PtrCamera = stage->GetView()->GetTargetCamera();
+	//	Vec3 at = PtrCamera->GetAt();
+	//	Vec3 eye = PtrCamera->GetEye();
+	//	Vec3 forward = at - eye;
+	//	forward.normalize();
+	//	
+	//	return forward;
+	//}
 
 	void Bubble::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
