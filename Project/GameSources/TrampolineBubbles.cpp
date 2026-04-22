@@ -11,7 +11,8 @@ namespace basecross
 		m_pos(pos),
 		m_scale(Vec3(1.0f)),
 		m_modelScale(Vec3(0.5f)),
-		m_isCountedThisFrame(false)
+		m_isCountedThisFrame(false),
+		m_limitTime(30.0f)
 	{
 
 	}
@@ -25,7 +26,7 @@ namespace basecross
 	{
 		AddTag(L"TranmpolineBase");
 		m_trans = GetComponent<Transform>();
-		m_trans->SetPosition(m_pos.x, m_pos.y - 0.75f, m_pos.z);
+		m_trans->SetPosition(m_pos.x, m_pos.y - 0.5f, m_pos.z);
 		m_trans->SetScale(m_scale);
 
 		// 透明化処理
@@ -53,7 +54,7 @@ namespace basecross
 			Vec3(m_modelScale),
 			Vec3(0.0f,  0.0f, 0.0f),
 			Vec3(0.0f, XM_PI, 0.0f),
-			Vec3(0.0f, -1.0f, 0.0f)
+			Vec3(0.0f, -0.5f, 0.0f)
 		);
 		
 		m_chargeDraw->SetMeshToTransformMatrix(spanMat);
@@ -61,6 +62,11 @@ namespace basecross
 
 	void TrampolineBubbles::OnUpdate()
 	{
+		auto& app = App::GetApp();
+		auto elapsed = app->GetElapsedTime();
+
+		m_limitTime -= 1.0f * elapsed;
+
 		if (m_bubbleCount >= 2)
 		{
 			m_chargeDraw->SetDrawActive(false);
@@ -71,6 +77,12 @@ namespace basecross
 		{
 			m_isTrampolineActive = true;
 			AddTag(L"TrampolineBubbles");
+		}
+
+		if (m_limitTime < 0.0f)
+		{
+			GetStage()->RemoveGameObject<TrampolineBubbles>(GetThis<TrampolineBubbles>());
+			return;
 		}
 
 	}
