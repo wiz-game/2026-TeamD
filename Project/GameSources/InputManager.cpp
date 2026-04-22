@@ -178,8 +178,8 @@ namespace basecross
 			player->SetTargetMode(targetMode);
 		}
 
-		static float stickRX = 0.0f;
-		static float stickRY = 0.0f;
+		static float stickRX = 3.25f;
+		static float stickRY = 1.0f;
 		float cameraMoveSpeed = 2.0f;
 		stickRX	+= m_pad.fThumbRX * App::GetApp()->GetElapsedTime() * cameraMoveSpeed;
 		stickRY += m_pad.fThumbRY * App::GetApp()->GetElapsedTime() * cameraMoveSpeed;
