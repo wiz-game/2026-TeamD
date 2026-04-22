@@ -63,6 +63,7 @@ namespace basecross
 			if ((control[0].wPressedButtons & XINPUT_GAMEPAD_A) && m_isJumping == false)
 			{
 				m_Velocity = m_JumpPower;
+				m_isJumping = true;
 			}
 		}
 
@@ -133,10 +134,19 @@ namespace basecross
 	{
 		auto transPos = m_transform->GetPosition();
 		// ƒoƒuƒ‹
-		if (Other->FindTag(L"Bubble") || Other->FindTag(L"Ground"))
+		if (Other->FindTag(L"Ground"))
 		{
 			m_isJumping = false;
 			m_Velocity = 0.0f;
+		}
+
+		if (Other->FindTag(L"Bubble"))
+		{
+			if (Other->GetComponent<Transform>()->GetPosition().y < transPos.y)
+			{
+				m_isJumping = false;
+				m_Velocity = 0.0f;
+			}
 		}
 	}
 
