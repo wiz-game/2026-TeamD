@@ -114,16 +114,16 @@ namespace basecross
 		// 落ちるときの位置
 		float fallPosition = 0.0f;
 		// リスポーンする位置
-		float reSpawnPositionX = 45.0f;
-		float reSpawnPositionY = 65.2f;
+		float reSpawnPositionX = .0f;
+		float reSpawnPositionY = 61.2f;
 		float reSpawnPositionZ = 0.0f;
 
 		auto transPos = m_transform->GetPosition();
 		if (transPos.y <= fallPosition)
 		{
-			//transPos.x = reSpawnPositionX;
+			transPos.x = reSpawnPositionX;
 			transPos.y = reSpawnPositionY;
-			//transPos.z = reSpawnPositionZ;
+			transPos.z = reSpawnPositionZ;
 
 			m_transform->SetPosition(transPos.x, transPos.y, transPos.z);
 		}
