@@ -172,9 +172,14 @@ namespace basecross
 		auto targetPos = playerComp->GetPosition();
 		auto targetMode = player->GetTargetMode();
 
-		if (m_pad.wPressedButtons & XINPUT_GAMEPAD_X)
+		if (m_pad.bLeftTrigger)
 		{
-			targetMode = !targetMode;
+			targetMode = true;
+			player->SetTargetMode(targetMode);
+		}
+		else
+		{
+			targetMode = false;
 			player->SetTargetMode(targetMode);
 		}
 
