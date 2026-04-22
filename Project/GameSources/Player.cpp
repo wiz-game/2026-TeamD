@@ -83,10 +83,24 @@ namespace basecross
 			return;
 		}
 
-		if (control[0].wPressedButtons & XINPUT_GAMEPAD_B)
+		float initCoolDown = 1.0f,ZERO = 0.0f;
+
+		if (control[0].bRightTrigger && m_Bresing == false)
 		{
 			stage->AddGameObject<Bubble>(GetThis<Player>());
+			m_Bresing = true;
+			m_cooldown = initCoolDown;
 		}
+
+		if (m_Bresing == true)
+		{
+			m_cooldown -= App::GetApp()->GetElapsedTime();
+			if (m_cooldown <= ZERO)
+			{
+				m_Bresing = false;
+			}
+		}
+
 	}
 
 	// デバッグ用の文字列
