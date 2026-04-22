@@ -181,8 +181,8 @@ namespace basecross
 		static float stickRX = 3.25f;
 		static float stickRY = 1.0f;
 		float cameraMoveSpeed = 2.0f;
-		stickRX	+= m_pad.fThumbRX * App::GetApp()->GetElapsedTime() * cameraMoveSpeed;
-		stickRY += m_pad.fThumbRY * App::GetApp()->GetElapsedTime() * cameraMoveSpeed;
+		stickRX	-= m_pad.fThumbRX * App::GetApp()->GetElapsedTime() * cameraMoveSpeed;
+		stickRY -= m_pad.fThumbRY * App::GetApp()->GetElapsedTime() * cameraMoveSpeed;
 
 		// カメラの傾きの上限
 		const float MAX_RY = 3.0f, MIN_RY = -0.5f;
