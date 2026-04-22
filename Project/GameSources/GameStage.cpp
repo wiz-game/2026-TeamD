@@ -70,6 +70,20 @@ namespace basecross
 					break;
 				}
 			}
+
+			AddGameObject<Tree>
+			(
+				Vec3(1.0f, 1.0f, 1.0f),
+				Quat(0.0f, 0.0f, 0.0f, 1.0f),
+				Vec3(165.0f, 88.6f, 0.0f)
+			);
+
+			AddGameObject<Mushroom>
+			(
+				Vec3(1.0f, 1.0f, 1.0f),
+				Quat(0.0f, 0.0f, 0.0f, 1.0f),
+				Vec3(161.0f, 88.6f, 0.0f)
+			);
 		}
 		catch (...) {
 			throw;
