@@ -43,6 +43,9 @@ namespace basecross {
 		void AddFixedObj(const STRUCT_FixedParams ObjParams);
 		// エディター用///////////////////////////////////////////////
 
+		Vec3 m_collManagerPos = Vec3(0.0f);
+		Vec3 m_collisionRange = Vec3(100.0f, 1000.0f, 100.0f);
+
 		void CreatePlayer();
 	public:
 		//構築と破棄
