@@ -15,7 +15,8 @@ namespace basecross
 		// トランスフォームコンポーネントを取得しておく
 		m_transform = GetComponent<Transform>();
 		m_transform->SetPosition(m_Position);
-		m_transform->SetScale(0.3, 0.3, 0.3);
+		m_transform->SetRotation(m_Rotation);
+		m_transform->SetScale(m_Scale);
 
 		m_move = AddComponent<Move>();
 
@@ -62,6 +63,7 @@ namespace basecross
 			if ((control[0].wPressedButtons & XINPUT_GAMEPAD_A) && m_isJumping == false)
 			{
 				m_Velocity = m_JumpPower;
+				m_isJumping = true;
 			}
 		}
 
@@ -95,10 +97,16 @@ namespace basecross
 		wss << L"CameraAngle：" << GetStickRY() << endl;
 
 		auto transPos = m_transform->GetPosition();
+		auto transRot = m_transform->GetRotation();
+
 		wss << L"PlayerPosition.x：" << transPos.x << endl;
 		wss << L"PlayerPosition.y：" << transPos.y << endl;
 		wss << L"PlayerPosition.z：" << transPos.z << endl;
-		scene->SetDebugString(wss.str());
+		wss << L"PlayerRotation.x：" << transRot.x << endl;
+		wss << L"PlayerRotation.y：" << transRot.y << endl;
+		wss << L"PlayerRotation.z：" << transRot.z << endl;
+
+		GameManager::Instance().AddDebugStr(wss.str());
 	}
 
 	void Player::ReSpawn()
@@ -113,9 +121,9 @@ namespace basecross
 		auto transPos = m_transform->GetPosition();
 		if (transPos.y <= fallPosition)
 		{
-			transPos.x = reSpawnPositionX;
+			//transPos.x = reSpawnPositionX;
 			transPos.y = reSpawnPositionY;
-			transPos.z = reSpawnPositionZ;
+			//transPos.z = reSpawnPositionZ;
 
 			m_transform->SetPosition(transPos.x, transPos.y, transPos.z);
 		}
@@ -126,10 +134,19 @@ namespace basecross
 	{
 		auto transPos = m_transform->GetPosition();
 		// バブル
-		if (Other->FindTag(L"Bubble") || Other->FindTag(L"Ground"))
+		if (Other->FindTag(L"Ground"))
 		{
 			m_isJumping = false;
 			m_Velocity = 0.0f;
+		}
+
+		if (Other->FindTag(L"Bubble"))
+		{
+			if (Other->GetComponent<Transform>()->GetPosition().y < transPos.y)
+			{
+				m_isJumping = false;
+				m_Velocity = 0.0f;
+			}
 		}
 	}
 
