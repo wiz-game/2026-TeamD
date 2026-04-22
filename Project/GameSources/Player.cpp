@@ -43,7 +43,7 @@ namespace basecross
 		Jump();
 		LaunchofBubble();
 		//Camera();
-		DebugString();
+		//DebugString();
 		//TargetCamera();
 	}
 
@@ -119,14 +119,7 @@ namespace basecross
 	{
 		auto transPos = m_transform->GetPosition();
 		// ƒoƒuƒ‹
-		if (Other->FindTag(L"Bubble"))
-		{
-			m_Velocity = m_JumpPower * 1.5f;
-			m_isJumping = true;
-		}
-
-		// °
-		if (Other->FindTag(L"Ground"))
+		if (Other->FindTag(L"Bubble") || Other->FindTag(L"Ground"))
 		{
 			m_isJumping = false;
 			m_Velocity = 0.0f;
