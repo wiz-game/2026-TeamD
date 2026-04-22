@@ -44,7 +44,7 @@ namespace basecross
 		Jump();
 		LaunchofBubble();
 		//Camera();
-		DebugString();
+		//DebugString();
 		//TargetCamera();
 	}
 
