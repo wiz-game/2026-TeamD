@@ -48,6 +48,7 @@ namespace basecross
 		void LaunchofBubble();	// –A‚Ì”­ŽË
 		void DebugString();
 		void ReSpawn();
+		void BubbleOre();
 
 		// --- “–‚½‚è”»’è ---
 		void OnCollisionEnter(shared_ptr<GameObject>& Other);	//	“–‚½‚è”»’è
