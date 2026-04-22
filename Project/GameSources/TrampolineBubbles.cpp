@@ -11,7 +11,8 @@ namespace basecross
 		m_pos(pos),
 		m_scale(Vec3(1.0f)),
 		m_modelScale(Vec3(0.5f)),
-		m_isCountedThisFrame(false)
+		m_isCountedThisFrame(false),
+		m_limitTime(30.0f)
 	{
 
 	}
@@ -61,6 +62,11 @@ namespace basecross
 
 	void TrampolineBubbles::OnUpdate()
 	{
+		auto& app = App::GetApp();
+		auto elapsed = app->GetElapsedTime();
+
+		m_limitTime -= 1.0f * elapsed;
+
 		if (m_bubbleCount >= 2)
 		{
 			m_chargeDraw->SetDrawActive(false);
@@ -71,6 +77,12 @@ namespace basecross
 		{
 			m_isTrampolineActive = true;
 			AddTag(L"TrampolineBubbles");
+		}
+
+		if (m_limitTime < 0.0f)
+		{
+			GetStage()->RemoveGameObject<TrampolineBubbles>(GetThis<TrampolineBubbles>());
+			return;
 		}
 
 	}
