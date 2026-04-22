@@ -81,6 +81,10 @@ namespace basecross
 		// アプリケーションオブジェクトを取得
 		auto& app = App::GetApp();
 
+		// プレイヤーの位置を中心に当たり判定の範囲を設定する
+		m_collManagerPos = GetSharedGameObject<Player>(L"Player")->GetComponent<Transform>()->GetPosition();
+		AABB collRange = AABB(m_collManagerPos - m_collisionRange, m_collManagerPos + m_collisionRange);
+		GetCollisionManager()->SetRootAABB(collRange);
 	}
 
 	void GameStage::OnUpdate2()
