@@ -44,7 +44,7 @@ namespace basecross
 		Jump();
 		LaunchofBubble();
 		//Camera();
-		//DebugString();
+		DebugString();
 		//TargetCamera();
 	}
 
@@ -132,6 +132,7 @@ namespace basecross
 	// --- “–‚½‚è”»’è ---
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
+		float Power = 6.0f;
 		auto transPos = m_transform->GetPosition();
 		// ƒoƒuƒ‹
 		if (Other->FindTag(L"Ground"))
@@ -146,6 +147,15 @@ namespace basecross
 			{
 				m_isJumping = false;
 				m_Velocity = 0.0f;
+			}
+		}
+
+		if (Other->FindTag(L"TranmpolineBase"))
+		{
+			if (Other->GetComponent<Transform>()->GetPosition().y < transPos.y)
+			{
+				m_isJumping = true;
+				m_Velocity = m_JumpPower * Power;
 			}
 		}
 	}
