@@ -31,7 +31,6 @@ namespace basecross
 		// 透明化処理
 		SetAlphaActive(true);
 
-
 		m_chargeDraw = AddComponent<PNTStaticDraw>();
 		m_chargeDraw->SetMeshResource(L"M_Bubble");
 		m_chargeDraw->SetTextureResource(L"T_Bubble");
@@ -68,7 +67,7 @@ namespace basecross
 			CreateActiveInstances();
 		}
 
-		if (m_bubbleCount >= 5 && !m_isTrampolineActive)
+		if (m_bubbleCount >= 4 && !m_isTrampolineActive)
 		{
 			m_isTrampolineActive = true;
 			AddTag(L"TrampolineBubbles");
