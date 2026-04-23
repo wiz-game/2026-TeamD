@@ -15,7 +15,8 @@ namespace basecross
 		// トランスフォームコンポーネントを取得しておく
 		m_transform = GetComponent<Transform>();
 		m_transform->SetPosition(m_Position);
-		m_transform->SetScale(0.3, 0.3, 0.3);
+		m_transform->SetRotation(m_Rotation);
+		m_transform->SetScale(m_Scale);
 
 		m_move = AddComponent<Move>();
 
@@ -43,7 +44,7 @@ namespace basecross
 		Jump();
 		LaunchofBubble();
 		//Camera();
-		DebugString();
+		//DebugString();
 		//TargetCamera();
 	}
 
@@ -62,6 +63,7 @@ namespace basecross
 			if ((control[0].wPressedButtons & XINPUT_GAMEPAD_A) && m_isJumping == false)
 			{
 				m_Velocity = m_JumpPower;
+				m_isJumping = true;
 			}
 		}
 
@@ -81,10 +83,24 @@ namespace basecross
 			return;
 		}
 
-		if (control[0].wPressedButtons & XINPUT_GAMEPAD_B)
+		float initCoolDown = 1.0f,ZERO = 0.0f;
+
+		if (control[0].bRightTrigger && m_Bresing == false)
 		{
 			stage->AddGameObject<Bubble>(GetThis<Player>());
+			m_Bresing = true;
+			m_cooldown = initCoolDown;
 		}
+
+		if (m_Bresing == true)
+		{
+			m_cooldown -= App::GetApp()->GetElapsedTime();
+			if (m_cooldown <= ZERO)
+			{
+				m_Bresing = false;
+			}
+		}
+
 	}
 
 	// デバッグ用の文字列
@@ -95,8 +111,16 @@ namespace basecross
 		wss << L"CameraAngle：" << GetStickRY() << endl;
 
 		auto transPos = m_transform->GetPosition();
-		wss << L"PlayerPosition.y：" << transPos.y;
-		scene->SetDebugString(wss.str());
+		auto transRot = m_transform->GetRotation();
+
+		wss << L"PlayerPosition.x：" << transPos.x << endl;
+		wss << L"PlayerPosition.y：" << transPos.y << endl;
+		wss << L"PlayerPosition.z：" << transPos.z << endl;
+		wss << L"PlayerRotation.x：" << transRot.x << endl;
+		wss << L"PlayerRotation.y：" << transRot.y << endl;
+		wss << L"PlayerRotation.z：" << transRot.z << endl;
+
+		GameManager::Instance().AddDebugStr(wss.str());
 	}
 
 	void Player::ReSpawn()
@@ -104,32 +128,49 @@ namespace basecross
 		// 落ちるときの位置
 		float fallPosition = 0.0f;
 		// リスポーンする位置
-		float reSpawnPosition = 80.0f;
+		float reSpawnPositionX = .0f;
+		float reSpawnPositionY = 61.2f;
+		float reSpawnPositionZ = 0.0f;
 
 		auto transPos = m_transform->GetPosition();
 		if (transPos.y <= fallPosition)
 		{
-			transPos.y = reSpawnPosition;
-			m_transform->SetPosition(0.0f, transPos.y, 0.0f);
+			transPos.x = reSpawnPositionX;
+			transPos.y = reSpawnPositionY;
+			transPos.z = reSpawnPositionZ;
+
+			m_transform->SetPosition(transPos.x, transPos.y, transPos.z);
 		}
 	}
 
 	// --- 当たり判定 ---
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
+		float Power = 6.0f;
 		auto transPos = m_transform->GetPosition();
 		// バブル
-		if (Other->FindTag(L"Bubble"))
-		{
-			m_Velocity = m_JumpPower * 1.5f;
-			m_isJumping = true;
-		}
-
-		// 床
 		if (Other->FindTag(L"Ground"))
 		{
 			m_isJumping = false;
 			m_Velocity = 0.0f;
+		}
+
+		if (Other->FindTag(L"Bubble"))
+		{
+			if (Other->GetComponent<Transform>()->GetPosition().y < transPos.y)
+			{
+				m_isJumping = false;
+				m_Velocity = 0.0f;
+			}
+		}
+
+		if (Other->FindTag(L"TranmpolineBase"))
+		{
+			if (Other->GetComponent<Transform>()->GetPosition().y < transPos.y)
+			{
+				m_isJumping = true;
+				m_Velocity = m_JumpPower * Power;
+			}
 		}
 	}
 

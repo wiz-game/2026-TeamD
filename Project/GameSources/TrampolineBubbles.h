@@ -16,6 +16,9 @@ namespace basecross
 		int m_bubbleCount;
 		Vec3 m_pos;
 		Vec3 m_scale;
+		Vec3 m_modelScale;
+		bool m_isCountedThisFrame;
+		float m_limitTime;
 
 		void CreateActiveInstances();
 	

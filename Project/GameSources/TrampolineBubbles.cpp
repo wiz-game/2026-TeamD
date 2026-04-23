@@ -9,7 +9,10 @@ namespace basecross
 		m_isInstanceCreated(false),
 		m_bubbleCount(0),
 		m_pos(pos),
-		m_scale(Vec3(0.4))
+		m_scale(Vec3(1.0f)),
+		m_modelScale(Vec3(0.5f)),
+		m_isCountedThisFrame(false),
+		m_limitTime(30.0f)
 	{
 
 	}
@@ -21,49 +24,77 @@ namespace basecross
 
 	void TrampolineBubbles::OnCreate()
 	{
+		AddTag(L"TranmpolineBase");
 		m_trans = GetComponent<Transform>();
-		m_trans->SetPosition(m_pos);
+		m_trans->SetPosition(m_pos.x, m_pos.y - 0.5f, m_pos.z);
 		m_trans->SetScale(m_scale);
+
+		// 透明化処理
+		SetAlphaActive(true);
 
 		m_chargeDraw = AddComponent<PNTStaticDraw>();
 		m_chargeDraw->SetMeshResource(L"M_Bubble");
 		m_chargeDraw->SetTextureResource(L"T_Bubble");
 		m_chargeDraw->SetDrawActive(true);
+		m_chargeDraw->SetDiffuse(Col4(1.0f,1.0f,1.0f, 0.3f));
 
 		// インスタンス描画用
 		m_activeDraw = AddComponent<PNTStaticInstanceDraw>();
 		m_activeDraw->SetMeshResource(L"M_Bubble");
 		m_activeDraw->SetTextureResource(L"T_Bubble");
 		m_activeDraw->SetDrawActive(false);
+		m_activeDraw->SetDiffuse(Col4(1.0f, 1.0f, 1.0f, 0.3f));
 
 		m_col = AddComponent<CollisionSphere>();
-		m_col->SetDrawActive(false);
 		m_col->SetAfterCollision(AfterCollision::None);
+		m_col->SetDrawActive(false);
 
-		AddTag(L"TrampolineBubbles");
+		Mat4x4 spanMat;
+		spanMat.affineTransformation(
+			Vec3(m_modelScale),
+			Vec3(0.0f,  0.0f, 0.0f),
+			Vec3(0.0f, XM_PI, 0.0f),
+			Vec3(0.0f, -0.5f, 0.0f)
+		);
+		
+		m_chargeDraw->SetMeshToTransformMatrix(spanMat);
 	}
 
 	void TrampolineBubbles::OnUpdate()
 	{
-		if (m_bubbleCount >= 5 && !m_isTrampolineActive)
-		{
-			m_isTrampolineActive = true;
-			m_chargeDraw->SetDrawActive(false);
-		}
+		auto& app = App::GetApp();
+		auto elapsed = app->GetElapsedTime();
 
-		if (m_isTrampolineActive && !m_isInstanceCreated)
+		m_limitTime -= 1.0f * elapsed;
+
+		if (m_bubbleCount >= 2)
 		{
+			m_chargeDraw->SetDrawActive(false);
 			CreateActiveInstances();
 		}
+
+		if (m_bubbleCount >= 4 && !m_isTrampolineActive)
+		{
+			m_isTrampolineActive = true;
+			AddTag(L"TrampolineBubbles");
+		}
+
+		if (m_limitTime < 0.0f)
+		{
+			GetStage()->RemoveGameObject<TrampolineBubbles>(GetThis<TrampolineBubbles>());
+			return;
+		}
+
 	}
 
 	void TrampolineBubbles::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
 		if (Other->FindTag(L"Bubble"))
 		{
-			if (!m_isTrampolineActive)
+			if (!m_isTrampolineActive && !m_isCountedThisFrame)
 			{
 				m_bubbleCount++;
+				m_isCountedThisFrame = true;
 			}
 
 			auto bubble = dynamic_pointer_cast<Bubble>(Other);
@@ -78,7 +109,7 @@ namespace basecross
 			auto player = dynamic_pointer_cast<Player>(Other);
 
 			if (m_isTrampolineActive && player->GetIsJump())
-			{
+			{		
 				GetStage()->RemoveGameObject<TrampolineBubbles>(GetThis<TrampolineBubbles>());
 			}
 		}
@@ -93,23 +124,28 @@ namespace basecross
 		const float startOffsetX = -((gridCount - 1) * spacing) * 0.5f;
 		const float startOffsetZ = -((gridCount - 1) * spacing) * 0.5f;
 
+		int index = 0;
+
 		for (int z = 0; z < gridCount; z++)
 		{
 			for (int x = 0; x < gridCount; x++)
 			{
+				if (index >= m_bubbleCount) break;
+
 				Mat4x4 mat;
-				Vec3 instancePos = m_pos + Vec3(startOffsetX + (spacing * x), -0.3, startOffsetZ + (spacing * z));
+				Vec3 instancePos = m_pos + Vec3(startOffsetX + (spacing * x), -1.0f, startOffsetZ + (spacing * z));
 				mat.affineTransformation(
-					Vec3(m_scale),
+					Vec3(m_modelScale),
 					Vec3(0.0f),
 					Quat(),
 					instancePos
 				);
 				m_activeDraw->AddMatrix(mat);
+
+				index++;
 			}
 		}
 
 		m_activeDraw->SetDrawActive(true);
-		m_isInstanceCreated = true;
 	}
 }

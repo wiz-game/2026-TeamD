@@ -20,6 +20,8 @@ namespace basecross
 		float m_stickRY; // Y軸中心のカメラの回り込み
 
 		Vec3 m_Position;
+		Vec3 m_Rotation;
+		Vec3 m_Scale;
 		bool m_isTargetMode;
 		// 重力の処理
 		float m_Velocity;
@@ -27,18 +29,25 @@ namespace basecross
 		// ジャンプの処理
 		float m_JumpPower;
 		bool m_isJumping; // 現在ジャンプしているかどうか
+
+		bool m_Bresing;
+		float m_cooldown;
 	public :
 		// ステージを引数にしたコンストラクタ【必須】
 		Player(const std::shared_ptr<Stage>& stage) :
 			GameObject(stage), // ステージをGameObjectに渡す【必須】
 			m_Velocity(0.0f),
-			m_Position(0.0f, 80.0f, 0.0f),
+			m_Position(0.0f, 60.2f, 0.0f),
+			m_Rotation(0.0f, 1.5f, 0.0f),
+			m_Scale(0.3f, 0.3f, 0.3f),
 			m_isJumping(false),
 			m_JumpPower(6.0f),
 			m_Gravity(9.8f),
 			m_isTargetMode(false),
 			m_stickRY(2.0f),
-			m_stickRX(0.0f)
+			m_stickRX(0.0f),
+			m_Bresing(false),
+			m_cooldown(0.8f)
 		{
 		}
 
@@ -48,6 +57,7 @@ namespace basecross
 		void LaunchofBubble();	// 泡の発射
 		void DebugString();
 		void ReSpawn();
+		void BubbleOre();
 
 		// --- 当たり判定 ---
 		void OnCollisionEnter(shared_ptr<GameObject>& Other);	//	当たり判定

@@ -13,7 +13,8 @@ namespace basecross
 		m_upwardVelocity(0.0f),
 		m_isTimeStart(false),
 		m_limitTime(0.75f),
-		m_isSpawnedTrampoline(false)
+		m_isSpawnedTrampoline(false),
+		m_isHit(false)
 	{
 
 	}
@@ -34,8 +35,12 @@ namespace basecross
 		auto parentPos = parentLock->GetComponent<Transform>()->GetPosition();
 		
 		m_trans = GetComponent<Transform>();
-		m_trans->SetPosition(parentPos + (m_parentForward * 1.25f));
+		Vec3 spawnPos = Vec3(parentPos.x, parentPos.y + 1.0f, parentPos.z) + m_parentForward * 1.25f;
+		m_dir = GetCameraForward();
+
+		m_trans->SetPosition(spawnPos);
 		m_trans->SetScale(Vec3(1.25f));
+		// m_trans->SetQuaternion()
 
 		auto ptrCol = AddComponent<CollisionSphere>();
 		ptrCol->SetDrawActive(false);
@@ -52,10 +57,10 @@ namespace basecross
 		// モデルとトランスフォーム間の差分行列
 		Mat4x4 spanMat;
 		spanMat.affineTransformation(
-			Vec3(0.5f,  0.5f,   0.5f),
+			Vec3(0.45f,  0.45f,   0.45f),
 			Vec3(0.0f,  0.0f,   0.0f),
 			Vec3(0.0f, XM_PI,   0.0f),
-			Vec3(0.0f, -0.5f,   0.0f)
+			Vec3(0.0f, -0.4f,   0.0f)
 		);
 
 		m_draw->SetMeshToTransformMatrix(spanMat);
@@ -71,7 +76,9 @@ namespace basecross
 		auto& app = App::GetApp();
 		auto elapsed = app->GetElapsedTime();
 		auto pos = m_trans->GetPosition();
-		
+		auto parent = m_parent.lock();
+		auto player = dynamic_pointer_cast<Player>(parent);
+
 		float velocityZero = 0.0f;
 		float decelerationStartRatio = 0.2f;
 
@@ -83,7 +90,15 @@ namespace basecross
 			m_currentVelocity = max(m_currentVelocity, velocityZero);
 			// 速度の割合
 			m_speedRatio = m_currentVelocity / m_initialVelocity;
-			pos += m_parentForward * (m_currentVelocity * elapsed);
+
+			if (player->GetTargetMode())
+			{
+				pos += m_dir * (m_currentVelocity * elapsed);
+			}
+			else
+			{
+				pos += m_parentForward * (m_currentVelocity * elapsed);
+			}
 		}
 
 		// 現在の速度の割合が始めるぐらいの割合になったら上昇を始める
@@ -115,27 +130,45 @@ namespace basecross
 		m_trans->SetPosition(pos);
 	}
 
+	Vec3 Bubble::GetCameraForward()
+	{
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		auto PtrCamera = stage->GetView()->GetTargetCamera();
+		Vec3 at = PtrCamera->GetAt();
+		Vec3 eye = PtrCamera->GetEye();
+		Vec3 forward = at - eye;
+		forward.normalize();
+		
+		return forward;
+	}
+
 	void Bubble::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
-		if (m_isSpawnedTrampoline) return;
 		if (!Other->FindTag(L"Ground")) return;
 
-		auto range = 1.0f;
+		if (m_isSpawnedTrampoline) return;
+		if (m_isHit) return;
+		m_isHit = true;
+
+		auto range = 1.5f;
 		auto stage = GetStage();
 		auto ground = dynamic_pointer_cast<Ground>(Other);
 		auto myPos = m_trans->GetPosition();
 		auto objvec = stage->GetGameObjectVec();
 
 		bool found = false;
+
+		// 地面に当たった瞬間近くのトランポリン泡を探す
 		for (auto& obj : objvec)
 		{
-			if (obj->FindTag(L"TrampolineBubbles"))
+			if (obj->FindTag(L"TranmpolineBase"))
 			{
 				auto tramp = dynamic_pointer_cast<TrampolineBubbles>(obj);
 				auto trampTrans = tramp->GetComponent<Transform>();
 				if (trampTrans)
 				{
 					float dist = (myPos - trampTrans->GetPosition()).length();
+					
 					if (dist < range)
 					{
 						found = true;
@@ -155,10 +188,9 @@ namespace basecross
 		GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
 	}
 
-	ViewBubble::ViewBubble(const shared_ptr<Stage>& stage, const vector<Vec3> *vertices,const shared_ptr<GameObject>& parent) :
+	ViewBubble::ViewBubble(const shared_ptr<Stage>& stage, const vector<Vec3> *vertices) :
 		GameObject(stage),
-		m_vertices(vertices),
-		m_parent(parent)
+		m_vertices(vertices)
 	{
 
 	}

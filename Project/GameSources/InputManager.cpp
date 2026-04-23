@@ -146,10 +146,11 @@ namespace basecross
 	void InputManager::Moves()
 	{
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		float moveSpeed = 1.8f;
 		if (!stage) return;
 
 		stage->GetSharedGameObject<Player>(L"Player")->GetComponent<Move>()
-			->VectorMove(Vec3(m_pad.fThumbLX, 0.0f, m_pad.fThumbLY));
+			->VectorMove(Vec3(m_pad.fThumbLX * moveSpeed, 0.0f, m_pad.fThumbLY * moveSpeed));
 	}
 
 	void InputManager::MoveCamera()
@@ -171,16 +172,22 @@ namespace basecross
 		auto targetPos = playerComp->GetPosition();
 		auto targetMode = player->GetTargetMode();
 
-		if (m_pad.wPressedButtons & XINPUT_GAMEPAD_X)
+		if (m_pad.bLeftTrigger)
 		{
-			targetMode = !targetMode;
+			targetMode = true;
+			player->SetTargetMode(targetMode);
+		}
+		else
+		{
+			targetMode = false;
 			player->SetTargetMode(targetMode);
 		}
 
-		static float stickRX = 0.0f;
-		static float stickRY = 0.0f;
-		stickRX	+= m_pad.fThumbRX * App::GetApp()->GetElapsedTime();
-		stickRY += m_pad.fThumbRY * App::GetApp()->GetElapsedTime();
+		static float stickRX = 3.25f;
+		static float stickRY = 1.0f;
+		float cameraMoveSpeed = 2.0f;
+		stickRX	-= m_pad.fThumbRX * App::GetApp()->GetElapsedTime() * cameraMoveSpeed;
+		stickRY -= m_pad.fThumbRY * App::GetApp()->GetElapsedTime() * cameraMoveSpeed;
 
 		// カメラの傾きの上限
 		const float MAX_RY = 3.0f, MIN_RY = -0.5f;
@@ -204,7 +211,12 @@ namespace basecross
 
 			// カメラの注視点（At）とカメラの位置（Eye）を計算
 			Vec3 at = targetPos + Vec3(0.0f, 1.0f, 0.0f);
-			Vec3 eye = targetPos + Vec3(cosf(stickRX) * slope, stickRY * 2.0f, sinf(stickRX) * slope);
+			Vec3 eye = targetPos + Vec3
+			(
+				cosf(stickRX) * slope,
+				stickRY * 2.0f,
+				sinf(stickRX) * slope
+			);
 			Vec3 forward = at - eye;
 
 			float vectorx = 0.0f,vectorz = 0.0f;
@@ -219,12 +231,12 @@ namespace basecross
 			vectorx += forwardMove.x * stickLX;
 			vectorz += forwardMove.z * stickLX;
 
-			// スティック入力がある場合、カメラではなくプレイヤー側を回転させる
-			if (fabsf(stickLX) > 0.1f || fabsf(stickLY) > 0.1f)
-			{
-				float angle = atan2f(vectorx, vectorz);
-				playerComp->SetRotation(0.0f, angle, 0.0f);
-			}
+		//スティック入力がある場合、カメラではなくプレイヤー側を回転させる
+		if (fabsf(stickLX) > 0.1f || fabsf(stickLY) > 0.1f)
+		{
+			float angle = atan2f(vectorx, vectorz);
+			playerComp->SetRotation(0.0f, angle, 0.0f);
+		}
 
 			// カメラに設定を反映
 			camera->SetAt(at);
@@ -232,15 +244,15 @@ namespace basecross
 		}
 		else if (targetMode == true)
 		{
-			float cameraMoveSpeed = 2.0f;
+			float cameraDistance = 2.0f;
 
-			// カメラの注視点（At）とカメラの位置（Eye）を計算
+		 // カメラの注視点（At）とカメラの位置（Eye）を計算
 			Vec3 at = targetPos + Vec3(0.0f, 1.0f, 0.0f);
 			Vec3 eye = targetPos + Vec3
 			(
-				cosf(stickRX) * cameraMoveSpeed,
+				cosf(stickRX) * cameraDistance,
 				stickRY,
-				sinf(stickRX) * cameraMoveSpeed
+				sinf(stickRX) * cameraDistance
 			);
 			Vec3 forward = at - eye;
 
