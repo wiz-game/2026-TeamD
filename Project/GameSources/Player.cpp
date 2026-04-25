@@ -43,9 +43,6 @@ namespace basecross
 		ReSpawn();
 		Jump();
 		LaunchofBubble();
-		//Camera();
-		//DebugString();
-		//TargetCamera();
 	}
 
 	void Player::Jump()
