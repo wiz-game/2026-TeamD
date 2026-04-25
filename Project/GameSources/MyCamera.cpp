@@ -143,7 +143,7 @@ namespace basecross
 			vectorz += forwardMove.z * stickLX;
 
 			//スティック入力がある場合、カメラではなくプレイヤー側を回転させる
-			if (fabsf(stickLX) > 0.1f || fabsf(stickLY) > 0.1f)
+			if (fabsf(sticklx) > 0.1f || fabsf(stickly) > 0.1f)
 			{
 				float angle = atan2f(vectorx, vectorz);
 				playerComp->SetRotation(0.0f, angle, 0.0f);
