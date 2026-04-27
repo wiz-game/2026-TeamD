@@ -23,7 +23,13 @@ namespace basecross
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 
-		void PlayModeMove();
+		void PlayModeMove
+		(
+			float stickrx,
+			float stickry,
+			float sticklx,
+			float stickly
+		);
 		void FocusFixedViewPointMove(const Point2D<int> mousePoint);
 		void CameraFixedViewPointMove(const Point2D<int> mousePoint);
 
