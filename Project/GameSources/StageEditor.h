@@ -13,7 +13,8 @@ namespace basecross
 	{
 		Ground,
 		Mushroom,
-		Tree
+		Tree,
+		Max
 	};
 
 	enum class ENUM_EditorMode
@@ -59,6 +60,7 @@ namespace basecross
 		void GetMouseRey(Vec3& startPos, Vec3& endPos, const Point2D<int> mousePoint);
 		void DeselectObj();
 		void AddGameObject();
+		void ChangeObject(bool yKeyPressed, bool uKeyPressed);
 	};
 
 }

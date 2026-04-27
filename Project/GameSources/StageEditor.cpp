@@ -13,7 +13,7 @@ namespace basecross
 		// デバッグログを作成
 		m_sPtrStageLog = App::GetApp()->GetScene<Scene>()->GetActiveStage()->AddGameObject<DebugLog>(L"-EditorMenu-\n");
 		m_sPtrStageLog->SetTextRect(Rect2D<float>(1070.0f, 10.0f, 200.0f, 400.0f));
-
+		
 		m_editorMode = ENUM_EditorMode::Position;
 		m_isSelectedObj = false;
 	}
@@ -23,7 +23,7 @@ namespace basecross
 		// デバッグログを破棄
 		m_sPtrStageLog->DestroyGameObject();
 		m_sPtrStageLog = nullptr;
-
+		
 		m_editorMode = ENUM_EditorMode::Position;
 		m_isSelectedObj = false;
 	}
@@ -175,5 +175,30 @@ namespace basecross
 		case ENUM_AddedObj::Tree:
 			break;
 		}
+	}
+
+	void StageEditor::ChangeObject(bool yKeyPressed, bool uKeyPressed)
+	{
+		int changeObjNum = 0;
+
+		if (yKeyPressed)
+		{
+			// 次のオブジェクトに切り替える
+			changeObjNum = (static_cast<int>(m_addedObj) + 1);
+
+			// 最大値以上になったら最初のオブジェクトに切り替える
+			if (changeObjNum >= static_cast<int>(ENUM_AddedObj::Max)) changeObjNum = 0;
+
+		}
+		else if (uKeyPressed)
+		{
+			// 前のオブジェクトに切り替える
+			changeObjNum = (static_cast<int>(m_addedObj) - 1);
+
+			// 最小値未満になったら最後のオブジェクトに切り替える
+			if (changeObjNum < 0) changeObjNum = static_cast<int>(ENUM_AddedObj::Max) - 1;
+		}
+
+		m_addedObj = static_cast<ENUM_AddedObj>(changeObjNum);
 	}
 }

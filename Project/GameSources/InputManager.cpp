@@ -207,6 +207,7 @@ namespace basecross
 
 	void InputManager::ChangeObject()
 	{
+		StageEditor::Instance().ChangeObject(m_key.m_bPressedKeyTbl['Y'], m_key.m_bPressedKeyTbl['U']);
 	}
 
 	void InputManager::PressedLMouseButton()
