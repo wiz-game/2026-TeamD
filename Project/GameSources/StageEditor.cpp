@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Project.h"
+#include "StageEditor.h"
 
 namespace basecross
 {
@@ -30,6 +31,24 @@ namespace basecross
 	void StageEditor::PressedLMouseButton(const Point2D<int> mousePoint)
 	{
 		SerectObj(mousePoint);
+	}
+
+	void StageEditor::PressedDelete()
+	{
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		if (!stage) return;
+
+		auto player = dynamic_pointer_cast<Player>(m_selectedObj);
+		if (player) return; // プレイヤーは削除できないように
+
+		if (!m_selectedObj) return;
+
+		if (!m_isSelectedObj) return;
+		
+		stage->RemoveGameObject<GameObject>(m_selectedObj);
+
+		m_selectedObj = nullptr;
+		m_isSelectedObj = false;
 	}
 
 	void StageEditor::SerectObj(const Point2D<int> mousePoint)

@@ -216,6 +216,7 @@ namespace basecross
 
 	void InputManager::PressedDelete()
 	{
+		StageEditor::Instance().PressedDelete();
 	}
 
 	void InputManager::PressedQKey()
