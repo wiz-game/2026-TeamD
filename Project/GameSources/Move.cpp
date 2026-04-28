@@ -79,9 +79,14 @@ namespace basecross
 		// 移動の結果を求める
 		transComp->SetPosition(initPos);
 
-		// 入力ベクトルに基づき、キャラクターが進行方向を向くように回転を設定する
-		float angle = atan2f(rotX, rotZ);
-		transComp->SetRotation(0.0f, angle, 0.0f);
+		auto mycamera = stage->GetView()->GetTargetCamera()->GetThis<MyCamera>();
+		auto aim = mycamera->GetIsAiming();
+		if (aim == false)
+		{
+			// 入力ベクトルに基づき、キャラクターが進行方向を向くように回転を設定する
+			float angle = atan2f(rotX, rotZ);
+			transComp->SetRotation(0.0f, angle, 0.0f);
+		}
 	}
 }
 //end basecross

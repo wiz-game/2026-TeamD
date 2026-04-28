@@ -43,6 +43,9 @@ namespace basecross
 		ReSpawn();
 		Jump();
 		LaunchofBubble();
+
+		auto fbComp = GetComponent<FurBubble>();
+		//auto fbRot = fbComp->GetRo
 	}
 
 	void Player::Jump()

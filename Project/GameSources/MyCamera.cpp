@@ -103,7 +103,6 @@ namespace basecross
 				sinf(stickRX) * cameraDistance
 			);
 			Vec3 forward = at - eye;
-
 			// ターゲット時はカメラの向きに合わせてプレイヤーを回転させる
 			float angle = atan2f(forward.x, forward.z);
 			playerComp->SetRotation(0.0f, angle, 0.0f);
