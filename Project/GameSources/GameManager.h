@@ -32,11 +32,8 @@ namespace basecross
 		void ExitGameMode(ENUM_GameMode gameMode);
 
 		// 全てのゲームオブジェクトの更新フラグを変更する
-		void SetAllGameObjectsUpdateActive(bool isActive)
-		{
-			for (auto& gameObject : App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetGameObjectVec())
-				gameObject->SetUpdateActive(isActive);
-		}
+		void SetAllGameObjectsUpdateActive(bool isActive);
+		void RegisterDebugLog(const wstring& logName, const wstring& debugLog);
 	public:
 		static GameManager& Instance()
 		{
@@ -46,9 +43,12 @@ namespace basecross
 
 		void Initialize();
 		
-		void AddDebugStr(const wstring& debugStr);
-		void RemoveDebugLog();
+		void AddDebugStr(const wstring& logName, const wstring& debugLog) { RegisterDebugLog(logName, debugLog); }
+		void AddDebugStr(const wstring& logName, const int& debugLog)     { RegisterDebugLog(logName, to_wstring(debugLog)); }
+		void AddDebugStr(const wstring& logName, const float& debugLog)   { RegisterDebugLog(logName, to_wstring(debugLog)); }
 
+		void RemoveDebugLog();
+		
 		// アクセサー
 		ENUM_GameMode GetGameMode() const { return m_gameMode; }
 		void SetGameMode(ENUM_GameMode gameMode);

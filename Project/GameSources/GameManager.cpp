@@ -38,24 +38,31 @@ namespace basecross
 			break;
 		}
 	}
-	
-	void GameManager::Initialize()
+
+	void GameManager::SetAllGameObjectsUpdateActive(bool isActive)
 	{
+		for (auto& gameObject : App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetGameObjectVec())
+			gameObject->SetUpdateActive(isActive);
 	}
 
-	void GameManager::AddDebugStr(const wstring& debugStr)
+	void GameManager::RegisterDebugLog(const wstring& logName, const wstring& debugLog)
 	{
 		if (m_sPtrDebugLog)
 		{
-			m_sPtrDebugLog->AddDebugStr(debugStr);
+			m_sPtrDebugLog->AddDebugStr(logName, debugLog);
 		}
-		else 
+		else
 		{
 			m_sPtrDebugLog = App::GetApp()->GetScene<Scene>()->GetActiveStage()->AddGameObject<DebugLog>();
-			AddDebugStr(debugStr);
+			m_sPtrDebugLog->AddDebugStr(logName, debugLog);
 		}
 	}
 
+	void GameManager::Initialize()
+	{
+		SetIsDebug(true);
+	}
+	
 	void GameManager::RemoveDebugLog()
 	{
 		if (m_sPtrDebugLog) 
@@ -64,7 +71,7 @@ namespace basecross
 			m_sPtrDebugLog = nullptr;
 		}
 	}
-
+	
 	void GameManager::SetGameMode(ENUM_GameMode gameMode)
 	{
 		ExitGameMode(m_gameMode);

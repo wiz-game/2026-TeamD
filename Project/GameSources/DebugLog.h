@@ -11,8 +11,7 @@ namespace basecross
 	class DebugLog : public GameObject
 	{
 	private:
-		wstring m_logTitle = L"";
-		wstring m_debugStr = m_logTitle;
+		map<wstring, wstring> m_debugStrs = {};
 		shared_ptr<StringSprite> m_sPtrStrComp;
 	private:
 	public:
@@ -20,10 +19,10 @@ namespace basecross
 		virtual ~DebugLog() {}
 
 		virtual void OnCreate() override;
-		virtual void OnUpdate() override;
 		virtual void OnDestroy() override { GetStage()->RemoveGameObject<DebugLog>(GetThis<DebugLog>()); }
 
-		void AddDebugStr(const wstring& debugStr);
+		void AddDebugStr(const wstring& logName, const wstring& debugLog);
+		void UpdateDebugLog();
 
 		void SetTextRect(const Rect2D<float>& textRect);
 	};
