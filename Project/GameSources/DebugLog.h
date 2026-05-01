@@ -15,7 +15,7 @@ namespace basecross
 		shared_ptr<StringSprite> m_sPtrStrComp;
 	private:
 	public:
-		DebugLog(const shared_ptr<Stage>& stagePtr, const wstring& logTitle = L"-DebugLog-\n");
+		DebugLog(const shared_ptr<Stage>& stagePtr, const wstring& logTitle = L"-DebugLog-");
 		virtual ~DebugLog() {}
 
 		virtual void OnCreate() override;
