@@ -25,6 +25,9 @@
 #include "Tree.h"
 #include "Mushroom.h"
 
+// エネミー
+#include "EnemyBase.h"
+
 #include "Bubble.h"
 #include "TrampolineBubbles.h"
 #include "Player.h"
