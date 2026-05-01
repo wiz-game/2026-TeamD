@@ -163,15 +163,29 @@ namespace basecross
 		float radius = 5.5f;
 		float cosP = cosf(m_pitch);
 
-		auto offset = Vec3(radius * cosP * cosf(m_yaw), radius * sinf(m_pitch), radius * cosP * sinf(m_yaw));
-		auto eye = GetAt() + offset;
+		float offsetX = radius * cosP * cosf(m_yaw);
+		float offsetY = radius * sinf(m_pitch);
+		float offsetZ = radius * cosP * sinf(m_yaw);
 
-		SetEye(eye);
+		SetEye(GetAt() + Vec3(offsetX, offsetY, offsetZ));
 	}
 
 	void MyCamera::CameraFixedViewPointMove(const Point2D<int> mousePoint)
 	{
+		Vec3 viewDir = normalize(GetAt() - GetEye());
+		Vec3 viewXZ = normalize(Vec3{ viewDir.x, 0.0f, viewDir.z });
 
+		// 右ベクトルを計算
+		Vec3 worldUp = Vec3{ 0.0f, 1.0f, 0.0f };
+		Vec3 right = normalize(cross(viewXZ, worldUp));
+
+		// マウスの移動量に基づいてカメラを移動
+		auto elapsedTime = App::GetApp()->GetElapsedTime();
+		Vec3 deltaXZ = right * (mousePoint.x * elapsedTime);
+		Vec3 deltaY = Vec3{ 0.0f, mousePoint.y * elapsedTime, 0.0f };
+
+		SetAt(GetAt() + deltaXZ + deltaY);
+		SetEye(GetEye() + deltaXZ + deltaY);
 	}
 	
 	void MyCamera::UpdatePlayMode()

@@ -193,16 +193,21 @@ namespace basecross
 	void InputManager::FocusFixedViewPointMove()
 	{
 		auto mousePoint = Point2D<int>
-		(
-			m_key.m_MouseClientPoint.x - m_beforeMouseClientPoint.x, 
-			m_key.m_MouseClientPoint.y - m_beforeMouseClientPoint.y
-		);
+			(
+				m_key.m_MouseClientPoint.x - m_beforeMouseClientPoint.x, 
+				m_key.m_MouseClientPoint.y - m_beforeMouseClientPoint.y
+			);
 		GetMyCamera()->FocusFixedViewPointMove(mousePoint);
 	}
 	
 	void InputManager::CameraFixedViewPointMove()
 	{
-		GetMyCamera()->CameraFixedViewPointMove(m_key.m_MouseClientPoint);
+		auto mousePoint = Point2D<int>
+			(
+				m_key.m_MouseClientPoint.x - m_beforeMouseClientPoint.x,
+				m_key.m_MouseClientPoint.y - m_beforeMouseClientPoint.y
+			);
+		GetMyCamera()->CameraFixedViewPointMove(mousePoint);
 	}
 
 	void InputManager::ChangeObject()
