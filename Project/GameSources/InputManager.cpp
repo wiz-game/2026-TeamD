@@ -134,7 +134,7 @@ namespace basecross
 		}
 
 		// エディターモード切替
-		if (m_key.m_bPressedKeyTbl['C'])
+		if (m_key.m_bPressedKeyTbl['C'] && GameManager::Instance().GetIsDebug())
 		{
 			PressedCKey();
 		}

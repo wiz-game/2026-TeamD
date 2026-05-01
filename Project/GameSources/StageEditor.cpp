@@ -4,16 +4,24 @@
 
 namespace basecross
 {
+	void StageEditor::RegisterEditorMenuLog(const wstring& logName, const wstring& debugLog)
+	{
+		if (m_sPtrEditorMenuLog)
+			m_sPtrEditorMenuLog->AddDebugStr(logName, debugLog);
+	}
+
 	void StageEditor::Initialize()
 	{
 	}
-
+		
 	void StageEditor::StartEditor()
 	{
 		// デバッグログを作成
-		m_sPtrStageLog = App::GetApp()->GetScene<Scene>()->GetActiveStage()->AddGameObject<DebugLog>(L"-EditorMenu-\n");
-		m_sPtrStageLog->SetTextRect(Rect2D<float>(1070.0f, 10.0f, 200.0f, 400.0f));
-		
+		m_sPtrEditorMenuLog = App::GetApp()->GetScene<Scene>()->GetActiveStage()->AddGameObject<DebugLog>(L"-EditorMenu-");
+		m_sPtrEditorMenuLog->SetTextRect(Rect2D<float>(1070.0f, 10.0f, 200.0f, 400.0f));
+
+		AddEditorMenuLog(L"SelectObject", static_cast<int>(m_addedObj));
+
 		m_editorMode = ENUM_EditorMode::Position;
 		m_isSelectedObj = false;
 	}
@@ -21,8 +29,8 @@ namespace basecross
 	void StageEditor::EndEditor()
 	{
 		// デバッグログを破棄
-		m_sPtrStageLog->DestroyGameObject();
-		m_sPtrStageLog = nullptr;
+		m_sPtrEditorMenuLog->DestroyGameObject();
+		m_sPtrEditorMenuLog = nullptr;
 		
 		m_editorMode = ENUM_EditorMode::Position;
 		m_isSelectedObj = false;
@@ -183,22 +191,23 @@ namespace basecross
 
 		if (yKeyPressed)
 		{
-			// 次のオブジェクトに切り替える
-			changeObjNum = (static_cast<int>(m_addedObj) + 1);
-
-			// 最大値以上になったら最初のオブジェクトに切り替える
-			if (changeObjNum >= static_cast<int>(ENUM_AddedObj::Max)) changeObjNum = 0;
-
-		}
-		else if (uKeyPressed)
-		{
 			// 前のオブジェクトに切り替える
 			changeObjNum = (static_cast<int>(m_addedObj) - 1);
 
 			// 最小値未満になったら最後のオブジェクトに切り替える
 			if (changeObjNum < 0) changeObjNum = static_cast<int>(ENUM_AddedObj::Max) - 1;
 		}
+		else if (uKeyPressed)
+		{
+			// 次のオブジェクトに切り替える
+			changeObjNum = (static_cast<int>(m_addedObj) + 1);
+
+			// 最大値以上になったら最初のオブジェクトに切り替える
+			if (changeObjNum >= static_cast<int>(ENUM_AddedObj::Max)) changeObjNum = 0;
+		}
 
 		m_addedObj = static_cast<ENUM_AddedObj>(changeObjNum);
+
+		AddEditorMenuLog(L"SelectObject", changeObjNum);
 	}
 }

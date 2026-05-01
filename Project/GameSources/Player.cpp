@@ -106,21 +106,13 @@ namespace basecross
 	// デバッグ用の文字列
 	void Player::DebugString()
 	{
-		auto scene = App::GetApp()->GetScene<Scene>();
-		wstringstream wss;
-		wss << L"CameraAngle：" << GetStickRY() << endl;
-
-		auto transPos = m_transform->GetPosition();
-		auto transRot = m_transform->GetRotation();
-
-		wss << L"PlayerPosition.x：" << transPos.x << endl;
-		wss << L"PlayerPosition.y：" << transPos.y << endl;
-		wss << L"PlayerPosition.z：" << transPos.z << endl;
-		wss << L"PlayerRotation.x：" << transRot.x << endl;
-		wss << L"PlayerRotation.y：" << transRot.y << endl;
-		wss << L"PlayerRotation.z：" << transRot.z << endl;
-
-		GameManager::Instance().AddDebugStr(wss.str());
+		GameManager::Instance().AddDebugStr(L"CameraAngle", GetStickRY());
+		GameManager::Instance().AddDebugStr(L"PlayerPosition.x", m_transform->GetPosition().x);
+		GameManager::Instance().AddDebugStr(L"PlayerPosition.y", m_transform->GetPosition().y);
+		GameManager::Instance().AddDebugStr(L"PlayerPosition.z", m_transform->GetPosition().z);
+		GameManager::Instance().AddDebugStr(L"PlayerRotation.x", m_transform->GetRotation().x);
+		GameManager::Instance().AddDebugStr(L"PlayerRotation.y", m_transform->GetRotation().y);
+		GameManager::Instance().AddDebugStr(L"PlayerRotation.z", m_transform->GetRotation().z);
 	}
 
 	void Player::ReSpawn()

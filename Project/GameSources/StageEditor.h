@@ -28,7 +28,7 @@ namespace basecross
 	class StageEditor
 	{
 	private:
-		shared_ptr<DebugLog> m_sPtrStageLog = nullptr;
+		shared_ptr<DebugLog> m_sPtrEditorMenuLog = nullptr;
 
 		ENUM_AddedObj m_addedObj = ENUM_AddedObj::Ground;
 		ENUM_EditorMode m_editorMode = ENUM_EditorMode::Position;
@@ -41,6 +41,8 @@ namespace basecross
 	private:
 		StageEditor() {}
 		virtual ~StageEditor() {}
+
+		void RegisterEditorMenuLog(const wstring& logName, const wstring& debugLog);
 	public:
 		static StageEditor& Instance()
 		{
@@ -49,6 +51,10 @@ namespace basecross
 		}
 
 		void Initialize();
+
+		void AddEditorMenuLog(const wstring& logName, const wstring& debugLog) { RegisterEditorMenuLog(logName, debugLog); }
+		void AddEditorMenuLog(const wstring& logName, const int& debugLog)	   { RegisterEditorMenuLog(logName, to_wstring(debugLog)); }
+		void AddEditorMenuLog(const wstring& logName, const float& debugLog)   { RegisterEditorMenuLog(logName, to_wstring(debugLog)); }
 
 		void StartEditor();
 		void EndEditor();
