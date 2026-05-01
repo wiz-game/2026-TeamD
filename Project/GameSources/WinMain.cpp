@@ -330,6 +330,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			App::GetApp()->OnSize();
 		}
 		break;
+	case WM_MOUSEWHEEL:
+		{
+			// マウスホイールの回転量を取得
+			int wheelDelta = GET_WHEEL_DELTA_WPARAM(wParam);
+			InputManager::Instance().SetWheelDelta(wheelDelta / static_cast<int>(WHEEL_DELTA));
+		}
+		break;
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
