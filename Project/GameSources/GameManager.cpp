@@ -12,10 +12,9 @@ namespace basecross
 		case ENUM_GameMode::Menu:
 			break;
 		case ENUM_GameMode::Editor:
-			for (auto& gameObject : App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetGameObjectVec()) 
-				gameObject->SetUpdateActive(false);
-
+			SetAllGameObjectsUpdateActive(false);
 			StageEditor::Instance().StartEditor();
+			InputManager::Instance().ResetWheelDelta();
 			break;
 		default:
 			break;
@@ -31,20 +30,18 @@ namespace basecross
 		case ENUM_GameMode::Menu:
 			break;
 		case ENUM_GameMode::Editor:
-			for (auto& gameObject : App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetGameObjectVec())
-				gameObject->SetUpdateActive(true);
-			
+			SetAllGameObjectsUpdateActive(true);
 			StageEditor::Instance().EndEditor();
+			InputManager::Instance().ResetWheelDelta();
 			break;
 		default:
 			break;
 		}
 	}
-
+	
 	void GameManager::Initialize()
 	{
 	}
-	
 
 	void GameManager::AddDebugStr(const wstring& debugStr)
 	{

@@ -34,6 +34,7 @@ namespace basecross
 		void Update();
 
 		void SetWheelDelta(int wheelDelta) { m_wheelDelta += wheelDelta; }
+		void ResetWheelDelta() { m_wheelDelta = 0; }
 	private:
 		InputManager() {}
 		virtual ~InputManager() {}

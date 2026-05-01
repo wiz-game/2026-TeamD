@@ -30,6 +30,13 @@ namespace basecross
 		
 		void EnterGameMode(ENUM_GameMode gameMode);
 		void ExitGameMode(ENUM_GameMode gameMode);
+
+		// 全てのゲームオブジェクトの更新フラグを変更する
+		void SetAllGameObjectsUpdateActive(bool isActive)
+		{
+			for (auto& gameObject : App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetGameObjectVec())
+				gameObject->SetUpdateActive(isActive);
+		}
 	public:
 		static GameManager& Instance()
 		{
