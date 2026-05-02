@@ -43,9 +43,9 @@ namespace basecross
 		ReSpawn();
 		Jump();
 		LaunchofBubble();
-		//Camera();
-		//DebugString();
-		//TargetCamera();
+
+		auto fbComp = GetComponent<FurBubble>();
+		//auto fbRot = fbComp->GetRo
 	}
 
 	void Player::Jump()
@@ -83,30 +83,36 @@ namespace basecross
 			return;
 		}
 
-		if (control[0].wPressedButtons & XINPUT_GAMEPAD_B)
+		float initCoolDown = 1.0f,ZERO = 0.0f;
+
+		if (control[0].bRightTrigger && m_Bresing == false)
 		{
 			stage->AddGameObject<Bubble>(GetThis<Player>());
+			m_Bresing = true;
+			m_cooldown = initCoolDown;
 		}
+
+		if (m_Bresing == true)
+		{
+			m_cooldown -= App::GetApp()->GetElapsedTime();
+			if (m_cooldown <= ZERO)
+			{
+				m_Bresing = false;
+			}
+		}
+
 	}
 
 	// デバッグ用の文字列
 	void Player::DebugString()
 	{
-		auto scene = App::GetApp()->GetScene<Scene>();
-		wstringstream wss;
-		wss << L"CameraAngle：" << GetStickRY() << endl;
-
-		auto transPos = m_transform->GetPosition();
-		auto transRot = m_transform->GetRotation();
-
-		wss << L"PlayerPosition.x：" << transPos.x << endl;
-		wss << L"PlayerPosition.y：" << transPos.y << endl;
-		wss << L"PlayerPosition.z：" << transPos.z << endl;
-		wss << L"PlayerRotation.x：" << transRot.x << endl;
-		wss << L"PlayerRotation.y：" << transRot.y << endl;
-		wss << L"PlayerRotation.z：" << transRot.z << endl;
-
-		GameManager::Instance().AddDebugStr(wss.str());
+		GameManager::Instance().AddDebugStr(L"CameraAngle", GetStickRY());
+		GameManager::Instance().AddDebugStr(L"PlayerPosition.x", m_transform->GetPosition().x);
+		GameManager::Instance().AddDebugStr(L"PlayerPosition.y", m_transform->GetPosition().y);
+		GameManager::Instance().AddDebugStr(L"PlayerPosition.z", m_transform->GetPosition().z);
+		GameManager::Instance().AddDebugStr(L"PlayerRotation.x", m_transform->GetRotation().x);
+		GameManager::Instance().AddDebugStr(L"PlayerRotation.y", m_transform->GetRotation().y);
+		GameManager::Instance().AddDebugStr(L"PlayerRotation.z", m_transform->GetRotation().z);
 	}
 
 	void Player::ReSpawn()
@@ -132,6 +138,7 @@ namespace basecross
 	// --- 当たり判定 ---
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
+		float Power = 6.0f;
 		auto transPos = m_transform->GetPosition();
 		// バブル
 		if (Other->FindTag(L"Ground"))
@@ -146,6 +153,15 @@ namespace basecross
 			{
 				m_isJumping = false;
 				m_Velocity = 0.0f;
+			}
+		}
+
+		if (Other->FindTag(L"TranmpolineBase"))
+		{
+			if (Other->GetComponent<Transform>()->GetPosition().y < transPos.y)
+			{
+				m_isJumping = true;
+				m_Velocity = m_JumpPower * Power;
 			}
 		}
 	}

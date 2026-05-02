@@ -64,6 +64,12 @@
     <Filter Include="MyCamera">
       <UniqueIdentifier>{ef82b8d1-cdad-4e66-b6da-df96825a2725}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemys">
+      <UniqueIdentifier>{85694c62-382e-4de7-9053-e8b7df7afc38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemys\EnemyBase">
+      <UniqueIdentifier>{9efee019-3b70-4d8d-96bf-e021d5148ea0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -138,6 +144,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)MyCamera.h">
       <Filter>MyCamera</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EnemyBase.h">
+      <Filter>Enemys\EnemyBase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -208,6 +217,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)MyCamera.cpp">
       <Filter>MyCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EnemyBase.cpp">
+      <Filter>Enemys\EnemyBase</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

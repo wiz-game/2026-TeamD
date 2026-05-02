@@ -20,8 +20,9 @@ namespace basecross
 
 		const char LEFT_TRIGGER_DEADZONE = 125;
 		const char RIGHT_TRIGGER_DEADZONE = 125;
-
+		
 		Point2D<int> m_beforeMouseClientPoint = Point2D<int>();
+		int m_wheelDelta = 0;
 	public:
 		static InputManager& Instance()
 		{
@@ -31,6 +32,9 @@ namespace basecross
 
 		void Initialize();
 		void Update();
+
+		void SetWheelDelta(int wheelDelta) { m_wheelDelta += wheelDelta; }
+		void ResetWheelDelta() { m_wheelDelta = 0; }
 	private:
 		InputManager() {}
 		virtual ~InputManager() {}

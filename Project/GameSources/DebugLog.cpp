@@ -15,8 +15,7 @@ namespace basecross
 	) :
 		GameObject(stagePtr)
 	{
-		m_logTitle = logTitle;
-		m_debugStr = m_logTitle;
+		m_debugStrs.insert({ L"LogTitle", logTitle });
 	}
 
 	void DebugLog::OnCreate() 
@@ -25,21 +24,44 @@ namespace basecross
 
 		m_sPtrStrComp->SetBackColor(Col4(0.0f, 0.0f, 0.0f, 0.8f));
 		m_sPtrStrComp->SetFontColor(Col4(0.0f, 1.0f, 0.0f, 1.0f));
-		m_sPtrStrComp->SetText(m_debugStr);
+		m_sPtrStrComp->SetText(m_debugStrs[L"LogTitle"]);
 
 		SetTextRect(Rect2D<float>(10.0f, 10.0f, 200.0f, 400.0f));
 		SetDrawLayer(20);
 	}
 
-	void DebugLog::OnUpdate() 
+	void DebugLog::AddDebugStr(const wstring& logName, const wstring& debugLog)
 	{
-		m_sPtrStrComp->SetText(m_debugStr);
-		m_debugStr = m_logTitle;
+		// すでに同じlogNameが存在する場合は更新、存在しない場合は追加
+		if (m_debugStrs.find(logName) != m_debugStrs.end())
+		{
+			m_debugStrs[logName] = debugLog;
+		}
+		else
+		{
+			m_debugStrs.insert({ logName, debugLog });
+		}
+
+		UpdateDebugLog();
 	}
 
-	void DebugLog::AddDebugStr(const wstring& debugStr)
+	void DebugLog::UpdateDebugLog()
 	{
-		m_debugStr += debugStr;
+		// StringSpriteに渡す変数を定義、タイトルはsecondのみ描画
+		wstring logStr = m_debugStrs[L"LogTitle"] + L"\n";
+
+		map<wstring, wstring>::iterator it;
+		for (it = m_debugStrs.begin(); it != m_debugStrs.end(); it++)
+		{
+			// タイトル以外を全て描画
+			if (it->first != L"LogTitle")
+			{
+				logStr += it->first + L" : ";
+				logStr += it->second + L"\n";
+			}
+		}
+
+		m_sPtrStrComp->SetText(logStr);
 	}
 
 	void DebugLog::SetTextRect(const Rect2D<float>& textRect)

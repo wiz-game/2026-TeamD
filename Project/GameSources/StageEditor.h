@@ -13,7 +13,8 @@ namespace basecross
 	{
 		Ground,
 		Mushroom,
-		Tree
+		Tree,
+		Max
 	};
 
 	enum class ENUM_EditorMode
@@ -27,7 +28,7 @@ namespace basecross
 	class StageEditor
 	{
 	private:
-		shared_ptr<DebugLog> m_sPtrStageLog = nullptr;
+		shared_ptr<DebugLog> m_sPtrEditorMenuLog = nullptr;
 
 		ENUM_AddedObj m_addedObj = ENUM_AddedObj::Ground;
 		ENUM_EditorMode m_editorMode = ENUM_EditorMode::Position;
@@ -40,6 +41,8 @@ namespace basecross
 	private:
 		StageEditor() {}
 		virtual ~StageEditor() {}
+
+		void RegisterEditorMenuLog(const wstring& logName, const wstring& debugLog);
 	public:
 		static StageEditor& Instance()
 		{
@@ -49,15 +52,21 @@ namespace basecross
 
 		void Initialize();
 
+		void AddEditorMenuLog(const wstring& logName, const wstring& debugLog) { RegisterEditorMenuLog(logName, debugLog); }
+		void AddEditorMenuLog(const wstring& logName, const int& debugLog)	   { RegisterEditorMenuLog(logName, to_wstring(debugLog)); }
+		void AddEditorMenuLog(const wstring& logName, const float& debugLog)   { RegisterEditorMenuLog(logName, to_wstring(debugLog)); }
+
 		void StartEditor();
 		void EndEditor();
 
 		void PressedLMouseButton(const Point2D<int> mousePoint);
+		void PressedDelete();
 
 		void SerectObj(const Point2D<int> mousePoint);
 		void GetMouseRey(Vec3& startPos, Vec3& endPos, const Point2D<int> mousePoint);
 		void DeselectObj();
 		void AddGameObject();
+		void ChangeObject(bool yKeyPressed, bool uKeyPressed);
 	};
 
 }
