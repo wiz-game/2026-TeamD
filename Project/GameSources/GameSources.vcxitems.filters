@@ -70,6 +70,9 @@
     <Filter Include="Enemys\EnemyBase">
       <UniqueIdentifier>{9efee019-3b70-4d8d-96bf-e021d5148ea0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StageObjs\Dirt">
+      <UniqueIdentifier>{39d59122-b66e-4782-821f-96b7efd9fd24}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -147,6 +150,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyBase.h">
       <Filter>Enemys\EnemyBase</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Dirt.h">
+      <Filter>StageObjs\Dirt</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -220,6 +226,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyBase.cpp">
       <Filter>Enemys\EnemyBase</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Dirt.cpp">
+      <Filter>StageObjs\Dirt</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
