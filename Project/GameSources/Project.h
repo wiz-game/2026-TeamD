@@ -24,6 +24,7 @@
 #include "Ground.h"
 #include "Tree.h"
 #include "Mushroom.h"
+#include "Dirt.h"
 
 // エネミー
 #include "EnemyBase.h"
