@@ -80,6 +80,10 @@ namespace basecross
 		// カメラの傾きの上限
 		const float MAX_RY = 3.0f, MIN_RY = -0.5f;
 
+		Vec3 at, eye;
+
+		// 
+
 		if (stickRY >= MAX_RY)
 		{
 			stickRY = MAX_RY;
@@ -95,8 +99,8 @@ namespace basecross
 			float cameraDistance = 2.0f;
 
 			// カメラの注視点（At）とカメラの位置（Eye）を計算
-			Vec3 at = targetPos + Vec3(0.0f, 1.0f, 0.0f);
-			Vec3 eye = targetPos + Vec3
+			at = targetPos + Vec3(0.0f, 1.0f, 0.0f);
+			eye = targetPos + Vec3
 			(
 				cosf(stickRX) * cameraDistance,
 				stickRY,
@@ -110,9 +114,6 @@ namespace basecross
 			at += Vec3(forward.z, 0.0f, -forward.x) * 0.25f;
 			eye += Vec3(forward.z, 0.0f, -forward.x) * 0.25f;
 
-			// カメラに設定を反映
-			this->SetAt(at);
-			this->SetEye(eye);
 		}
 		else if (m_isAiming == false)
 		{
@@ -120,8 +121,8 @@ namespace basecross
 			float slope = 5.5f;
 
 			// カメラの注視点（At）とカメラの位置（Eye）を計算
-			Vec3 at = targetPos + Vec3(0.0f, 1.0f, 0.0f);
-			Vec3 eye = targetPos + Vec3
+			at = targetPos + Vec3(0.0f, 1.0f, 0.0f);
+			eye = targetPos + Vec3
 			(
 				cosf(stickRX) * slope,
 				stickRY * 2.0f,
@@ -147,11 +148,50 @@ namespace basecross
 				float angle = atan2f(vectorx, vectorz);
 				playerComp->SetRotation(0.0f, angle, 0.0f);
 			}
-
-			// カメラに設定を反映
-			this->SetAt(at);
-			this->SetEye(eye);
 		}
+		Vec3 originEye = eye;
+		float minT = 1.0f;
+
+		for (auto& obj : stage->GetGameObjectVec())
+		{
+			if (obj == player)
+			{
+				continue;
+			}
+
+			auto drawComp = obj->GetComponent<PNTStaticDraw>(false);
+			if (drawComp)
+			{
+				Vec3 hitPoint;
+				TRIANGLE tri;
+				size_t index;
+
+				// 注視点(at)から本来のカメラ位置(eye)までの線分と、オブジェクトのメッシュとの衝突判定
+				if (drawComp->HitTestStaticMeshSegmentTrianglesToAffine(at, originEye, hitPoint, tri, index))
+				{
+					// 衝突点までの距離の割合を計算
+					float dist = bsm::length(hitPoint - at);
+					float tDist = bsm::length(originEye - at);
+					float t = dist / tDist;
+
+					if (t < minT)
+					{
+						minT = t;
+					}
+				}
+			}
+		}
+
+		// 衝突があった場合、カメラの衝突点の手前に移動
+		if (minT < 1.0f)
+		{
+			// 壁に埋まらないように衝突点より少し注視点に寄せる
+			eye = at + (originEye - at) * (minT * 0.9f);
+		}
+
+		// カメラに設定を反映
+		this->SetAt(at);
+		this->SetEye(eye);
 	}
 
 	void MyCamera::FocusFixedViewPointMove(const Point2D<int> mousePoint)
@@ -160,12 +200,13 @@ namespace basecross
 		m_yaw += mousePoint.x * elapsedTime;
 		m_pitch += mousePoint.y * elapsedTime;
 		
-		float radius = 5.5f;
-		float cosP = cosf(m_pitch);
+		float curDist = (GetEye() - GetAt()).length();
+		if (curDist < 1e-6f) return;
 
-		float offsetX = radius * cosP * cosf(m_yaw);
-		float offsetY = radius * sinf(m_pitch);
-		float offsetZ = radius * cosP * sinf(m_yaw);
+		float cosP = cosf(m_pitch); 
+		float offsetX = curDist * cosP * cosf(m_yaw);
+		float offsetY = curDist * sinf(m_pitch);
+		float offsetZ = curDist * cosP * sinf(m_yaw);
 
 		SetEye(GetAt() + Vec3(offsetX, offsetY, offsetZ));
 	}
@@ -186,6 +227,24 @@ namespace basecross
 
 		SetAt(GetAt() + deltaXZ + deltaY);
 		SetEye(GetEye() + deltaXZ + deltaY);
+	}
+
+	void MyCamera::WheelCameraDistance(int wheelDelta)
+	{
+		Vec3 at = GetAt();
+		Vec3 eye = GetEye();
+
+		Vec3 dir = at - eye;
+		float curDist = dir.length();
+		if (curDist < 1e-6f) return;
+
+		Vec3 dirN = dir / curDist;
+
+		float newDist = curDist - wheelDelta * 1.0f;
+		
+		Vec3 newEye = at - dirN * newDist;
+
+		SetEye(newEye);
 	}
 	
 	void MyCamera::UpdatePlayMode()
