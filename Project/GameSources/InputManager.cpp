@@ -14,6 +14,8 @@ namespace basecross
 		m_pad = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 		m_key = App::GetApp()->GetInputDevice().GetKeyState();
 		
+		StageEditor::Instance().AddEditorMenuLog(L"MouseWheel", m_wheelDelta);
+
 		switch (GameManager::Instance().GetGameMode())
 		{
 		default:
@@ -83,6 +85,11 @@ namespace basecross
 				CameraFixedViewPointMove();
 			}
 
+			if (m_wheelDelta != m_beforeWheelDelta)
+			{
+				WheelCameraDistance();
+			}
+
 			// 生成オブジェクト切替
 			if (m_key.m_bPressedKeyTbl['Y'] || m_key.m_bPressedKeyTbl['U'])
 			{
@@ -141,6 +148,7 @@ namespace basecross
 
 		// マウスポイントの更新
 		m_beforeMouseClientPoint = m_key.m_MouseClientPoint;
+		m_beforeWheelDelta = m_wheelDelta;
 	}
 
 	void InputManager::Moves()
@@ -208,6 +216,12 @@ namespace basecross
 				m_key.m_MouseClientPoint.y - m_beforeMouseClientPoint.y
 			);
 		GetMyCamera()->CameraFixedViewPointMove(mousePoint);
+	}
+
+	void InputManager::WheelCameraDistance()
+	{
+		auto wheelDelta = m_wheelDelta - m_beforeWheelDelta;
+		GetMyCamera()->WheelCameraDistance(wheelDelta);
 	}
 
 	void InputManager::ChangeObject()
