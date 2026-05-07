@@ -12,7 +12,7 @@ namespace basecross
 	{
 	private:
 		map<wstring, wstring> m_debugStrs = {};
-		shared_ptr<StringSprite> m_sPtrStrComp;
+		shared_ptr<StringSprite> m_sPtrStrComp = nullptr;
 	private:
 	public:
 		DebugLog(const shared_ptr<Stage>& stagePtr, const wstring& logTitle = L"-DebugLog-");
