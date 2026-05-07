@@ -22,6 +22,7 @@ namespace basecross
 		const char RIGHT_TRIGGER_DEADZONE = 125;
 		
 		Point2D<int> m_beforeMouseClientPoint = Point2D<int>();
+		int m_beforeWheelDelta = 0;
 		int m_wheelDelta = 0;
 	public:
 		static InputManager& Instance()
@@ -75,7 +76,10 @@ namespace basecross
 		
 		// カメラ位置固定視点移動
 		void CameraFixedViewPointMove();
-		
+
+		// マウスホイールによるカメラ距離の操作
+		void WheelCameraDistance();
+
 		// 生成オブジェクト切替
 		void ChangeObject();
 

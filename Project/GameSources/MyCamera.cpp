@@ -160,12 +160,13 @@ namespace basecross
 		m_yaw += mousePoint.x * elapsedTime;
 		m_pitch += mousePoint.y * elapsedTime;
 		
-		float radius = 5.5f;
-		float cosP = cosf(m_pitch);
+		float curDist = (GetEye() - GetAt()).length();
+		if (curDist < 1e-6f) return;
 
-		float offsetX = radius * cosP * cosf(m_yaw);
-		float offsetY = radius * sinf(m_pitch);
-		float offsetZ = radius * cosP * sinf(m_yaw);
+		float cosP = cosf(m_pitch); 
+		float offsetX = curDist * cosP * cosf(m_yaw);
+		float offsetY = curDist * sinf(m_pitch);
+		float offsetZ = curDist * cosP * sinf(m_yaw);
 
 		SetEye(GetAt() + Vec3(offsetX, offsetY, offsetZ));
 	}
@@ -186,6 +187,24 @@ namespace basecross
 
 		SetAt(GetAt() + deltaXZ + deltaY);
 		SetEye(GetEye() + deltaXZ + deltaY);
+	}
+
+	void MyCamera::WheelCameraDistance(int wheelDelta)
+	{
+		Vec3 at = GetAt();
+		Vec3 eye = GetEye();
+
+		Vec3 dir = at - eye;
+		float curDist = dir.length();
+		if (curDist < 1e-6f) return;
+
+		Vec3 dirN = dir / curDist;
+
+		float newDist = curDist - wheelDelta * 1.0f;
+		
+		Vec3 newEye = at - dirN * newDist;
+
+		SetEye(newEye);
 	}
 	
 	void MyCamera::UpdatePlayMode()
