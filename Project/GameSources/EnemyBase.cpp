@@ -6,11 +6,13 @@ namespace basecross
 {
     void EnemyBase::OnCreate()
     {
+        //DebugDraw();
     }
 
 	void EnemyBase::OnUpdate()
 	{
-        DebugString();
+        //Move(GetThis<EnemyBase>(), 2.0f);
+        //DebugString();
 	}
 
 	// 敵共通の移動の動きを書く
@@ -22,6 +24,7 @@ namespace basecross
 
         // 時間（乱数）
         float randTime = rand() % 3 + 1;
+        float randRotation = rand() % 361;
 
         // ゼロ
         const float ZERO_TIME = 0.0f;
@@ -46,39 +49,19 @@ namespace basecross
                 m_isWandering = true;
 
                 m_InitialWanderingTime = randTime;
-                m_wandering = static_cast<Wandering>(rand() % Number);
+                m_RandRotation = randRotation;
             }
         }
         // 徘徊時間
         else if (m_isWandering == true)
         {
-            //m_InitialWanderingTime = wanderingTime;
             if (m_InitialWanderingTime > ZERO_TIME)
             {
                 m_InitialWanderingTime -= App::GetApp()->GetElapsedTime();
-
-                // ここに徘徊処理を書く
-                switch (m_wandering)
-                {
-                case move_x_puls:
-                    transPos.x += deltaTime * speed;
-                    break;
-
-                case move_x_minus:
-                    transPos.x -= deltaTime * speed;
-                    break;
-                    
-                case move_z_puls:
-                    transPos.z += deltaTime * speed;
-                    break;
-
-                case move_z_minus:
-                    transPos.z -= deltaTime * speed;
-                    break;
-
-                default:
-                    break;
-                }
+                float rad = XMConvertToRadians(m_RandRotation);
+                // 徘徊をランダムにする
+                transPos.x += cosf(rad) * deltaTime * speed;
+                transPos.z += sinf(rad) * deltaTime * speed;
             }
             else if (m_InitialWanderingTime <= ZERO_TIME)
             {
@@ -93,9 +76,28 @@ namespace basecross
         transComp->SetPosition(transPos);
     }
 
+    void EnemyBase::CircleMove
+    (
+        const shared_ptr<GameObject>& gameObject,
+        float circleScale
+    )
+    {
+
+    }
+
     void EnemyBase::DebugString()
     {
         GameManager::Instance().AddDebugStr(L"m_InitialStandTime", m_InitialStandTime);
         GameManager::Instance().AddDebugStr(L"m_InitialWanderingTime", m_InitialWanderingTime);
+    }
+
+    void EnemyBase::DebugDraw()
+    {
+        auto transComp = AddComponent<Transform>();
+        transComp->SetPosition(0.0f, 61.0f, 0.0f);
+
+        auto drawComp = AddComponent<PNTStaticDraw>();
+        drawComp->SetMeshResource(L"DEFAULT_CUBE");
+        drawComp->SetDrawActive(true);
     }
 }
