@@ -14,8 +14,6 @@ namespace basecross
 		m_pad = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 		m_key = App::GetApp()->GetInputDevice().GetKeyState();
 		
-		StageEditor::Instance().AddEditorMenuLog(L"MouseWheel", m_wheelDelta);
-
 		switch (GameManager::Instance().GetGameMode())
 		{
 		default:
