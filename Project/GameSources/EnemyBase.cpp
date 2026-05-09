@@ -6,13 +6,14 @@ namespace basecross
 {
     void EnemyBase::OnCreate()
     {
-        //DebugDraw();
+        DebugDraw();
     }
 
 	void EnemyBase::OnUpdate()
 	{
-        //Move(GetThis<EnemyBase>(), 2.0f);
-        //DebugString();
+        // Move(GetThis<EnemyBase>(), 2.0f);
+        CircleMove(GetThis<EnemyBase>(), 1.0f,1.0f);
+        DebugString();
 	}
 
 	// 敵共通の移動の動きを書く
@@ -79,10 +80,25 @@ namespace basecross
     void EnemyBase::CircleMove
     (
         const shared_ptr<GameObject>& gameObject,
-        float circleScale
+        float radius,
+        float moveSpeed
     )
     {
+        auto transComp = gameObject->GetComponent<Transform>();
+        auto transPos = transComp->GetPosition();
 
+        // 角度の値を増やす
+        m_angle += moveSpeed * App::GetApp()->GetElapsedTime();
+
+        // 現在の位置を更新する（カメラの回転を参考にしました）
+        // radius：回転する半径を決めます
+        transPos.x = cosf(m_angle) * radius;
+        transPos.z = sinf(m_angle) * radius;
+
+        transComp->SetPosition(transPos.x, transPos.y, transPos.z);
+
+        float angle = atan2f(transPos.x, transPos.z);
+        transComp->SetRotation(0.0f, angle, 0.0f);
     }
 
     void EnemyBase::DebugString()
