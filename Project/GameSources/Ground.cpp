@@ -11,11 +11,12 @@ namespace basecross
 	Ground::Ground
 	(
 		const shared_ptr<Stage>& StagePtr,
+		const int& Id,
 		const Vec3& Scale,
 		const Quat& Quaternion,
 		const Vec3& Position
 	) :
-		GameObject(StagePtr)
+		GameObject(StagePtr, Id)
 	{
 		m_scale = Scale;
 		m_quaternion = Quaternion;
@@ -32,7 +33,7 @@ namespace basecross
 		AddTag(L"Ground");
 		AddTag(L"BossLastRandTarget");
 		SetAlphaActive(true);
-
+		
 		auto ptrDraw = AddComponent<PNTStaticDraw>();
 		auto ptrShadow = AddComponent<Shadowmap>();
 		m_sPtrTrans = AddComponent<Transform>();

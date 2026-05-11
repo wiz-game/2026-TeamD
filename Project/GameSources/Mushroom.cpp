@@ -5,11 +5,12 @@ namespace basecross
 {
 	Mushroom::Mushroom(
 		const shared_ptr<Stage>& StagePtr,
+		const int& Id,
 		const Vec3& Scale,
 		const Quat& Quatition,
 		const Vec3& Position
 	) :
-		GameObject(StagePtr)
+		GameObject(StagePtr, Id)
 	{
 		m_scale = Scale;
 		m_quaternion = Quatition;
