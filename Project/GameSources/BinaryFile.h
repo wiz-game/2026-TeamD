@@ -13,11 +13,9 @@
 template <typename T>
 inline static void BinaryWrite(const std::string& path, const T& r)
 {
-	static_assert(std::is_trivially_copyable_v<T>, "T must be trivially copyable");
-
 	std::filesystem::path filePath(path);
-
-	std::ofstream ofs(filePath, std::ios::binary);
+	
+	std::ofstream ofs(filePath, std::ios::binary | std::ios::app);
 	if (!ofs) throw std::runtime_error("open failed");
 			
 	ofs.write(reinterpret_cast<const char*>(&r), sizeof(r));
@@ -37,4 +35,18 @@ inline static void BinaryRead(const std::string& path, T& r)
 		
 	ifs.read(reinterpret_cast<char*>(&r), sizeof(r));
 	if (!ifs) throw std::runtime_error("read failed");
+
+	ifs.close();
+	if (!ifs) throw std::runtime_error("close failed");
+}
+
+inline static void BinaryClear(const std::string& path)
+{
+	std::filesystem::path filePath(path);
+
+	std::ofstream ofs(filePath, std::ios::binary | std::ios::trunc);
+	if (!ofs) throw std::runtime_error("open failed");
+
+	ofs.close();
+	if (!ofs) throw std::runtime_error("close failed");
 }
