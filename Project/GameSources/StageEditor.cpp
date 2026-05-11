@@ -12,6 +12,32 @@ namespace basecross
 	void StageEditor::Initialize()
 	{
 	}
+	
+	void StageEditor::WriteStageData()
+	{
+		auto dataPath = GetMediaDataDir() + m_stageDatasDir + m_stageDataPath;
+		BinaryClear(dataPath);
+
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		auto gameObjs = stage->GetGameObjectVec();
+
+		for (auto& gameObj : gameObjs)
+		{
+			if (!gameObj) continue;
+			auto transform = gameObj->GetComponent<Transform>();
+			if (!transform) continue;
+
+			BinaryWrite(dataPath, gameObj->GetID());
+			BinaryWrite(dataPath, transform->GetPosition());
+			BinaryWrite(dataPath, transform->GetQuaternion());
+			BinaryWrite(dataPath, transform->GetScale());
+		}
+	}
+
+	void StageEditor::ReadStageData(const string& stageDataPath, const shared_ptr<Stage>& stage)
+	{
+		m_stageDataPath = stageDataPath;
+	}
 		
 	void StageEditor::StartEditor()
 	{
@@ -22,7 +48,7 @@ namespace basecross
 		AddEditorMenuLog(L"SelectObject", static_cast<int>(m_addedObj));
 
 		m_editorMode = ENUM_EditorMode::Position;
-		m_isSelectedObj = false;	
+		m_isSelectedObj = false;
 	}
 
 	void StageEditor::EndEditor()
@@ -170,16 +196,19 @@ namespace basecross
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
 		if (!stage) return;
 
+		int id = static_cast<int>(m_addedObj);
 		switch (m_addedObj)
 		{
 		default:
 			break;
 		case ENUM_AddedObj::Ground:
-			stage->AddGameObject<Ground>(Vec3(1.0f), Quat(), Vec3(0.0f, 0.0f, 0.0f));
+			stage->AddGameObject<Ground>(id, Vec3(1.0f), Quat(0.0f, 0.0f, 0.0, 1.0f), Vec3(0.0f));
 			break;
 		case ENUM_AddedObj::Mushroom:
+			stage->AddGameObject<Mushroom>(id, Vec3(1.0f), Quat(0.0f, 0.0f, 0.0, 1.0f), Vec3(0.0f));
 			break;
 		case ENUM_AddedObj::Tree:
+			stage->AddGameObject<Tree>(id, Vec3(1.0f), Quat(0.0f, 0.0f, 0.0, 1.0f), Vec3(0.0f));
 			break;
 		}
 	}

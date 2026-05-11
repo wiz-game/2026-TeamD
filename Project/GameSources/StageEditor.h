@@ -35,6 +35,9 @@ namespace basecross
 
 		shared_ptr<GameObject> m_selectedObj = nullptr;
 
+		string m_stageDatasDir = "StageDatas/";
+		string m_stageDataPath = "Stage_1.bin";
+
 		Vec4 m_selectedObjColor = Vec4(1.0f, 1.0f, 0.0f, 0.8f);
 		Vec4 m_defaultObjColor = Vec4(0.6f, 0.6f, 0.6f, 1.0f);
 		bool m_isSelectedObj = false;
@@ -42,6 +45,7 @@ namespace basecross
 		StageEditor() {}
 		virtual ~StageEditor() {}
 
+		string GetMediaDataDir() { return to_string(App::GetApp()->GetDataDirWString()); }
 		void RegisterEditorMenuLog(const wstring& logName, const wstring& debugLog);
 	public:
 		static StageEditor& Instance()
@@ -52,6 +56,9 @@ namespace basecross
 
 		void Initialize();
 
+		void WriteStageData();
+		void ReadStageData(const string& stageDataPath, const shared_ptr<Stage>& stage);
+		
 		void AddEditorMenuLog(const wstring& logName, const wstring& debugLog) { RegisterEditorMenuLog(logName, debugLog); }
 		void AddEditorMenuLog(const wstring& logName, const int& debugLog)	   { RegisterEditorMenuLog(logName, to_wstring(debugLog)); }
 		void AddEditorMenuLog(const wstring& logName, const float& debugLog)   { RegisterEditorMenuLog(logName, to_wstring(debugLog)); }
