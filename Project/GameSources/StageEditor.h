@@ -9,6 +9,14 @@
 
 namespace basecross
 {
+	struct STRUCT_ObjectData
+	{
+		int ID = 0;
+		Vec3 Scale = Vec3();
+		Quat Quaternion = Quat();
+		Vec3 Position = Vec3();
+	};
+
 	enum class ENUM_AddedObj
 	{
 		Ground,

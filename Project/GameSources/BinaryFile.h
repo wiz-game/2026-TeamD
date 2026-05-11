@@ -11,7 +11,7 @@
 #include <stdexcept>
 
 template <typename T>
-inline static void BinaryWrite(const std::string& path, const T& r)
+inline static void BinaryWriteAdd(const std::string& path, const T& r)
 {
 	std::filesystem::path filePath(path);
 	
@@ -26,7 +26,7 @@ inline static void BinaryWrite(const std::string& path, const T& r)
 }
 
 template <typename T>
-inline static void BinaryRead(const std::string& path, T& r)
+inline static void BinaryAllRead(const std::string& path, T& r)
 {
 	std::filesystem::path filePath(path);
 
@@ -38,6 +38,26 @@ inline static void BinaryRead(const std::string& path, T& r)
 
 	ifs.close();
 	if (!ifs) throw std::runtime_error("close failed");
+}
+
+template <typename T>
+inline static void BinaryAllReadDataUnit(const std::string& path, std::vector<T>& datas)
+{
+	std::ifstream readFile(path, std::ios::binary | std::ios::ate);
+	if (!readFile) throw std::runtime_error("open failed");
+	
+	std::streamsize size = readFile.tellg();
+	readFile.seekg(0, std::ios::beg);
+
+	std::vector<T> objects(size / sizeof(datas));
+
+	readFile.read(reinterpret_cast<char*>(objects.data()), size);
+	if (!readFile) throw std::runtime_error("read failed");
+
+	datas = objects;
+
+	readFile.close();
+	if (!readFile) throw std::runtime_error("close failed");
 }
 
 inline static void BinaryClear(const std::string& path)

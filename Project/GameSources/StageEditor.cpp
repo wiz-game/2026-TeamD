@@ -31,10 +31,10 @@ namespace basecross
 			auto transform = gameObj->GetComponent<Transform>();
 			if (!transform) continue;
 
-			BinaryWrite(dataPath, gameObj->GetID());
-			BinaryWrite(dataPath, transform->GetPosition());
-			BinaryWrite(dataPath, transform->GetQuaternion());
-			BinaryWrite(dataPath, transform->GetScale());
+			BinaryWriteAdd(dataPath, gameObj->GetID());
+			BinaryWriteAdd(dataPath, transform->GetScale());
+			BinaryWriteAdd(dataPath, transform->GetQuaternion());
+			BinaryWriteAdd(dataPath, transform->GetPosition());
 		}
 
 		AddEditorMenuLog(L"Save", L"OK");
@@ -43,6 +43,29 @@ namespace basecross
 	void StageEditor::ReadStageData(const string& stageDataPath, const shared_ptr<Stage>& stage)
 	{
 		m_stageDataPath = stageDataPath;
+		auto dataPath = GetMediaDataDir() + m_stageDatasDir + m_stageDataPath;
+		
+		vector<STRUCT_ObjectData> objDatas;
+		BinaryAllReadDataUnit(dataPath, objDatas);
+
+		for (const auto& objData : objDatas)
+		{
+			ENUM_AddedObj addedObj = static_cast<ENUM_AddedObj>(objData.ID);
+			switch (addedObj)
+			{
+			case ENUM_AddedObj::Ground:
+				stage->AddGameObject<Ground>(objData.ID, objData.Scale, objData.Quaternion, objData.Position);
+				break;
+			case ENUM_AddedObj::Mushroom:
+				stage->AddGameObject<Mushroom>(objData.ID, objData.Scale, objData.Quaternion, objData.Position);
+				break;
+			case ENUM_AddedObj::Tree:
+				stage->AddGameObject<Tree>(objData.ID, objData.Scale, objData.Quaternion, objData.Position);
+				break;
+			default:
+				break;
+			}
+		}
 	}
 		
 	void StageEditor::StartEditor()
