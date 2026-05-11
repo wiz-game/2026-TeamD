@@ -159,6 +159,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Conversion.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EditorObjectInterface.h">
+      <Filter>Other</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
