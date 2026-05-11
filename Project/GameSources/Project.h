@@ -9,6 +9,8 @@
 #include "Scene.h"
 
 #include "DebugLog.h"
+#include "BinaryFile.h"
+#include "Conversion.h"
 
 // マネージャークラス
 #include "GameManager.h"

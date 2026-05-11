@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Project.h"
-#include "StageEditor.h"
 
 namespace basecross
 {
@@ -23,7 +22,7 @@ namespace basecross
 		AddEditorMenuLog(L"SelectObject", static_cast<int>(m_addedObj));
 
 		m_editorMode = ENUM_EditorMode::Position;
-		m_isSelectedObj = false;
+		m_isSelectedObj = false;	
 	}
 
 	void StageEditor::EndEditor()
