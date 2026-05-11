@@ -24,6 +24,10 @@ namespace basecross
 		for (auto& gameObj : gameObjs)
 		{
 			if (!gameObj) continue;
+			auto player = dynamic_pointer_cast<Player>(gameObj);
+			if (player) continue;
+			auto debugLog = dynamic_pointer_cast<DebugLog>(gameObj);
+			if (debugLog) continue;
 			auto transform = gameObj->GetComponent<Transform>();
 			if (!transform) continue;
 
@@ -32,6 +36,8 @@ namespace basecross
 			BinaryWrite(dataPath, transform->GetQuaternion());
 			BinaryWrite(dataPath, transform->GetScale());
 		}
+
+		AddEditorMenuLog(L"Save", L"OK");
 	}
 
 	void StageEditor::ReadStageData(const string& stageDataPath, const shared_ptr<Stage>& stage)
