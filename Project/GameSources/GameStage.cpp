@@ -37,7 +37,7 @@ namespace basecross
 			CreateViewLight();
 			CreatePlayer();
 
-			auto pash = App::GetApp()->GetDataDirWString() + L"StageObjDatas/";
+			auto pash = App::GetApp()->GetDataDirWString() + L"StageDatas/";
 			wstring stageObjData = pash + L"Stage" + to_wstring(0) + L".csv";
 			ifstream ifsStageObjData(stageObjData);
 			if (!ifsStageObjData)
@@ -73,6 +73,7 @@ namespace basecross
 
 			AddGameObject<Tree>
 			(
+				2,
 				Vec3(1.0f, 1.0f, 1.0f),
 				Quat(0.0f, 0.0f, 0.0f, 1.0f),
 				Vec3(165.0f, 88.6f, 0.0f)
@@ -80,6 +81,7 @@ namespace basecross
 
 			AddGameObject<Mushroom>
 			(
+				1,
 				Vec3(1.0f, 1.0f, 1.0f),
 				Quat(0.0f, 0.0f, 0.0f, 1.0f),
 				Vec3(161.0f, 88.6f, 0.0f)
@@ -193,6 +195,7 @@ namespace basecross
 		case 0:
 			AddGameObject<Ground>
 				(
+					0,
 					ObjParams.StageObjParams.Scale,
 					ObjParams.StageObjParams.Quaternion,
 					ObjParams.StageObjParams.Position
