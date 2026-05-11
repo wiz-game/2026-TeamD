@@ -93,7 +93,13 @@ namespace basecross
 			{
 				ChangeObject();
 			}
-			
+
+			// ステージ保存
+			if (m_key.m_bPressedKeyTbl['S'] && m_key.m_bPushKeyTbl[VK_LCONTROL])
+			{
+				SaveStage();
+			}
+
 			// オブジェクト選択
 			if (m_key.m_bPressedKeyTbl[VK_LBUTTON] && !m_key.m_bPushKeyTbl[VK_TAB])
 			{
@@ -225,6 +231,11 @@ namespace basecross
 	void InputManager::ChangeObject()
 	{
 		StageEditor::Instance().ChangeObject(m_key.m_bPressedKeyTbl['Y'], m_key.m_bPressedKeyTbl['U']);
+	}
+
+	void InputManager::SaveStage()
+	{
+		StageEditor::Instance().WriteStageData();
 	}
 
 	void InputManager::PressedLMouseButton()
