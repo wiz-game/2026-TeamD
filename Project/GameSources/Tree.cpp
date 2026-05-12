@@ -3,23 +3,16 @@
 
 namespace basecross
 {
-	Tree::Tree(
+	Tree::Tree
+	(
 		const shared_ptr<Stage>& StagePtr,
-		const int& Id,
-		const Vec3& Scale,
-		const Quat& Quaternion,
-		const Vec3& Position
+		const STRUCT_ObjectParam& objectParam
 	) :
-		GameObject(StagePtr, Id)
-	{
-		m_scale = Scale;
-		m_quaternion = Quaternion;
-		m_position = Position;
-	}
+		GameObject(StagePtr, objectParam)
+	{}
 
 	Tree::~Tree()
 	{
-
 	}
 
 	void Tree::OnCreate()
@@ -35,9 +28,9 @@ namespace basecross
 		ptrDraw->SetOwnShadowActive(true);
 
 		m_sPtrTrans = AddComponent<Transform>();
-		m_sPtrTrans->SetPosition(m_position);
-		m_sPtrTrans->SetQuaternion(m_quaternion);
-		m_sPtrTrans->SetScale(m_scale);
+		m_sPtrTrans->SetScale(m_objectParam.GetScale());
+		m_sPtrTrans->SetQuaternion(m_objectParam.GetQuaternion());
+		m_sPtrTrans->SetPosition(m_objectParam.GetPosition());
 
 		Mat4x4 spanMat;
 		spanMat.affineTransformation

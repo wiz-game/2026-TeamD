@@ -9,22 +9,6 @@
 
 namespace basecross
 {
-	struct STRUCT_ObjectData
-	{
-		int ID = 0;
-		Vec3 Scale = Vec3();
-		Quat Quaternion = Quat();
-		Vec3 Position = Vec3();
-	};
-
-	enum class ENUM_AddedObj
-	{
-		Ground,
-		Mushroom,
-		Tree,
-		Max
-	};
-
 	enum class ENUM_EditorMode
 	{
 		Position,
@@ -38,7 +22,7 @@ namespace basecross
 	private:
 		shared_ptr<DebugLog> m_sPtrEditorMenuLog = nullptr;
 
-		ENUM_AddedObj m_addedObj = ENUM_AddedObj::Ground;
+		ENUM_ObjectID m_objID = ENUM_ObjectID::Ground;
 		ENUM_EditorMode m_editorMode = ENUM_EditorMode::Position;
 
 		shared_ptr<GameObject> m_selectedObj = nullptr;
