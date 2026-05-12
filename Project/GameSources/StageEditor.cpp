@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Project.h"
-#include "StageEditor.h"
 
 namespace basecross
 {
@@ -12,6 +11,61 @@ namespace basecross
 
 	void StageEditor::Initialize()
 	{
+	}
+	
+	void StageEditor::WriteStageData()
+	{
+		auto dataPath = GetMediaDataDir() + m_stageDatasDir + m_stageDataPath;
+		BinaryClear(dataPath);
+
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		auto gameObjs = stage->GetGameObjectVec();
+
+		for (auto& gameObj : gameObjs)
+		{
+			if (!gameObj) continue;
+			auto player = dynamic_pointer_cast<Player>(gameObj);
+			if (player) continue;
+			auto debugLog = dynamic_pointer_cast<DebugLog>(gameObj);
+			if (debugLog) continue;
+			auto transform = gameObj->GetComponent<Transform>();
+			if (!transform) continue;
+
+			BinaryWriteAdd(dataPath, gameObj->GetID());
+			BinaryWriteAdd(dataPath, transform->GetScale());
+			BinaryWriteAdd(dataPath, transform->GetQuaternion());
+			BinaryWriteAdd(dataPath, transform->GetPosition());
+		}
+
+		AddEditorMenuLog(L"Save", L"OK");
+	}
+
+	void StageEditor::ReadStageData(const string& stageDataPath, const shared_ptr<Stage>& stage)
+	{
+		m_stageDataPath = stageDataPath;
+		auto dataPath = GetMediaDataDir() + m_stageDatasDir + m_stageDataPath;
+		
+		vector<STRUCT_ObjectData> objDatas;
+		BinaryAllReadDataUnit(dataPath, objDatas);
+
+		for (const auto& objData : objDatas)
+		{
+			ENUM_AddedObj addedObj = static_cast<ENUM_AddedObj>(objData.ID);
+			switch (addedObj)
+			{
+			case ENUM_AddedObj::Ground:
+				stage->AddGameObject<Ground>(objData.ID, objData.Scale, objData.Quaternion, objData.Position);
+				break;
+			case ENUM_AddedObj::Mushroom:
+				stage->AddGameObject<Mushroom>(objData.ID, objData.Scale, objData.Quaternion, objData.Position);
+				break;
+			case ENUM_AddedObj::Tree:
+				stage->AddGameObject<Tree>(objData.ID, objData.Scale, objData.Quaternion, objData.Position);
+				break;
+			default:
+				break;
+			}
+		}
 	}
 		
 	void StageEditor::StartEditor()
@@ -171,16 +225,19 @@ namespace basecross
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
 		if (!stage) return;
 
+		int id = static_cast<int>(m_addedObj);
 		switch (m_addedObj)
 		{
 		default:
 			break;
 		case ENUM_AddedObj::Ground:
-			stage->AddGameObject<Ground>(Vec3(1.0f), Quat(), Vec3(0.0f, 0.0f, 0.0f));
+			stage->AddGameObject<Ground>(id, Vec3(1.0f), Quat(0.0f, 0.0f, 0.0, 1.0f), Vec3(0.0f));
 			break;
 		case ENUM_AddedObj::Mushroom:
+			stage->AddGameObject<Mushroom>(id, Vec3(1.0f), Quat(0.0f, 0.0f, 0.0, 1.0f), Vec3(0.0f));
 			break;
 		case ENUM_AddedObj::Tree:
+			stage->AddGameObject<Tree>(id, Vec3(1.0f), Quat(0.0f, 0.0f, 0.0, 1.0f), Vec3(0.0f));
 			break;
 		}
 	}

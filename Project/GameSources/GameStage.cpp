@@ -37,53 +37,57 @@ namespace basecross
 			CreateViewLight();
 			CreatePlayer();
 
-			auto pash = App::GetApp()->GetDataDirWString() + L"StageObjDatas/";
-			wstring stageObjData = pash + L"Stage" + to_wstring(0) + L".csv";
-			ifstream ifsStageObjData(stageObjData);
-			if (!ifsStageObjData)
-			{
-				throw BaseException
-				(
-					L"ステージオブジェクトファイルが存在しません",
-					L"ifsStageObjData",
-					L"GameStageBase::CreateAllStageObject(wstring StageObjData)"
-				);
-			}
-			string rowBuf;
+			StageEditor::Instance().ReadStageData("Stage_1.bin", GetThis<GameStage>());
 
-			// 一行読む
-			// 1ループごとに1つオブジェクトを追加する
-			for (int row = 0; getline(ifsStageObjData, rowBuf); row++)
-			{
-				istringstream issObjParam(rowBuf);
-				string colBuf;
+			//auto pash = App::GetApp()->GetDataDirWString() + L"StageDatas/";
+			//wstring stageObjData = pash + L"Stage" + to_wstring(0) + L".csv";
+			//ifstream ifsStageObjData(stageObjData);
+			//if (!ifsStageObjData)
+			//{
+			//	throw BaseException
+			//	(
+			//		L"ステージオブジェクトファイルが存在しません",
+			//		L"ifsStageObjData",
+			//		L"GameStageBase::CreateAllStageObject(wstring StageObjData)"
+			//	);
+			//}
+			//string rowBuf;
 
-				// 一列読んでオブジェクトタイプをみる
-				getline(issObjParam, colBuf, ',');
-				// タイプに応じた生成を行う
-				switch ((ENUM_ObjType)stoi(colBuf))
-				{
-				default:
-					break;
-				case ENUM_ObjType::Fixed:
-					AddFixedObj(GetFixedParams(issObjParam, colBuf));
-					break;
-				}
-			}
+			//// 一行読む
+			//// 1ループごとに1つオブジェクトを追加する
+			//for (int row = 0; getline(ifsStageObjData, rowBuf); row++)
+			//{
+			//	istringstream issObjParam(rowBuf);
+			//	string colBuf;
 
-			AddGameObject<Tree>
-			(
-				Vec3(1.0f, 1.0f, 1.0f),
-				Quat(0.0f, 0.0f, 0.0f, 1.0f),
-				Vec3(165.0f, 88.6f, 0.0f)
-			);
+			//	// 一列読んでオブジェクトタイプをみる
+			//	getline(issObjParam, colBuf, ',');
+			//	// タイプに応じた生成を行う
+			//	switch ((ENUM_ObjType)stoi(colBuf))
+			//	{
+			//	default:
+			//		break;
+			//	case ENUM_ObjType::Fixed:
+			//		AddFixedObj(GetFixedParams(issObjParam, colBuf));
+			//		break;
+			//	}
+			//}
 
-			AddGameObject<Mushroom>
-			(
-				Vec3(1.0f, 1.0f, 1.0f),
-				Quat(0.0f, 0.0f, 0.0f, 1.0f),
-				Vec3(161.0f, 88.6f, 0.0f)
-			);
+			//AddGameObject<Tree>
+			//(
+			//	2,
+			//	Vec3(1.0f, 1.0f, 1.0f),
+			//	Quat(0.0f, 0.0f, 0.0f, 1.0f),
+			//	Vec3(165.0f, 88.6f, 0.0f)
+			//);
+
+			//AddGameObject<Mushroom>
+			//(
+			//	1,
+			//	Vec3(1.0f, 1.0f, 1.0f),
+			//	Quat(0.0f, 0.0f, 0.0f, 1.0f),
+			//	Vec3(161.0f, 88.6f, 0.0f)
+			//);
 		}
 		catch (...) {
 			throw;
@@ -193,6 +197,7 @@ namespace basecross
 		case 0:
 			AddGameObject<Ground>
 				(
+					0,
 					ObjParams.StageObjParams.Scale,
 					ObjParams.StageObjParams.Quaternion,
 					ObjParams.StageObjParams.Position
