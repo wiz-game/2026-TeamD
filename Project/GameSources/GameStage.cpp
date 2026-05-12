@@ -103,6 +103,8 @@ namespace basecross
 		m_collManagerPos = GetSharedGameObject<Player>(L"Player")->GetComponent<Transform>()->GetPosition();
 		AABB collRange = AABB(m_collManagerPos - m_collisionRange, m_collManagerPos + m_collisionRange);
 		GetCollisionManager()->SetRootAABB(collRange);
+
+		StageEditor::Instance().AddEditorMenuLog(L"FPS", 1.0f / app->GetElapsedTime() );
 	}
 
 	void GameStage::OnUpdate2()
