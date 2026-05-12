@@ -127,7 +127,7 @@ namespace basecross
         float timerSpeed = 1.0f;
 
         // 移動距離
-        float distanceMove = .5f;
+        float distance = 3.0f;
 
         // 経過時間を取得する
         auto deltaTime = App::GetApp()->GetElapsedTime();
@@ -160,22 +160,21 @@ namespace basecross
 
                 switch (m_NumPoint)
                 {
-                case Point0:
-                    m_TargetPosition.x += distanceMove;
+                case Point0: // 原点
+                    m_TargetPosition = m_InitialPosition;
                     break;
 
-                case Point1:
-                    m_TargetPosition.x -= distanceMove;
-                    -speed;
+                case Point1: // 原点から右
+                    m_TargetPosition.x += distance;
                     break;
 
-                case Point2:
-                    m_TargetPosition.z += distanceMove;
+                case Point2: // 原点から下
+                    m_TargetPosition.z -= distance;
                     break;
 
-                case Point3:
-                    m_TargetPosition.z -= distanceMove;
-                    -speed;
+                case Point3: // 原点から斜め
+                    m_TargetPosition.x += distance;
+                    m_TargetPosition.z -= distance;
                     break;
 
                 default:
@@ -186,43 +185,57 @@ namespace basecross
         // 徘徊時間
         else if (m_isWandering == true)
         {
+            // X軸の移動（正）
             if (transPos.x < m_TargetPosition.x) 
             {
+                // 移動対象をX軸にプラスに移動させる
                 transPos.x += speed * deltaTime;
+                // 移動しているときにもし点を越してしまったら
                 if (transPos.x > m_TargetPosition.x)
                 {
                     transPos.x = m_TargetPosition.x;
                 }
             }
+            // X軸の移動（負）
             else if (transPos.x > m_TargetPosition.x) 
             {
+                // 移動対象をX軸にマイナスに移動させる
                 transPos.x -= speed * deltaTime;
+                // 移動しているときにもし点を越してしまったら
                 if (transPos.x < m_TargetPosition.x)
                 {
                     transPos.x = m_TargetPosition.x;
                 }
             }
 
-            // Z軸の移動
+            // Z軸の移動（正）
             if (transPos.z < m_TargetPosition.z) 
             {
+                // 移動対象をZ軸にプラスに移動させる
                 transPos.z += speed * deltaTime;
+                // 移動しているときにもし点を越してしまったら
                 if (transPos.z > m_TargetPosition.z)
                 {
                     transPos.z = m_TargetPosition.z;
                 }
             }
+            // Z軸の移動（負）
             else if (transPos.z > m_TargetPosition.z) 
             {
+                // 移動対象をZ軸にマイナスに移動させる
                 transPos.z -= speed * deltaTime;
+                // 移動しているときにもし点を越してしまったら
                 if (transPos.z < m_TargetPosition.z)
                 {
                     transPos.z = m_TargetPosition.z;
                 }
             }
 
-            if (transPos.x == m_TargetPosition.x && transPos.z == m_TargetPosition.z)
+            // どれかの点に到達したとき
+            if (transPos.x == m_TargetPosition.x &&
+                transPos.z == m_TargetPosition.z)
             {
+                // また待機時間に戻す
                 m_isWandering = false;
                 m_isStand = true;
 
@@ -235,28 +248,28 @@ namespace basecross
         }
     }
 
-        void EnemyBase::DebugString()
-        {
-            auto transComp = GetComponent<Transform>();
-            auto transPos = transComp->GetPosition();
+    void EnemyBase::DebugString()
+    {
+        auto transComp = GetComponent<Transform>();
+        auto transPos = transComp->GetPosition();
 
-            GameManager::Instance().AddDebugStr(L"m_InitialStandTime", m_InitialStandTime);
-            GameManager::Instance().AddDebugStr(L"m_InitialWanderingTime", m_InitialWanderingTime);
-            GameManager::Instance().AddDebugStr(L"EnemyPositionX", transPos.x);
-            GameManager::Instance().AddDebugStr(L"EnemyPositionY", transPos.y);
-            GameManager::Instance().AddDebugStr(L"EnemyPositionZ", transPos.z);
-            GameManager::Instance().AddDebugStr(L"EnemyInitialPositionX", m_InitialPosition.x);
-            GameManager::Instance().AddDebugStr(L"EnemyInitialPositionY", m_InitialPosition.y);
-            GameManager::Instance().AddDebugStr(L"EnemyInitialPositionZ", m_InitialPosition.z);
-        }
+        GameManager::Instance().AddDebugStr(L"m_InitialStandTime", m_InitialStandTime);
+        GameManager::Instance().AddDebugStr(L"m_InitialWanderingTime", m_InitialWanderingTime);
+        GameManager::Instance().AddDebugStr(L"EnemyPositionX", transPos.x);
+        GameManager::Instance().AddDebugStr(L"EnemyPositionY", transPos.y);
+        GameManager::Instance().AddDebugStr(L"EnemyPositionZ", transPos.z);
+        GameManager::Instance().AddDebugStr(L"EnemyInitialPositionX", m_InitialPosition.x);
+        GameManager::Instance().AddDebugStr(L"EnemyInitialPositionY", m_InitialPosition.y);
+        GameManager::Instance().AddDebugStr(L"EnemyInitialPositionZ", m_InitialPosition.z);
+    }
 
-        void EnemyBase::DebugDraw()
-        {
-            auto transComp = AddComponent<Transform>();
-            transComp->SetPosition(0.0f, 61.0f, 0.0f);
+    void EnemyBase::DebugDraw()
+    {
+        auto transComp = AddComponent<Transform>();
+        transComp->SetPosition(0.0f, 61.0f, 0.0f);
 
-            auto drawComp = AddComponent<PNTStaticDraw>();
-            drawComp->SetMeshResource(L"DEFAULT_CUBE");
-            drawComp->SetDrawActive(true);
-        }
+        auto drawComp = AddComponent<PNTStaticDraw>();
+        drawComp->SetMeshResource(L"DEFAULT_CUBE");
+        drawComp->SetDrawActive(true);
+    }
 }
