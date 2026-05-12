@@ -25,6 +25,7 @@ namespace basecross
 	void Tree::OnCreate()
 	{
 		AddTag(L"Tree");
+		SetIsEditorSave(true);
 
 		auto ptrDraw = AddComponent<PNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"M_Tree");
