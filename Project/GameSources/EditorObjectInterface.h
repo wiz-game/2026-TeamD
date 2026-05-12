@@ -13,11 +13,17 @@ namespace basecross
 	{
 	private:
 		int m_ID = 0;
+		bool m_isEditorSave = false;
+
+	protected:
+		void SetID(int id = 0) { m_ID = id; }
+		void SetIsEditorSave(const bool& isEditorSave) { m_isEditorSave = isEditorSave; }
+	
 	public:
-		EditorObjectInterface(const int& Id = 0) : m_ID(Id) {}
+		EditorObjectInterface(const int& Id = 0) : m_ID(Id) { m_isEditorSave = false; }
 		virtual ~EditorObjectInterface() {}
 
-		void SetID(int id = 0) { m_ID = id; }
 		int GetID() const { return m_ID; }
+		bool GetIsEditorSave()const { return m_isEditorSave; }
 	};
 }
