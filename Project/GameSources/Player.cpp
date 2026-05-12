@@ -43,7 +43,7 @@ namespace basecross
 		ReSpawn();
 		Jump();
 		LaunchofBubble();
-		DebugString();
+		//DebugString();
 	}
 
 	void Player::Jump()
@@ -81,11 +81,11 @@ namespace basecross
 			return;
 		}
 
-		float initCoolDown = 1.0f,ZERO = 0.0f;
+		float initCoolDown = 0.4f,ZERO = 0.0f;
 
 		if (control[0].bRightTrigger && m_Bresing == false)
 		{
-			stage->AddGameObject<Bubble>(GetThis<Player>());
+			m_pBubble = stage->AddGameObject<Bubble>(GetThis<Player>());
 			m_Bresing = true;
 			m_cooldown = initCoolDown;
 		}
