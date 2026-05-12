@@ -8,7 +8,7 @@
 
 #include "Scene.h"
 
-#include "EditorObjectInterface.h"
+#include "StageObjectInterface.h"
 #include "DebugLog.h"
 #include "BinaryFile.h"
 #include "Conversion.h"

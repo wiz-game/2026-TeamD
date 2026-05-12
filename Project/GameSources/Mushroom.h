@@ -7,18 +7,11 @@ namespace basecross
 	{
 	private:
 		shared_ptr<Transform> m_sPtrTrans;
-		Vec3 m_scale;
-		Quat m_quaternion;
-		Vec3 m_position;
-
 	public:
 		Mushroom
 		(
 			const shared_ptr<Stage>& StagePtr,
-			const int& Id,
-			const Vec3& Scale,
-			const Quat& Quaternion,
-			const Vec3& Position
+			const STRUCT_ObjectParam& objectParam
 		);
 		virtual ~Mushroom();
 

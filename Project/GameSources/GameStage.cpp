@@ -197,13 +197,13 @@ namespace basecross
 			break;
 			// è∞
 		case 0:
-			AddGameObject<Ground>
-				(
-					0,
-					ObjParams.StageObjParams.Scale,
-					ObjParams.StageObjParams.Quaternion,
-					ObjParams.StageObjParams.Position
-				);
+			//AddGameObject<Ground>
+			//	(
+			//		0,
+			//		ObjParams.StageObjParams.Scale,
+			//		ObjParams.StageObjParams.Quaternion,
+			//		ObjParams.StageObjParams.Position
+			//	);
 			break;
 		}
 	}

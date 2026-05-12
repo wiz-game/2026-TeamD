@@ -5,33 +5,27 @@ namespace basecross
 {
 	Dirt::Dirt(
 		const shared_ptr<Stage>& StagePtr,
-		const int& Id,
-		const Vec3& Scale,
-		const Quat& Quatition,
-		const Vec3& Position
+		const STRUCT_ObjectParam& objectParam
 	):
-		GameObject(StagePtr, Id),
+		GameObject(StagePtr, objectParam),
 		m_nowDeleteCount(0),
 		m_alphaColor(1.0f)
 	{
-		m_scale = Scale;
-		m_quatition = Quatition;
-		m_position = Position;
 	}
 
 	Dirt::~Dirt()
 	{
-
 	}
 
 	void Dirt::OnCreate()
 	{
 		AddTag(L"Dirt");
-
+		SetIsEditorSave(true);
+		
 		m_trans = AddComponent<Transform>();
-		m_trans->SetPosition(m_position);
-		m_trans->SetScale(m_scale);
-		m_trans->SetQuaternion(m_quatition);
+		m_trans->SetScale(m_objectParam.GetScale());
+		m_trans->SetQuaternion(m_objectParam.GetQuaternion());
+		m_trans->SetPosition(m_objectParam.GetPosition());
 
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");

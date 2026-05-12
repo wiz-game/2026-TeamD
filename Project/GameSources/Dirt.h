@@ -13,20 +13,14 @@ namespace basecross
 	private:
 		shared_ptr<Transform> m_trans;
 		shared_ptr<PNTStaticDraw> m_draw;
-		Vec3 m_scale;
-		Quat m_quatition;
-		Vec3 m_position;
 		int m_nowDeleteCount;
 		float m_alphaColor;
-
 	public:
-		Dirt(
+		Dirt
+		(
 			const shared_ptr<Stage>& StagePtr,
-			const int& Id,
-			const Vec3& Scale,
-			const Quat& Quatition,
-			const Vec3& Position
-			);
+			const STRUCT_ObjectParam& objectParam
+		);
 		~Dirt();
 
 		virtual void OnCreate()override;
