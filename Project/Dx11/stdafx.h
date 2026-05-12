@@ -81,6 +81,9 @@ using namespace std;
 #include <DirectXCollision.h>
 #include <DirectXTex.h>
 
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
+
 // XInput includes
 #include <xinput.h>
 

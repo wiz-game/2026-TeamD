@@ -15,6 +15,7 @@ namespace basecross
 		Tree
 		(	
 			const shared_ptr<Stage>& StagePtr,
+			const int& Id,
 			const Vec3& Scale,
 			const Quat& Quaternion,
 			const Vec3& Position

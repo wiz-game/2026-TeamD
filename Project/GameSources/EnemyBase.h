@@ -22,6 +22,7 @@ namespace basecross
 		bool m_isStand;
 		// ランダムに徘徊させる変数
 		float m_RandRotation;
+		float m_angle;
 	public:
 		EnemyBase(const shared_ptr<Stage>& stage) :
 			GameObject(stage),
@@ -30,7 +31,8 @@ namespace basecross
 			m_WanderSpeed(1.0f),
 			m_isWandering(false),
 			m_InitialStandTime(0.0f),
-			m_isStand(true)
+			m_isStand(true),
+			m_angle(0.0f)
 		{
 		}
 
@@ -50,7 +52,8 @@ namespace basecross
 		void CircleMove
 		(
 			const shared_ptr<GameObject>& gameObject,
-			float circleScale
+			float radius,		// 回転半径
+			float moveSpeed		// 回転速度
 		);
 
 		void DebugString();
