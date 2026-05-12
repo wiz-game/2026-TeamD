@@ -12,6 +12,7 @@ namespace basecross
 	class EnemyBase : public GameObject
 	{
 	private:
+		std::shared_ptr<Transform> m_transform;
 		// 代入するためのメンバ変数
 		// 徘徊時間
 		float m_InitialWanderingTime;
@@ -23,6 +24,23 @@ namespace basecross
 		// ランダムに徘徊させる変数
 		float m_RandRotation;
 		float m_angle;
+		// 初期値のポジションを格納するための変数
+		Vec3 m_InitialPosition;
+		Vec3 m_TargetPosition;
+
+		// 1度だけ原点として記憶するやつ
+		bool m_isFirstTime;
+
+		enum Point
+		{
+			Point0,
+			Point1,
+			Point2,
+			Point3,
+
+			Number
+		}
+		m_NumPoint;
 	public:
 		EnemyBase(const shared_ptr<Stage>& stage) :
 			GameObject(stage),
@@ -32,7 +50,9 @@ namespace basecross
 			m_isWandering(false),
 			m_InitialStandTime(0.0f),
 			m_isStand(true),
-			m_angle(0.0f)
+			m_angle(0.0f),
+			m_TargetPosition(),
+			m_isFirstTime(true)
 		{
 		}
 
@@ -54,6 +74,12 @@ namespace basecross
 			const shared_ptr<GameObject>& gameObject,
 			float radius,		// 回転半径
 			float moveSpeed		// 回転速度
+		);
+
+		void PointMove
+		(
+			const shared_ptr<GameObject>& gameObject,
+			float speed
 		);
 
 		void DebugString();

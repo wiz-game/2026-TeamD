@@ -9,16 +9,19 @@ namespace basecross
         DebugDraw();
     }
 
-	void EnemyBase::OnUpdate()
-	{
-        // Move(GetThis<EnemyBase>(), 2.0f);
-        CircleMove(GetThis<EnemyBase>(), 1.0f,1.0f);
+    void EnemyBase::OnUpdate()
+    {
+        PointMove(GetThis<EnemyBase>(), 1.0f);
         DebugString();
-	}
+    }
 
-	// 敵共通の移動の動きを書く
-	void EnemyBase::Move(const shared_ptr<GameObject>& gameObject,float speed)
-	{
+    // ガチ徘徊
+    void EnemyBase::Move
+    (
+        const shared_ptr<GameObject>& gameObject,
+        float speed
+    )
+    {
         // そのゲームオブジェクトの情報を取得する
         auto transComp = gameObject->GetComponent<Transform>();
         auto transPos = transComp->GetPosition();
@@ -77,6 +80,7 @@ namespace basecross
         transComp->SetPosition(transPos);
     }
 
+    // 円状に動く
     void EnemyBase::CircleMove
     (
         const shared_ptr<GameObject>& gameObject,
@@ -101,19 +105,158 @@ namespace basecross
         transComp->SetRotation(0.0f, angle, 0.0f);
     }
 
-    void EnemyBase::DebugString()
+    // 4つのポイントを置いてランダムに動く
+    void EnemyBase::PointMove
+    (
+        const shared_ptr<GameObject>& gameObject,
+        float speed
+    )
     {
-        GameManager::Instance().AddDebugStr(L"m_InitialStandTime", m_InitialStandTime);
-        GameManager::Instance().AddDebugStr(L"m_InitialWanderingTime", m_InitialWanderingTime);
+        // そのゲームオブジェクトの情報を取得する
+        auto transComp = gameObject->GetComponent<Transform>();
+        auto transPos = transComp->GetPosition();
+
+        // 時間（乱数）
+        float randTime = rand() % 3 + 1;
+        float randRotation = rand() % 361;
+
+        // ゼロ
+        const float ZERO_TIME = 0.0f;
+
+        // タイマースピード
+        float timerSpeed = 1.0f;
+
+        // 移動距離
+        float distanceMove = .5f;
+
+        // 経過時間を取得する
+        auto deltaTime = App::GetApp()->GetElapsedTime();
+
+        // 初期位置を取得したらそれ以降は絶対に位置を更新してはイケない
+        if (m_isFirstTime == true)
+        {
+            m_InitialPosition = transPos;
+            m_isFirstTime = false;
+        }
+
+        // 待機時間
+        if (m_isStand == true)
+        {
+            //m_InitialStandTime = standingTime;
+            if (m_InitialStandTime > ZERO_TIME)
+            {
+                m_InitialStandTime -= deltaTime;
+            }
+            else if (m_InitialStandTime <= ZERO_TIME)
+            {
+                m_isStand = false;
+                m_isWandering = true;
+
+                m_InitialWanderingTime = randTime;
+                m_NumPoint = static_cast<Point>(rand() % 4);
+
+                // 初期値を格納する
+                m_TargetPosition = m_InitialPosition;
+
+                switch (m_NumPoint)
+                {
+                case Point0:
+                    m_TargetPosition.x += distanceMove;
+                    break;
+
+                case Point1:
+                    m_TargetPosition.x -= distanceMove;
+                    -speed;
+                    break;
+
+                case Point2:
+                    m_TargetPosition.z += distanceMove;
+                    break;
+
+                case Point3:
+                    m_TargetPosition.z -= distanceMove;
+                    -speed;
+                    break;
+
+                default:
+                    break;
+                }
+            }
+        }
+        // 徘徊時間
+        else if (m_isWandering == true)
+        {
+            if (transPos.x < m_TargetPosition.x) 
+            {
+                transPos.x += speed * deltaTime;
+                if (transPos.x > m_TargetPosition.x)
+                {
+                    transPos.x = m_TargetPosition.x;
+                }
+            }
+            else if (transPos.x > m_TargetPosition.x) 
+            {
+                transPos.x -= speed * deltaTime;
+                if (transPos.x < m_TargetPosition.x)
+                {
+                    transPos.x = m_TargetPosition.x;
+                }
+            }
+
+            // Z軸の移動
+            if (transPos.z < m_TargetPosition.z) 
+            {
+                transPos.z += speed * deltaTime;
+                if (transPos.z > m_TargetPosition.z)
+                {
+                    transPos.z = m_TargetPosition.z;
+                }
+            }
+            else if (transPos.z > m_TargetPosition.z) 
+            {
+                transPos.z -= speed * deltaTime;
+                if (transPos.z < m_TargetPosition.z)
+                {
+                    transPos.z = m_TargetPosition.z;
+                }
+            }
+
+            if (transPos.x == m_TargetPosition.x && transPos.z == m_TargetPosition.z)
+            {
+                m_isWandering = false;
+                m_isStand = true;
+
+                m_InitialStandTime = randTime;
+            }
+
+
+            // 敵の位置を最終的に更新する
+            transComp->SetPosition(transPos);
+        }
     }
 
-    void EnemyBase::DebugDraw()
-    {
-        auto transComp = AddComponent<Transform>();
-        transComp->SetPosition(0.0f, 61.0f, 0.0f);
+        void EnemyBase::DebugString()
+        {
+            auto transComp = GetComponent<Transform>();
+            auto transPos = transComp->GetPosition();
 
-        auto drawComp = AddComponent<PNTStaticDraw>();
-        drawComp->SetMeshResource(L"DEFAULT_CUBE");
-        drawComp->SetDrawActive(true);
-    }
+            GameManager::Instance().AddDebugStr(L"m_InitialStandTime", m_InitialStandTime);
+            GameManager::Instance().AddDebugStr(L"m_InitialWanderingTime", m_InitialWanderingTime);
+            GameManager::Instance().AddDebugStr(L"EnemyPositionX", transPos.x);
+            GameManager::Instance().AddDebugStr(L"EnemyPositionY", transPos.y);
+            GameManager::Instance().AddDebugStr(L"EnemyPositionZ", transPos.z);
+            GameManager::Instance().AddDebugStr(L"EnemyInitialPositionX", m_InitialPosition.x);
+            GameManager::Instance().AddDebugStr(L"EnemyInitialPositionY", m_InitialPosition.y);
+            GameManager::Instance().AddDebugStr(L"EnemyInitialPositionZ", m_InitialPosition.z);
+        }
+
+        void EnemyBase::DebugDraw()
+        {
+            auto transComp = AddComponent<Transform>();
+            transComp->SetPosition(0.0f, 61.0f, 0.0f);
+
+            auto drawComp = AddComponent<PNTStaticDraw>();
+            drawComp->SetMeshResource(L"DEFAULT_CUBE");
+            drawComp->SetDrawActive(true);
+        }
 }
