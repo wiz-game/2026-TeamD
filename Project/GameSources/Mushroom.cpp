@@ -53,6 +53,5 @@ namespace basecross
 		auto collision = AddComponent<CollisionCapsule>();
 		collision->SetFixed(true);
 
-		SetIsEditorSave(true);
 	}
 }
