@@ -24,10 +24,7 @@ namespace basecross
 		for (auto& gameObj : gameObjs)
 		{
 			if (!gameObj) continue;
-			auto player = dynamic_pointer_cast<Player>(gameObj);
-			if (player) continue;
-			auto debugLog = dynamic_pointer_cast<DebugLog>(gameObj);
-			if (debugLog) continue;
+			if (!gameObj->GetIsEditorSave()) continue;
 			auto transform = gameObj->GetComponent<Transform>();
 			if (!transform) continue;
 
