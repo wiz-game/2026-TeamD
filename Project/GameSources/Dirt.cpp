@@ -5,11 +5,12 @@ namespace basecross
 {
 	Dirt::Dirt(
 		const shared_ptr<Stage>& StagePtr,
+		const int& Id,
 		const Vec3& Scale,
 		const Quat& Quatition,
 		const Vec3& Position
 	):
-		GameObject(StagePtr),
+		GameObject(StagePtr, Id),
 		m_nowDeleteCount(0),
 		m_alphaColor(1.0f)
 	{

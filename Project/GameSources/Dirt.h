@@ -22,6 +22,7 @@ namespace basecross
 	public:
 		Dirt(
 			const shared_ptr<Stage>& StagePtr,
+			const int& Id,
 			const Vec3& Scale,
 			const Quat& Quatition,
 			const Vec3& Position
