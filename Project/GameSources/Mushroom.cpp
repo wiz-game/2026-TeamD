@@ -3,27 +3,22 @@
 
 namespace basecross
 {
-	Mushroom::Mushroom(
+	Mushroom::Mushroom
+	(
 		const shared_ptr<Stage>& StagePtr,
-		const Vec3& Scale,
-		const Quat& Quatition,
-		const Vec3& Position
+		const STRUCT_ObjectParam& objectParam
 	) :
-		GameObject(StagePtr)
-	{
-		m_scale = Scale;
-		m_quaternion = Quatition;
-		m_position = Position;
-	};
+		GameObject(StagePtr, objectParam)
+	{};
 
 	Mushroom::~Mushroom()
 	{
-
 	}
 
 	void Mushroom::OnCreate()
 	{
 		AddTag(L"Mushroom");
+		SetIsEditorSave(true);
 
 		auto ptrDraw = AddComponent<PNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"M_Mushroom");
@@ -33,9 +28,9 @@ namespace basecross
 		ptrDraw->SetOwnShadowActive(true);
 
 		m_sPtrTrans = AddComponent<Transform>();
-		m_sPtrTrans->SetPosition(m_position);
-		m_sPtrTrans->SetQuaternion(m_quaternion);
-		m_sPtrTrans->SetScale(m_scale);
+		m_sPtrTrans->SetScale(m_objectParam.GetScale());
+		m_sPtrTrans->SetQuaternion(m_objectParam.GetQuaternion());
+		m_sPtrTrans->SetPosition(m_objectParam.GetPosition());
 
 		Mat4x4 spanMat;
 		spanMat.affineTransformation

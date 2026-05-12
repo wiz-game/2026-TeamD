@@ -83,6 +83,9 @@ namespace basecross
 		// 生成オブジェクト切替
 		void ChangeObject();
 
+		// ステージ保存
+		void SaveStage();
+
 		// Pressed
 		void PressedLMouseButton();
 		void PressedDelete();

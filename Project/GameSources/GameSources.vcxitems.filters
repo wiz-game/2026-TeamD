@@ -153,6 +153,15 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Dirt.h">
       <Filter>StageObjs\Dirt</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BinaryFile.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Conversion.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)StageObjectInterface.h">
+      <Filter>Other</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Project.h"
-#include "StageEditor.h"
 
 namespace basecross
 {
@@ -13,6 +12,60 @@ namespace basecross
 	void StageEditor::Initialize()
 	{
 	}
+	
+	void StageEditor::WriteStageData()
+	{
+		auto dataPath = GetMediaDataDir() + m_stageDatasDir + m_stageDataPath;
+		BinaryClear(dataPath);
+
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		auto gameObjs = stage->GetGameObjectVec();
+
+		for (auto& gameObj : gameObjs)
+		{
+			if (!gameObj) continue;
+			if (!gameObj->GetIsEditorSave()) continue;
+			auto transform = gameObj->GetComponent<Transform>();
+			if (!transform) continue;
+			
+			BinaryWriteAdd(dataPath, gameObj->GetID());
+			BinaryWriteAdd(dataPath, transform->GetScale());
+			BinaryWriteAdd(dataPath, transform->GetQuaternion());
+			BinaryWriteAdd(dataPath, transform->GetPosition());
+		}
+
+		AddEditorMenuLog(L"Save", L"OK");
+	}
+
+	void StageEditor::ReadStageData(const string& stageDataPath, const shared_ptr<Stage>& stage)
+	{
+		m_stageDataPath = stageDataPath;
+		auto dataPath = GetMediaDataDir() + m_stageDatasDir + m_stageDataPath;
+		
+		vector<STRUCT_ObjectParam> objParams;
+		BinaryAllReadDataUnit(dataPath, objParams);
+
+		for (const auto& objParam : objParams)
+		{
+			switch (objParam.GetID())
+			{
+			case ENUM_ObjectID::Ground:
+				stage->AddGameObject<Ground>(objParam);
+				break;
+			case ENUM_ObjectID::Mushroom:
+				stage->AddGameObject<Mushroom>(objParam);
+				break;
+			case ENUM_ObjectID::Tree:
+				stage->AddGameObject<Tree>(objParam);
+				break;
+			case ENUM_ObjectID::Dirt:
+				stage->AddGameObject<Dirt>(objParam);
+				break;
+			default:
+				break;
+			}
+		}
+	}
 		
 	void StageEditor::StartEditor()
 	{
@@ -20,7 +73,7 @@ namespace basecross
 		m_sPtrEditorMenuLog = App::GetApp()->GetScene<Scene>()->GetActiveStage()->AddGameObject<DebugLog>(L"-EditorMenu-");
 		m_sPtrEditorMenuLog->SetTextRect(Rect2D<float>(1070.0f, 10.0f, 200.0f, 400.0f));
 
-		AddEditorMenuLog(L"SelectObject", static_cast<int>(m_addedObj));
+		AddEditorMenuLog(L"SelectObject", static_cast<int>(m_objID));
 
 		m_editorMode = ENUM_EditorMode::Position;
 		m_isSelectedObj = false;
@@ -171,16 +224,22 @@ namespace basecross
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
 		if (!stage) return;
 
-		switch (m_addedObj)
+		STRUCT_ObjectParam objParam(m_objID);
+		switch (m_objID)
 		{
+		case ENUM_ObjectID::Ground:
+			stage->AddGameObject<Ground>(objParam);
+			break;
+		case ENUM_ObjectID::Mushroom:
+			stage->AddGameObject<Mushroom>(objParam);
+			break;
+		case ENUM_ObjectID::Tree:
+			stage->AddGameObject<Tree>(objParam);
+			break;
+		case ENUM_ObjectID::Dirt:
+			stage->AddGameObject<Dirt>(objParam);
+			break;
 		default:
-			break;
-		case ENUM_AddedObj::Ground:
-			stage->AddGameObject<Ground>(Vec3(1.0f), Quat(), Vec3(0.0f, 0.0f, 0.0f));
-			break;
-		case ENUM_AddedObj::Mushroom:
-			break;
-		case ENUM_AddedObj::Tree:
 			break;
 		}
 	}
@@ -192,21 +251,21 @@ namespace basecross
 		if (yKeyPressed)
 		{
 			// 前のオブジェクトに切り替える
-			changeObjNum = (static_cast<int>(m_addedObj) - 1);
+			changeObjNum = (static_cast<int>(m_objID) - 1);
 
 			// 最小値未満になったら最後のオブジェクトに切り替える
-			if (changeObjNum < 0) changeObjNum = static_cast<int>(ENUM_AddedObj::Max) - 1;
+			if (changeObjNum < 0) changeObjNum = static_cast<int>(ENUM_ObjectID::Max) - 1;
 		}
 		else if (uKeyPressed)
 		{
 			// 次のオブジェクトに切り替える
-			changeObjNum = (static_cast<int>(m_addedObj) + 1);
+			changeObjNum = (static_cast<int>(m_objID) + 1);
 
 			// 最大値以上になったら最初のオブジェクトに切り替える
-			if (changeObjNum >= static_cast<int>(ENUM_AddedObj::Max)) changeObjNum = 0;
+			if (changeObjNum >= static_cast<int>(ENUM_ObjectID::Max)) changeObjNum = 0;
 		}
 
-		m_addedObj = static_cast<ENUM_AddedObj>(changeObjNum);
+		m_objID = static_cast<ENUM_ObjectID>(changeObjNum);
 
 		AddEditorMenuLog(L"SelectObject", changeObjNum);
 	}

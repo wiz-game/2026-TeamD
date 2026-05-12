@@ -5,6 +5,7 @@
 */
 #pragma once
 #include "stdafx.h"
+#include "StageObjectInterface.h"
 
 namespace basecross {
 	class Stage;
@@ -13,7 +14,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	///	ゲーム配置オブジェクト親クラス
 	//--------------------------------------------------------------------------------------
-	class GameObject :public ObjectInterface, public ShapeInterface {
+	class GameObject :public ObjectInterface, public ShapeInterface, public StageObjectInterface {
 		bool m_UpdateActive = true;	//updateするかどうか
 		bool m_DrawActive = true;		//Drawするかどうか
 		bool m_AlphaActive = false;		//透明かどうか
@@ -75,7 +76,7 @@ namespace basecross {
 		@param[in]	StagePtr	ステージ
 		*/
 		//--------------------------------------------------------------------------------------
-		explicit GameObject(const shared_ptr<Stage>& StagePtr);
+		explicit GameObject(const shared_ptr<Stage>& StagePtr, const STRUCT_ObjectParam& ObjectParams = STRUCT_ObjectParam());
 		//--------------------------------------------------------------------------------------
 		/*!
 		@brief	デストラクタ

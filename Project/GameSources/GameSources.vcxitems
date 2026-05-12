@@ -14,13 +14,16 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BinaryFile.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Bubble.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Conversion.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DebugLog.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Dirt.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModelResource.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)StageObjectInterface.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyBase.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FurBubble.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h" />
