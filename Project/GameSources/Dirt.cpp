@@ -39,6 +39,8 @@ namespace basecross
 		auto col = AddComponent<CollisionObb>();
 		col->SetDrawActive(true);
 		col->SetAfterCollision(AfterCollision::None);
+
+		SetIsEditorSave(true);
 	}
 
 	void Dirt::OnUpdate()
