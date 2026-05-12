@@ -16,6 +16,7 @@
 
 // マネージャークラス
 #include "GameManager.h"
+#include "SoundManager.h"
 
 // オリジナルコンポーネント
 #include "Move.h"
