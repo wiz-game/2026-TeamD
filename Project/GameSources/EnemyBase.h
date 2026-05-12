@@ -20,25 +20,19 @@ namespace basecross
 		// 待機時間
 		float m_InitialStandTime;
 		bool m_isStand;
-
-		// 徘徊の移動のやつ
-		enum Wandering
-		{
-			move_x_puls,
-			move_x_minus,
-			move_z_puls,
-			move_z_minus,
-
-			Number
-		}m_wandering;
+		// ランダムに徘徊させる変数
+		float m_RandRotation;
+		float m_angle;
 	public:
 		EnemyBase(const shared_ptr<Stage>& stage) :
 			GameObject(stage),
 			m_InitialWanderingTime(0.0f),
+			m_RandRotation(0.0f),
 			m_WanderSpeed(1.0f),
 			m_isWandering(false),
 			m_InitialStandTime(0.0f),
-			m_isStand(true)
+			m_isStand(true),
+			m_angle(0.0f)
 		{
 		}
 
@@ -55,6 +49,14 @@ namespace basecross
 			float speed
 		);
 
+		void CircleMove
+		(
+			const shared_ptr<GameObject>& gameObject,
+			float radius,		// 回転半径
+			float moveSpeed		// 回転速度
+		);
+
 		void DebugString();
+		void DebugDraw();
 	};
 }
