@@ -25,13 +25,13 @@ namespace basecross
 		AddTag(L"Ground");
 		SetIsEditorSave(true);
 		SetAlphaActive(true);
-		
+
 		auto ptrDraw = AddComponent<PNTStaticDraw>();
 		auto ptrShadow = AddComponent<Shadowmap>();
 		m_sPtrTrans = AddComponent<Transform>();
 
 		ptrDraw->SetMeshResource(L"Stage_Floor");
-		ptrDraw->SetTextureResource(L"T_Stage_Floor");
+		ptrDraw->SetTextureResource(L"Ground_Sozai");
 
 		ptrDraw->SetOwnShadowActive(true);
 

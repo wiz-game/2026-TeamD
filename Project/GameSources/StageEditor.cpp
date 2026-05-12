@@ -168,7 +168,7 @@ namespace basecross
 							gizmo->GetComponent<Transform>()->SetPosition(selectPos);
 							
 							// 表示
-							gizmo->GetComponent<PCTStaticDraw>()->SetDrawActive(true);
+							gizmo->GetComponent<PNTStaticDraw>()->SetDrawActive(true);
 						}
 					}
 					break;
@@ -267,7 +267,7 @@ namespace basecross
 		for (auto& gizmo : m_gizmos)
 		{
 			// ギズモとの衝突をテスト
-			auto staticDrawComp = gizmo->GetComponent<PCTStaticDraw>(false);
+			auto staticDrawComp = gizmo->GetComponent<PNTStaticDraw>(false);
 			if (!staticDrawComp) continue;
 
 			auto isHit = staticDrawComp->HitTestStaticMeshSegmentTrianglesToAffine(startPos, endPos, hitPoint, retTri, retIndex);

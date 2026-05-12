@@ -23,7 +23,8 @@ namespace basecross
 		ENUM_Axis m_axis = ENUM_Axis::X;
 		shared_ptr<Transform> m_sPtrTransform;
 		shared_ptr<Transform> m_selectObjTrans;
-		shared_ptr<PCTStaticDraw> m_sPtrDraw;
+		shared_ptr<PNTStaticDraw> m_sPtrDraw;
+		float m_axisNum;
 	public:
 		Gizmo(const std::shared_ptr<Stage>& stage, const ENUM_Axis& axis, const shared_ptr<Transform>& selectObjTrans);
 
