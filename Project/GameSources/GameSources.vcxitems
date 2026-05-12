@@ -23,7 +23,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Dirt.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModelResource.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)EditorObjectInterface.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)StageObjectInterface.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyBase.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FurBubble.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h" />

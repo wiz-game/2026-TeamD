@@ -159,7 +159,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Conversion.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)EditorObjectInterface.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)StageObjectInterface.h">
       <Filter>Other</Filter>
     </ClInclude>
   </ItemGroup>

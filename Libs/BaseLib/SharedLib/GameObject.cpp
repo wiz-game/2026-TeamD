@@ -11,10 +11,10 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	///	ゲーム配置オブジェクト親クラス実体
 	//--------------------------------------------------------------------------------------
-	GameObject::GameObject(const shared_ptr<Stage>& StagePtr, const int& Id) :
+	GameObject::GameObject(const shared_ptr<Stage>& StagePtr, const STRUCT_ObjectParam& ObjectParams) :
 		ObjectInterface(),
 		ShapeInterface(),
-		EditorObjectInterface(Id),
+		StageObjectInterface(ObjectParams),
 		m_Stage(StagePtr)
 	{}
 
