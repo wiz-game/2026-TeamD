@@ -144,6 +144,11 @@ namespace basecross
 
 	void Bubble::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
+		if (Other->FindTag(L"Dirt"))
+		{
+			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
+		}
+
 		if (!Other->FindTag(L"Ground")) return;
 
 		if (m_isSpawnedTrampoline) return;
