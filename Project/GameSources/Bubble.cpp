@@ -6,15 +6,17 @@ namespace basecross
 	Bubble::Bubble(const shared_ptr<Stage>& stage, const shared_ptr<GameObject>& parent) :
 		GameObject(stage),
 		m_parent(parent),
-		m_speed(1.5f),
 		m_speedRatio(0.0f),
-		m_initialVelocity(2.5f),
+		m_initialVelocity(5.0f),
 		m_currentVelocity(m_initialVelocity),
 		m_upwardVelocity(0.0f),
 		m_isTimeStart(false),
 		m_limitTime(0.75f),
 		m_isSpawnedTrampoline(false),
-		m_isHit(false)
+		m_isHit(false),
+		m_scale(0.5),
+		m_moveTime(0.0f),
+		m_moveTimeLimit(3.0f)
 	{
 
 	}
@@ -35,15 +37,20 @@ namespace basecross
 		auto parentPos = parentLock->GetComponent<Transform>()->GetPosition();
 		
 		m_trans = GetComponent<Transform>();
-		Vec3 spawnPos = Vec3(parentPos.x, parentPos.y + 1.0f, parentPos.z) + m_parentForward * 1.25f;
+
+		float randPosX = static_cast<float>((rand() % 100) - 50) * 0.01f;
+		float randPosZ = static_cast<float>((rand() % 100) - 50) * 0.01f;
+
+		Vec3 spawnPos = Vec3(parentPos.x + randPosX, parentPos.y + 1.0f, parentPos.z + randPosZ) + m_parentForward * 1.25f;
 		m_dir = GetCameraForward();
 
 		m_trans->SetPosition(spawnPos);
-		m_trans->SetScale(Vec3(1.25f));
+		m_trans->SetScale(Vec3(m_scale));
 		// m_trans->SetQuaternion()
 
-		auto ptrCol = AddComponent<CollisionSphere>();
-		ptrCol->SetDrawActive(false);
+		m_col = AddComponent<CollisionSphere>();
+		m_col->SetDrawActive(false);
+		m_col->SetAfterCollision(AfterCollision::None);
 
 		// 透明化処理
 		SetAlphaActive(true);
@@ -83,13 +90,19 @@ namespace basecross
 		float decelerationStartRatio = 0.2f;
 
 		// 現在速度が0になるまで
-		if (m_currentVelocity > velocityZero)
+		if (m_moveTime < m_moveTimeLimit)
 		{
-			// 減少速度
-			m_currentVelocity -= m_speed * elapsed;
-			m_currentVelocity = max(m_currentVelocity, velocityZero);
-			// 速度の割合
-			m_speedRatio = m_currentVelocity / m_initialVelocity;
+			m_moveTime += elapsed;
+
+			// 0.0f -> 1.0f
+			float t = m_moveTime / m_moveTimeLimit;
+			t = clamp(t, 0.0f, 1.0f);
+
+			// 1.0f -> 0.0f
+			m_speedRatio = 1.0f - t;
+
+			// 現在速度
+			m_currentVelocity = m_initialVelocity * m_speedRatio;
 
 			if (player->GetTargetMode())
 			{
@@ -116,6 +129,8 @@ namespace basecross
 			pos.y += m_upwardVelocity * elapsed;
 		}
 
+
+		// 時間制限の開始
 		if (m_isTimeStart)
 		{
 			m_limitTime -= 1.0f * elapsed;
@@ -128,6 +143,25 @@ namespace basecross
 		}
 
 		m_trans->SetPosition(pos);
+	}
+
+	void Bubble::BubbleAddAblity(BubbleAbility ability)
+	{
+		// InSertで重複をさけている、関数の一個目がどこに入れるか、二個目が入れる値
+		if (m_abilities[ability])return;
+
+		SetAbility(ability, true);
+
+		switch (ability)
+		{
+			case BubbleAbility::RideBubble:
+				m_col->SetAfterCollision(AfterCollision::Auto);
+				break;
+			case BubbleAbility::TranpolineBubble:
+				break;
+			default:
+				break;
+		}
 	}
 
 	Vec3 Bubble::GetCameraForward()
@@ -144,8 +178,12 @@ namespace basecross
 
 	void Bubble::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
+		// 仮で、Dirtにあったたら
 		if (Other->FindTag(L"Dirt"))
 		{
+			//BubbleAddAblity(BubbleAbility::RideBubble);
+			//GameManager::Instance().AddDebugStr(L"BubbleAbility", L"Get ShootBubble");
+
 			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
 		}
 
