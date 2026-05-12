@@ -13,8 +13,11 @@ namespace basecross
 	void Gizmo::OnCreate()
 	{
 		m_sPtrTransform = AddComponent<Transform>();
+		m_sPtrTransform->SetPosition(m_selectObjTrans->GetPosition());
+
 		m_sPtrDraw = AddComponent<PCTStaticDraw>();
 		m_sPtrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		SetDrawActive(true);
 	}
 
 	void Gizmo::OnUpdate()

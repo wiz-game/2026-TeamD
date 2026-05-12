@@ -69,6 +69,13 @@ namespace basecross
 			}
 			break;
 		case ENUM_GameMode::Editor:
+			// ギズモによる操作
+			if ((m_key.m_MouseClientPoint != m_beforeMouseClientPoint) &&
+				m_key.m_bPressedKeyTbl[VK_LBUTTON])
+			{
+				ObjectOperation();
+			}
+
 			// 焦点固定視点移動
 			if ((m_key.m_MouseClientPoint != m_beforeMouseClientPoint) &&
 				m_key.m_bPushKeyTbl[VK_TAB] && m_key.m_bPushKeyTbl[VK_LBUTTON])
@@ -83,6 +90,7 @@ namespace basecross
 				CameraFixedViewPointMove();
 			}
 
+			// カメラ距離調整
 			if (m_wheelDelta != m_beforeWheelDelta)
 			{
 				WheelCameraDistance();
@@ -200,6 +208,16 @@ namespace basecross
 	void InputManager::ReleasedLTrigger()
 	{
 		GetMyCamera()->SetIsAiming(false);
+	}
+
+	void InputManager::ObjectOperation()
+	{
+		auto mousePoint = Point2D<int>
+			(
+				m_key.m_MouseClientPoint.x - m_beforeMouseClientPoint.x,
+				m_key.m_MouseClientPoint.y - m_beforeMouseClientPoint.y
+			);
+		StageEditor::Instance().ObjectOperation(mousePoint);
 	}
 
 	void InputManager::FocusFixedViewPointMove()

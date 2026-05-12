@@ -33,6 +33,8 @@ namespace basecross
 		Vec4 m_selectedObjColor = Vec4(1.0f, 1.0f, 0.0f, 0.8f);
 		Vec4 m_defaultObjColor = Vec4(0.6f, 0.6f, 0.6f, 1.0f);
 		bool m_isSelectedObj = false;
+
+		vector<shared_ptr<Gizmo>> m_gizmos;
 	private:
 		StageEditor() {}
 		virtual ~StageEditor() {}
@@ -61,9 +63,10 @@ namespace basecross
 		void PressedLMouseButton(const Point2D<int> mousePoint);
 		void PressedDelete();
 
-		void SerectObj(const Point2D<int> mousePoint);
+		void SerectObj(const Point2D<int>& mousePoint);
 		void GetMouseRey(Vec3& startPos, Vec3& endPos, const Point2D<int> mousePoint);
 		void DeselectObj();
+		void ObjectOperation(const Point2D<int>& mousePoint);
 		void AddGameObject();
 		void ChangeObject(bool yKeyPressed, bool uKeyPressed);
 	};

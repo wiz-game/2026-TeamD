@@ -71,6 +71,9 @@ namespace basecross
 		void ReleasedLTrigger();
 
 		// GameMode：Editer用の入力関数
+		// ギズモによる操作
+		void ObjectOperation();
+
 		// 焦点固定視点移動
 		void FocusFixedViewPointMove();
 		

@@ -11,6 +11,7 @@ namespace basecross
 
 	void StageEditor::Initialize()
 	{
+		m_gizmos.resize(static_cast<size_t>(ENUM_Axis::Max));
 	}
 	
 	void StageEditor::WriteStageData()
@@ -110,9 +111,16 @@ namespace basecross
 
 		m_selectedObj = nullptr;
 		m_isSelectedObj = false;
+
+		// ギズモが存在していたら非表示
+		if (!m_gizmos[0]) return;
+		for (const auto& gizmo : m_gizmos)
+		{
+			gizmo->GetComponent<PCTStaticDraw>()->SetDrawActive(false);
+		}
 	}
 
-	void StageEditor::SerectObj(const Point2D<int> mousePoint)
+	void StageEditor::SerectObj(const Point2D<int>& mousePoint)
 	{
 		Vec3 startPos, endPos;
 		Vec3 hitPoint;
@@ -140,6 +148,29 @@ namespace basecross
 					m_selectedObj = obj;
 					m_isSelectedObj = true;
 					staticDrawComp->SetDiffuse(m_selectedObjColor);
+
+					// ギズモを生成
+					if (!m_gizmos[0])
+					{
+						auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+						for (int i = 0; i < static_cast<int>(ENUM_Axis::Max); i++)
+						{
+							auto sharedPtr = stage->AddGameObject<Gizmo>(static_cast<ENUM_Axis>(i), m_selectedObj->GetComponent<Transform>());
+							m_gizmos[i] = sharedPtr;
+						}
+					}
+					// 生成していたら位置を変更する
+					else
+					{
+						for (const auto& gizmo : m_gizmos)
+						{
+							auto selectPos = m_selectedObj->GetComponent<Transform>()->GetPosition();
+							gizmo->GetComponent<Transform>()->SetPosition(selectPos);
+							
+							// 表示
+							gizmo->GetComponent<PCTStaticDraw>()->SetDrawActive(true);
+						}
+					}
 					break;
 				}
 			}
@@ -216,6 +247,43 @@ namespace basecross
 			}
 			m_selectedObj = nullptr;
 			m_isSelectedObj = false;
+		}
+	}
+
+	void StageEditor::ObjectOperation(const Point2D<int>& mousePoint)
+	{
+		if (!m_isSelectedObj) return;
+		if (!m_selectedObj) return;
+		
+		Vec3 startPos, endPos;
+		Vec3 hitPoint;
+		TRIANGLE retTri;
+		size_t retIndex;
+
+		// マウス位置からレイを作成
+		GetMouseRey(startPos, endPos, mousePoint);
+
+		if (!m_gizmos[0]) return;
+		for (auto& gizmo : m_gizmos)
+		{
+			// ギズモとの衝突をテスト
+			auto staticDrawComp = gizmo->GetComponent<PCTStaticDraw>(false);
+			if (!staticDrawComp) continue;
+
+			auto isHit = staticDrawComp->HitTestStaticMeshSegmentTrianglesToAffine(startPos, endPos, hitPoint, retTri, retIndex);
+			if (!isHit) continue;
+
+			switch (gizmo->GetAxis())
+			{
+			case ENUM_Axis::X:
+				break;
+			case ENUM_Axis::Y:
+				break;
+			case ENUM_Axis::Z:
+				break;
+			default:
+				break;
+			}
 		}
 	}
 
