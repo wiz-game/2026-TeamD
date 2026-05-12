@@ -63,5 +63,7 @@ namespace basecross
 
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetFixed(true);
+
+		SetIsEditorSave(true);
 	}
 }
