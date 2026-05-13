@@ -3,22 +3,23 @@
 
 namespace basecross
 {
-	Bubble::Bubble(const shared_ptr<Stage>& stage, const shared_ptr<GameObject>& parent) :
+	Bubble::Bubble(const shared_ptr<Stage>& stage, const shared_ptr<GameObject>& parent,const Vec3& scale, const float& initialVelocity, const int& counteractingForce) :
 		GameObject(stage),
 		m_parent(parent),
 		m_speedRatio(0.0f),
-		m_initialVelocity(5.0f),
+		m_initialVelocity(initialVelocity),
 		m_currentVelocity(m_initialVelocity),
 		m_upwardVelocity(0.0f),
 		m_isTimeStart(false),
 		m_limitTime(0.75f),
 		m_isSpawnedTrampoline(false),
 		m_isHit(false),
-		m_scale(0.5),
+		m_scale(scale),
 		m_moveTime(0.0f),
 		m_moveTimeLimit(3.0f),
 		m_isShoot(false),
-		m_isBubbleMove(false)
+		m_isBubbleMove(false),
+		m_counteractingForce(counteractingForce)
 	{
 
 	}
@@ -144,7 +145,6 @@ namespace basecross
 			pos.y += m_upwardVelocity * elapsed;
 		}
 
-
 		// 時間制限の開始
 		if (m_isTimeStart)
 		{
@@ -159,8 +159,6 @@ namespace basecross
 
 		m_trans->SetPosition(pos);
 	}
-
-
 
 	void Bubble::BubbleAddAblity(BubbleAbility ability)
 	{
@@ -190,10 +188,6 @@ namespace basecross
 		Vec3 eye = myCamera->GetEye();
 		auto forward = at - eye;
 		forward.normalize();
-
-		GameManager::Instance().AddDebugStr(L"m_forward.X : ", m_forward.x);
-		GameManager::Instance().AddDebugStr(L"m_forward.Y : ", m_forward.y);
-		GameManager::Instance().AddDebugStr(L"m_forward.Z : ", m_forward.z);
 	
 		return forward;
 	}
