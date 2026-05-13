@@ -67,6 +67,8 @@
     <Filter Include="StageObjs\Dirt">
       <UniqueIdentifier>{39d59122-b66e-4782-821f-96b7efd9fd24}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemys\EnemyAlpaca">
+      <UniqueIdentifier>{fa65c350-268e-4710-ad92-837b193b8bba}</UniqueIdentifier>
     <Filter Include="Other\Gizmo">
       <UniqueIdentifier>{d5b71f8e-698d-459f-8589-0afde89ea35a}</UniqueIdentifier>
     </Filter>
@@ -171,6 +173,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)StageObjectInterface.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EnemyAlpaca.h">
+      <Filter>Enemys\EnemyAlpaca</Filter>
     <ClInclude Include="$(MSBuildThisFileDirectory)Gizmo.h">
       <Filter>Other\Gizmo</Filter>
     </ClInclude>
@@ -254,6 +258,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Dirt.cpp">
       <Filter>StageObjs\Dirt</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EnemyAlpaca.cpp">
+      <Filter>Enemys\EnemyAlpaca</Filter>
     <ClCompile Include="$(MSBuildThisFileDirectory)Gizmo.cpp">
       <Filter>Other\Gizmo</Filter>
     </ClCompile>

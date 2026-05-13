@@ -24,6 +24,9 @@ namespace basecross
 		Point2D<int> m_beforeMouseClientPoint = Point2D<int>();
 		int m_beforeWheelDelta = 0;
 		int m_wheelDelta = 0;
+
+		// 移動速度
+		float m_MoveSpeed = 1.8f;
 	public:
 		static InputManager& Instance()
 		{
@@ -36,6 +39,16 @@ namespace basecross
 
 		void SetWheelDelta(int wheelDelta) { m_wheelDelta += wheelDelta; }
 		void ResetWheelDelta() { m_wheelDelta = 0; }
+
+		// 移動速度のゲッターセッター
+		float GetMoveSpeed()
+		{
+			return m_MoveSpeed;
+		}
+		void SetMoveSpeed(float ms)
+		{
+			m_MoveSpeed = ms;
+		}
 	private:
 		InputManager() {}
 		virtual ~InputManager() {}
