@@ -13,6 +13,7 @@ namespace basecross
     {
         PointMove(GetThis<EnemyBase>(), 1.0f);
         DebugString();
+        Died(GetThis<EnemyBase>());
     }
 
     // ガチ徘徊
@@ -262,6 +263,16 @@ namespace basecross
         GameManager::Instance().AddDebugStr(L"EnemyInitialPositionY", m_InitialPosition.y);
         GameManager::Instance().AddDebugStr(L"EnemyInitialPositionZ", m_InitialPosition.z);
         GameManager::Instance().AddDebugStr(L"EnemyHP", m_EnemyHP);
+    }
+
+    void EnemyBase::Died(const shared_ptr<GameObject>& gameObject)
+    {
+        const float DIED_HP = 0.0f;
+        if (m_EnemyHP <= DIED_HP)
+        {
+            auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+            stage->RemoveGameObject<GameObject>(GetThis<GameObject>());
+        }
     }
 
     void EnemyBase::DebugDraw()

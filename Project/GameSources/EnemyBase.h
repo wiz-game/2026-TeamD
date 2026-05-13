@@ -87,6 +87,7 @@ namespace basecross
 
 		void DebugString();
 		void DebugDraw();
+		void Died(const shared_ptr<GameObject>& gameObject);
 
 		// --- 当たり判定 ---
 		void OnCollisionEnter(shared_ptr<GameObject>& Other);	//	当たり判定
