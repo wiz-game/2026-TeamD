@@ -178,12 +178,13 @@ namespace basecross
 
 	void Bubble::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
-		// 仮で、Dirtにあったたら
 		if (Other->FindTag(L"Dirt"))
 		{
-			//BubbleAddAblity(BubbleAbility::RideBubble);
-			//GameManager::Instance().AddDebugStr(L"BubbleAbility", L"Get ShootBubble");
+			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
+		}
 
+		if (Other->FindTag(L"Enemy"))
+		{
 			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
 		}
 
