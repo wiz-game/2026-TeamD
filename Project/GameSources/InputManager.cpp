@@ -279,6 +279,7 @@ namespace basecross
 	void InputManager::PressedQKey()
 	{
 		StageEditor::Instance().DeselectObj();
+		StageEditor::Instance().GizmoDrawActive(false);
 	}
 
 	void InputManager::PressedWKey()
