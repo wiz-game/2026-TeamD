@@ -156,10 +156,18 @@ namespace basecross
 	}
 
 	// --- 当たり判定 ---
+	// 入ったとき
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
 		InputManager* i = &InputManager::Instance();
-		float slowness = i->GetMoveSpeed() / 2;
+		auto slowness = i->GetMoveSpeed() / 2;
+
+		// ダート（汚れ）
+		if (Other->FindTag(L"Dirt"))
+		{
+			m_PlayerHP -= 1.0f;
+			i->SetMoveSpeed(slowness);
+		}
 
 		float Power = 6.0f;
 		auto transPos = m_transform->GetPosition();
@@ -180,12 +188,6 @@ namespace basecross
 			}
 		}
 
-		// ダート（汚れ）
-		if (Other->FindTag(L"Dirt"))
-		{
-			m_PlayerHP -= App::GetApp()->GetElapsedTime() * 0.5f;
-			i->SetMoveSpeed(slowness);
-		}
 
 		// トランポリンバブル
 		if (Other->FindTag(L"TranmpolineBase"))
@@ -198,13 +200,22 @@ namespace basecross
 		}
 	}
 
+	// 入っているとき
 	void Player::OnCollisionExecute(shared_ptr<GameObject>& Other)
 	{
-
 	}
 
+	// 出たとき
 	void Player::OnCollisionExit(shared_ptr<GameObject>& Other)
 	{
+		InputManager* i = &InputManager::Instance();
+		// 1.0fだと半分のままなので、2倍を掛けてあげることによって通常の速度にする
+		float normalSpeed = i->GetMoveSpeed() * 2.0f;
+
+		if (Other->FindTag(L"Dirt"))
+		{
+			i->SetMoveSpeed(normalSpeed);
+		}
 	}
 }
 //end basecross
