@@ -35,6 +35,7 @@ namespace basecross
 		Vec4 m_defaultObjColor = Vec4(0.6f, 0.6f, 0.6f, 1.0f);
 		bool m_isSelectedObj = false;
 
+		float m_operationAmount = 1.0f;
 		vector<shared_ptr<Gizmo>> m_gizmos;
 	private:
 		StageEditor() {}
