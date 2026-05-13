@@ -36,7 +36,6 @@ namespace basecross
 			//ビューとライトの作成
 			CreateViewLight();
 			CreatePlayer();
-			AddGameObject<EnemyBase>(10);
 
 			StageEditor::Instance().ReadStageData("Stage_1.bin", GetThis<GameStage>());
 

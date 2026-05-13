@@ -3,102 +3,40 @@
 
 namespace basecross
 {
-	enum class BubbleAbility
-	{
-		ShootBubble,
-		RideBubble,
-		TranpolineBubble,
-	};
-
 	class Bubble : public GameObject
 	{
-		unordered_map<BubbleAbility,bool> m_abilities;
 		shared_ptr<Transform> m_trans;
 		shared_ptr<PNTStaticDraw> m_draw;
-		shared_ptr<CollisionSphere> m_col;
 		weak_ptr<GameObject> m_parent;
 		Vec3 m_parentForward;
-		Vec3 m_scale;
-		Vec3 m_forward;
-		Vec3 m_moveDir;
+		Vec3 m_dir;
 
-		// 泡のスピード
 		float m_speed;
-		// 泡のスピードの倍率
 		float m_speedRatio;
-		// 初速度
 		float m_initialVelocity;
-		// 現在の速度
 		float m_currentVelocity;
-		// 上昇速度
 		float m_upwardVelocity;
-		// 生存時間のカウント初め
 		bool m_isTimeStart;
-		// 生存時間
 		float m_limitTime;
-		// トランポリン泡が生成されているか
 		bool m_isSpawnedTrampoline;
-		// 泡が当たったかどうか
 		bool m_isHit;
-		// 泡が動いているかどうか
-		float m_moveTime;
-		// 泡が動いている時間の制限
-		float m_moveTimeLimit;
-		// 泡が発射されたかどうか
-		bool m_isShoot;
-		// 泡が動いているかどうか
-		bool m_isBubbleMove;
-
-		// 相殺力
-		int m_counteractingForce;
 
 	public :
-		Bubble::Bubble(const shared_ptr<Stage>& stage,const shared_ptr<GameObject>& parent,const Vec3& scale,const float& initialVelocity,const int& counteractingForce);
+		Bubble::Bubble(const shared_ptr<Stage>& stage,const shared_ptr<GameObject>& parent);
 		Bubble::~Bubble();
 
 		void OnCreate() override;
 		void OnUpdate() override;
 
-		void ShootBubble();
-
+		// ----------------------------------
 		//　泡の動きの挙動
+		// ----------------------------------
 		void BubbleMove();
 		
-		// 泡のアビリティを持っているかどうか
-		bool HasAblity(BubbleAbility ability)
-		{
-			auto it = m_abilities.find(ability);
-
-			if (it == m_abilities.end()) return false;
-			return it->second;
-		}
-
-		// 泡のアビリティをセットする
-		void SetAbility(BubbleAbility ability, bool value)
-		{
-			// キーとそのキーがtureかfalseかをセットする
-			m_abilities[ability] = value;
-		}
-
-		// 泡のアビリティを追加する
-		void BubbleAddAblity(BubbleAbility ability);
-
-		// カメラの前方向を得る
 		Vec3 GetCameraForward();
 
-		// 相殺力をセットする
-		void SetCounteractingForce(float force)
-		{
-			m_counteractingForce = force;
-		}
-
-		// 相殺力を得る
-		float GetCounteractingForce()
-		{
-			return m_counteractingForce;
-		}
-
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other);
+
 	};
 
 	class ViewBubble : public GameObject

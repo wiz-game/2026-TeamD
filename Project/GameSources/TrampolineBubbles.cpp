@@ -24,7 +24,7 @@ namespace basecross
 
 	void TrampolineBubbles::OnCreate()
 	{
-		AddTag(L"TrampolineBase");
+		AddTag(L"TranmpolineBase");
 		m_trans = GetComponent<Transform>();
 		m_trans->SetPosition(m_pos.x, m_pos.y - 0.5f, m_pos.z);
 		m_trans->SetScale(m_scale);

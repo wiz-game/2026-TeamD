@@ -12,7 +12,6 @@ namespace basecross
 	class EnemyBase : public GameObject
 	{
 	private:
-		std::shared_ptr<Transform> m_transform;
 		// 代入するためのメンバ変数
 		// 徘徊時間
 		float m_InitialWanderingTime;
@@ -24,27 +23,8 @@ namespace basecross
 		// ランダムに徘徊させる変数
 		float m_RandRotation;
 		float m_angle;
-		// 初期値のポジションを格納するための変数
-		Vec3 m_InitialPosition;
-		Vec3 m_TargetPosition;
-
-		// 1度だけ原点として記憶するやつ
-		bool m_isFirstTime;
-
-		float m_EnemyHP;
-
-		enum Point
-		{
-			Point0,
-			Point1,
-			Point2,
-			Point3,
-
-			Number
-		}
-		m_NumPoint;
 	public:
-		EnemyBase(const shared_ptr<Stage>& stage,float hp) :
+		EnemyBase(const shared_ptr<Stage>& stage) :
 			GameObject(stage),
 			m_InitialWanderingTime(0.0f),
 			m_RandRotation(0.0f),
@@ -52,10 +32,7 @@ namespace basecross
 			m_isWandering(false),
 			m_InitialStandTime(0.0f),
 			m_isStand(true),
-			m_angle(0.0f),
-			m_TargetPosition(),
-			m_isFirstTime(true),
-			m_EnemyHP(hp)
+			m_angle(0.0f)
 		{
 		}
 
@@ -79,20 +56,7 @@ namespace basecross
 			float moveSpeed		// 回転速度
 		);
 
-		void PointMove
-		(
-			const shared_ptr<GameObject>& gameObject,
-			float speed
-		);
-
 		void DebugString();
 		void DebugDraw();
-		void Died(const shared_ptr<GameObject>& gameObject);
-
-		// --- 当たり判定 ---
-		void OnCollisionEnter(shared_ptr<GameObject>& Other);	//	当たり判定
-		void OnCollisionExecute(shared_ptr<GameObject>& Other);
-		void OnCollisionExit(shared_ptr<GameObject>& Other);
-		// ------------------
 	};
 }

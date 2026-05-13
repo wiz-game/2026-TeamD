@@ -29,10 +29,9 @@ namespace basecross
 
 		// 当たり判定のコンポーネント
 		auto obb = AddComponent<CollisionObb>();
-		obb->SetAfterCollision(AfterCollision::Auto);
 
 		// 重力のコンポーネント
-		m_gravity = AddComponent<Gravity>();
+		auto gravity = AddComponent<Gravity>();
 
 		// バブルのコンポーネント
 		auto fbComp = AddComponent<FurBubble>(GetStage());
@@ -61,11 +60,12 @@ namespace basecross
 			// 1台目のコントローラのAボタンが押されたら または ジャンプしていなかったら
 			if ((control[0].wPressedButtons & XINPUT_GAMEPAD_A) && m_isJumping == false)
 			{
-				m_gravity->StartJump(Vec3(0.0f,9.8f,0.0f));
-				//m_Velocity = m_JumpPower;
+				m_Velocity = m_JumpPower;
 				m_isJumping = true;
 			}
 		}
+
+		transPos.y += m_Velocity * App::GetApp()->GetElapsedTime();
 
 		m_transform->SetPosition(transPos);
 	}
@@ -81,12 +81,11 @@ namespace basecross
 			return;
 		}
 
-		float initCoolDown = 0.4f,ZERO = 0.0f;
+		float initCoolDown = 1.0f,ZERO = 0.0f;
 
 		if (control[0].bRightTrigger && m_Bresing == false)
 		{
-			m_pBubble = stage->AddGameObject<Bubble>(GetThis<Player>(), Vec3(0.5f), 5.0f, m_Attack);
-			m_pBubble->ShootBubble();
+			stage->AddGameObject<Bubble>(GetThis<Player>());
 			m_Bresing = true;
 			m_cooldown = initCoolDown;
 		}
@@ -102,25 +101,6 @@ namespace basecross
 
 	}
 
-	void Player::PlayerDied()
-	{
-		auto scene = App::GetApp()->GetScene<Scene>();
-		auto stage = scene->GetActiveStage();
-		if (stage == nullptr)
-		{
-			return;
-		}
-
-		// 死んだときの体力
-		const float DIED_HP = 0.0f;
-
-		// 死亡したらゲームオーバー画面にいかせる
-		if (m_PlayerHP <= DIED_HP)
-		{
-			PostEvent(1.0f, GetThis<ObjectInterface>(), scene, L"ToGameOver");
-		}
-	}
-
 	// デバッグ用の文字列
 	void Player::DebugString()
 	{
@@ -131,8 +111,6 @@ namespace basecross
 		GameManager::Instance().AddDebugStr(L"PlayerRotation.x", m_transform->GetRotation().x);
 		GameManager::Instance().AddDebugStr(L"PlayerRotation.y", m_transform->GetRotation().y);
 		GameManager::Instance().AddDebugStr(L"PlayerRotation.z", m_transform->GetRotation().z);
-		GameManager::Instance().AddDebugStr(L"PlayerHP", m_PlayerHP);
-		GameManager::Instance().AddDebugStr(L"Attack", m_Attack);
 	}
 
 	void Player::ReSpawn()
@@ -158,19 +136,15 @@ namespace basecross
 	// --- 当たり判定 ---
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
-		InputManager* i = &InputManager::Instance();
-		float slowness = i->GetMoveSpeed() / 2;
-
 		float Power = 6.0f;
 		auto transPos = m_transform->GetPosition();
-		// 床
+		// バブル
 		if (Other->FindTag(L"Ground"))
 		{
 			m_isJumping = false;
 			m_Velocity = 0.0f;
 		}
 
-		// バブル
 		if (Other->FindTag(L"Bubble"))
 		{
 			if (Other->GetComponent<Transform>()->GetPosition().y < transPos.y)
@@ -180,14 +154,6 @@ namespace basecross
 			}
 		}
 
-		// ダート（汚れ）
-		if (Other->FindTag(L"Dirt"))
-		{
-			m_PlayerHP -= App::GetApp()->GetElapsedTime() * 0.5f;
-			i->SetMoveSpeed(slowness);
-		}
-
-		// トランポリンバブル
 		if (Other->FindTag(L"TranmpolineBase"))
 		{
 			if (Other->GetComponent<Transform>()->GetPosition().y < transPos.y)
