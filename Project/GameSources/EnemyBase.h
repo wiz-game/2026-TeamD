@@ -44,7 +44,7 @@ namespace basecross
 		}
 		m_NumPoint;
 	public:
-		EnemyBase(const shared_ptr<Stage>& stage,float hp) :
+		EnemyBase(const shared_ptr<Stage>& stage) :
 			GameObject(stage),
 			m_InitialWanderingTime(0.0f),
 			m_RandRotation(0.0f),
@@ -54,8 +54,8 @@ namespace basecross
 			m_isStand(true),
 			m_angle(0.0f),
 			m_TargetPosition(),
-			m_isFirstTime(true),
-			m_EnemyHP(hp)
+			m_isFirstTime(true)
+			//m_EnemyHP(hp)
 		{
 		}
 

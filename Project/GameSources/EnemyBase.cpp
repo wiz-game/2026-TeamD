@@ -6,14 +6,11 @@ namespace basecross
 {
     void EnemyBase::OnCreate()
     {
-        DebugDraw();
     }
 
     void EnemyBase::OnUpdate()
     {
-        PointMove(GetThis<EnemyBase>(), 1.0f);
         DebugString();
-        Died(GetThis<EnemyBase>());
     }
 
     // ガチ徘徊
@@ -275,21 +272,6 @@ namespace basecross
         }
     }
 
-    void EnemyBase::DebugDraw()
-    {
-        AddTag(L"Enemy");
-        auto transComp = AddComponent<Transform>();
-        transComp->SetPosition(0.0f, 61.0f, 0.0f);
-        transComp->SetScale(Vec3(0.3f));
-
-        auto drawComp = AddComponent<PNTStaticDraw>();
-        drawComp->SetMeshResource(L"M_Alpaca");
-        drawComp->SetTextureResource(L"T_Alpaca");
-        drawComp->SetDrawActive(true);
-
-        auto obb = AddComponent<CollisionObb>();
-    }
-
     void EnemyBase::OnCollisionEnter(shared_ptr<GameObject>& Other)
     {
         auto bubble = dynamic_pointer_cast<Bubble>(Other);
@@ -298,9 +280,10 @@ namespace basecross
             return;
         }
 
+        auto force = bubble->GetCounteractingForce();
         if (Other->FindTag(L"Bubble"))
         {
-            m_EnemyHP -= 2.0f;
+            m_EnemyHP -= (float)force;
         }
     }
 
