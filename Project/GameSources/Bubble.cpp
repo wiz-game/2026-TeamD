@@ -3,20 +3,23 @@
 
 namespace basecross
 {
-	Bubble::Bubble(const shared_ptr<Stage>& stage, const shared_ptr<GameObject>& parent) :
+	Bubble::Bubble(const shared_ptr<Stage>& stage, const shared_ptr<GameObject>& parent,const Vec3& scale, const float& initialVelocity, const int& counteractingForce) :
 		GameObject(stage),
 		m_parent(parent),
 		m_speedRatio(0.0f),
-		m_initialVelocity(5.0f),
+		m_initialVelocity(initialVelocity),
 		m_currentVelocity(m_initialVelocity),
 		m_upwardVelocity(0.0f),
 		m_isTimeStart(false),
 		m_limitTime(0.75f),
 		m_isSpawnedTrampoline(false),
 		m_isHit(false),
-		m_scale(0.5),
+		m_scale(scale),
 		m_moveTime(0.0f),
-		m_moveTimeLimit(3.0f)
+		m_moveTimeLimit(3.0f),
+		m_isShoot(false),
+		m_isBubbleMove(false),
+		m_counteractingForce(counteractingForce)
 	{
 
 	}
@@ -42,7 +45,6 @@ namespace basecross
 		float randPosZ = static_cast<float>((rand() % 100) - 50) * 0.01f;
 
 		Vec3 spawnPos = Vec3(parentPos.x + randPosX, parentPos.y + 1.0f, parentPos.z + randPosZ) + m_parentForward * 1.25f;
-		m_dir = GetCameraForward();
 
 		m_trans->SetPosition(spawnPos);
 		m_trans->SetScale(Vec3(m_scale));
@@ -77,6 +79,14 @@ namespace basecross
 	{
 		BubbleMove();
 	}
+	
+	void Bubble::ShootBubble()
+	{
+		m_forward = GetCameraForward();
+
+		m_isShoot = true;
+		m_isBubbleMove = false;
+	}
 
 	void Bubble::BubbleMove()
 	{
@@ -85,7 +95,10 @@ namespace basecross
 		auto pos = m_trans->GetPosition();
 		auto parent = m_parent.lock();
 		auto player = dynamic_pointer_cast<Player>(parent);
-
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		auto camera = stage->GetView()->GetTargetCamera();
+		auto myCamera = dynamic_pointer_cast<MyCamera>(camera);
+		bool isAiming = myCamera->GetIsAiming();
 		float velocityZero = 0.0f;
 		float decelerationStartRatio = 0.2f;
 
@@ -104,14 +117,17 @@ namespace basecross
 			// 現在速度
 			m_currentVelocity = m_initialVelocity * m_speedRatio;
 
-			if (player->GetTargetMode())
+			if(m_isShoot && !m_isBubbleMove)
 			{
-				pos += m_dir * (m_currentVelocity * elapsed);
+				m_moveDir = isAiming ? m_forward : m_parentForward;
+				m_isBubbleMove = true;
 			}
-			else
+
+			if (m_isShoot)
 			{
-				pos += m_parentForward * (m_currentVelocity * elapsed);
+				pos += m_moveDir * (m_currentVelocity * elapsed);
 			}
+
 		}
 
 		// 現在の速度の割合が始めるぐらいの割合になったら上昇を始める
@@ -128,7 +144,6 @@ namespace basecross
 
 			pos.y += m_upwardVelocity * elapsed;
 		}
-
 
 		// 時間制限の開始
 		if (m_isTimeStart)
@@ -147,7 +162,6 @@ namespace basecross
 
 	void Bubble::BubbleAddAblity(BubbleAbility ability)
 	{
-		// InSertで重複をさけている、関数の一個目がどこに入れるか、二個目が入れる値
 		if (m_abilities[ability])return;
 
 		SetAbility(ability, true);
@@ -167,12 +181,14 @@ namespace basecross
 	Vec3 Bubble::GetCameraForward()
 	{
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-		auto PtrCamera = stage->GetView()->GetTargetCamera();
-		Vec3 at = PtrCamera->GetAt();
-		Vec3 eye = PtrCamera->GetEye();
-		Vec3 forward = at - eye;
+		auto camera = stage->GetView()->GetTargetCamera();
+		auto myCamera = dynamic_pointer_cast<MyCamera>(camera);
+
+		Vec3 at = myCamera->GetAt();		
+		Vec3 eye = myCamera->GetEye();
+		auto forward = at - eye;
 		forward.normalize();
-		
+	
 		return forward;
 	}
 

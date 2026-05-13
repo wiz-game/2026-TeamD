@@ -23,6 +23,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Dirt.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModelResource.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)EnemyAlpaca.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StageObjectInterface.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyBase.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FurBubble.h" />
@@ -55,6 +56,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)DXModelResource.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)EnemyAlpaca.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyBase.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FurBubble.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp" />

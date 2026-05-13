@@ -31,6 +31,7 @@
 
 // エネミー
 #include "EnemyBase.h"
+#include "EnemyAlpaca.h"
 
 #include "Bubble.h"
 #include "TrampolineBubbles.h"
