@@ -73,6 +73,9 @@
     <Filter Include="StageObjs\Dirt">
       <UniqueIdentifier>{39d59122-b66e-4782-821f-96b7efd9fd24}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemys\EnemyAlpaca">
+      <UniqueIdentifier>{fa65c350-268e-4710-ad92-837b193b8bba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -162,6 +165,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)StageObjectInterface.h">
       <Filter>Other</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EnemyAlpaca.h">
+      <Filter>Enemys\EnemyAlpaca</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -238,6 +244,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Dirt.cpp">
       <Filter>StageObjs\Dirt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EnemyAlpaca.cpp">
+      <Filter>Enemys\EnemyAlpaca</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
