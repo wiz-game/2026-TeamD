@@ -47,6 +47,7 @@ namespace basecross {
 		Vec3 m_collisionRange = Vec3(100.0f, 1000.0f, 100.0f);
 
 		void CreatePlayer();
+		void CreateEnemy();
 	public:
 		//\’z‚Æ”jŠü
 		GameStage() :Stage(){}

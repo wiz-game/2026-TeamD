@@ -36,7 +36,9 @@ namespace basecross
 			//ビューとライトの作成
 			CreateViewLight();
 			CreatePlayer();
-			AddGameObject<EnemyBase>(10);
+			CreateEnemy();
+			STRUCT_ObjectParam objParm = STRUCT_ObjectParam(ENUM_ObjectID::Dirt,Vec3(1.0f),Quat(0.0f),Vec3(1.0f));
+			AddGameObject<Dirt>(objParm);
 
 			StageEditor::Instance().ReadStageData("Stage_1.bin", GetThis<GameStage>());
 
@@ -214,6 +216,12 @@ namespace basecross
 	{
 		auto player = AddGameObject<Player>();
 		SetSharedGameObject(L"Player", player);
+	}
+
+	// Enemyを作成する
+	void GameStage::CreateEnemy()
+	{
+		AddGameObject<EnemyAlpaca>(10);
 	}
 }
 //end basecross
