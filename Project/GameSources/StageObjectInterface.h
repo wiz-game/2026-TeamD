@@ -33,7 +33,12 @@ namespace basecross
 			const bsm::Vec3& scale = bsm::Vec3(1.0f),
 			const bsm::Quat& quaternion = bsm::Quat(),
 			const bsm::Vec3& position = bsm::Vec3(0.0f)
-		) {}
+		) :
+			ID(id),
+			Scale(scale),
+			Quaternion(quaternion),
+			Position(position)
+		{}
 
 		ENUM_ObjectID GetID() const { return ID; }
 		bsm::Vec3 GetScale() const { return Scale; }
