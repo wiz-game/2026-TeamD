@@ -12,6 +12,7 @@ namespace basecross
 	void StageEditor::Initialize()
 	{
 		m_gizmos.resize(static_cast<size_t>(ENUM_Axis::Max));
+		m_operationAmount = 10.0f;
 	}
 	
 	void StageEditor::WriteStageData()
@@ -347,22 +348,23 @@ namespace basecross
 
 	void StageEditor::PositionOperation(const Point2D<int>& mousePoint)
 	{
+		auto elapsedTime = App::GetApp()->GetElapsedTime();
 		auto selectedTrans = m_selectedObj->GetComponent<Transform>();
 		auto nowPos = selectedTrans->GetPosition();
 
 		switch (m_selectedGizmo->GetAxis())
 		{
 		case ENUM_Axis::X:
-			nowPos.x += mousePoint.x;
-			nowPos.x -= mousePoint.y;
+			nowPos.x += mousePoint.x * elapsedTime * m_operationAmount;
+			nowPos.x -= mousePoint.y * elapsedTime * m_operationAmount;
 			selectedTrans->SetPosition(nowPos);
 			break;
 		case ENUM_Axis::Y:
-			selectedTrans->SetPosition(Vec3(nowPos.x, nowPos.y -= mousePoint.y, nowPos.z));
+			selectedTrans->SetPosition(Vec3(nowPos.x, nowPos.y -= mousePoint.y * elapsedTime * m_operationAmount, nowPos.z));
 			break;
 		case ENUM_Axis::Z:
-			nowPos.z += mousePoint.x;
-			nowPos.z -= mousePoint.y;
+			nowPos.z += mousePoint.x * elapsedTime * m_operationAmount;
+			nowPos.z -= mousePoint.y * elapsedTime * m_operationAmount;
 			selectedTrans->SetPosition(nowPos);
 			break;
 		default:
@@ -378,22 +380,23 @@ namespace basecross
 
 	void StageEditor::QuaternionOperation(const Point2D<int>& mousePoint)
 	{
+		auto elapsedTime = App::GetApp()->GetElapsedTime();
 		auto selectedTrans = m_selectedObj->GetComponent<Transform>();
 		auto nowQuat = selectedTrans->GetQuaternion();
 
 		switch (m_selectedGizmo->GetAxis())
 		{
 		case ENUM_Axis::X:
-			nowQuat.x += mousePoint.x;
-			nowQuat.x -= mousePoint.y;
+			nowQuat.x += mousePoint.x * elapsedTime * m_operationAmount;
+			nowQuat.x -= mousePoint.y * elapsedTime * m_operationAmount;
 			selectedTrans->SetQuaternion(nowQuat);
 			break;
 		case ENUM_Axis::Y:
-			selectedTrans->SetQuaternion(Quat(nowQuat.x, nowQuat.y -= mousePoint.y, nowQuat.z, nowQuat.w));
+			selectedTrans->SetQuaternion(Quat(nowQuat.x, nowQuat.y -= mousePoint.y * elapsedTime * m_operationAmount, nowQuat.z, nowQuat.w));
 			break;
 		case ENUM_Axis::Z:
-			nowQuat.z += mousePoint.x;
-			nowQuat.z -= mousePoint.y;
+			nowQuat.z += mousePoint.x * elapsedTime * m_operationAmount;
+			nowQuat.z -= mousePoint.y * elapsedTime * m_operationAmount;
 			selectedTrans->SetQuaternion(nowQuat);
 			break;
 		default:
@@ -403,22 +406,23 @@ namespace basecross
 
 	void StageEditor::ScaleOperation(const Point2D<int>& mousePoint)
 	{
+		auto elapsedTime = App::GetApp()->GetElapsedTime();
 		auto selectedTrans = m_selectedObj->GetComponent<Transform>();
 		auto nowScale = selectedTrans->GetScale();
 
 		switch (m_selectedGizmo->GetAxis())
 		{
 		case ENUM_Axis::X:
-			nowScale.x += mousePoint.x;
-			nowScale.x -= mousePoint.y;
+			nowScale.x += mousePoint.x * elapsedTime * m_operationAmount;
+			nowScale.x -= mousePoint.y * elapsedTime * m_operationAmount;
 			selectedTrans->SetScale(nowScale);
 			break;
 		case ENUM_Axis::Y:
-			selectedTrans->SetScale(Vec3(nowScale.x, nowScale.y -= mousePoint.y, nowScale.z));
+			selectedTrans->SetScale(Vec3(nowScale.x, nowScale.y -= mousePoint.y * elapsedTime * m_operationAmount, nowScale.z));
 			break;
 		case ENUM_Axis::Z:
-			nowScale.z += mousePoint.x;
-			nowScale.z -= mousePoint.y;
+			nowScale.z += mousePoint.x * elapsedTime * m_operationAmount;
+			nowScale.z -= mousePoint.y * elapsedTime * m_operationAmount;
 			selectedTrans->SetScale(nowScale);
 			break;
 		default:
