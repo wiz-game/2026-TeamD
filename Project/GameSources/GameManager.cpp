@@ -54,6 +54,7 @@ namespace basecross
 		else
 		{
 			m_sPtrDebugLog = App::GetApp()->GetScene<Scene>()->GetActiveStage()->AddGameObject<DebugLog>();
+			m_sPtrDebugLog->SetTextRect(Rect2D<float>(10.0f, 10.0f, 300.0f, 400.0f));
 			m_sPtrDebugLog->AddDebugStr(logName, debugLog);
 		}
 	}
