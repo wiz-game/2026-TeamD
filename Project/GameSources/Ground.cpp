@@ -42,6 +42,6 @@ namespace basecross
 		m_sPtrTrans->SetPosition(m_objectParam.GetPosition());
 		
 		auto ptrColl = AddComponent<CollisionObb>();
-		ptrColl->SetDrawActive(true);
+		ptrColl->SetFixed(true);
 	}
 }
