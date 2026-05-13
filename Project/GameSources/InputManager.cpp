@@ -172,11 +172,10 @@ namespace basecross
 	void InputManager::Moves()
 	{
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-		float moveSpeed = 1.8f;
 		if (!stage) return;
 
 		stage->GetSharedGameObject<Player>(L"Player")->GetComponent<Move>()
-			->VectorMove(Vec3(m_pad.fThumbLX * moveSpeed, 0.0f, m_pad.fThumbLY * moveSpeed));
+			->VectorMove(Vec3(m_pad.fThumbLX * m_MoveSpeed, 0.0f, m_pad.fThumbLY * m_MoveSpeed));
 	}
 
 	void InputManager::MoveCamera()
