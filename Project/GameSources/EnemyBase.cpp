@@ -280,9 +280,11 @@ namespace basecross
         AddTag(L"Enemy");
         auto transComp = AddComponent<Transform>();
         transComp->SetPosition(0.0f, 61.0f, 0.0f);
+        transComp->SetScale(Vec3(0.3f));
 
         auto drawComp = AddComponent<PNTStaticDraw>();
-        drawComp->SetMeshResource(L"DEFAULT_CUBE");
+        drawComp->SetMeshResource(L"M_Alpaca");
+        drawComp->SetTextureResource(L"T_Alpaca");
         drawComp->SetDrawActive(true);
 
         auto obb = AddComponent<CollisionObb>();
@@ -290,6 +292,12 @@ namespace basecross
 
     void EnemyBase::OnCollisionEnter(shared_ptr<GameObject>& Other)
     {
+        auto bubble = dynamic_pointer_cast<Bubble>(Other);
+        if (bubble == nullptr)
+        {
+            return;
+        }
+
         if (Other->FindTag(L"Bubble"))
         {
             m_EnemyHP -= 2.0f;
