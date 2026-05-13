@@ -34,12 +34,6 @@
     <Filter Include="TrampolineBubbles">
       <UniqueIdentifier>{96f4d474-dd05-46ab-b853-d648037e1951}</UniqueIdentifier>
     </Filter>
-    <Filter Include="InputManager">
-      <UniqueIdentifier>{345b9f9b-9935-428f-a1b3-486158b14cec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameManager">
-      <UniqueIdentifier>{320113fa-92c9-4239-a2ca-054d8c53265c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="StageEditor">
       <UniqueIdentifier>{08b470f4-4b4d-4c54-a4f0-2ceedb2520f4}</UniqueIdentifier>
     </Filter>
@@ -75,6 +69,20 @@
     </Filter>
     <Filter Include="Enemys\EnemyAlpaca">
       <UniqueIdentifier>{fa65c350-268e-4710-ad92-837b193b8bba}</UniqueIdentifier>
+    <Filter Include="Other\Gizmo">
+      <UniqueIdentifier>{d5b71f8e-698d-459f-8589-0afde89ea35a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{55cc9a0f-5e26-4ef0-a456-1340b4dfd933}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\GameManager">
+      <UniqueIdentifier>{320113fa-92c9-4239-a2ca-054d8c53265c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\InputManager">
+      <UniqueIdentifier>{345b9f9b-9935-428f-a1b3-486158b14cec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\SoundManager">
+      <UniqueIdentifier>{98d05556-aa24-4e1c-a847-8fd808a847fa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -127,10 +135,10 @@
       <Filter>StageObjs\Ground</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h">
-      <Filter>GameManager</Filter>
+      <Filter>Managers\GameManager</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)InputManager.h">
-      <Filter>InputManager</Filter>
+      <Filter>Managers\InputManager</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)StageEditor.h">
       <Filter>StageEditor</Filter>
@@ -167,6 +175,11 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyAlpaca.h">
       <Filter>Enemys\EnemyAlpaca</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Gizmo.h">
+      <Filter>Other\Gizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h">
+      <Filter>Managers\SoundManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -216,10 +229,10 @@
       <Filter>StageObjs\Ground</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp">
-      <Filter>GameManager</Filter>
+      <Filter>Managers\GameManager</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)InputManager.cpp">
-      <Filter>InputManager</Filter>
+      <Filter>Managers\InputManager</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)StageEditor.cpp">
       <Filter>StageEditor</Filter>
@@ -247,6 +260,11 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyAlpaca.cpp">
       <Filter>Enemys\EnemyAlpaca</Filter>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Gizmo.cpp">
+      <Filter>Other\Gizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp">
+      <Filter>Managers\SoundManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

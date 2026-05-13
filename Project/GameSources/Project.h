@@ -12,9 +12,11 @@
 #include "DebugLog.h"
 #include "BinaryFile.h"
 #include "Conversion.h"
+#include "Gizmo.h"
 
 // マネージャークラス
 #include "GameManager.h"
+#include "SoundManager.h"
 
 // オリジナルコンポーネント
 #include "Move.h"

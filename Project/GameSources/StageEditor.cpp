@@ -11,6 +11,7 @@ namespace basecross
 
 	void StageEditor::Initialize()
 	{
+		m_gizmos.resize(static_cast<size_t>(ENUM_Axis::Max));
 	}
 	
 	void StageEditor::WriteStageData()
@@ -73,6 +74,7 @@ namespace basecross
 		m_sPtrEditorMenuLog = App::GetApp()->GetScene<Scene>()->GetActiveStage()->AddGameObject<DebugLog>(L"-EditorMenu-");
 		m_sPtrEditorMenuLog->SetTextRect(Rect2D<float>(1070.0f, 10.0f, 200.0f, 400.0f));
 
+		AddEditorMenuLog(L"EditorMode", L"Position");
 		AddEditorMenuLog(L"SelectObject", static_cast<int>(m_objID));
 
 		m_editorMode = ENUM_EditorMode::Position;
@@ -86,12 +88,42 @@ namespace basecross
 		m_sPtrEditorMenuLog = nullptr;
 		
 		m_editorMode = ENUM_EditorMode::Position;
-		m_isSelectedObj = false;
+		
+		DeselectObj();
+		GizmoDrawActive(false);
+	}
+
+	void StageEditor::SelectEditorMode(const ENUM_EditorMode& editorMode)
+	{
+		m_editorMode = editorMode;
+		switch (m_editorMode)
+		{
+		case ENUM_EditorMode::Position:
+			AddEditorMenuLog(L"EditorMode", L"Position");
+			break;
+		case ENUM_EditorMode::Scale:
+			AddEditorMenuLog(L"EditorMode", L"Scale");
+			break;
+		case ENUM_EditorMode::Quaternion:
+			AddEditorMenuLog(L"EditorMode", L"Quaternion");
+			break;
+		default:
+			break;
+		}
 	}
 
 	void StageEditor::PressedLMouseButton(const Point2D<int> mousePoint)
 	{
-		SerectObj(mousePoint);
+		bool isGizmoSelect = false;
+		if (m_isSelectedObj)
+		{
+			isGizmoSelect = GizmoSelect(mousePoint);
+		}
+
+		if (!isGizmoSelect)
+		{
+			SelectObj(mousePoint);
+		}
 	}
 
 	void StageEditor::PressedDelete()
@@ -110,9 +142,11 @@ namespace basecross
 
 		m_selectedObj = nullptr;
 		m_isSelectedObj = false;
+
+		GizmoDrawActive(false);
 	}
 
-	void StageEditor::SerectObj(const Point2D<int> mousePoint)
+	void StageEditor::SelectObj(const Point2D<int>& mousePoint)
 	{
 		Vec3 startPos, endPos;
 		Vec3 hitPoint;
@@ -140,13 +174,35 @@ namespace basecross
 					m_selectedObj = obj;
 					m_isSelectedObj = true;
 					staticDrawComp->SetDiffuse(m_selectedObjColor);
+
+					// ギズモを生成
+					if (!m_gizmos[0])
+					{
+						auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+						for (int i = 0; i < static_cast<int>(ENUM_Axis::Max); i++)
+						{
+							auto sharedPtr = stage->AddGameObject<Gizmo>(static_cast<ENUM_Axis>(i), m_selectedObj->GetComponent<Transform>());
+							m_gizmos[i] = sharedPtr;
+						}
+					}
+					// 生成していたら位置を変更する
+					else
+					{
+						for (const auto& gizmo : m_gizmos)
+						{
+							auto selectPos = m_selectedObj->GetComponent<Transform>()->GetPosition();
+							gizmo->GetComponent<Transform>()->SetPosition(selectPos);
+						}
+
+						GizmoDrawActive(true);
+					}
 					break;
 				}
 			}
 		}
 	}
 
-	void StageEditor::GetMouseRey(Vec3& startPos, Vec3& endPos, const Point2D<int> mousePoint)
+	void StageEditor::GetMouseRey(Vec3& startPos, Vec3& endPos, const Point2D<int>& mousePoint)
 	{
 		Mat4x4 world, view, proj;
 		world.affineTransformation
@@ -204,6 +260,16 @@ namespace basecross
 		);
 	}
 
+	void StageEditor::GizmoDrawActive(const bool& isDraw)
+	{
+		// ギズモが存在していたら非表示
+		if (!m_gizmos[0]) return;
+		for (const auto& gizmo : m_gizmos)
+		{
+			gizmo->GetComponent<PNTStaticDraw>()->SetDrawActive(isDraw);
+		}
+	}
+
 	void StageEditor::DeselectObj()
 	{
 		if (m_selectedObj)
@@ -216,6 +282,147 @@ namespace basecross
 			}
 			m_selectedObj = nullptr;
 			m_isSelectedObj = false;
+		}
+	}
+
+	void StageEditor::DeselectGizmo()
+	{
+		if (m_selectedGizmo) m_selectedGizmo = nullptr;
+	}
+
+	bool StageEditor::GizmoSelect(const Point2D<int>& mousePoint)
+	{
+		if (!m_isSelectedObj) return false;
+		if (!m_selectedObj) return false;
+		if (m_selectedGizmo) return false;
+
+		Vec3 startPos, endPos;
+		Vec3 hitPoint;
+		TRIANGLE retTri;
+		size_t retIndex;
+
+		// マウス位置からレイを作成
+		GetMouseRey(startPos, endPos, mousePoint);
+
+		if (!m_gizmos[0]) return false;
+		for (auto& gizmo : m_gizmos)
+		{
+			// ギズモとの衝突をテスト
+			auto staticDrawComp = gizmo->GetComponent<PNTStaticDraw>(false);
+			if (!staticDrawComp) continue;
+
+			auto isHit = staticDrawComp->HitTestStaticMeshSegmentTrianglesToAffine(startPos, endPos, hitPoint, retTri, retIndex);
+			if (!isHit) continue;
+
+			m_selectedGizmo = gizmo;
+			return true;
+		}
+
+		m_selectedGizmo = nullptr;
+		return false;
+	}
+
+	void StageEditor::ObjectOperation(const Point2D<int>& mousePoint)
+	{
+		if (!m_selectedGizmo) return;
+
+		switch (m_editorMode)
+		{
+		case ENUM_EditorMode::Position:
+			PositionOperation(mousePoint);
+			break;
+		case ENUM_EditorMode::Quaternion:
+			QuaternionOperation(mousePoint);
+			break;
+		case ENUM_EditorMode::Scale:
+			ScaleOperation(mousePoint);
+			break;
+		default:
+			break;
+		}
+	}
+
+	void StageEditor::PositionOperation(const Point2D<int>& mousePoint)
+	{
+		auto elapsedTime = App::GetApp()->GetElapsedTime();
+		auto selectedTrans = m_selectedObj->GetComponent<Transform>();
+		auto nowPos = selectedTrans->GetPosition();
+
+		switch (m_selectedGizmo->GetAxis())
+		{
+		case ENUM_Axis::X:
+			nowPos.x += mousePoint.x * elapsedTime;
+			nowPos.x -= mousePoint.y * elapsedTime;
+			selectedTrans->SetPosition(nowPos);
+			break;
+		case ENUM_Axis::Y:
+			selectedTrans->SetPosition(Vec3(nowPos.x, nowPos.y -= mousePoint.y * elapsedTime, nowPos.z));
+			break;
+		case ENUM_Axis::Z:
+			nowPos.z += mousePoint.x * elapsedTime;
+			nowPos.z -= mousePoint.y * elapsedTime;
+			selectedTrans->SetPosition(nowPos);
+			break;
+		default:
+			break;
+		}
+
+		// ギズモの位置も更新する
+		for (auto& gizmo : m_gizmos)
+		{
+			gizmo->GetComponent<Transform>()->SetPosition(selectedTrans->GetPosition());
+		}
+	}
+
+	void StageEditor::QuaternionOperation(const Point2D<int>& mousePoint)
+	{
+		auto elapsedTime = App::GetApp()->GetElapsedTime();
+		auto selectedTrans = m_selectedObj->GetComponent<Transform>();
+		auto nowQuat = selectedTrans->GetQuaternion();
+
+		switch (m_selectedGizmo->GetAxis())
+		{
+		case ENUM_Axis::X:
+			nowQuat.x += mousePoint.x * elapsedTime;
+			nowQuat.x -= mousePoint.y * elapsedTime;
+			selectedTrans->SetQuaternion(nowQuat);
+			break;
+		case ENUM_Axis::Y:
+			selectedTrans->SetQuaternion(Quat(nowQuat.x, nowQuat.y -= mousePoint.y * elapsedTime, nowQuat.z, nowQuat.w));
+			break;
+		case ENUM_Axis::Z:
+			nowQuat.z += mousePoint.x * elapsedTime;
+			nowQuat.z -= mousePoint.y * elapsedTime;
+			selectedTrans->SetQuaternion(nowQuat);
+			break;
+		default:
+			break;
+		}
+	}
+
+	void StageEditor::ScaleOperation(const Point2D<int>& mousePoint)
+	{
+		auto elapsedTime = App::GetApp()->GetElapsedTime();
+		auto selectedTrans = m_selectedObj->GetComponent<Transform>();
+		auto nowScale = selectedTrans->GetScale();
+
+		switch (m_selectedGizmo->GetAxis())
+		{
+		case ENUM_Axis::X:
+			nowScale.x += mousePoint.x * elapsedTime;
+			nowScale.x -= mousePoint.y * elapsedTime;
+			selectedTrans->SetScale(nowScale);
+			break;
+		case ENUM_Axis::Y:
+			selectedTrans->SetScale(Vec3(nowScale.x, nowScale.y -= mousePoint.y * elapsedTime, nowScale.z));
+			break;
+		case ENUM_Axis::Z:
+			nowScale.z += mousePoint.x * elapsedTime;
+			nowScale.z -= mousePoint.y * elapsedTime;
+			selectedTrans->SetScale(nowScale);
+			break;
+		default:
+			break;
 		}
 	}
 
