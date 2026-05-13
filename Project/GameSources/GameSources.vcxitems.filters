@@ -69,6 +69,7 @@
     </Filter>
     <Filter Include="Enemys\EnemyAlpaca">
       <UniqueIdentifier>{fa65c350-268e-4710-ad92-837b193b8bba}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Other\Gizmo">
       <UniqueIdentifier>{d5b71f8e-698d-459f-8589-0afde89ea35a}</UniqueIdentifier>
     </Filter>
@@ -175,6 +176,7 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyAlpaca.h">
       <Filter>Enemys\EnemyAlpaca</Filter>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Gizmo.h">
       <Filter>Other\Gizmo</Filter>
     </ClInclude>
@@ -260,6 +262,7 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyAlpaca.cpp">
       <Filter>Enemys\EnemyAlpaca</Filter>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Gizmo.cpp">
       <Filter>Other\Gizmo</Filter>
     </ClCompile>
