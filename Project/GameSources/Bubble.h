@@ -18,9 +18,11 @@ namespace basecross
 		shared_ptr<CollisionSphere> m_col;
 		weak_ptr<GameObject> m_parent;
 		Vec3 m_parentForward;
-		Vec3 m_dir;
 		Vec3 m_scale;
+		Vec3 m_forward;
+		Vec3 m_moveDir;
 
+		float m_speed;
 		float m_speedRatio;
 		float m_initialVelocity;
 		float m_currentVelocity;
@@ -31,6 +33,8 @@ namespace basecross
 		bool m_isHit;
 		float m_moveTime;
 		float m_moveTimeLimit;
+		bool m_isShoot;
+		bool m_isBubbleMove;
 
 	public :
 		Bubble::Bubble(const shared_ptr<Stage>& stage,const shared_ptr<GameObject>& parent);
@@ -39,11 +43,14 @@ namespace basecross
 		void OnCreate() override;
 		void OnUpdate() override;
 
+		void ShootBubble();
+
 		// ----------------------------------
 		//　泡の動きの挙動
 		// ----------------------------------
 		void BubbleMove();
 		
+
 		bool HasAblity(BubbleAbility ability)
 		{
 			auto it = m_abilities.find(ability);
@@ -63,6 +70,7 @@ namespace basecross
 		Vec3 GetCameraForward();
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other);
+
 
 	};
 
