@@ -12,7 +12,7 @@ namespace basecross
 	enum class ENUM_EditorMode
 	{
 		Position,
-		Rotation,
+		Quaternion,
 		Scale,
 		Terrain
 	};
@@ -26,6 +26,7 @@ namespace basecross
 		ENUM_EditorMode m_editorMode = ENUM_EditorMode::Position;
 
 		shared_ptr<GameObject> m_selectedObj = nullptr;
+		shared_ptr<Gizmo> m_selectedGizmo = nullptr;
 
 		string m_stageDatasDir = "StageDatas/";
 		string m_stageDataPath = "Stage_1.bin";
@@ -60,13 +61,24 @@ namespace basecross
 		void StartEditor();
 		void EndEditor();
 
+		void SelectEditorMode(const ENUM_EditorMode& editorMode);
+
 		void PressedLMouseButton(const Point2D<int> mousePoint);
 		void PressedDelete();
 
-		void SerectObj(const Point2D<int>& mousePoint);
-		void GetMouseRey(Vec3& startPos, Vec3& endPos, const Point2D<int> mousePoint);
-		void DeselectObj();
+		void GetMouseRey(Vec3& startPos, Vec3& endPos, const Point2D<int>& mousePoint);
+		void SelectObj(const Point2D<int>& mousePoint);
+		bool GizmoSelect(const Point2D<int>& mousePoint);
 		void ObjectOperation(const Point2D<int>& mousePoint);
+		
+		void PositionOperation(const Point2D<int>& mousePoint);
+		void QuaternionOperation(const Point2D<int>& mousePoint);
+		void ScaleOperation(const Point2D<int>& mousePoint);
+
+		void GizmoDrawActive(const bool& isDraw);
+		void DeselectObj();
+		void DeselectGizmo();
+		
 		void AddGameObject();
 		void ChangeObject(bool yKeyPressed, bool uKeyPressed);
 	};

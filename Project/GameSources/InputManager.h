@@ -73,6 +73,7 @@ namespace basecross
 		// GameMode：Editer用の入力関数
 		// ギズモによる操作
 		void ObjectOperation();
+		void ObjectOperationEnd(); // ギズモの選択解除
 
 		// 焦点固定視点移動
 		void FocusFixedViewPointMove();

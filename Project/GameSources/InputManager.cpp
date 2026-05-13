@@ -69,11 +69,23 @@ namespace basecross
 			}
 			break;
 		case ENUM_GameMode::Editor:
+			// オブジェクト選択とギズモの選択
+			if (m_key.m_bPressedKeyTbl[VK_LBUTTON] && !m_key.m_bPushKeyTbl[VK_TAB])
+			{
+				PressedLMouseButton();
+			}
+
 			// ギズモによる操作
-			if ((m_key.m_MouseClientPoint != m_beforeMouseClientPoint) &&
-				m_key.m_bPressedKeyTbl[VK_LBUTTON])
+			if (m_key.m_MouseClientPoint != m_beforeMouseClientPoint && 
+				m_key.m_bPushKeyTbl[VK_LBUTTON] && !m_key.m_bPressedKeyTbl[VK_LBUTTON])
 			{
 				ObjectOperation();
+			}
+			
+			// ギズモの選択解除
+			if (m_key.m_bUpKeyTbl[VK_LBUTTON])
+			{
+				ObjectOperationEnd();
 			}
 
 			// 焦点固定視点移動
@@ -108,12 +120,6 @@ namespace basecross
 				SaveStage();
 			}
 
-			// オブジェクト選択
-			if (m_key.m_bPressedKeyTbl[VK_LBUTTON] && !m_key.m_bPushKeyTbl[VK_TAB])
-			{
-				PressedLMouseButton();
-			}
-
 			// オブジェクト削除
 			if (m_key.m_bPressedKeyTbl[VK_DELETE])
 			{
@@ -132,13 +138,13 @@ namespace basecross
 				PressedWKey();
 			}
 
-			// 回転へ切替
+			// サイズへ切替
 			if (m_key.m_bPressedKeyTbl['E'])
 			{
 				PressedEKey();
 			}
 
-			// サイズへ切替
+			// 回転へ切替
 			if (m_key.m_bPressedKeyTbl['R'])
 			{
 				PressedRKey();
@@ -220,6 +226,11 @@ namespace basecross
 		StageEditor::Instance().ObjectOperation(mousePoint);
 	}
 
+	void InputManager::ObjectOperationEnd()
+	{
+		StageEditor::Instance().DeselectGizmo();
+	}
+
 	void InputManager::FocusFixedViewPointMove()
 	{
 		auto mousePoint = Point2D<int>
@@ -273,14 +284,17 @@ namespace basecross
 
 	void InputManager::PressedWKey()
 	{
+		StageEditor::Instance().SelectEditorMode(ENUM_EditorMode::Position);
 	}
 
 	void InputManager::PressedEKey()
 	{
+		StageEditor::Instance().SelectEditorMode(ENUM_EditorMode::Scale);
 	}
 
 	void InputManager::PressedRKey()
 	{
+		StageEditor::Instance().SelectEditorMode(ENUM_EditorMode::Quaternion);
 	}
 
 	void InputManager::PressedFKey()
