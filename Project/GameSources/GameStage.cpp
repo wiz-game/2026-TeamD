@@ -37,8 +37,8 @@ namespace basecross
 			CreateViewLight();
 			CreatePlayer();
 			CreateEnemy();
-			STRUCT_ObjectParam objParm = STRUCT_ObjectParam(ENUM_ObjectID::Dirt,Vec3(1.0f),Quat(0.0f),Vec3(1.0f));
-			AddGameObject<Dirt>(objParm);
+			//STRUCT_ObjectParam objParm = STRUCT_ObjectParam(ENUM_ObjectID::Dirt,Vec3(1.0f),Quat(0.0f),Vec3(1.0f));
+			//AddGameObject<Dirt>(objParm);
 
 			StageEditor::Instance().ReadStageData("Stage_1.bin", GetThis<GameStage>());
 
