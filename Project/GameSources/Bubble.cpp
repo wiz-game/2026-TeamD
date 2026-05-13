@@ -178,57 +178,61 @@ namespace basecross
 
 	void Bubble::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
-		// 仮で、Dirtにあったたら
 		if (Other->FindTag(L"Dirt"))
 		{
-			//BubbleAddAblity(BubbleAbility::RideBubble);
-			//GameManager::Instance().AddDebugStr(L"BubbleAbility", L"Get ShootBubble");
+			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
+		}
 
+		if (Other->FindTag(L"Enemy"))
+		{
 			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
 		}
 
 		if (!Other->FindTag(L"Ground")) return;
 
-		if (m_isSpawnedTrampoline) return;
-		if (m_isHit) return;
-		m_isHit = true;
-
-		auto range = 1.5f;
-		auto stage = GetStage();
-		auto ground = dynamic_pointer_cast<Ground>(Other);
-		auto myPos = m_trans->GetPosition();
-		auto objvec = stage->GetGameObjectVec();
-
-		bool found = false;
-
-		// 地面に当たった瞬間近くのトランポリン泡を探す
-		for (auto& obj : objvec)
+		if (HasAblity(BubbleAbility::TranpolineBubble))
 		{
-			if (obj->FindTag(L"TranmpolineBase"))
+			if (m_isSpawnedTrampoline) return;
+			if (m_isHit) return;
+			m_isHit = true;
+
+			auto range = 1.5f;
+			auto stage = GetStage();
+			auto ground = dynamic_pointer_cast<Ground>(Other);
+			auto myPos = m_trans->GetPosition();
+			auto objvec = stage->GetGameObjectVec();
+
+			bool found = false;
+
+			// 地面に当たった瞬間近くのトランポリン泡を探す
+			for (auto& obj : objvec)
 			{
+				if (!obj->FindTag(L"TrampolineBase")) continue;
 				auto tramp = dynamic_pointer_cast<TrampolineBubbles>(obj);
+				if (tramp == nullptr) continue;
 				auto trampTrans = tramp->GetComponent<Transform>();
-				if (trampTrans)
+				if (trampTrans == nullptr) continue;
+				
+				float dist = (myPos - trampTrans->GetPosition()).length();
+
+				if (dist < range)
 				{
-					float dist = (myPos - trampTrans->GetPosition()).length();
-					
-					if (dist < range)
-					{
-						found = true;
-						tramp->AddbubbleCount();
-						break;
-					}
+					found = true;
+					tramp->AddbubbleCount();
+					break;
 				}
 			}
+			if (!found && ground)
+			{
+				m_isSpawnedTrampoline = true;
+				auto bubblePos = m_trans->GetPosition();
+				GetStage()->AddGameObject<TrampolineBubbles>(Vec3(bubblePos));
+			}
 		}
-		if (!found && ground)
+		else
 		{
-			m_isSpawnedTrampoline = true;
-			auto bubblePos = m_trans->GetPosition();
-			GetStage()->AddGameObject<TrampolineBubbles>(Vec3(bubblePos));
+			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
 		}
-
-		GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
 	}
 
 	ViewBubble::ViewBubble(const shared_ptr<Stage>& stage, const vector<Vec3> *vertices) :
