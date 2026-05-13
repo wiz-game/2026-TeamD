@@ -31,6 +31,8 @@ namespace basecross
 		// 1度だけ原点として記憶するやつ
 		bool m_isFirstTime;
 
+		float m_EnemyHP;
+
 		enum Point
 		{
 			Point0,
@@ -42,7 +44,7 @@ namespace basecross
 		}
 		m_NumPoint;
 	public:
-		EnemyBase(const shared_ptr<Stage>& stage) :
+		EnemyBase(const shared_ptr<Stage>& stage,float hp) :
 			GameObject(stage),
 			m_InitialWanderingTime(0.0f),
 			m_RandRotation(0.0f),
@@ -52,7 +54,8 @@ namespace basecross
 			m_isStand(true),
 			m_angle(0.0f),
 			m_TargetPosition(),
-			m_isFirstTime(true)
+			m_isFirstTime(true),
+			m_EnemyHP(hp)
 		{
 		}
 
@@ -84,5 +87,11 @@ namespace basecross
 
 		void DebugString();
 		void DebugDraw();
+
+		// --- 当たり判定 ---
+		void OnCollisionEnter(shared_ptr<GameObject>& Other);	//	当たり判定
+		void OnCollisionExecute(shared_ptr<GameObject>& Other);
+		void OnCollisionExit(shared_ptr<GameObject>& Other);
+		// ------------------
 	};
 }

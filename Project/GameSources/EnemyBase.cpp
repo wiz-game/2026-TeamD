@@ -261,15 +261,38 @@ namespace basecross
         GameManager::Instance().AddDebugStr(L"EnemyInitialPositionX", m_InitialPosition.x);
         GameManager::Instance().AddDebugStr(L"EnemyInitialPositionY", m_InitialPosition.y);
         GameManager::Instance().AddDebugStr(L"EnemyInitialPositionZ", m_InitialPosition.z);
+        GameManager::Instance().AddDebugStr(L"EnemyHP", m_EnemyHP);
     }
 
     void EnemyBase::DebugDraw()
     {
+        AddTag(L"Enemy");
         auto transComp = AddComponent<Transform>();
         transComp->SetPosition(0.0f, 61.0f, 0.0f);
 
         auto drawComp = AddComponent<PNTStaticDraw>();
         drawComp->SetMeshResource(L"DEFAULT_CUBE");
         drawComp->SetDrawActive(true);
+
+        auto obb = AddComponent<CollisionObb>();
     }
+
+    void EnemyBase::OnCollisionEnter(shared_ptr<GameObject>& Other)
+    {
+        if (Other->FindTag(L"Bubble"))
+        {
+            m_EnemyHP -= 2.0f;
+        }
+    }
+
+    void EnemyBase::OnCollisionExecute(shared_ptr<GameObject>& Other)
+    {
+
+    }
+
+    void EnemyBase::OnCollisionExit(shared_ptr<GameObject>& Other)
+    {
+
+    }
+
 }
