@@ -16,6 +16,8 @@ namespace basecross
 		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
 		std::shared_ptr<Move> m_move;
 
+		std::shared_ptr<Bubble> m_pBubble;
+
 		float m_stickRX; // X軸中心のカメラの回り込み
 		float m_stickRY; // Y軸中心のカメラの回り込み
 
@@ -31,6 +33,9 @@ namespace basecross
 		bool m_isJumping; // 現在ジャンプしているかどうか
 
 		bool m_Bresing;
+
+		// 泡を吐いたクールタイムを格納するための変数
+		// クールダウンは"LaunchofBubble()"の中にローカル変数として入っているので、そこを変えてださい
 		float m_cooldown;
 	public :
 		// ステージを引数にしたコンストラクタ【必須】
@@ -47,7 +52,7 @@ namespace basecross
 			m_stickRY(2.0f),
 			m_stickRX(0.0f),
 			m_Bresing(false),
-			m_cooldown(0.8f)
+			m_cooldown(0.0f)
 		{
 		}
 
@@ -57,7 +62,6 @@ namespace basecross
 		void LaunchofBubble();	// 泡の発射
 		void DebugString();
 		void ReSpawn();
-		void BubbleOre();
 
 		// --- 当たり判定 ---
 		void OnCollisionEnter(shared_ptr<GameObject>& Other);	//	当たり判定
