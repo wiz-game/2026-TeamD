@@ -213,7 +213,6 @@ namespace basecross
 		{
 			auto enemy = dynamic_pointer_cast<EnemyAlpaca>(Other);
 			auto decreasehp = enemy->GetEnemyAlpacaHP();
-			enemy->DecreaseEnemyAlpacaHP(m_HP);
 			GameManager::Instance().AddDebugStr(L"EnemyHP",decreasehp);
 			m_HP -= decreasehp;
 			m_HP = max(0.0f, m_HP);
