@@ -16,6 +16,9 @@ namespace basecross
 
 		float m_yaw = 0.0f;
 		float m_pitch = 0.0f;
+		float m_distance = 1.0f;
+
+		float m_viewPointMoveSpeed;
 	public:
 		MyCamera();
 		virtual ~MyCamera();
@@ -36,6 +39,8 @@ namespace basecross
 		
 		bool GetIsAiming() const { return m_isAiming; }
 		void SetIsAiming(bool isAiming) { m_isAiming = isAiming; }
+
+		float GetDistance() const { return m_distance; }
 	private:
 		void UpdatePlayMode();
 		void UpdateMenuMode();

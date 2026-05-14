@@ -24,6 +24,8 @@ namespace basecross
 		shared_ptr<Transform> m_sPtrTransform;
 		shared_ptr<Transform> m_selectObjTrans;
 		shared_ptr<PNTStaticDraw> m_sPtrDraw;
+
+		Vec3 m_nowScale;
 		float m_axisNum;
 	public:
 		Gizmo(const std::shared_ptr<Stage>& stage, const ENUM_Axis& axis, const shared_ptr<Transform>& selectObjTrans);
