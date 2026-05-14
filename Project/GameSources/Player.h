@@ -51,10 +51,10 @@ namespace basecross
 		float m_cooldown;
 	public :
 		// ステージを引数にしたコンストラクタ【必須】
-		Player(const std::shared_ptr<Stage>& stage) :
+		Player(const std::shared_ptr<Stage>& stage, const Vec3& position) :
 			GameObject(stage), // ステージをGameObjectに渡す【必須】
 			m_Velocity(0.0f),
-			m_Position(0.0f, 60.2f, 0.0f),
+			m_Position(position),
 			m_Rotation(0.0f, 1.5f, 0.0f),
 			m_Scale(0.3f, 0.3f, 0.3f),
 			m_isJumping(false),

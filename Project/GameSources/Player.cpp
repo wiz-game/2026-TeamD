@@ -138,10 +138,10 @@ namespace basecross
 	void Player::ReSpawn()
 	{
 		// 落ちるときの位置
-		float fallPosition = 0.0f;
+		float fallPosition = -20.0f;
 		// リスポーンする位置
-		float reSpawnPositionX = .0f;
-		float reSpawnPositionY = 61.2f;
+		float reSpawnPositionX = 0.0f;
+		float reSpawnPositionY = 0.0f;
 		float reSpawnPositionZ = 0.0f;
 
 		auto transPos = m_transform->GetPosition();
