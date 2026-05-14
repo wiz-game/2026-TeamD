@@ -50,10 +50,10 @@ namespace basecross
 		bool m_isBubbleMove;
 
 		// 相殺力
-		int m_counteractingForce;
+		float m_HP;
 
 	public :
-		Bubble::Bubble(const shared_ptr<Stage>& stage,const shared_ptr<GameObject>& parent,const Vec3& scale,const float& initialVelocity,const int& counteractingForce);
+		Bubble::Bubble(const shared_ptr<Stage>& stage,const shared_ptr<GameObject>& parent,const Vec3& scale,const float& initialVelocity,const float& HP);
 		Bubble::~Bubble();
 
 		void OnCreate() override;
@@ -87,15 +87,21 @@ namespace basecross
 		Vec3 GetCameraForward();
 
 		// 相殺力をセットする
-		void SetCounteractingForce(float force)
+		void SetBubbleHP(float force)
 		{
-			m_counteractingForce = force;
+			m_HP = force;
 		}
 
 		// 相殺力を得る
-		float GetCounteractingForce()
+		float GetBubbleHP()
 		{
-			return m_counteractingForce;
+			return m_HP;
+		}
+
+		// 相殺力を得る
+		void DecreaseBubbleHP(float force)
+		{
+			m_HP -= force;
 		}
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other);
