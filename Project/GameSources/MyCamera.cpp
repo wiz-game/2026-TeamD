@@ -169,14 +169,17 @@ namespace basecross
 				// 注視点(at)から本来のカメラ位置(eye)までの線分と、オブジェクトのメッシュとの衝突判定
 				if (drawComp->HitTestStaticMeshSegmentTrianglesToAffine(at, originEye, hitPoint, tri, index))
 				{
-					// 衝突点までの距離の割合を計算
-					float dist = bsm::length(hitPoint - at);
-					float tDist = bsm::length(originEye - at);
-					float t = dist / tDist;
-
-					if (t < minT)
+					if (obj->FindTag(L"Ground"))
 					{
-						minT = t;
+						// 衝突点までの距離の割合を計算
+						float dist = bsm::length(hitPoint - at);
+						float tDist = bsm::length(originEye - at);
+						float t = dist / tDist;
+
+						if (t < minT)
+						{
+							minT = t;
+						}
 					}
 				}
 			}
