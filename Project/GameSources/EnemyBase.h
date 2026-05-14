@@ -31,7 +31,6 @@ namespace basecross
 		// 1度だけ原点として記憶するやつ
 		bool m_isFirstTime;
 
-		float m_EnemyHP;
 
 		enum Point
 		{
@@ -43,9 +42,12 @@ namespace basecross
 			Number
 		}
 		m_NumPoint;
+
+	protected:
+		float m_EnemyHP;
 	public:
-		EnemyBase(const shared_ptr<Stage>& stage) :
-			GameObject(stage),
+		EnemyBase(const shared_ptr<Stage>& stage, const STRUCT_ObjectParam& objectParam) :
+			GameObject(stage, objectParam),
 			m_InitialWanderingTime(0.0f),
 			m_RandRotation(0.0f),
 			m_WanderSpeed(1.0f),
