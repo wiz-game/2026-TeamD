@@ -6,6 +6,7 @@ namespace basecross
 {
 	MyCamera::MyCamera()
 	{
+		m_viewPointMoveSpeed = 5.0f;
 	}
 
 	MyCamera::~MyCamera()
@@ -169,14 +170,17 @@ namespace basecross
 				// 注視点(at)から本来のカメラ位置(eye)までの線分と、オブジェクトのメッシュとの衝突判定
 				if (drawComp->HitTestStaticMeshSegmentTrianglesToAffine(at, originEye, hitPoint, tri, index))
 				{
-					// 衝突点までの距離の割合を計算
-					float dist = bsm::length(hitPoint - at);
-					float tDist = bsm::length(originEye - at);
-					float t = dist / tDist;
-
-					if (t < minT)
+					if (obj->FindTag(L"Ground"))
 					{
-						minT = t;
+						// 衝突点までの距離の割合を計算
+						float dist = bsm::length(hitPoint - at);
+						float tDist = bsm::length(originEye - at);
+						float t = dist / tDist;
+
+						if (t < minT)
+						{
+							minT = t;
+						}
 					}
 				}
 			}
@@ -222,8 +226,8 @@ namespace basecross
 
 		// マウスの移動量に基づいてカメラを移動
 		auto elapsedTime = App::GetApp()->GetElapsedTime();
-		Vec3 deltaXZ = right * (mousePoint.x * elapsedTime);
-		Vec3 deltaY = Vec3{ 0.0f, mousePoint.y * elapsedTime, 0.0f };
+		Vec3 deltaXZ = right * (mousePoint.x * elapsedTime * m_viewPointMoveSpeed);
+		Vec3 deltaY = Vec3{ 0.0f, mousePoint.y * elapsedTime * m_viewPointMoveSpeed, 0.0f };
 
 		SetAt(GetAt() + deltaXZ + deltaY);
 		SetEye(GetEye() + deltaXZ + deltaY);
@@ -240,9 +244,9 @@ namespace basecross
 
 		Vec3 dirN = dir / curDist;
 
-		float newDist = curDist - wheelDelta * 1.0f;
+		m_distance = curDist - wheelDelta * 1.0f;
 		
-		Vec3 newEye = at - dirN * newDist;
+		Vec3 newEye = at - dirN * m_distance;
 
 		SetEye(newEye);
 	}
