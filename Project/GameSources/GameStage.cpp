@@ -64,11 +64,6 @@ namespace basecross
 		SetSharedGameObject(L"Player", player);
 	}
 
-	// Enemyを作成する
-	void GameStage::CreateEnemy()
-	{
-	}
-
 	void GameStage::SetCollRange()
 	{
 		// プレイヤーの位置を中心に当たり判定の範囲を設定する
