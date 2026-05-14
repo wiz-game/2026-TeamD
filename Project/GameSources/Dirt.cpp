@@ -37,13 +37,17 @@ namespace basecross
 
 	void Dirt::OnUpdate()
 	{
+		if (m_HP <= 0)
+		{
+			GetStage()->RemoveGameObject<Dirt>(GetThis<Dirt>());
+		}
 	}
 
 	void Dirt::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
 		if (Other->FindTag(L"Bubble"))
 		{
-			GetStage()->RemoveGameObject<Dirt>(GetThis<Dirt>());
+			DecreaseDirtHP(m_HP);
 		}
 	}
 }
