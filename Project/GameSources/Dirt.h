@@ -15,6 +15,9 @@ namespace basecross
 		shared_ptr<PNTStaticDraw> m_draw;
 		int m_nowDeleteCount;
 		float m_alphaColor;
+		// 相殺力
+		float m_HP;
+
 	public:
 		Dirt
 		(
@@ -28,5 +31,14 @@ namespace basecross
 
 		void OnCollisionEnter(shared_ptr<GameObject>& Other);
 
+		void DecreaseDirtHP(float force)
+		{
+			m_HP -= force;
+		}
+
+		float GetDirtHP()
+		{
+			return m_HP;
+		}
 	};
 }

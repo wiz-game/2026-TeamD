@@ -3,7 +3,7 @@
 
 namespace basecross
 {
-	Bubble::Bubble(const shared_ptr<Stage>& stage, const shared_ptr<GameObject>& parent,const Vec3& scale, const float& initialVelocity, const int& counteractingForce) :
+	Bubble::Bubble(const shared_ptr<Stage>& stage, const shared_ptr<GameObject>& parent,const Vec3& scale, const float& initialVelocity, const float& HP) :
 		GameObject(stage),
 		m_parent(parent),
 		m_speedRatio(0.0f),
@@ -19,7 +19,7 @@ namespace basecross
 		m_moveTimeLimit(3.0f),
 		m_isShoot(false),
 		m_isBubbleMove(false),
-		m_counteractingForce(counteractingForce)
+		m_HP(HP)
 	{
 
 	}
@@ -78,6 +78,13 @@ namespace basecross
 	void Bubble::OnUpdate()
 	{
 		BubbleMove();
+
+		if(m_HP <= 0.0f)
+		{
+			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
+		}
+
+		GameManager::Instance().AddDebugStr(L"BubbleHP", m_HP);
 	}
 	
 	void Bubble::ShootBubble()
@@ -196,12 +203,19 @@ namespace basecross
 	{
 		if (Other->FindTag(L"Dirt"))
 		{
-			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
+			auto dirt = dynamic_pointer_cast<Dirt>(Other);
+			auto decreasehp = dirt->GetDirtHP();
+			m_HP -= decreasehp;
+			m_HP = max(0.0f, m_HP);
 		}
 
 		if (Other->FindTag(L"Enemy"))
 		{
-			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
+			auto enemy = dynamic_pointer_cast<EnemyAlpaca>(Other);
+			auto decreasehp = enemy->GetEnemyAlpacaHP();
+			GameManager::Instance().AddDebugStr(L"EnemyHP",decreasehp);
+			m_HP -= decreasehp;
+			m_HP = max(0.0f, m_HP);
 		}
 
 		if (!Other->FindTag(L"Ground")) return;
