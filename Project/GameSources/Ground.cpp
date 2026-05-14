@@ -30,29 +30,17 @@ namespace basecross
 		auto ptrShadow = AddComponent<Shadowmap>();
 		m_sPtrTrans = AddComponent<Transform>();
 
-		ptrDraw->SetMeshResource(L"Stage_Floor");
+		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		ptrDraw->SetTextureResource(L"Ground_Sozai");
 
 		ptrDraw->SetOwnShadowActive(true);
-
-		Mat4x4 spanMat;
-		spanMat.affineTransformation
-		(
-			Vec3(0.43f, 0.267f, 0.43f),
-			Vec3(0.0f, 0.0f, 0.0f),
-			Vec3(0.0f, 0.0f, 0.0f),
-			Vec3(0.0f, -0.5f, 0.0f)
-		);
-
-		ptrShadow->SetMeshResource(L"Stage_Floor");
+		
+		ptrShadow->SetMeshResource(L"DEFAULT_CUBE");
 
 		m_sPtrTrans->SetScale(m_objectParam.GetScale());
 		m_sPtrTrans->SetQuaternion(m_objectParam.GetQuaternion());
 		m_sPtrTrans->SetPosition(m_objectParam.GetPosition());
-
-		ptrDraw->SetMeshToTransformMatrix(spanMat);
-		ptrShadow->SetMeshToTransformMatrix(spanMat);
-
+		
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetFixed(true);
 	}
