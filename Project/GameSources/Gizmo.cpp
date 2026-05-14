@@ -9,6 +9,7 @@ namespace basecross
 		m_selectObjTrans(selectObjTrans)
 	{
 		m_axisNum = 5.0f;
+		m_nowScale = Vec3();
 	}
 
 	void Gizmo::OnCreate()
@@ -64,9 +65,15 @@ namespace basecross
 
 		SetDrawLayer(100);
 		m_sPtrDraw->SetDepthStencilState(DepthStencilState::None);
+
+		m_nowScale = m_sPtrTransform->GetScale();
 	}
 
 	void Gizmo::OnUpdate()
 	{
+		auto targetCamera = GetStage()->GetView()->GetTargetCamera();
+		auto myCamera = dynamic_pointer_cast<MyCamera>(targetCamera);
+
+		m_sPtrTransform->SetScale(m_nowScale * (myCamera->GetDistance() * 0.02f));
 	}
 }
