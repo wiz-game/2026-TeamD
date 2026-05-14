@@ -6,6 +6,7 @@ namespace basecross
 {
 	MyCamera::MyCamera()
 	{
+		m_viewPointMoveSpeed = 5.0f;
 	}
 
 	MyCamera::~MyCamera()
@@ -225,8 +226,8 @@ namespace basecross
 
 		// マウスの移動量に基づいてカメラを移動
 		auto elapsedTime = App::GetApp()->GetElapsedTime();
-		Vec3 deltaXZ = right * (mousePoint.x * elapsedTime);
-		Vec3 deltaY = Vec3{ 0.0f, mousePoint.y * elapsedTime, 0.0f };
+		Vec3 deltaXZ = right * (mousePoint.x * elapsedTime * m_viewPointMoveSpeed);
+		Vec3 deltaY = Vec3{ 0.0f, mousePoint.y * elapsedTime * m_viewPointMoveSpeed, 0.0f };
 
 		SetAt(GetAt() + deltaXZ + deltaY);
 		SetEye(GetEye() + deltaXZ + deltaY);
@@ -243,9 +244,9 @@ namespace basecross
 
 		Vec3 dirN = dir / curDist;
 
-		float newDist = curDist - wheelDelta * 1.0f;
+		m_distance = curDist - wheelDelta * 1.0f;
 		
-		Vec3 newEye = at - dirN * newDist;
+		Vec3 newEye = at - dirN * m_distance;
 
 		SetEye(newEye);
 	}

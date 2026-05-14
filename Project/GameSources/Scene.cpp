@@ -15,6 +15,8 @@ namespace basecross
 	{
 		try 
 		{
+			App::GetApp()->SetFullScreenMode();
+
 			JoltManager::StaticInitialize();
 
 			// ”wŒiF‚ğİ’è
