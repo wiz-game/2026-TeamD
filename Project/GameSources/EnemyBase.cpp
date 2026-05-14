@@ -183,6 +183,7 @@ namespace basecross
         // 徘徊時間
         else if (m_isWandering == true)
         {
+
             // X軸の移動（正）
             if (transPos.x < m_TargetPosition.x) 
             {
@@ -240,6 +241,11 @@ namespace basecross
                 m_InitialStandTime = randTime;
             }
 
+            float diffX = m_TargetPosition.x - transPos.x;
+            float diffZ = m_TargetPosition.z - transPos.z;
+
+            float angle = atan2f(diffZ, diffX);
+            transComp->SetRotation(0.0f, angle, 0.0f);
 
             // 敵の位置を最終的に更新する
             transComp->SetPosition(transPos);
@@ -280,10 +286,10 @@ namespace basecross
             return;
         }
 
-        auto force = bubble->GetCounteractingForce();
+        auto force = bubble->GetBubbleHP();
         if (Other->FindTag(L"Bubble"))
         {
-            m_EnemyHP -= (float)force;
+            m_EnemyHP -= force;
         }
     }
 
