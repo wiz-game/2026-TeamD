@@ -22,13 +22,9 @@ namespace basecross
 		//Vec3 m_Rotation;
 
 		std::shared_ptr<Transform> m_transform;
+		std::shared_ptr<Gravity> m_gravity;
 
 		float m_Speed;
-
-		bool m_Detection;
-
-		// ステートマシン
-		unique_ptr<StateMachine<EnemyAlpaca>> m_eStateMachine;
 	public:
 		// 構築と破棄
 		EnemyAlpaca(const shared_ptr<Stage>& stage,const STRUCT_ObjectParam& objectParam) :
@@ -40,11 +36,12 @@ namespace basecross
 		{
 		}
 
+		// ステートマシン
+		unique_ptr<StateMachine<EnemyAlpaca>> m_eStateMachine;
+
 		virtual void OnCreate() override; // 初期化
 		virtual void OnUpdate() override; // 更新
 		//virtual void OnDraw() override; // 描画
-
-		void DetectionRange();
 		
 		// 体力のゲッター
 		float GetEnemyAlpacaHP()
@@ -58,6 +55,16 @@ namespace basecross
 		IdleState() {};
 	public:
 		static shared_ptr<IdleState> Instance();
+		virtual void Enter(const shared_ptr<EnemyAlpaca>& obj) override;
+		virtual void Execute(const shared_ptr<EnemyAlpaca>& obj) override;
+		virtual void Exit(const shared_ptr<EnemyAlpaca>& obj) override;
+	};
+
+	class AngryState : public ObjState<EnemyAlpaca>
+	{
+		AngryState() {};
+	public:
+		static shared_ptr<AngryState> Instance();
 		virtual void Enter(const shared_ptr<EnemyAlpaca>& obj) override;
 		virtual void Execute(const shared_ptr<EnemyAlpaca>& obj) override;
 		virtual void Exit(const shared_ptr<EnemyAlpaca>& obj) override;

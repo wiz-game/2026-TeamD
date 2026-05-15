@@ -10,7 +10,6 @@ namespace basecross
 
     void EnemyBase::OnUpdate()
     {
-        DebugString();
     }
 
     // ガチ徘徊
@@ -252,20 +251,30 @@ namespace basecross
         }
     }
 
+    void EnemyBase::FunctionGravity(const shared_ptr<GameObject>& gameObject)
+    {
+        auto gravity = gameObject->GetComponent<Gravity>();
+        if (gravity == nullptr)
+        {
+            return;
+        }
+    }
+
     void EnemyBase::DebugString()
     {
         auto transComp = GetComponent<Transform>();
         auto transPos = transComp->GetPosition();
 
-        GameManager::Instance().AddDebugStr(L"m_InitialStandTime", m_InitialStandTime);
-        GameManager::Instance().AddDebugStr(L"m_InitialWanderingTime", m_InitialWanderingTime);
-        GameManager::Instance().AddDebugStr(L"EnemyPositionX", transPos.x);
-        GameManager::Instance().AddDebugStr(L"EnemyPositionY", transPos.y);
-        GameManager::Instance().AddDebugStr(L"EnemyPositionZ", transPos.z);
-        GameManager::Instance().AddDebugStr(L"EnemyInitialPositionX", m_InitialPosition.x);
-        GameManager::Instance().AddDebugStr(L"EnemyInitialPositionY", m_InitialPosition.y);
-        GameManager::Instance().AddDebugStr(L"EnemyInitialPositionZ", m_InitialPosition.z);
-        GameManager::Instance().AddDebugStr(L"EnemyHP", m_EnemyHP);
+        //GameManager::Instance().AddDebugStr(L"m_InitialStandTime", m_InitialStandTime);
+        //GameManager::Instance().AddDebugStr(L"m_InitialWanderingTime", m_InitialWanderingTime);
+        //GameManager::Instance().AddDebugStr(L"EnemyPositionX", transPos.x);
+        //GameManager::Instance().AddDebugStr(L"EnemyPositionY", transPos.y);
+        //GameManager::Instance().AddDebugStr(L"EnemyPositionZ", transPos.z);
+        //GameManager::Instance().AddDebugStr(L"EnemyInitialPositionX", m_InitialPosition.x);
+        //GameManager::Instance().AddDebugStr(L"EnemyInitialPositionY", m_InitialPosition.y);
+        //GameManager::Instance().AddDebugStr(L"EnemyInitialPositionZ", m_InitialPosition.z);
+        //GameManager::Instance().AddDebugStr(L"EnemyHP", m_EnemyHP);
+        GameManager::Instance().AddDebugStr(L"Detection", m_Detection);
     }
 
     void EnemyBase::Died(const shared_ptr<GameObject>& gameObject)
@@ -277,6 +286,66 @@ namespace basecross
             stage->RemoveGameObject<GameObject>(GetThis<GameObject>());
         }
     }
+
+    // 索敵範囲
+    void EnemyBase::DetectionRange(const shared_ptr<GameObject>& gameObject)
+    {
+        auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+        if (stage == nullptr)
+        {
+            return;
+        }
+
+        auto player = stage->GetSharedGameObject<Player>(L"Player");
+        if (player == nullptr)
+        {
+            return;
+        }
+        auto playerPos = player->GetComponent<Transform>()->GetPosition();
+
+        auto transComp = gameObject->GetComponent<Transform>();
+        auto transPos = transComp->GetPosition();
+
+        auto distancePos_X = playerPos.x - transPos.x;
+        auto distancePos_Y = playerPos.y - transPos.y;
+        auto distancePos_Z = playerPos.z - transPos.z;
+
+        float distance = sqrt((distancePos_X * distancePos_X) + (distancePos_Y * distancePos_Y) + (distancePos_Z * distancePos_Z));
+
+        const float radius = 3.0f;
+
+        if (distance < radius)
+        {
+            m_Detection = true;
+        }
+        else
+        {
+            m_Detection = false;
+        }
+    }
+
+    // ストーカー
+    void EnemyBase::Stalker(const shared_ptr<GameObject>& gameObject, float stalkerSpeed)
+    {
+        auto player = App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetSharedGameObject<Player>(L"Player");
+        if (player == nullptr)
+        {
+            return;
+        }
+
+        auto playerComp = player->GetComponent<Transform>();
+        auto playerPos = playerComp->GetPosition();
+
+        auto objComp = gameObject->GetComponent<Transform>();
+        auto objPos = objComp->GetPosition();
+
+        float stalkerX = objPos.x + (playerPos.x - objPos.x) * stalkerSpeed *  App::GetApp()->GetElapsedTime();
+        float stalkerY = objPos.y + (playerPos.y - objPos.y) * stalkerSpeed *  App::GetApp()->GetElapsedTime();
+        float stalkerZ = objPos.z + (playerPos.z - objPos.z) * stalkerSpeed *  App::GetApp()->GetElapsedTime();
+
+        objComp->SetPosition(stalkerX, stalkerY, stalkerZ);
+    }
+
 
     void EnemyBase::OnCollisionEnter(shared_ptr<GameObject>& Other)
     {
