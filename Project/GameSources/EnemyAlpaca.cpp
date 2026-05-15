@@ -25,6 +25,8 @@ namespace basecross
 
 		auto obb = AddComponent<CollisionObb>();
 
+		m_gravity = AddComponent<Gravity>();
+
 		m_EnemyHP = 10;
 
 		m_eStateMachine.reset(new StateMachine<EnemyAlpaca>(GetThis<EnemyAlpaca>()));
@@ -35,33 +37,13 @@ namespace basecross
 	void EnemyAlpaca::OnUpdate()
 	{
 		m_eStateMachine->Update();
-		//m_eStateMachine->ChangeState()
+
 		Died(GetThis<EnemyAlpaca>());
-	}
+		DetectionRange(GetThis<EnemyAlpaca>());
 
-	// 索敵範囲
-	void EnemyAlpaca::DetectionRange()
-	{
-		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-		if (stage == nullptr)
-		{
-			return;
-		}
+		m_eStateMachine->Update();
 
-		auto player = stage->GetSharedGameObject<Player>(L"Player");
-		if (player == nullptr)
-		{
-			return;
-		}
-		auto playerPos = player->GetComponent<Transform>()->GetPosition();
-
-		auto transPos = m_transform->GetPosition();
-
-		auto distancePos_X = playerPos.x - transPos.x;
-		auto distancePos_Y = playerPos.y - transPos.y;
-		auto distancePos_Z = playerPos.z - transPos.z;
-
-		//float distance = sqrt((distancePos_X * distancePos_X) + (distancePos_Y * distancePos_Y) + (distancePos_Z + ))
+		DebugString();
 	}
 
 	// ステートマシンの処理
@@ -79,9 +61,40 @@ namespace basecross
 	void IdleState::Execute(const shared_ptr<EnemyAlpaca>& Obj)
 	{
 		Obj->PointMove(Obj, 1.0f);
+
+		if (Obj->GetDetection() == true)
+		{
+			Obj->m_eStateMachine->ChangeState(AngryState::Instance());
+		}
 	}
 
 	void IdleState::Exit(const shared_ptr<EnemyAlpaca>& Obj)
+	{
+
+	}
+
+	// ステートマシンの処理
+	shared_ptr<AngryState> AngryState::Instance()
+	{
+		static shared_ptr<AngryState> instance(new AngryState);
+		return instance;
+	}
+
+	void AngryState::Enter(const shared_ptr<EnemyAlpaca>& Obj)
+	{
+
+	}
+
+	void AngryState::Execute(const shared_ptr<EnemyAlpaca>& Obj)
+	{
+		Obj->Stalker(Obj, 1.0f);
+		if (Obj->GetDetection() == false)
+		{
+			Obj->m_eStateMachine->ChangeState(IdleState::Instance());
+		}
+	}
+
+	void AngryState::Exit(const shared_ptr<EnemyAlpaca>& Obj)
 	{
 
 	}
