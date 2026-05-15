@@ -18,7 +18,6 @@ namespace basecross
 
 		void CreateViewLight();
 		void CreatePlayer();
-		void CreateEnemy();
 
 		void SetCollRange();
 	public:
