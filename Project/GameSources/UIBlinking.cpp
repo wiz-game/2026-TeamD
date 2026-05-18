@@ -7,12 +7,10 @@ namespace basecross
 	UIBlinking::UIBlinking
 	(
 		const shared_ptr<Stage>& stage, 
-		const wstring& meshName, 
-		const Vec3& position, 
-		const float& blinkSpeed, 
-		const Vec2& imageSize
+		const STRUCT_UIParam& uiParam,
+		const float& blinkSpeed
 	) :
-		UIBase(stage, meshName, position, imageSize),
+		UIBase(stage, uiParam),
 		m_blinkSpeed(blinkSpeed),
 		m_blinkAlpha(0.0f),
 		m_isIncreasing(true)
