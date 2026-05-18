@@ -9,7 +9,8 @@ namespace basecross
 	):
 		GameObject(StagePtr, objectParam),
 		m_nowDeleteCount(0),
-		m_alphaColor(1.0f)
+		m_alphaColor(1.0f),
+		m_HP(2.0f)
 	{
 	}
 
@@ -21,7 +22,7 @@ namespace basecross
 	{
 		AddTag(L"Dirt");
 		SetIsEditorSave(true);
-		
+
 		m_trans = AddComponent<Transform>();
 		m_trans->SetScale(m_objectParam.GetScale());
 		m_trans->SetQuaternion(m_objectParam.GetQuaternion());
@@ -37,17 +38,18 @@ namespace basecross
 
 	void Dirt::OnUpdate()
 	{
-		if (m_HP <= 0)
+		if(m_HP <= 0.0f)
 		{
 			GetStage()->RemoveGameObject<Dirt>(GetThis<Dirt>());
 		}
 	}
 
+	void Dirt::OnUpdate2()
+	{
+
+	}
+
 	void Dirt::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
-		if (Other->FindTag(L"Bubble"))
-		{
-			DecreaseDirtHP(m_HP);
-		}
 	}
 }
