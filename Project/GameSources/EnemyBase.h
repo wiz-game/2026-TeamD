@@ -45,6 +45,8 @@ namespace basecross
 
 	protected:
 		float m_EnemyHP;
+		bool m_Detection;
+
 	public:
 		EnemyBase(const shared_ptr<Stage>& stage, const STRUCT_ObjectParam& objectParam) :
 			GameObject(stage, objectParam),
@@ -56,7 +58,8 @@ namespace basecross
 			m_isStand(true),
 			m_angle(0.0f),
 			m_TargetPosition(),
-			m_isFirstTime(true)
+			m_isFirstTime(true),
+			m_Detection(false)
 			//m_EnemyHP(hp)
 		{
 		}
@@ -88,8 +91,17 @@ namespace basecross
 		);
 
 		void DebugString();
-		void DebugDraw();
+
 		void Died(const shared_ptr<GameObject>& gameObject);
+		void DetectionRange(const shared_ptr<GameObject>& gameObject);
+		void Stalker(const shared_ptr<GameObject>& gameObject, float stalkerSpeed);
+		void FunctionGravity(const shared_ptr<GameObject>& gameObject);
+
+		// ゲッターセッター関数
+		bool GetDetection()
+		{
+			return m_Detection;
+		}
 
 		// --- 当たり判定 ---
 		void OnCollisionEnter(shared_ptr<GameObject>& Other);	//	当たり判定
