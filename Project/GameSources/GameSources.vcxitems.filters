@@ -7,9 +7,6 @@
     <Filter Include="JoltPhysics">
       <UniqueIdentifier>{4583c1e7-c3d0-4b6c-903e-52bd8456bd30}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameStage">
-      <UniqueIdentifier>{44886c04-d035-488d-bc36-f93ccfc8f211}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Player">
       <UniqueIdentifier>{a426b02b-c795-4a41-87ec-47ffaac1adb6}</UniqueIdentifier>
     </Filter>
@@ -88,6 +85,18 @@
     <Filter Include="SkyBox">
       <UniqueIdentifier>{77ff2d4b-f88c-4261-9fa0-8b1e2766a734}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Stages">
+      <UniqueIdentifier>{256ab431-eb0d-49f4-b80c-410d455bdcf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stages\GameStage">
+      <UniqueIdentifier>{44886c04-d035-488d-bc36-f93ccfc8f211}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stages\TitleStage">
+      <UniqueIdentifier>{aeb52692-325e-4c1f-a563-aaef27e7ff96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stages\SelectStage">
+      <UniqueIdentifier>{e42f73f0-9ccb-4b73-9978-5d59640e7123}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -118,7 +127,7 @@
       <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStage.h">
-      <Filter>GameStage</Filter>
+      <Filter>Stages\GameStage</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Scene.h">
       <Filter>Other\Scene</Filter>
@@ -189,6 +198,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SkyBox.h">
       <Filter>SkyBox</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h">
+      <Filter>Stages\TitleStage</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h">
+      <Filter>Stages\SelectStage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -216,7 +231,7 @@
       <Filter>Player</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage.cpp">
-      <Filter>GameStage</Filter>
+      <Filter>Stages\GameStage</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp">
       <Filter>Other\Scene</Filter>
@@ -277,6 +292,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyBox.cpp">
       <Filter>SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TitleStage.cpp">
+      <Filter>Stages\TitleStage</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp">
+      <Filter>Stages\SelectStage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

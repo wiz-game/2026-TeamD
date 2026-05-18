@@ -43,6 +43,9 @@
 
 #include "MyCamera.h"
 
+// ステージ
+#include "TitleStage.h"
+#include "SelectStage.h"
 #include "GameStage.h"
 
 #include "StageEditor.h"
