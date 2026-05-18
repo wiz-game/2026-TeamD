@@ -21,11 +21,6 @@ namespace basecross
 
 	}
 
-	void ItemBase::GetSoapOfCoolDown(const shared_ptr<GameObject>& gameObject)
-	{
-
-	}
-
 	void ItemBase::GetItem(const shared_ptr<GameObject>& gameObject)
 	{
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();

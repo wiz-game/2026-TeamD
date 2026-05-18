@@ -29,7 +29,6 @@ namespace basecross {
 		virtual void OnUpdate() override; // 更新
 		//virtual void OnDraw() override; // 描画
 
-		void GetSoapOfCoolDown(const shared_ptr<GameObject>& gameObject);
 		void GetItem(const shared_ptr<GameObject>& gameObject);
 
 		// --- 当たり判定 ---
