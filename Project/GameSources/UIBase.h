@@ -23,7 +23,7 @@ namespace basecross
 		float m_width;
 		float m_height;
 	public:
-		UIBase(const shared_ptr<Stage>& stage, const wstring& meshName, const Vec3& position, const Vec2& imageSize = Vec2(1200, 800));
+		UIBase(const shared_ptr<Stage>& stage, const wstring& meshName, const Vec3& position, const Vec2& imageSize = Vec2(1920, 1080));
 		virtual ~UIBase() {}
 
 		virtual void OnCreate() override;
