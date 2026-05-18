@@ -20,7 +20,7 @@ namespace basecross
 			JoltManager::StaticInitialize();
 
 			// ”wŒiF‚ðÝ’è
-			SetClearColor(Col4(1.0f));
+			SetClearColor(Col4(0.0f, 0.3f, 0.6f, 1.0f));
 			
 			// ƒŠƒ\[ƒXì¬
 			RegisterMediaFiles(App::GetApp()->GetDataDirWString());

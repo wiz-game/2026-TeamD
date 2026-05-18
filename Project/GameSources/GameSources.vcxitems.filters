@@ -103,6 +103,15 @@
     <Filter Include="StageObjs\SkyBox">
       <UniqueIdentifier>{77ff2d4b-f88c-4261-9fa0-8b1e2766a734}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UIs">
+      <UniqueIdentifier>{d6b437cb-2676-443e-84a3-58c494b224e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UIs\UIBase">
+      <UniqueIdentifier>{2a8e3c61-d1f6-4c40-9042-f59d42eac3c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UIs\UIBlinking">
+      <UniqueIdentifier>{18128f1a-83ce-4a96-b9fe-0d49188083f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -210,6 +219,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Project.h">
       <Filter>BaseCrossOther</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIBase.h">
+      <Filter>UIs\UIBase</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIBlinking.h">
+      <Filter>UIs\UIBlinking</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -304,6 +319,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp">
       <Filter>BaseCrossOther</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIBase.cpp">
+      <Filter>UIs\UIBase</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIBlinking.cpp">
+      <Filter>UIs\UIBlinking</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
