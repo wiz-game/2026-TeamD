@@ -11,6 +11,8 @@ namespace basecross
 {
 	enum class ENUM_GameMode
 	{
+		Title,
+		Select,
 		Play,
 		Menu,
 		Editor
@@ -21,8 +23,7 @@ namespace basecross
 	private:
 		shared_ptr<DebugLog> m_sPtrDebugLog = nullptr;
 
-		ENUM_GameMode m_gameMode = ENUM_GameMode::Play;
-
+		ENUM_GameMode m_gameMode = ENUM_GameMode::Title;
 		bool m_isDebug = false;
 	private:
 		GameManager() {}

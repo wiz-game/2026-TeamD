@@ -6,7 +6,11 @@ namespace basecross
 	void GameManager::EnterGameMode(ENUM_GameMode gameMode)
 	{
 		switch (gameMode)
-		{	
+		{
+		case ENUM_GameMode::Title:
+			break;
+		case ENUM_GameMode::Select:
+			break;
 		case ENUM_GameMode::Play:
 			break;
 		case ENUM_GameMode::Menu:
@@ -25,6 +29,10 @@ namespace basecross
 	{
 		switch (gameMode)
 		{
+		case ENUM_GameMode::Title:
+			break;
+		case ENUM_GameMode::Select:
+			break;
 		case ENUM_GameMode::Play:
 			break;
 		case ENUM_GameMode::Menu:

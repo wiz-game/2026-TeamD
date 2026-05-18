@@ -25,13 +25,14 @@ namespace basecross
 			//リソース作成
 			RegisterMediaFiles(App::GetApp()->GetDataDirWString());
 
-			GameManager::Instance().Initialize();
+			GameManager::Instance().Initialize(true);
 			InputManager::Instance().Initialize();
 			StageEditor::Instance().Initialize();
 
 			//自分自身にイベントを送る
 			//これによりゲームステージのオブジェクトがCreate時にシーンにアクセスできる
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStage");
+			GameManager::Instance().SetGameMode(ENUM_GameMode::Title);
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"TitleStage");
 		}
 		catch (...) 
 		{
@@ -55,14 +56,20 @@ namespace basecross
 
 	void Scene::OnEvent(const shared_ptr<Event>& event) 
 	{
+		GameManager::Instance().RemoveDebugLog();
+
 		if (event->m_MsgStr == L"TitleStage")
 		{
-			
+			ResetActiveStage<TitleStage>();
+		}
+		else if (event->m_MsgStr == L"SelectStage")
+		{
+			ResetActiveStage<SelectStage>();
 		}
 		else if (event->m_MsgStr == L"GameStage_1") 
 		{
 			//ゲームステージの設定
-			ResetActiveStage<GameStage>();
+			ResetActiveStage<GameStage>(L"GameStage_1");
 		}
 	}
 	

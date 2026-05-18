@@ -18,7 +18,15 @@ namespace basecross
 		{
 		default:
 			break;
-		case ENUM_GameMode::Play :
+		case ENUM_GameMode::Title:
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
+			{
+				PressedA();
+			}
+			break;
+		case ENUM_GameMode::Select:
+			break;
+		case ENUM_GameMode::Play:
 			// プレイヤーの移動
 			if (m_pad.fThumbLX > STACK_DEADZONE_L || m_pad.fThumbLX < -STACK_DEADZONE_L ||
 				m_pad.fThumbLY > STACK_DEADZONE_L || m_pad.fThumbLY < -STACK_DEADZONE_L)
@@ -200,6 +208,7 @@ namespace basecross
 
 	void InputManager::PressedA()
 	{
+
 	}
 
 	void InputManager::PressedB()
