@@ -142,7 +142,7 @@ namespace basecross
 	bool Scene::ShouldSkipFolder(const wstring& ParentDir, const wstring& FolderName)
 	{
 		// 直下でスキップするフォルダ名
-		if (FolderName == L"BossActionPatterns" || FolderName == L"Params" || FolderName == L"Shaders" || FolderName == L"StageObs")
+		if (FolderName == L"Shaders")
 		{
 			return true;
 		}
