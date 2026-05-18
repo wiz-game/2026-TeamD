@@ -8,6 +8,7 @@
 
 #include "Scene.h"
 
+// エディター用クラス
 #include "StageObjectInterface.h"
 #include "DebugLog.h"
 #include "BinaryFile.h"
@@ -26,6 +27,7 @@
 #include "Character.h"
 
 // ステージオブジェクト
+#include "SkyBox.h"
 #include "Ground.h"
 #include "Tree.h"
 #include "Mushroom.h"
