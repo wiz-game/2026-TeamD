@@ -21,10 +21,8 @@ namespace basecross
 		UIBlinking
 		(
 			const shared_ptr<Stage>& stage, 
-			const wstring& meshName, 
-			const Vec3& position,
-			const float& blinkSpeed = 1.0f,
-			const Vec2& imageSize = Vec2(1200, 800)
+			const STRUCT_UIParam& uiParam,
+			const float& blinkSpeed = 1.0f
 		);
 		virtual ~UIBlinking() {}
 

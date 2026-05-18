@@ -9,12 +9,11 @@
 
 namespace basecross
 {
-	UIBase::UIBase(const shared_ptr<Stage>& stage, const wstring& meshName, const Vec3& position, const Vec2& imageSize)
+	UIBase::UIBase(const shared_ptr<Stage>& stage, const STRUCT_UIParam& uiParam)
 		: GameObject(stage),
-		m_meshName(meshName),
-		m_position(position),
-		m_width(imageSize.x),
-		m_height(imageSize.y),
+		m_uiParam(uiParam),
+		m_width(1920.0f * m_uiParam.ImageSizeRatio),
+		m_height(1080.0f * m_uiParam.ImageSizeRatio),
 		m_color(1.0f, 1.0f, 1.0f, 1.0f)
 	{
 	}
@@ -31,13 +30,13 @@ namespace basecross
 
 		m_indices = { 0,1,2, 2,1,3 };
 		m_sPtrDraw = AddComponent<PCTSpriteDraw>(m_vertices, m_indices);
-		m_sPtrDraw->SetTextureResource(m_meshName);
+		m_sPtrDraw->SetTextureResource(m_uiParam.MeshName);
 		m_sPtrDraw->SetSamplerState(SamplerState::LinearWrap);
 		m_sPtrDraw->SetDiffuse(m_color);
 		SetAlphaActive(true);
 
 		m_sPtrTrans = AddComponent<Transform>();
-		m_sPtrTrans->SetPosition(m_position);
+		m_sPtrTrans->SetPosition(m_uiParam.Position);
 	}
 
 	void UIBase::OnUpdate()
