@@ -16,7 +16,7 @@ namespace basecross
 
 			CreateViewLight();
 			CreatePlayer();
-			CreateEnemy();
+			AddGameObject<EnemyAlpaca>(STRUCT_ObjectParam(ENUM_ObjectID::Mushroom, Vec3(0.3f), Quat(), Vec3(1.0f, 1.0f, 1.0f)));
 
 			// ステージの作成
 			StageEditor::Instance().ReadStageData("Stage_1.bin", GetThis<GameStage>());
@@ -62,12 +62,6 @@ namespace basecross
 	{
 		auto player = AddGameObject<Player>(Vec3(0.0f, 0.0f, 0.0f));
 		SetSharedGameObject(L"Player", player);
-	}
-
-	// Enemyを作成する
-	void GameStage::CreateEnemy()
-	{
-		AddGameObject<EnemyAlpaca>(10);
 	}
 
 	void GameStage::SetCollRange()
