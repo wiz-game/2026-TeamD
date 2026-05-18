@@ -265,15 +265,6 @@ namespace basecross
         auto transComp = GetComponent<Transform>();
         auto transPos = transComp->GetPosition();
 
-        //GameManager::Instance().AddDebugStr(L"m_InitialStandTime", m_InitialStandTime);
-        //GameManager::Instance().AddDebugStr(L"m_InitialWanderingTime", m_InitialWanderingTime);
-        //GameManager::Instance().AddDebugStr(L"EnemyPositionX", transPos.x);
-        //GameManager::Instance().AddDebugStr(L"EnemyPositionY", transPos.y);
-        //GameManager::Instance().AddDebugStr(L"EnemyPositionZ", transPos.z);
-        //GameManager::Instance().AddDebugStr(L"EnemyInitialPositionX", m_InitialPosition.x);
-        //GameManager::Instance().AddDebugStr(L"EnemyInitialPositionY", m_InitialPosition.y);
-        //GameManager::Instance().AddDebugStr(L"EnemyInitialPositionZ", m_InitialPosition.z);
-        //GameManager::Instance().AddDebugStr(L"EnemyHP", m_EnemyHP);
         GameManager::Instance().AddDebugStr(L"Detection", m_Detection);
     }
 
@@ -284,6 +275,7 @@ namespace basecross
         {
             auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
             stage->RemoveGameObject<GameObject>(GetThis<GameObject>());
+            stage->AddGameObject<PowerUpSoap>();
         }
     }
 
