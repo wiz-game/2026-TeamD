@@ -19,12 +19,25 @@ namespace basecross
 		default:
 			break;
 		case ENUM_GameMode::Title:
+			// Aを押してゲームスタート
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
 			{
-				PressedA();
+				GameStart();
 			}
 			break;
 		case ENUM_GameMode::Select:
+			// Aを押して選択されているステージへ
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
+			{
+				StageStart();
+			}
+
+			// 十字キー左右でカーソル移動
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_LEFT ||
+				m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
+			{
+				ChangeSelectGameStage();
+			}
 			break;
 		case ENUM_GameMode::Play:
 			// プレイヤーの移動
@@ -177,6 +190,28 @@ namespace basecross
 		m_beforeWheelDelta = m_wheelDelta;
 	}
 
+	void InputManager::GameStart()
+	{
+		GameManager::Instance().SetGameMode(ENUM_GameMode::Select);
+	}
+
+	void InputManager::StageStart()
+	{
+		GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
+	}
+
+	void InputManager::ChangeSelectGameStage()
+	{
+		if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_LEFT)
+		{
+			GameManager::Instance().ChangeSelectGameStage(-1);
+		}
+		else if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
+		{
+			GameManager::Instance().ChangeSelectGameStage(+1);
+		}
+	}
+
 	void InputManager::Moves()
 	{
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
@@ -208,7 +243,6 @@ namespace basecross
 
 	void InputManager::PressedA()
 	{
-
 	}
 
 	void InputManager::PressedB()

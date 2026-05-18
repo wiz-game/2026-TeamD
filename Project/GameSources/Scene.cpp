@@ -32,7 +32,6 @@ namespace basecross
 			//自分自身にイベントを送る
 			//これによりゲームステージのオブジェクトがCreate時にシーンにアクセスできる
 			GameManager::Instance().SetGameMode(ENUM_GameMode::Title);
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"TitleStage");
 		}
 		catch (...) 
 		{
@@ -58,18 +57,30 @@ namespace basecross
 	{
 		GameManager::Instance().RemoveDebugLog();
 
+		// タイトルステージ
 		if (event->m_MsgStr == L"TitleStage")
 		{
 			ResetActiveStage<TitleStage>();
 		}
+		// ステージセレクトステージ
 		else if (event->m_MsgStr == L"SelectStage")
 		{
 			ResetActiveStage<SelectStage>();
 		}
+		// ゲームステージ1
 		else if (event->m_MsgStr == L"GameStage_1") 
 		{
-			//ゲームステージの設定
 			ResetActiveStage<GameStage>(L"GameStage_1");
+		}
+		// ゲームステージ2
+		else if (event->m_MsgStr == L"GameStage_2") 
+		{
+			ResetActiveStage<GameStage>(L"GameStage_2");
+		}
+		// ゲームステージ3
+		else if (event->m_MsgStr == L"GameStage_3") 
+		{
+			ResetActiveStage<GameStage>(L"GameStage_3");
 		}
 	}
 	

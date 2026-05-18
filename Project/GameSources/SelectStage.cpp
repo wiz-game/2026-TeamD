@@ -24,5 +24,6 @@ namespace basecross
 
 	void SelectStage::OnUpdate()
 	{
+		GameManager::Instance().AddDebugStr(L"SelectedStage", GameManager::Instance().GetSelectGameStage());
 	}
 }

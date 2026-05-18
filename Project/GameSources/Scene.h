@@ -21,5 +21,10 @@ namespace basecross
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 		virtual void OnEvent(const shared_ptr<Event>& event) override;
+
+		void ChangeStage(const wstring& stageName) 
+		{
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), stageName);
+		}
 	};
 }
