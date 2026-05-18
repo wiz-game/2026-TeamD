@@ -11,7 +11,7 @@ namespace basecross
 {
 	class UIBase : public GameObject
 	{
-	private:
+	protected:
 		vector<VertexPositionColorTexture> m_vertices;
 		vector<uint16_t> m_indices;
 		shared_ptr<PCTSpriteDraw> m_sPtrDraw;
