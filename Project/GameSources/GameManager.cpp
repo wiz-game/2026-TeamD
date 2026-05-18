@@ -6,8 +6,15 @@ namespace basecross
 	void GameManager::EnterGameMode(ENUM_GameMode gameMode)
 	{
 		switch (gameMode)
-		{	
+		{
+		case ENUM_GameMode::Title:
+			App::GetApp()->GetScene<Scene>()->ChangeStage(L"TitleStage");
+			break;
+		case ENUM_GameMode::Select:
+			App::GetApp()->GetScene<Scene>()->ChangeStage(L"SelectStage");
+			break;
 		case ENUM_GameMode::Play:
+			App::GetApp()->GetScene<Scene>()->ChangeStage(m_serectGameStage);
 			break;
 		case ENUM_GameMode::Menu:
 			break;
@@ -25,6 +32,10 @@ namespace basecross
 	{
 		switch (gameMode)
 		{
+		case ENUM_GameMode::Title:
+			break;
+		case ENUM_GameMode::Select:
+			break;
 		case ENUM_GameMode::Play:
 			break;
 		case ENUM_GameMode::Menu:
@@ -47,6 +58,8 @@ namespace basecross
 
 	void GameManager::RegisterDebugLog(const wstring& logName, const wstring& debugLog)
 	{
+		if (!m_isDebug) return;
+
 		if (m_sPtrDebugLog)
 		{
 			m_sPtrDebugLog->AddDebugStr(logName, debugLog);
@@ -59,9 +72,9 @@ namespace basecross
 		}
 	}
 
-	void GameManager::Initialize()
+	void GameManager::Initialize(const bool& isDebug)
 	{
-		SetIsDebug(true);
+		SetIsDebug(isDebug);
 	}
 	
 	void GameManager::RemoveDebugLog()
@@ -78,5 +91,17 @@ namespace basecross
 		ExitGameMode(m_gameMode);
 		m_gameMode = gameMode;
 		EnterGameMode(m_gameMode);
+	}
+
+	void GameManager::ChangeSelectGameStage(const int& incrDecrNum)
+	{
+		// 現在のステージ番号を取得
+		int stageNum = _wtoi(m_serectGameStage.substr(m_serectGameStage.find_last_of(L"_") + 1).c_str());
+
+		stageNum += incrDecrNum;
+		stageNum = max(stageNum, GAMESTAGE_MIN);
+		stageNum = min(stageNum, GAMESTAGE_MAX);
+
+		m_serectGameStage = L"GameStage_" + to_wstring(stageNum);
 	}
 }

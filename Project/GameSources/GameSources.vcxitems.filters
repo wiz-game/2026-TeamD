@@ -1,23 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="DXModel">
-      <UniqueIdentifier>{f99ea933-3d18-461c-be32-b3f9d65da825}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="JoltPhysics">
-      <UniqueIdentifier>{4583c1e7-c3d0-4b6c-903e-52bd8456bd30}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameStage">
-      <UniqueIdentifier>{44886c04-d035-488d-bc36-f93ccfc8f211}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Player">
       <UniqueIdentifier>{a426b02b-c795-4a41-87ec-47ffaac1adb6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Other">
       <UniqueIdentifier>{9fda1c0e-a4fd-43e4-86a9-8b63c238e13a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Other\Character">
-      <UniqueIdentifier>{0d6ef609-1bf0-4832-98a8-06fcd8fe6587}</UniqueIdentifier>
     </Filter>
     <Filter Include="Other\Scene">
       <UniqueIdentifier>{07400fd7-e966-4128-902c-9c6da5de3eb7}</UniqueIdentifier>
@@ -27,12 +15,6 @@
     </Filter>
     <Filter Include="Components\Move">
       <UniqueIdentifier>{21c05402-873e-4dbc-b664-adaadc3eb6b2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Bubble">
-      <UniqueIdentifier>{3fc01e5a-4f33-400a-96b0-d63ae82b3e41}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="TrampolineBubbles">
-      <UniqueIdentifier>{96f4d474-dd05-46ab-b853-d648037e1951}</UniqueIdentifier>
     </Filter>
     <Filter Include="StageEditor">
       <UniqueIdentifier>{08b470f4-4b4d-4c54-a4f0-2ceedb2520f4}</UniqueIdentifier>
@@ -51,12 +33,6 @@
     </Filter>
     <Filter Include="StageObjs\Mushroom">
       <UniqueIdentifier>{45cb8b8a-fa28-45d1-b5c7-76cdb52820cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DebugLog">
-      <UniqueIdentifier>{f89c2eba-852e-4270-81d8-cbca4df35008}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyCamera">
-      <UniqueIdentifier>{ef82b8d1-cdad-4e66-b6da-df96825a2725}</UniqueIdentifier>
     </Filter>
     <Filter Include="Enemys">
       <UniqueIdentifier>{85694c62-382e-4de7-9053-e8b7df7afc38}</UniqueIdentifier>
@@ -85,55 +61,91 @@
     <Filter Include="Managers\SoundManager">
       <UniqueIdentifier>{98d05556-aa24-4e1c-a847-8fd808a847fa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SkyBox">
+    <Filter Include="Stages">
+      <UniqueIdentifier>{256ab431-eb0d-49f4-b80c-410d455bdcf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stages\GameStage">
+      <UniqueIdentifier>{44886c04-d035-488d-bc36-f93ccfc8f211}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stages\TitleStage">
+      <UniqueIdentifier>{aeb52692-325e-4c1f-a563-aaef27e7ff96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stages\SelectStage">
+      <UniqueIdentifier>{e42f73f0-9ccb-4b73-9978-5d59640e7123}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bubbles">
+      <UniqueIdentifier>{e9cf5192-47f0-462e-aafd-cb8ca3241030}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bubbles\Bubble">
+      <UniqueIdentifier>{3fc01e5a-4f33-400a-96b0-d63ae82b3e41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bubbles\TrampolineBubbles">
+      <UniqueIdentifier>{96f4d474-dd05-46ab-b853-d648037e1951}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseCrossOther">
+      <UniqueIdentifier>{b8ef18ac-d696-4ff9-bf61-899ebf232467}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseCrossOther\DXModel">
+      <UniqueIdentifier>{f99ea933-3d18-461c-be32-b3f9d65da825}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseCrossOther\JoltPhysics">
+      <UniqueIdentifier>{4583c1e7-c3d0-4b6c-903e-52bd8456bd30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseCrossOther\Character">
+      <UniqueIdentifier>{0d6ef609-1bf0-4832-98a8-06fcd8fe6587}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Other\MyCamera">
+      <UniqueIdentifier>{ef82b8d1-cdad-4e66-b6da-df96825a2725}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Other\DebugLog">
+      <UniqueIdentifier>{f89c2eba-852e-4270-81d8-cbca4df35008}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StageObjs\SkyBox">
       <UniqueIdentifier>{77ff2d4b-f88c-4261-9fa0-8b1e2766a734}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
-      <Filter>DXModel</Filter>
+      <Filter>BaseCrossOther\DXModel</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModel.h">
-      <Filter>DXModel</Filter>
+      <Filter>BaseCrossOther\DXModel</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModelResource.h">
-      <Filter>DXModel</Filter>
+      <Filter>BaseCrossOther\DXModel</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltLayers.h">
-      <Filter>JoltPhysics</Filter>
+      <Filter>BaseCrossOther\JoltPhysics</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltManager.h">
-      <Filter>JoltPhysics</Filter>
+      <Filter>BaseCrossOther\JoltPhysics</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltRigidBody.h">
-      <Filter>JoltPhysics</Filter>
+      <Filter>BaseCrossOther\JoltPhysics</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h">
-      <Filter>JoltPhysics</Filter>
+      <Filter>BaseCrossOther\JoltPhysics</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h">
-      <Filter>Other\Character</Filter>
+      <Filter>BaseCrossOther\Character</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Player.h">
       <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStage.h">
-      <Filter>GameStage</Filter>
+      <Filter>Stages\GameStage</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Scene.h">
       <Filter>Other\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Project.h">
-      <Filter>Other</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Move.h">
       <Filter>Components\Move</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Bubble.h">
-      <Filter>Bubble</Filter>
+      <Filter>Bubbles\Bubble</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)TrampolineBubbles.h">
-      <Filter>TrampolineBubbles</Filter>
+      <Filter>Bubbles\TrampolineBubbles</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Ground.h">
       <Filter>StageObjs\Ground</Filter>
@@ -157,10 +169,10 @@
       <Filter>StageObjs\Mushroom</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)DebugLog.h">
-      <Filter>DebugLog</Filter>
+      <Filter>Other\DebugLog</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)MyCamera.h">
-      <Filter>MyCamera</Filter>
+      <Filter>Other\MyCamera</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyBase.h">
       <Filter>Enemys\EnemyBase</Filter>
@@ -187,51 +199,57 @@
       <Filter>Managers\SoundManager</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SkyBox.h">
-      <Filter>SkyBox</Filter>
+      <Filter>StageObjs\SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h">
+      <Filter>Stages\TitleStage</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h">
+      <Filter>Stages\SelectStage</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Project.h">
+      <Filter>BaseCrossOther</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
-      <Filter>DXModel</Filter>
+      <Filter>BaseCrossOther\DXModel</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)DXModel.cpp">
-      <Filter>DXModel</Filter>
+      <Filter>BaseCrossOther\DXModel</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)DXModelResource.cpp">
-      <Filter>DXModel</Filter>
+      <Filter>BaseCrossOther\DXModel</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltManager.cpp">
-      <Filter>JoltPhysics</Filter>
+      <Filter>BaseCrossOther\JoltPhysics</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltRigidBody.cpp">
-      <Filter>JoltPhysics</Filter>
+      <Filter>BaseCrossOther\JoltPhysics</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)CharacterController.cpp">
-      <Filter>JoltPhysics</Filter>
+      <Filter>BaseCrossOther\JoltPhysics</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
-      <Filter>Other\Character</Filter>
+      <Filter>BaseCrossOther\Character</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp">
       <Filter>Player</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage.cpp">
-      <Filter>GameStage</Filter>
+      <Filter>Stages\GameStage</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp">
       <Filter>Other\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp">
-      <Filter>Other</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Move.cpp">
       <Filter>Components\Move</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Bubble.cpp">
-      <Filter>Bubble</Filter>
+      <Filter>Bubbles\Bubble</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)TrampolineBubbles.cpp">
-      <Filter>TrampolineBubbles</Filter>
+      <Filter>Bubbles\TrampolineBubbles</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Ground.cpp">
       <Filter>StageObjs\Ground</Filter>
@@ -255,10 +273,10 @@
       <Filter>StageObjs\Mushroom</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)DebugLog.cpp">
-      <Filter>DebugLog</Filter>
+      <Filter>Other\DebugLog</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)MyCamera.cpp">
-      <Filter>MyCamera</Filter>
+      <Filter>Other\MyCamera</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyBase.cpp">
       <Filter>Enemys\EnemyBase</Filter>
@@ -276,7 +294,16 @@
       <Filter>Managers\SoundManager</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyBox.cpp">
-      <Filter>SkyBox</Filter>
+      <Filter>StageObjs\SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TitleStage.cpp">
+      <Filter>Stages\TitleStage</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp">
+      <Filter>Stages\SelectStage</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp">
+      <Filter>BaseCrossOther</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

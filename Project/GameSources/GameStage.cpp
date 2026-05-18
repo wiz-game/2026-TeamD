@@ -8,7 +8,13 @@
 
 namespace basecross 
 {
-	void GameStage::OnCreate() 
+	GameStage::GameStage(const wstring& stageNum)
+		: Stage()
+	{
+		m_stageNum = to_string(stageNum);
+	}
+
+	void GameStage::OnCreate()
 	{
 		try 
 		{
@@ -19,9 +25,10 @@ namespace basecross
 			AddGameObject<EnemyAlpaca>(STRUCT_ObjectParam(ENUM_ObjectID::Mushroom, Vec3(0.3f), Quat(), Vec3(1.0f, 1.0f, 1.0f)));
 
 			// ステージの作成
-			StageEditor::Instance().ReadStageData("Stage_1.bin", GetThis<GameStage>());
+			StageEditor::Instance().ReadStageData(m_stageNum + ".bin", GetThis<GameStage>());
 		}
-		catch (...) {
+		catch (...)
+		{
 			throw;
 		}
 	}
@@ -72,4 +79,3 @@ namespace basecross
 		GetCollisionManager()->SetRootAABB(collRange);
 	}
 }
-//end basecross
