@@ -11,6 +11,15 @@ namespace basecross
 {
 	void SelectStage::OnCreate()
 	{
+		try
+		{
+			CreateView<SingleView>();
+			GameManager::Instance().AddDebugStr(L"Stage", L"SelectStage");
+		}
+		catch (...)
+		{
+			throw;
+		}
 	}
 
 	void SelectStage::OnUpdate()

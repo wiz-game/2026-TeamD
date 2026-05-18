@@ -11,6 +11,15 @@ namespace basecross
 {
 	void TitleStage::OnCreate()
 	{
+		try
+		{
+			CreateView<SingleView>();
+			GameManager::Instance().AddDebugStr(L"Stage", L"TitleStage");
+		}
+		catch (...) 
+		{
+			throw;
+		}
 	}
 
 	void TitleStage::OnUpdate()
