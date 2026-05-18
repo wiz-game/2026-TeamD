@@ -10,8 +10,7 @@ namespace basecross
 		GameObject(StagePtr, objectParam),
 		m_nowDeleteCount(0),
 		m_alphaColor(1.0f),
-		m_HP(2.0f),
-		m_isDead(false)
+		m_HP(2.0f)
 	{
 	}
 
