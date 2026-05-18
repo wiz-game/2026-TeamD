@@ -85,6 +85,9 @@
     <Filter Include="Managers\SoundManager">
       <UniqueIdentifier>{98d05556-aa24-4e1c-a847-8fd808a847fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SkyBox">
+      <UniqueIdentifier>{77ff2d4b-f88c-4261-9fa0-8b1e2766a734}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -183,6 +186,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h">
       <Filter>Managers\SoundManager</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SkyBox.h">
+      <Filter>SkyBox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -268,6 +274,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp">
       <Filter>Managers\SoundManager</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SkyBox.cpp">
+      <Filter>SkyBox</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
