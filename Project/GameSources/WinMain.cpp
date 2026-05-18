@@ -139,7 +139,8 @@ int MainLoop(HINSTANCE hInstance, HWND hWnd, bool isFullScreen, int iClientWidth
 		App::CreateApp(hInstance, hWnd, isFullScreen, iClientWidth, iClientHeight);
 		//シーンの作成
 		//戻り値のScenePtrは汎用的に使える
-		auto ScenePtr = App::GetApp()->CreateScene<Scene>();
+		auto sPtrScene = App::GetApp()->CreateScene<Scene>();
+		sPtrScene->OnCreate2();
 		//メッセージループ
 		MSG msg = { 0 };
 		//キーボード入力用

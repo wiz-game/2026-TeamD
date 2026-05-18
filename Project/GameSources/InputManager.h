@@ -64,6 +64,13 @@ namespace basecross
 			return dynamic_pointer_cast<MyCamera>(camera);
 		}
 
+		// GameMode：Title用の入力関数
+		void GameStart();
+
+		// GameMode：Select用の入力関数
+		void StageStart();
+		void ChangeSelectGameStage();
+
 		// GameMode：Play用の入力関数
 		// 移動入力
 		void Moves();

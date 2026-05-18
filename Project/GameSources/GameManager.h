@@ -11,6 +11,8 @@ namespace basecross
 {
 	enum class ENUM_GameMode
 	{
+		Title,
+		Select,
 		Play,
 		Menu,
 		Editor
@@ -21,9 +23,12 @@ namespace basecross
 	private:
 		shared_ptr<DebugLog> m_sPtrDebugLog = nullptr;
 
-		ENUM_GameMode m_gameMode = ENUM_GameMode::Play;
-
+		ENUM_GameMode m_gameMode = ENUM_GameMode::Title;
 		bool m_isDebug = false;
+		wstring m_serectGameStage = L"GameStage_1";
+
+		const int GAMESTAGE_MIN = 1;
+		const int GAMESTAGE_MAX = 3;
 	private:
 		GameManager() {}
 		virtual ~GameManager() {}
@@ -41,7 +46,7 @@ namespace basecross
 			return instance;
 		}
 
-		void Initialize();
+		void Initialize(const bool& isDebug = false);
 		
 		void AddDebugStr(const wstring& logName, const wstring& debugLog) { RegisterDebugLog(logName, debugLog); }
 		void AddDebugStr(const wstring& logName, const int& debugLog)     { RegisterDebugLog(logName, to_wstring(debugLog)); }
@@ -55,6 +60,9 @@ namespace basecross
 
 		bool GetIsDebug() const { return m_isDebug; }
 		void SetIsDebug(bool isDebug) { m_isDebug = isDebug; }
-	};
 
+		wstring GetSelectGameStage() const { return m_serectGameStage; }
+		void SetSelectGameStage(const wstring& stageName) { m_serectGameStage = stageName; }
+		void ChangeSelectGameStage(const int& incrDecrNum);
+	};
 }
