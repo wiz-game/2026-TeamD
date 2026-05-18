@@ -14,6 +14,7 @@ namespace basecross
 		try
 		{
 			CreateView<SingleView>();
+			AddGameObject<UIBase>(L"awapaka_logo", Vec3(0.0f, 120.0f, 0.0f));
 		}
 		catch (...) 
 		{

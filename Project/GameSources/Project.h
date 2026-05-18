@@ -43,6 +43,9 @@
 
 #include "MyCamera.h"
 
+// UI
+#include "UIBase.h"
+
 // ステージ
 #include "TitleStage.h"
 #include "SelectStage.h"
