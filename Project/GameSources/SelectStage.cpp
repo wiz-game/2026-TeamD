@@ -14,7 +14,6 @@ namespace basecross
 		try
 		{
 			CreateView<SingleView>();
-			GameManager::Instance().AddDebugStr(L"Stage", L"SelectStage");
 		}
 		catch (...)
 		{
@@ -24,6 +23,7 @@ namespace basecross
 
 	void SelectStage::OnUpdate()
 	{
+		GameManager::Instance().AddDebugStr(L"Stage", L"SelectStage");
 		GameManager::Instance().AddDebugStr(L"SelectedStage", GameManager::Instance().GetSelectGameStage());
 	}
 }

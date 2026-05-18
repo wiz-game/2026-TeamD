@@ -20,23 +20,24 @@ namespace basecross
 			JoltManager::StaticInitialize();
 
 			// 背景色を設定
-			SetClearColor(Col4(0.0f, 0.11328125f, 0.2578125, 1.0f)); // ミッドナイトブルー
+			SetClearColor(Col4(1.0f));
 			
-			//リソース作成
+			// リソース作成
 			RegisterMediaFiles(App::GetApp()->GetDataDirWString());
 
 			GameManager::Instance().Initialize(true);
 			InputManager::Instance().Initialize();
 			StageEditor::Instance().Initialize();
-
-			//自分自身にイベントを送る
-			//これによりゲームステージのオブジェクトがCreate時にシーンにアクセスできる
-			GameManager::Instance().SetGameMode(ENUM_GameMode::Title);
 		}
 		catch (...) 
 		{
 			throw;
 		}
+	}
+
+	void Scene::OnCreate2()
+	{
+		GameManager::Instance().SetGameMode(ENUM_GameMode::Title);
 	}
 
 	void Scene::OnUpdate()
@@ -83,7 +84,7 @@ namespace basecross
 			ResetActiveStage<GameStage>(L"GameStage_3");
 		}
 	}
-	
+
 	void Scene::RegisterMediaFiles(const wstring& Directory)
 	{
 		// ファイルパスを作成

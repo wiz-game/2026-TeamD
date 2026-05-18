@@ -14,8 +14,6 @@ namespace basecross
 		try
 		{
 			CreateView<SingleView>();
-			GameManager::Instance().AddDebugStr(L"Stage", L"TitleStage");
-			GameManager::Instance().AddDebugStr(L"StartMessage", L"Press A Button");
 		}
 		catch (...) 
 		{
@@ -25,5 +23,7 @@ namespace basecross
 
 	void TitleStage::OnUpdate()
 	{
+		GameManager::Instance().AddDebugStr(L"Stage", L"TitleStage");
+		GameManager::Instance().AddDebugStr(L"StartMessage", L"Press A Button");
 	}
 }
