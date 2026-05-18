@@ -270,12 +270,20 @@ namespace basecross
 
     void EnemyBase::Died(const shared_ptr<GameObject>& gameObject)
     {
+        // 自身の位置を取得する
+        auto objComp = gameObject->GetComponent<Transform>();
+        auto objPos = objComp->GetPosition();
+
         const float DIED_HP = 0.0f;
         if (m_EnemyHP <= DIED_HP)
         {
             auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
             stage->RemoveGameObject<GameObject>(GetThis<GameObject>());
-            stage->AddGameObject<PowerUpSoap>();
+
+            // 石鹸を出す
+            auto soap = stage->AddGameObject<PowerUpSoap>();
+            auto soapComp = soap->GetComponent<Transform>();
+            soapComp->SetPosition(objPos.x, objPos.y + 1, objPos.z);
         }
     }
 
