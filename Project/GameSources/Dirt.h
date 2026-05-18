@@ -28,12 +28,18 @@ namespace basecross
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
+		virtual void OnUpdate2()override;
 
 		void OnCollisionEnter(shared_ptr<GameObject>& Other);
 
 		void DecreaseDirtHP(float force)
 		{
 			m_HP -= force;
+		}
+
+		void SetDirtHP(float HP)
+		{
+			m_HP = HP;
 		}
 
 		float GetDirtHP()
