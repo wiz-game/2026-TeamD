@@ -104,6 +104,8 @@ namespace basecross
 			m_HP -= force;
 		}
 
+		void ResolveCounteract(Bubble& bubble, Dirt& dirt);
+
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other);
 	};
 
