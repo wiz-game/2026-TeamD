@@ -43,6 +43,10 @@
 
 #include "MyCamera.h"
 
+// UI
+#include "UIBase.h"
+#include "UIBlinking.h"
+
 // ステージ
 #include "TitleStage.h"
 #include "SelectStage.h"

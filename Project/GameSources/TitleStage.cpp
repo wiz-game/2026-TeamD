@@ -14,6 +14,12 @@ namespace basecross
 		try
 		{
 			CreateView<SingleView>();
+			
+			float imageSizeRatio = 0.6f;
+			AddGameObject<UIBase>(L"awapaka_logo", Vec3(0.0f, 120.0f, 0.0f), Vec2(1920, 1080) * imageSizeRatio);
+
+			imageSizeRatio = 0.4f;
+			AddGameObject<UIBlinking>(L"StartButton", Vec3(0.0f, -200.0f, 0.0f), 0.8f, Vec2(1920, 1080) * imageSizeRatio);
 		}
 		catch (...) 
 		{
