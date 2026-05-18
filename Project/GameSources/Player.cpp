@@ -81,14 +81,23 @@ namespace basecross
 			return;
 		}
 
-		float initCoolDown = 0.4f,ZERO = 0.0f;
+		const float ZERO = 0.0f;
+
+		if (m_BubblePowerCoolDown == true)
+		{
+			m_initCoolDown = 0.6f;
+		}
+		else
+		{
+			m_initCoolDown = 0.3;
+		}
 
 		if (control[0].bRightTrigger && m_Bresing == false)
 		{
 			m_pBubble = stage->AddGameObject<Bubble>(GetThis<Player>(), Vec3(0.5f), 5.0f, m_Attack);
 			m_pBubble->ShootBubble();
 			m_Bresing = true;
-			m_cooldown = initCoolDown;
+			m_cooldown = m_initCoolDown;
 		}
 
 		if (m_Bresing == true)

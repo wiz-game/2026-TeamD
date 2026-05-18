@@ -41,6 +41,8 @@ namespace basecross
 
 		// 強化状態
 		bool m_BubblePowerCoolDown;		// クールダウン
+		float m_initCoolDown;
+
 		bool m_BubblePowerScale;		// 泡の大きさ
 		bool m_BubblePowerUnbreaking;	// 耐久力
 		bool m_BubblePowerLaunchRate;	// 発射レート
@@ -71,7 +73,9 @@ namespace basecross
 			m_BubblePowerUnbreaking(false),
 			m_BubblePowerLaunchRate(false),
 			m_BubblePowerBulletSpeed(false),
-			m_Attack(2)
+			m_Attack(2),
+			// クールダウンの初期値
+			m_initCoolDown(0.6)
 		{
 		}
 
@@ -114,6 +118,12 @@ namespace basecross
 		float GetStickRY()
 		{
 			return m_stickRY;
+		}
+
+		// クールダウンのセッター
+		void SetCoolDown(bool sed)
+		{
+			m_BubblePowerCoolDown = sed;
 		}
 	};
 }
