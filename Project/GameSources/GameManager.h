@@ -41,7 +41,7 @@ namespace basecross
 			return instance;
 		}
 
-		void Initialize();
+		void Initialize(const bool& isDebug = false);
 		
 		void AddDebugStr(const wstring& logName, const wstring& debugLog) { RegisterDebugLog(logName, debugLog); }
 		void AddDebugStr(const wstring& logName, const int& debugLog)     { RegisterDebugLog(logName, to_wstring(debugLog)); }

@@ -47,6 +47,8 @@ namespace basecross
 
 	void GameManager::RegisterDebugLog(const wstring& logName, const wstring& debugLog)
 	{
+		if (!m_isDebug) return;
+
 		if (m_sPtrDebugLog)
 		{
 			m_sPtrDebugLog->AddDebugStr(logName, debugLog);
@@ -59,9 +61,9 @@ namespace basecross
 		}
 	}
 
-	void GameManager::Initialize()
+	void GameManager::Initialize(const bool& isDebug)
 	{
-		SetIsDebug(true);
+		SetIsDebug(isDebug);
 	}
 	
 	void GameManager::RemoveDebugLog()
