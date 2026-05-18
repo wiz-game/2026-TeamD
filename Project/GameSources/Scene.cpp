@@ -20,23 +20,24 @@ namespace basecross
 			JoltManager::StaticInitialize();
 
 			// 背景色を設定
-			SetClearColor(Col4(0.0f, 0.11328125f, 0.2578125, 1.0f)); // ミッドナイトブルー
+			SetClearColor(Col4(0.0f, 0.3f, 0.6f, 1.0f));
 			
-			//リソース作成
+			// リソース作成
 			RegisterMediaFiles(App::GetApp()->GetDataDirWString());
 
-			GameManager::Instance().Initialize();
+			GameManager::Instance().Initialize(true);
 			InputManager::Instance().Initialize();
 			StageEditor::Instance().Initialize();
-
-			//自分自身にイベントを送る
-			//これによりゲームステージのオブジェクトがCreate時にシーンにアクセスできる
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStage");
 		}
 		catch (...) 
 		{
 			throw;
 		}
+	}
+
+	void Scene::OnCreate2()
+	{
+		GameManager::Instance().SetGameMode(ENUM_GameMode::Title);
 	}
 
 	void Scene::OnUpdate()
@@ -55,13 +56,35 @@ namespace basecross
 
 	void Scene::OnEvent(const shared_ptr<Event>& event) 
 	{
-		if (event->m_MsgStr == L"ToGameStage") 
+		GameManager::Instance().RemoveDebugLog();
+
+		// タイトルステージ
+		if (event->m_MsgStr == L"TitleStage")
 		{
-			//ゲームステージの設定
-			ResetActiveStage<GameStage>();
+			ResetActiveStage<TitleStage>();
+		}
+		// ステージセレクトステージ
+		else if (event->m_MsgStr == L"SelectStage")
+		{
+			ResetActiveStage<SelectStage>();
+		}
+		// ゲームステージ1
+		else if (event->m_MsgStr == L"GameStage_1") 
+		{
+			ResetActiveStage<GameStage>(L"GameStage_1");
+		}
+		// ゲームステージ2
+		else if (event->m_MsgStr == L"GameStage_2") 
+		{
+			ResetActiveStage<GameStage>(L"GameStage_2");
+		}
+		// ゲームステージ3
+		else if (event->m_MsgStr == L"GameStage_3") 
+		{
+			ResetActiveStage<GameStage>(L"GameStage_3");
 		}
 	}
-	
+
 	void Scene::RegisterMediaFiles(const wstring& Directory)
 	{
 		// ファイルパスを作成
@@ -131,6 +154,13 @@ namespace basecross
 					{
 						App::GetApp()->RegisterWav(registerName, fullPath);
 					}
+					else if (ext == L".bmp")
+					{
+						for (const auto& keyName : SkyBox::pairs) 
+						{
+							App::GetApp()->RegisterTexture(registerName, fullPath);
+						}
+					}
 				}
 			}
 
@@ -142,7 +172,7 @@ namespace basecross
 	bool Scene::ShouldSkipFolder(const wstring& ParentDir, const wstring& FolderName)
 	{
 		// 直下でスキップするフォルダ名
-		if (FolderName == L"BossActionPatterns" || FolderName == L"Params" || FolderName == L"Shaders" || FolderName == L"StageObs")
+		if (FolderName == L"Shaders")
 		{
 			return true;
 		}
