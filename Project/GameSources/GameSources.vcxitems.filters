@@ -127,6 +127,12 @@
     <Filter Include="UIs\UISlide">
       <UniqueIdentifier>{d9f67234-b969-4c2e-bdb4-04302f45be52}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UIs\UITransitionSlide">
+      <UniqueIdentifier>{e2a20a76-d540-4e26-9b39-ec3c49a929e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StageObjs\FallenTree">
+      <UniqueIdentifier>{03d62edd-bef3-4379-a414-b905205e803c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -252,6 +258,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)UISlide.h">
       <Filter>UIs\UISlide</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)UITransitionSlide.h">
+      <Filter>UIs\UITransitionSlide</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FallenTree.h">
+      <Filter>StageObjs\FallenTree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -364,6 +376,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)UISlide.cpp">
       <Filter>UIs\UISlide</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UITransitionSlide.cpp">
+      <Filter>UIs\UITransitionSlide</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)FallenTree.cpp">
+      <Filter>StageObjs\FallenTree</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
