@@ -32,12 +32,12 @@ namespace basecross
 		m_draw->SetMeshResource(L"M_Sludge");
 		m_draw->SetTextureResource(L"T_Sludge");
 
-		auto ptrShadow = AddComponent<Shadowmap>();
-		m_draw->SetOwnShadowActive(true);
-		ptrShadow->SetMeshResource(L"M_Sludge");
+		//auto ptrShadow = AddComponent<Shadowmap>();
+		//m_draw->SetOwnShadowActive(true);
+		//ptrShadow->SetMeshResource(L"M_Sludge");
 
 		auto col = AddComponent<CollisionObb>();
-		col->SetDrawActive(true);
+		//col->SetDrawActive(true);
 		col->SetAfterCollision(AfterCollision::None);
 
 		// モデルとトランスフォーム間の差分行列
@@ -50,7 +50,7 @@ namespace basecross
 		);
 
 		m_draw->SetMeshToTransformMatrix(spanMat);
-		ptrShadow->SetMeshToTransformMatrix(spanMat);
+		//ptrShadow->SetMeshToTransformMatrix(spanMat);
 	}
 
 	void Dirt::OnUpdate()
