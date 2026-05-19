@@ -69,6 +69,7 @@ namespace basecross
 
 		// GameMode：Select用の入力関数
 		void StageStart();
+		void ReturnTitle();
 		void ChangeSelectGameStage();
 
 		// GameMode：Play用の入力関数
@@ -109,6 +110,9 @@ namespace basecross
 
 		// ステージ保存
 		void SaveStage();
+
+		// コピー
+		void SelectCopy();
 
 		// Pressed
 		void PressedLMouseButton();

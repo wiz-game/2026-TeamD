@@ -32,7 +32,13 @@ namespace basecross
 				StageStart();
 			}
 
-			// 十字キー左右でカーソル移動
+			// Bを押してタイトルへ
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_B)
+			{
+				ReturnTitle();
+			}
+
+			// 十字キー左右でステージ選択
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_LEFT ||
 				m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
 			{
@@ -141,6 +147,12 @@ namespace basecross
 				SaveStage();
 			}
 
+			// コピー
+			if (m_key.m_bPressedKeyTbl['V'] && m_key.m_bPushKeyTbl[VK_LCONTROL])
+			{
+				SelectCopy();
+			}
+
 			// オブジェクト削除
 			if (m_key.m_bPressedKeyTbl[VK_DELETE])
 			{
@@ -192,12 +204,19 @@ namespace basecross
 
 	void InputManager::GameStart()
 	{
-		GameManager::Instance().SetGameMode(ENUM_GameMode::Select);
+		GameManager::Instance().SetGameModeAfterTransition(ENUM_GameMode::Play);
+		auto startButton = App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetSharedGameObject<UIBlinking>(L"StartButton");
+		if (startButton) startButton->SetBlinkSpeed(5.0f);
 	}
 
 	void InputManager::StageStart()
 	{
-		GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
+		GameManager::Instance().SetGameModeAfterTransition(ENUM_GameMode::Play);
+	}
+
+	void InputManager::ReturnTitle()
+	{
+		GameManager::Instance().SetGameModeAfterTransition(ENUM_GameMode::Title);
 	}
 
 	void InputManager::ChangeSelectGameStage()
@@ -307,6 +326,11 @@ namespace basecross
 	void InputManager::SaveStage()
 	{
 		StageEditor::Instance().WriteStageData();
+	}
+
+	void InputManager::SelectCopy()
+	{
+		StageEditor::Instance().SelectCopy();
 	}
 
 	void InputManager::PressedLMouseButton()

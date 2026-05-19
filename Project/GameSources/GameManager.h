@@ -15,7 +15,8 @@ namespace basecross
 		Select,
 		Play,
 		Menu,
-		Editor
+		Editor,
+		Null
 	};
 
 	class GameManager
@@ -24,11 +25,13 @@ namespace basecross
 		shared_ptr<DebugLog> m_sPtrDebugLog = nullptr;
 
 		ENUM_GameMode m_gameMode = ENUM_GameMode::Title;
+		ENUM_GameMode m_transitionAfterGameMode = ENUM_GameMode::Null;
+
 		bool m_isDebug = false;
 		wstring m_serectGameStage = L"GameStage_1";
 
 		const int GAMESTAGE_MIN = 1;
-		const int GAMESTAGE_MAX = 3;
+		const int GAMESTAGE_MAX = 5;
 	private:
 		GameManager() {}
 		virtual ~GameManager() {}
@@ -57,6 +60,7 @@ namespace basecross
 		// アクセサー
 		ENUM_GameMode GetGameMode() const { return m_gameMode; }
 		void SetGameMode(ENUM_GameMode gameMode);
+		void SetGameModeAfterTransition(ENUM_GameMode gameMode);
 
 		bool GetIsDebug() const { return m_isDebug; }
 		void SetIsDebug(bool isDebug) { m_isDebug = isDebug; }
@@ -64,5 +68,8 @@ namespace basecross
 		wstring GetSelectGameStage() const { return m_serectGameStage; }
 		void SetSelectGameStage(const wstring& stageName) { m_serectGameStage = stageName; }
 		void ChangeSelectGameStage(const int& incrDecrNum);
+
+		ENUM_GameMode GetTransitionAfterGameMode() const { return m_transitionAfterGameMode; }
+		void ResetTransitionAfterGameMode() { m_transitionAfterGameMode = ENUM_GameMode::Null; }
 	};
 }

@@ -15,6 +15,10 @@ namespace basecross
 		Mushroom,
 		Tree,
 		Dirt,
+		Stone,
+		FallenTree,
+		FirTree,
+		EnemyAlpaca,
 		Max
 	} ;
 
@@ -63,6 +67,7 @@ namespace basecross
 		StageObjectInterface(const STRUCT_ObjectParam& objectParams) : m_objectParam(objectParams) { m_isEditorSave = false; }
 		virtual ~StageObjectInterface() {}
 
+		STRUCT_ObjectParam GetObjectParam() const { return m_objectParam; };
 		ENUM_ObjectID GetID() const { return m_objectParam.GetID(); }
 		bool GetIsEditorSave() const { return m_isEditorSave; }
 	};

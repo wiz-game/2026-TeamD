@@ -57,6 +57,7 @@ namespace basecross
 	void Scene::OnEvent(const shared_ptr<Event>& event) 
 	{
 		GameManager::Instance().RemoveDebugLog();
+		SoundManager::Instance().AllStopSE();
 
 		// タイトルステージ
 		if (event->m_MsgStr == L"TitleStage")
@@ -82,6 +83,16 @@ namespace basecross
 		else if (event->m_MsgStr == L"GameStage_3") 
 		{
 			ResetActiveStage<GameStage>(L"GameStage_3");
+		}
+		// ゲームステージ4
+		else if (event->m_MsgStr == L"GameStage_4") 
+		{
+			ResetActiveStage<GameStage>(L"GameStage_4");
+		}
+		// ゲームステージ5
+		else if (event->m_MsgStr == L"GameStage_5") 
+		{
+			ResetActiveStage<GameStage>(L"GameStage_5");
 		}
 	}
 

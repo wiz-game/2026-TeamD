@@ -63,6 +63,18 @@ namespace basecross
 			case ENUM_ObjectID::Dirt:
 				stage->AddGameObject<Dirt>(objParam);
 				break;
+			case ENUM_ObjectID::Stone:
+				stage->AddGameObject<Stone>(objParam);
+				break;
+			case ENUM_ObjectID::FallenTree:
+				stage->AddGameObject<FallenTree>(objParam);
+				break;
+			case ENUM_ObjectID::FirTree:
+				stage->AddGameObject<FirTree>(objParam);
+				break;
+			case ENUM_ObjectID::EnemyAlpaca:
+				stage->AddGameObject<EnemyAlpaca>(objParam);
+				break;
 			default:
 				break;
 			}
@@ -266,7 +278,6 @@ namespace basecross
 
 	void StageEditor::GizmoDrawActive(const bool& isDraw)
 	{
-		// ギズモが存在していたら非表示
 		if (!m_gizmos[0]) return;
 		for (const auto& gizmo : m_gizmos)
 		{
@@ -340,6 +351,52 @@ namespace basecross
 			break;
 		case ENUM_EditorMode::Scale:
 			ScaleOperation(mousePoint);
+			break;
+		default:
+			break;
+		}
+	}
+
+	void StageEditor::SelectCopy()
+	{
+		if (!m_selectedObj) return;
+
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		if (!stage) return;
+
+		STRUCT_ObjectParam originalObjParam
+		(
+			m_selectedObj->GetID(),
+			m_selectedObj->GetComponent<Transform>()->GetScale(),
+			m_selectedObj->GetComponent<Transform>()->GetQuaternion(),
+			m_selectedObj->GetComponent<Transform>()->GetPosition()
+		);
+
+		switch (m_selectedObj->GetID())
+		{
+		case ENUM_ObjectID::Ground:
+			stage->AddGameObject<Ground>(originalObjParam);
+			break;
+		case ENUM_ObjectID::Mushroom:
+			stage->AddGameObject<Mushroom>(originalObjParam);
+			break;
+		case ENUM_ObjectID::Tree:
+			stage->AddGameObject<Tree>(originalObjParam);
+			break;
+		case ENUM_ObjectID::Dirt:
+			stage->AddGameObject<Dirt>(originalObjParam);
+			break;
+		case ENUM_ObjectID::Stone:
+			stage->AddGameObject<Stone>(originalObjParam);
+			break;
+		case ENUM_ObjectID::FallenTree:
+			stage->AddGameObject<FallenTree>(originalObjParam);
+			break;
+		case ENUM_ObjectID::FirTree:
+			stage->AddGameObject<FirTree>(originalObjParam);
+			break;
+		case ENUM_ObjectID::EnemyAlpaca:
+			stage->AddGameObject<EnemyAlpaca>(originalObjParam);
 			break;
 		default:
 			break;
@@ -449,6 +506,18 @@ namespace basecross
 			break;
 		case ENUM_ObjectID::Dirt:
 			stage->AddGameObject<Dirt>(objParam);
+			break;
+		case ENUM_ObjectID::Stone:
+			stage->AddGameObject<Stone>(objParam);
+			break;
+		case ENUM_ObjectID::FallenTree:
+			stage->AddGameObject<FallenTree>(objParam);
+			break;
+		case ENUM_ObjectID::FirTree:
+			stage->AddGameObject<FirTree>(objParam);
+			break;
+		case ENUM_ObjectID::EnemyAlpaca:
+			stage->AddGameObject<EnemyAlpaca>(objParam);
 			break;
 		default:
 			break;

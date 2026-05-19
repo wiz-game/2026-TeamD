@@ -5,16 +5,20 @@ namespace basecross
 {
 	void GameManager::EnterGameMode(ENUM_GameMode gameMode)
 	{
+		SoundManager::Instance().StopBGM();
 		switch (gameMode)
 		{
 		case ENUM_GameMode::Title:
 			App::GetApp()->GetScene<Scene>()->ChangeStage(L"TitleStage");
+			SoundManager::Instance().PlayBGM(L"Title_BGM");
 			break;
 		case ENUM_GameMode::Select:
 			App::GetApp()->GetScene<Scene>()->ChangeStage(L"SelectStage");
+			SoundManager::Instance().PlayBGM(L"Title_BGM");
 			break;
 		case ENUM_GameMode::Play:
 			App::GetApp()->GetScene<Scene>()->ChangeStage(m_serectGameStage);
+			SoundManager::Instance().PlayBGM(L"Title_BGM");
 			break;
 		case ENUM_GameMode::Menu:
 			break;
@@ -79,7 +83,7 @@ namespace basecross
 	
 	void GameManager::RemoveDebugLog()
 	{
-		if (m_sPtrDebugLog) 
+		if (m_sPtrDebugLog)
 		{
 			m_sPtrDebugLog->DestroyGameObject();
 			m_sPtrDebugLog = nullptr;
@@ -91,6 +95,23 @@ namespace basecross
 		ExitGameMode(m_gameMode);
 		m_gameMode = gameMode;
 		EnterGameMode(m_gameMode);
+	}
+
+	void GameManager::SetGameModeAfterTransition(ENUM_GameMode gameMode)
+	{
+		if (m_transitionAfterGameMode != ENUM_GameMode::Null) return;
+
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		stage->AddGameObject<UISlide>(STRUCT_UIParam(L"Awa", Vec3(10.0f, -1400.0f, 0.0f), 0.3f), 400.0f);
+		stage->AddGameObject<UISlide>(STRUCT_UIParam(L"Awa", Vec3(200.0f, -1200.0f, 0.0f), 0.3f), 400.0f);
+		stage->AddGameObject<UISlide>(STRUCT_UIParam(L"Awa", Vec3(-630.0f, -1100.0f, 0.0f), 0.3f), 400.0f);
+		stage->AddGameObject<UISlide>(STRUCT_UIParam(L"Awa", Vec3(490.0f, -1400.0f, 0.0f), 0.3f), 400.0f);
+		stage->AddGameObject<UISlide>(STRUCT_UIParam(L"Awa", Vec3(-320.0f, -1000.0f, 0.0f), 0.3f), 400.0f);
+		stage->AddGameObject<UISlide>(STRUCT_UIParam(L"Awa", Vec3(-120.0f, -1600.0f, 0.0f), 0.3f), 400.0f);
+		stage->AddGameObject<UISlide>(STRUCT_UIParam(L"Awa", Vec3(490.0f, -900.0f, 0.0f), 0.3f), 400.0f);
+		stage->AddGameObject<UITransitionSlide>(STRUCT_UIParam(L"Awas", Vec3(0.0f, -3000.0f, 0.0f), 1.3f), 600.0f, true);
+
+		m_transitionAfterGameMode = gameMode;
 	}
 
 	void GameManager::ChangeSelectGameStage(const int& incrDecrNum)
