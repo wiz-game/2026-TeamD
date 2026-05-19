@@ -66,6 +66,15 @@ namespace basecross
 			case ENUM_ObjectID::Stone:
 				stage->AddGameObject<Stone>(objParam);
 				break;
+			case ENUM_ObjectID::FallenTree:
+				stage->AddGameObject<FallenTree>(objParam);
+				break;
+			case ENUM_ObjectID::FirTree:
+				stage->AddGameObject<FirTree>(objParam);
+				break;
+			case ENUM_ObjectID::EnemyAlpaca:
+				stage->AddGameObject<EnemyAlpaca>(objParam);
+				break;
 			default:
 				break;
 			}
@@ -455,6 +464,15 @@ namespace basecross
 			break;
 		case ENUM_ObjectID::Stone:
 			stage->AddGameObject<Stone>(objParam);
+			break;
+		case ENUM_ObjectID::FallenTree:
+			stage->AddGameObject<FallenTree>(objParam);
+			break;
+		case ENUM_ObjectID::FirTree:
+			stage->AddGameObject<FirTree>(objParam);
+			break;
+		case ENUM_ObjectID::EnemyAlpaca:
+			stage->AddGameObject<EnemyAlpaca>(objParam);
 			break;
 		default:
 			break;

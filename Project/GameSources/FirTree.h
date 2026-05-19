@@ -3,18 +3,17 @@
 
 namespace basecross
 {
-	class FallenTree : public GameObject
+	class FirTree : public GameObject
 	{
 	private:
 		shared_ptr<Transform> m_sPtrTrans;
-
 	public:
-		FallenTree
+		FirTree
 		(
-			const shared_ptr<Stage>& stage,
+			const shared_ptr<Stage>& StagePtr,
 			const STRUCT_ObjectParam& objectParam
 		);
-		~FallenTree();
+		virtual ~FirTree();
 
 		virtual void OnCreate() override;
 	};

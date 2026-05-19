@@ -34,6 +34,7 @@
 #include "Dirt.h"
 #include "Stone.h"
 #include "FallenTree.h"
+#include "FirTree.h"
 
 // エネミー
 #include "EnemyBase.h"

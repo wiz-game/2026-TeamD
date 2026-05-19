@@ -133,6 +133,9 @@
     <Filter Include="StageObjs\FallenTree">
       <UniqueIdentifier>{03d62edd-bef3-4379-a414-b905205e803c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StageObjs\FirTree">
+      <UniqueIdentifier>{6f06704e-ccc7-495e-9140-fad968ffe6a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -264,6 +267,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)FallenTree.h">
       <Filter>StageObjs\FallenTree</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FirTree.h">
+      <Filter>StageObjs\FirTree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -382,6 +388,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)FallenTree.cpp">
       <Filter>StageObjs\FallenTree</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)FirTree.cpp">
+      <Filter>StageObjs\FirTree</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
