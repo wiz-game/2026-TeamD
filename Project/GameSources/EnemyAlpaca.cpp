@@ -13,6 +13,8 @@ namespace basecross
 	void EnemyAlpaca::OnCreate()
 	{
 		AddTag(L"Enemy");
+		SetIsEditorSave(true);
+
 		m_transform = AddComponent<Transform>();
 		m_transform->SetPosition(m_objectParam.GetPosition());
 		m_transform->SetScale(m_objectParam.GetScale());
