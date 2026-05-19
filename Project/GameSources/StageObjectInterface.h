@@ -15,6 +15,7 @@ namespace basecross
 		Mushroom,
 		Tree,
 		Dirt,
+		Stone,
 		Max
 	} ;
 
