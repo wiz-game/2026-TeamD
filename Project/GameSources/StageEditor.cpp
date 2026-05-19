@@ -364,31 +364,39 @@ namespace basecross
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
 		if (!stage) return;
 
+		STRUCT_ObjectParam originalObjParam
+		(
+			m_selectedObj->GetID(),
+			m_selectedObj->GetComponent<Transform>()->GetScale(),
+			m_selectedObj->GetComponent<Transform>()->GetQuaternion(),
+			m_selectedObj->GetComponent<Transform>()->GetPosition()
+		);
+
 		switch (m_selectedObj->GetID())
 		{
 		case ENUM_ObjectID::Ground:
-			stage->AddGameObject<Ground>(m_selectedObj->GetObjectParam());
+			stage->AddGameObject<Ground>(originalObjParam);
 			break;
 		case ENUM_ObjectID::Mushroom:
-			stage->AddGameObject<Mushroom>(m_selectedObj->GetObjectParam());
+			stage->AddGameObject<Mushroom>(originalObjParam);
 			break;
 		case ENUM_ObjectID::Tree:
-			stage->AddGameObject<Tree>(m_selectedObj->GetObjectParam());
+			stage->AddGameObject<Tree>(originalObjParam);
 			break;
 		case ENUM_ObjectID::Dirt:
-			stage->AddGameObject<Dirt>(m_selectedObj->GetObjectParam());
+			stage->AddGameObject<Dirt>(originalObjParam);
 			break;
 		case ENUM_ObjectID::Stone:
-			stage->AddGameObject<Stone>(m_selectedObj->GetObjectParam());
+			stage->AddGameObject<Stone>(originalObjParam);
 			break;
 		case ENUM_ObjectID::FallenTree:
-			stage->AddGameObject<FallenTree>(m_selectedObj->GetObjectParam());
+			stage->AddGameObject<FallenTree>(originalObjParam);
 			break;
 		case ENUM_ObjectID::FirTree:
-			stage->AddGameObject<FirTree>(m_selectedObj->GetObjectParam());
+			stage->AddGameObject<FirTree>(originalObjParam);
 			break;
 		case ENUM_ObjectID::EnemyAlpaca:
-			stage->AddGameObject<EnemyAlpaca>(m_selectedObj->GetObjectParam());
+			stage->AddGameObject<EnemyAlpaca>(originalObjParam);
 			break;
 		default:
 			break;
