@@ -24,6 +24,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModelResource.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyAlpaca.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FallenTree.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Gizmo.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ItemBase.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PowerUpSoap.h" />
@@ -55,6 +56,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)UIBase.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)UIBlinking.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)UISlide.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UITransitionSlide.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Bubble.cpp" />
@@ -69,6 +71,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)DXModelResource.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyAlpaca.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyBase.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FallenTree.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FurBubble.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage.cpp" />
@@ -96,6 +99,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)UIBase.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UIBlinking.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UISlide.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)UITransitionSlide.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />
   </ItemGroup>
 </Project>

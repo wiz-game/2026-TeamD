@@ -33,6 +33,7 @@
 #include "Mushroom.h"
 #include "Dirt.h"
 #include "Stone.h"
+#include "FallenTree.h"
 
 // エネミー
 #include "EnemyBase.h"
@@ -50,6 +51,7 @@
 #include "UIBase.h"
 #include "UIBlinking.h"
 #include "UISlide.h"
+#include "UITransitionSlide.h"
 
 // ステージ
 #include "TitleStage.h"
