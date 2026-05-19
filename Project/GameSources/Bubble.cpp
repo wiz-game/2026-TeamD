@@ -199,14 +199,21 @@ namespace basecross
 		return forward;
 	}
 
+	void Bubble::ResolveCounteract(Bubble& bubble, Dirt& dirt)
+	{
+		float bubbleHP = bubble.GetBubbleHP();
+		float dirtHP = dirt.GetDirtHP();
+
+		bubble.SetBubbleHP(max(0.0f, bubbleHP - dirtHP));
+		dirt.SetDirtHP(max(0.0f, dirtHP - bubbleHP));
+	}
+
 	void Bubble::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
 		if (Other->FindTag(L"Dirt"))
 		{
 			auto dirt = dynamic_pointer_cast<Dirt>(Other);
-			auto decreasehp = dirt->GetDirtHP();
-			m_HP -= decreasehp;
-			m_HP = max(0.0f, m_HP);
+			ResolveCounteract(*this, *dirt);
 		}
 
 		if (Other->FindTag(L"Enemy"))

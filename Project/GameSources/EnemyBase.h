@@ -6,6 +6,7 @@
 
 #pragma once
 #include "stdafx.h"
+#include "ItemBase.h"
 
 namespace basecross
 {
@@ -31,7 +32,6 @@ namespace basecross
 		// 1度だけ原点として記憶するやつ
 		bool m_isFirstTime;
 
-		float m_EnemyHP;
 
 		enum Point
 		{
@@ -43,9 +43,14 @@ namespace basecross
 			Number
 		}
 		m_NumPoint;
+
+	protected:
+		float m_EnemyHP;
+		bool m_Detection;
+
 	public:
-		EnemyBase(const shared_ptr<Stage>& stage) :
-			GameObject(stage),
+		EnemyBase(const shared_ptr<Stage>& stage, const STRUCT_ObjectParam& objectParam) :
+			GameObject(stage, objectParam),
 			m_InitialWanderingTime(0.0f),
 			m_RandRotation(0.0f),
 			m_WanderSpeed(1.0f),
@@ -54,7 +59,8 @@ namespace basecross
 			m_isStand(true),
 			m_angle(0.0f),
 			m_TargetPosition(),
-			m_isFirstTime(true)
+			m_isFirstTime(true),
+			m_Detection(false)
 			//m_EnemyHP(hp)
 		{
 		}
@@ -86,8 +92,17 @@ namespace basecross
 		);
 
 		void DebugString();
-		void DebugDraw();
+
 		void Died(const shared_ptr<GameObject>& gameObject);
+		void DetectionRange(const shared_ptr<GameObject>& gameObject);
+		void Stalker(const shared_ptr<GameObject>& gameObject, float stalkerSpeed);
+		void FunctionGravity(const shared_ptr<GameObject>& gameObject);
+
+		// ゲッターセッター関数
+		bool GetDetection()
+		{
+			return m_Detection;
+		}
 
 		// --- 当たり判定 ---
 		void OnCollisionEnter(shared_ptr<GameObject>& Other);	//	当たり判定

@@ -26,6 +26,7 @@ namespace basecross
 		
 		auto ptrShadow = AddComponent<Shadowmap>();
 		ptrDraw->SetOwnShadowActive(true);
+		ptrShadow->SetMeshResource(L"M_Tree");
 
 		m_sPtrTrans = AddComponent<Transform>();
 		m_sPtrTrans->SetScale(m_objectParam.GetScale());

@@ -8,6 +8,7 @@
 
 #include "Scene.h"
 
+// エディター用クラス
 #include "StageObjectInterface.h"
 #include "DebugLog.h"
 #include "BinaryFile.h"
@@ -26,10 +27,14 @@
 #include "Character.h"
 
 // ステージオブジェクト
+#include "SkyBox.h"
 #include "Ground.h"
 #include "Tree.h"
 #include "Mushroom.h"
 #include "Dirt.h"
+#include "Stone.h"
+#include "FallenTree.h"
+#include "FirTree.h"
 
 // エネミー
 #include "EnemyBase.h"
@@ -39,9 +44,22 @@
 #include "TrampolineBubbles.h"
 #include "Player.h"
 
-#include "MyCamera.h"
+// アイテム
+#include "ItemBase.h"
+#include "PowerUpSoap.h"
 
+// UI
+#include "UIBase.h"
+#include "UIBlinking.h"
+#include "UISlide.h"
+#include "UITransitionSlide.h"
+
+// ステージ
+#include "TitleStage.h"
+#include "SelectStage.h"
 #include "GameStage.h"
+
+#include "MyCamera.h"
 
 #include "StageEditor.h"
 

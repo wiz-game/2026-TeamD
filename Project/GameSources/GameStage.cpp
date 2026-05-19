@@ -8,20 +8,29 @@
 
 namespace basecross 
 {
-	void GameStage::OnCreate() 
+	GameStage::GameStage(const wstring& stageNum)
+		: Stage()
+	{
+		m_stageNum = to_string(stageNum);
+	}
+
+	void GameStage::OnCreate()
 	{
 		try 
 		{
 			m_jphManger.Initialize();
 
+			AddGameObject<SkyBox>();
 			CreateViewLight();
 			CreatePlayer();
-			CreateEnemy();
-
+			AddGameObject<EnemyAlpaca>(STRUCT_ObjectParam(ENUM_ObjectID::Mushroom, Vec3(0.3f), Quat(), Vec3(1.0f, 1.0f, 1.0f)));
+			AddGameObject<UITransitionSlide>(STRUCT_UIParam(L"Awas", Vec3(0.0f, 0.0f, 0.0f), 1.3f), 600.0f);
+			
 			// ステージの作成
-			StageEditor::Instance().ReadStageData("Stage_1.bin", GetThis<GameStage>());
+			StageEditor::Instance().ReadStageData(m_stageNum + ".bin", GetThis<GameStage>());
 		}
-		catch (...) {
+		catch (...)
+		{
 			throw;
 		}
 	}
@@ -64,12 +73,6 @@ namespace basecross
 		SetSharedGameObject(L"Player", player);
 	}
 
-	// Enemyを作成する
-	void GameStage::CreateEnemy()
-	{
-		AddGameObject<EnemyAlpaca>(10);
-	}
-
 	void GameStage::SetCollRange()
 	{
 		// プレイヤーの位置を中心に当たり判定の範囲を設定する
@@ -78,4 +81,3 @@ namespace basecross
 		GetCollisionManager()->SetRootAABB(collRange);
 	}
 }
-//end basecross

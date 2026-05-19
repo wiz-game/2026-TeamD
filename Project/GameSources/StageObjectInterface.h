@@ -15,6 +15,10 @@ namespace basecross
 		Mushroom,
 		Tree,
 		Dirt,
+		Stone,
+		FallenTree,
+		FirTree,
+		EnemyAlpaca,
 		Max
 	} ;
 

@@ -6,11 +6,12 @@ namespace basecross
 {
     void EnemyBase::OnCreate()
     {
+
     }
 
     void EnemyBase::OnUpdate()
     {
-        DebugString();
+
     }
 
     // ガチ徘徊
@@ -151,6 +152,7 @@ namespace basecross
                 m_isWandering = true;
 
                 m_InitialWanderingTime = randTime;
+                // 一度だけ乱数を格納する
                 m_NumPoint = static_cast<Point>(rand() % 4);
 
                 // 初期値を格納する
@@ -183,57 +185,28 @@ namespace basecross
         // 徘徊時間
         else if (m_isWandering == true)
         {
+            // ターゲット（点）までのベクトルを計算
+            float diffX = m_TargetPosition.x - transPos.x;
+            float diffZ = m_TargetPosition.z - transPos.z;
 
-            // X軸の移動（正）
-            if (transPos.x < m_TargetPosition.x) 
-            {
-                // 移動対象をX軸にプラスに移動させる
-                transPos.x += speed * deltaTime;
-                // 移動しているときにもし点を越してしまったら
-                if (transPos.x > m_TargetPosition.x)
-                {
-                    transPos.x = m_TargetPosition.x;
-                }
-            }
-            // X軸の移動（負）
-            else if (transPos.x > m_TargetPosition.x) 
-            {
-                // 移動対象をX軸にマイナスに移動させる
-                transPos.x -= speed * deltaTime;
-                // 移動しているときにもし点を越してしまったら
-                if (transPos.x < m_TargetPosition.x)
-                {
-                    transPos.x = m_TargetPosition.x;
-                }
-            }
+            // ターゲットまでの距離を計算
+            float distance = sqrtf(diffX * diffX + diffZ * diffZ);
 
-            // Z軸の移動（正）
-            if (transPos.z < m_TargetPosition.z) 
+            if (distance > 0.05f)
             {
-                // 移動対象をZ軸にプラスに移動させる
-                transPos.z += speed * deltaTime;
-                // 移動しているときにもし点を越してしまったら
-                if (transPos.z > m_TargetPosition.z)
-                {
-                    transPos.z = m_TargetPosition.z;
-                }
-            }
-            // Z軸の移動（負）
-            else if (transPos.z > m_TargetPosition.z) 
-            {
-                // 移動対象をZ軸にマイナスに移動させる
-                transPos.z -= speed * deltaTime;
-                // 移動しているときにもし点を越してしまったら
-                if (transPos.z < m_TargetPosition.z)
-                {
-                    transPos.z = m_TargetPosition.z;
-                }
-            }
+                float forward = atan2f(diffX, diffZ);
+                transComp->SetRotation(0.0f, forward, 0.0f);
 
+                transPos.x += (diffX / distance) * speed * deltaTime;
+                transPos.z += (diffZ / distance) * speed * deltaTime;
+            }
             // どれかの点に到達したとき
-            if (transPos.x == m_TargetPosition.x &&
-                transPos.z == m_TargetPosition.z)
+            else
             {
+                // 強制的に点に重ねる
+                transPos.x = m_TargetPosition.x;
+                transPos.z = m_TargetPosition.z;
+
                 // また待機時間に戻す
                 m_isWandering = false;
                 m_isStand = true;
@@ -241,14 +214,17 @@ namespace basecross
                 m_InitialStandTime = randTime;
             }
 
-            float diffX = m_TargetPosition.x - transPos.x;
-            float diffZ = m_TargetPosition.z - transPos.z;
-
-            float angle = atan2f(diffZ, diffX);
-            transComp->SetRotation(0.0f, angle, 0.0f);
-
             // 敵の位置を最終的に更新する
             transComp->SetPosition(transPos);
+        }
+    }
+
+    void EnemyBase::FunctionGravity(const shared_ptr<GameObject>& gameObject)
+    {
+        auto gravity = gameObject->GetComponent<Gravity>();
+        if (gravity == nullptr)
+        {
+            return;
         }
     }
 
@@ -257,26 +233,89 @@ namespace basecross
         auto transComp = GetComponent<Transform>();
         auto transPos = transComp->GetPosition();
 
-        GameManager::Instance().AddDebugStr(L"m_InitialStandTime", m_InitialStandTime);
-        GameManager::Instance().AddDebugStr(L"m_InitialWanderingTime", m_InitialWanderingTime);
-        GameManager::Instance().AddDebugStr(L"EnemyPositionX", transPos.x);
-        GameManager::Instance().AddDebugStr(L"EnemyPositionY", transPos.y);
-        GameManager::Instance().AddDebugStr(L"EnemyPositionZ", transPos.z);
-        GameManager::Instance().AddDebugStr(L"EnemyInitialPositionX", m_InitialPosition.x);
-        GameManager::Instance().AddDebugStr(L"EnemyInitialPositionY", m_InitialPosition.y);
-        GameManager::Instance().AddDebugStr(L"EnemyInitialPositionZ", m_InitialPosition.z);
-        GameManager::Instance().AddDebugStr(L"EnemyHP", m_EnemyHP);
+        GameManager::Instance().AddDebugStr(L"Detection", m_Detection);
     }
 
     void EnemyBase::Died(const shared_ptr<GameObject>& gameObject)
     {
+        // 自身の位置を取得する
+        auto objComp = gameObject->GetComponent<Transform>();
+        auto objPos = objComp->GetPosition();
+
         const float DIED_HP = 0.0f;
         if (m_EnemyHP <= DIED_HP)
         {
             auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
             stage->RemoveGameObject<GameObject>(GetThis<GameObject>());
+
+            // 石鹸を出す
+            auto soap = stage->AddGameObject<PowerUpSoap>();
+            auto soapComp = soap->GetComponent<Transform>();
+            soapComp->SetPosition(objPos.x, objPos.y + 1, objPos.z);
         }
     }
+
+    // 索敵範囲
+    void EnemyBase::DetectionRange(const shared_ptr<GameObject>& gameObject)
+    {
+        auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+        if (stage == nullptr)
+        {
+            return;
+        }
+
+        auto player = stage->GetSharedGameObject<Player>(L"Player");
+        if (player == nullptr)
+        {
+            return;
+        }
+        auto playerPos = player->GetComponent<Transform>()->GetPosition();
+
+        auto transComp = gameObject->GetComponent<Transform>();
+        auto transPos = transComp->GetPosition();
+
+        auto distancePos_X = playerPos.x - transPos.x;
+        auto distancePos_Y = playerPos.y - transPos.y;
+        auto distancePos_Z = playerPos.z - transPos.z;
+
+        float distance = sqrt((distancePos_X * distancePos_X) + (distancePos_Y * distancePos_Y) + (distancePos_Z * distancePos_Z));
+
+        const float radius = 2.5f;
+
+        if (distance < radius)
+        {
+            m_Detection = true;
+            float forward = atan2f(distancePos_X, distancePos_Z);
+            transComp->SetRotation(0.0f, forward, 0.0f);
+        }
+        else
+        {
+            m_Detection = false;
+        }
+    }
+
+    // ストーカー
+    void EnemyBase::Stalker(const shared_ptr<GameObject>& gameObject, float stalkerSpeed)
+    {
+        auto player = App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetSharedGameObject<Player>(L"Player");
+        if (player == nullptr)
+        {
+            return;
+        }
+
+        auto playerComp = player->GetComponent<Transform>();
+        auto playerPos = playerComp->GetPosition();
+
+        auto objComp = gameObject->GetComponent<Transform>();
+        auto objPos = objComp->GetPosition();
+
+        float stalkerX = objPos.x + (playerPos.x - objPos.x) * stalkerSpeed * App::GetApp()->GetElapsedTime();
+        float stalkerY = objPos.y + (playerPos.y - objPos.y) * stalkerSpeed * App::GetApp()->GetElapsedTime();
+        float stalkerZ = objPos.z + (playerPos.z - objPos.z) * stalkerSpeed * App::GetApp()->GetElapsedTime();
+
+        objComp->SetPosition(stalkerX, stalkerY, stalkerZ);
+    }
+
 
     void EnemyBase::OnCollisionEnter(shared_ptr<GameObject>& Other)
     {
