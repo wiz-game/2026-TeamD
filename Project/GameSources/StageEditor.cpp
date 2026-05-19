@@ -170,6 +170,10 @@ namespace basecross
 		GetMouseRey(startPos, endPos, mousePoint);
 
 		auto objVec = App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetGameObjectVec();
+		shared_ptr<GameObject> risultObj = nullptr;
+		
+		Vec3 targetVec = Vec3();
+
 		for (auto& obj : objVec)
 		{
 			// ギズモは選択できない
@@ -182,39 +186,51 @@ namespace basecross
 			{
 				auto isHit = staticDrawComp
 					->HitTestStaticMeshSegmentTrianglesToAffine(startPos, endPos, hitPoint, retTri, retIndex);
-
 				// 衝突していたら選択
 				if (isHit)
 				{
-					DeselectObj();
-					m_selectedObj = obj;
-					m_isSelectedObj = true;
-					staticDrawComp->SetDiffuse(m_selectedObjColor);
-
-					// ギズモを生成
-					if (!m_gizmos[0])
+					auto hitTargetVec = hitPoint - startPos;
+					if (hitTargetVec.length() < targetVec.length())
 					{
-						auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-						for (int i = 0; i < static_cast<int>(ENUM_Axis::Max); i++)
-						{
-							auto sharedPtr = stage->AddGameObject<Gizmo>(static_cast<ENUM_Axis>(i), m_selectedObj->GetComponent<Transform>());
-							m_gizmos[i] = sharedPtr;
-						}
+						targetVec = hitTargetVec;
+						risultObj = obj;
 					}
-					// 生成していたら位置を変更する
-					else
+					else if (targetVec == Vec3())
 					{
-						for (const auto& gizmo : m_gizmos)
-						{
-							auto selectPos = m_selectedObj->GetComponent<Transform>()->GetPosition();
-							gizmo->GetComponent<Transform>()->SetPosition(selectPos);
-						}
-
-						GizmoDrawActive(true);
+						targetVec = hitTargetVec;
+						risultObj = obj;
 					}
-					break;
 				}
 			}
+		}
+
+		if (risultObj == nullptr) return;
+
+		DeselectObj();
+		m_selectedObj = risultObj;
+		m_isSelectedObj = true;
+		risultObj->GetComponent<PNTStaticDraw>(false)->SetDiffuse(m_selectedObjColor);
+
+		// ギズモを生成
+		if (!m_gizmos[0])
+		{
+			auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+			for (int i = 0; i < static_cast<int>(ENUM_Axis::Max); i++)
+			{
+				auto sharedPtr = stage->AddGameObject<Gizmo>(static_cast<ENUM_Axis>(i), m_selectedObj->GetComponent<Transform>());
+				m_gizmos[i] = sharedPtr;
+			}
+		}
+		// 生成していたら位置を変更する
+		else
+		{
+			for (const auto& gizmo : m_gizmos)
+			{
+				auto selectPos = m_selectedObj->GetComponent<Transform>()->GetPosition();
+				gizmo->GetComponent<Transform>()->SetPosition(selectPos);
+			}
+
+			GizmoDrawActive(true);
 		}
 	}
 
@@ -364,31 +380,39 @@ namespace basecross
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
 		if (!stage) return;
 
+		STRUCT_ObjectParam originalObjParam
+		(
+			m_selectedObj->GetID(),
+			m_selectedObj->GetComponent<Transform>()->GetScale(),
+			m_selectedObj->GetComponent<Transform>()->GetQuaternion(),
+			m_selectedObj->GetComponent<Transform>()->GetPosition()
+		);
+
 		switch (m_selectedObj->GetID())
 		{
 		case ENUM_ObjectID::Ground:
-			stage->AddGameObject<Ground>(m_selectedObj->GetObjectParam());
+			stage->AddGameObject<Ground>(originalObjParam);
 			break;
 		case ENUM_ObjectID::Mushroom:
-			stage->AddGameObject<Mushroom>(m_selectedObj->GetObjectParam());
+			stage->AddGameObject<Mushroom>(originalObjParam);
 			break;
 		case ENUM_ObjectID::Tree:
-			stage->AddGameObject<Tree>(m_selectedObj->GetObjectParam());
+			stage->AddGameObject<Tree>(originalObjParam);
 			break;
 		case ENUM_ObjectID::Dirt:
-			stage->AddGameObject<Dirt>(m_selectedObj->GetObjectParam());
+			stage->AddGameObject<Dirt>(originalObjParam);
 			break;
 		case ENUM_ObjectID::Stone:
-			stage->AddGameObject<Stone>(m_selectedObj->GetObjectParam());
+			stage->AddGameObject<Stone>(originalObjParam);
 			break;
 		case ENUM_ObjectID::FallenTree:
-			stage->AddGameObject<FallenTree>(m_selectedObj->GetObjectParam());
+			stage->AddGameObject<FallenTree>(originalObjParam);
 			break;
 		case ENUM_ObjectID::FirTree:
-			stage->AddGameObject<FirTree>(m_selectedObj->GetObjectParam());
+			stage->AddGameObject<FirTree>(originalObjParam);
 			break;
 		case ENUM_ObjectID::EnemyAlpaca:
-			stage->AddGameObject<EnemyAlpaca>(m_selectedObj->GetObjectParam());
+			stage->AddGameObject<EnemyAlpaca>(originalObjParam);
 			break;
 		default:
 			break;
