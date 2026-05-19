@@ -147,6 +147,12 @@ namespace basecross
 				SaveStage();
 			}
 
+			// コピー
+			if (m_key.m_bPressedKeyTbl['V'] && m_key.m_bPushKeyTbl[VK_LCONTROL])
+			{
+				SelectCopy();
+			}
+
 			// オブジェクト削除
 			if (m_key.m_bPressedKeyTbl[VK_DELETE])
 			{
@@ -320,6 +326,11 @@ namespace basecross
 	void InputManager::SaveStage()
 	{
 		StageEditor::Instance().WriteStageData();
+	}
+
+	void InputManager::SelectCopy()
+	{
+		StageEditor::Instance().SelectCopy();
 	}
 
 	void InputManager::PressedLMouseButton()
