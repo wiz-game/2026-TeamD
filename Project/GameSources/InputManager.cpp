@@ -32,7 +32,13 @@ namespace basecross
 				StageStart();
 			}
 
-			// 十字キー左右でカーソル移動
+			// Bを押してタイトルへ
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_B)
+			{
+				ReturnTitle();
+			}
+
+			// 十字キー左右でステージ選択
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_LEFT ||
 				m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
 			{
@@ -192,12 +198,17 @@ namespace basecross
 
 	void InputManager::GameStart()
 	{
-		GameManager::Instance().SetGameMode(ENUM_GameMode::Select);
+		GameManager::Instance().SetGameModeAfterTransition(ENUM_GameMode::Select);
 	}
 
 	void InputManager::StageStart()
 	{
-		GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
+		GameManager::Instance().SetGameModeAfterTransition(ENUM_GameMode::Play);
+	}
+
+	void InputManager::ReturnTitle()
+	{
+		GameManager::Instance().SetGameModeAfterTransition(ENUM_GameMode::Title);
 	}
 
 	void InputManager::ChangeSelectGameStage()

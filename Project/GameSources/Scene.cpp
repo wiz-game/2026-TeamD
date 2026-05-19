@@ -83,6 +83,16 @@ namespace basecross
 		{
 			ResetActiveStage<GameStage>(L"GameStage_3");
 		}
+		// ゲームステージ4
+		else if (event->m_MsgStr == L"GameStage_4") 
+		{
+			ResetActiveStage<GameStage>(L"GameStage_4");
+		}
+		// ゲームステージ5
+		else if (event->m_MsgStr == L"GameStage_5") 
+		{
+			ResetActiveStage<GameStage>(L"GameStage_5");
+		}
 	}
 
 	void Scene::RegisterMediaFiles(const wstring& Directory)

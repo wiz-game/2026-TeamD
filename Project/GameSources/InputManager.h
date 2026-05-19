@@ -69,6 +69,7 @@ namespace basecross
 
 		// GameMode：Select用の入力関数
 		void StageStart();
+		void ReturnTitle();
 		void ChangeSelectGameStage();
 
 		// GameMode：Play用の入力関数
