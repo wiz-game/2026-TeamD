@@ -265,25 +265,25 @@ namespace basecross
         auto transComp = GetComponent<Transform>();
         auto transPos = transComp->GetPosition();
 
-        //GameManager::Instance().AddDebugStr(L"m_InitialStandTime", m_InitialStandTime);
-        //GameManager::Instance().AddDebugStr(L"m_InitialWanderingTime", m_InitialWanderingTime);
-        //GameManager::Instance().AddDebugStr(L"EnemyPositionX", transPos.x);
-        //GameManager::Instance().AddDebugStr(L"EnemyPositionY", transPos.y);
-        //GameManager::Instance().AddDebugStr(L"EnemyPositionZ", transPos.z);
-        //GameManager::Instance().AddDebugStr(L"EnemyInitialPositionX", m_InitialPosition.x);
-        //GameManager::Instance().AddDebugStr(L"EnemyInitialPositionY", m_InitialPosition.y);
-        //GameManager::Instance().AddDebugStr(L"EnemyInitialPositionZ", m_InitialPosition.z);
-        //GameManager::Instance().AddDebugStr(L"EnemyHP", m_EnemyHP);
         GameManager::Instance().AddDebugStr(L"Detection", m_Detection);
     }
 
     void EnemyBase::Died(const shared_ptr<GameObject>& gameObject)
     {
+        // 自身の位置を取得する
+        auto objComp = gameObject->GetComponent<Transform>();
+        auto objPos = objComp->GetPosition();
+
         const float DIED_HP = 0.0f;
         if (m_EnemyHP <= DIED_HP)
         {
             auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
             stage->RemoveGameObject<GameObject>(GetThis<GameObject>());
+
+            // 石鹸を出す
+            auto soap = stage->AddGameObject<PowerUpSoap>();
+            auto soapComp = soap->GetComponent<Transform>();
+            soapComp->SetPosition(objPos.x, objPos.y + 1, objPos.z);
         }
     }
 
