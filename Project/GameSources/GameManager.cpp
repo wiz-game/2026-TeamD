@@ -79,7 +79,7 @@ namespace basecross
 	
 	void GameManager::RemoveDebugLog()
 	{
-		if (m_sPtrDebugLog) 
+		if (m_sPtrDebugLog)
 		{
 			m_sPtrDebugLog->DestroyGameObject();
 			m_sPtrDebugLog = nullptr;
@@ -91,6 +91,13 @@ namespace basecross
 		ExitGameMode(m_gameMode);
 		m_gameMode = gameMode;
 		EnterGameMode(m_gameMode);
+	}
+
+	void GameManager::SetGameModeAfterTransition(ENUM_GameMode gameMode)
+	{
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		//m_sPtrUISlide = stage->AddGameObject<UISlide>();
+		//m_transitionAfterGameMode = gameMode;
 	}
 
 	void GameManager::ChangeSelectGameStage(const int& incrDecrNum)

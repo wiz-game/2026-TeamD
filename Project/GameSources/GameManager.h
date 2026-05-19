@@ -28,7 +28,7 @@ namespace basecross
 		wstring m_serectGameStage = L"GameStage_1";
 
 		const int GAMESTAGE_MIN = 1;
-		const int GAMESTAGE_MAX = 3;
+		const int GAMESTAGE_MAX = 5;
 	private:
 		GameManager() {}
 		virtual ~GameManager() {}
@@ -57,6 +57,7 @@ namespace basecross
 		// アクセサー
 		ENUM_GameMode GetGameMode() const { return m_gameMode; }
 		void SetGameMode(ENUM_GameMode gameMode);
+		void SetGameModeAfterTransition(ENUM_GameMode gameMode);
 
 		bool GetIsDebug() const { return m_isDebug; }
 		void SetIsDebug(bool isDebug) { m_isDebug = isDebug; }
