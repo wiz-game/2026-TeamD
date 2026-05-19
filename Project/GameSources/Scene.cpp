@@ -57,6 +57,7 @@ namespace basecross
 	void Scene::OnEvent(const shared_ptr<Event>& event) 
 	{
 		GameManager::Instance().RemoveDebugLog();
+		SoundManager::Instance().AllStopSE();
 
 		// タイトルステージ
 		if (event->m_MsgStr == L"TitleStage")
