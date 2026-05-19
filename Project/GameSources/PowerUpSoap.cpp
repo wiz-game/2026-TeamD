@@ -13,6 +13,11 @@ namespace basecross
 	void PowerUpSoap::OnCreate()
 	{
 		AddTag(L"Soap");
+
+		m_transform = AddComponent<Transform>();
+		m_transform->SetScale(m_Scale);
+		m_transform->SetRotation(0.0f, 0.0f, XMConvertToRadians(45.0f));
+
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");
 
@@ -24,26 +29,29 @@ namespace basecross
 	// 更新
 	void PowerUpSoap::OnUpdate()
 	{
-		GetItem(GetThis<PowerUpSoap>());
+		Rotation();
+		DebugStr();
 	}
 
-	void PowerUpSoap::GetSoapOfCoolDown()
+	void PowerUpSoap::Rotation()
 	{
-		// 現在有効なステージの情報を取得する
-		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-		if (stage == nullptr)	// エラー対策
-		{
-			return;
-		}
+		auto transRot = m_transform->GetRotation();
+		transRot.y += m_RotationSpeed * App::GetApp()->GetElapsedTime();
+		m_transform->SetRotation(transRot);
+	}
 
-		// Playerの情報を取得する
-		auto player = stage->GetSharedGameObject<Player>(L"Player");
-		if (player == nullptr)	// エラー対策
-		{
-			return;
-		}
+	void PowerUpSoap::UpDown()
+	{
+		auto transPos = m_transform->GetPosition();
+		transPos.y += App::GetApp()->GetElapsedTime();
+		//m_transform->SetPosition()
+	}
 
-		player->SetCoolDown(true);
+	void PowerUpSoap::DebugStr()
+	{
+		auto transRot = m_transform->GetRotation();
+	
+		GameManager::Instance().AddDebugStr(L"Rotation_Y", transRot.y);
 	}
 }
 //end basecross
