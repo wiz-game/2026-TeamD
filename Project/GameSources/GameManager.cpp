@@ -95,9 +95,19 @@ namespace basecross
 
 	void GameManager::SetGameModeAfterTransition(ENUM_GameMode gameMode)
 	{
+		if (m_transitionAfterGameMode != ENUM_GameMode::Null) return;
+
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-		//m_sPtrUISlide = stage->AddGameObject<UISlide>();
-		//m_transitionAfterGameMode = gameMode;
+		stage->AddGameObject<UISlide>(STRUCT_UIParam(L"Awa", Vec3(10.0f, -1400.0f, 0.0f), 0.3f), 400.0f);
+		stage->AddGameObject<UISlide>(STRUCT_UIParam(L"Awa", Vec3(200.0f, -1200.0f, 0.0f), 0.3f), 400.0f);
+		stage->AddGameObject<UISlide>(STRUCT_UIParam(L"Awa", Vec3(-630.0f, -1100.0f, 0.0f), 0.3f), 400.0f);
+		stage->AddGameObject<UISlide>(STRUCT_UIParam(L"Awa", Vec3(490.0f, -1400.0f, 0.0f), 0.3f), 400.0f);
+		stage->AddGameObject<UISlide>(STRUCT_UIParam(L"Awa", Vec3(-320.0f, -1000.0f, 0.0f), 0.3f), 400.0f);
+		stage->AddGameObject<UISlide>(STRUCT_UIParam(L"Awa", Vec3(-120.0f, -1600.0f, 0.0f), 0.3f), 400.0f);
+		stage->AddGameObject<UISlide>(STRUCT_UIParam(L"Awa", Vec3(490.0f, -900.0f, 0.0f), 0.3f), 400.0f);
+		stage->AddGameObject<UITransitionSlide>(STRUCT_UIParam(L"Awas", Vec3(0.0f, -3000.0f, 0.0f), 1.3f), 600.0f, true);
+
+		m_transitionAfterGameMode = gameMode;
 	}
 
 	void GameManager::ChangeSelectGameStage(const int& incrDecrNum)

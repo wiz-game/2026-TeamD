@@ -24,7 +24,8 @@ namespace basecross
 			CreateViewLight();
 			CreatePlayer();
 			AddGameObject<EnemyAlpaca>(STRUCT_ObjectParam(ENUM_ObjectID::Mushroom, Vec3(0.3f), Quat(), Vec3(1.0f, 1.0f, 1.0f)));
-
+			AddGameObject<UITransitionSlide>(STRUCT_UIParam(L"Awas", Vec3(0.0f, 0.0f, 0.0f), 1.3f), 600.0f);
+			
 			// ステージの作成
 			StageEditor::Instance().ReadStageData(m_stageNum + ".bin", GetThis<GameStage>());
 		}
