@@ -71,6 +71,7 @@ namespace basecross
 		void SelectObj(const Point2D<int>& mousePoint);
 		bool GizmoSelect(const Point2D<int>& mousePoint);
 		void ObjectOperation(const Point2D<int>& mousePoint);
+		void SelectCopy();
 		
 		void PositionOperation(const Point2D<int>& mousePoint);
 		void QuaternionOperation(const Point2D<int>& mousePoint);

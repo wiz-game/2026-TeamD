@@ -111,6 +111,9 @@ namespace basecross
 		// ステージ保存
 		void SaveStage();
 
+		// コピー
+		void SelectCopy();
+
 		// Pressed
 		void PressedLMouseButton();
 		void PressedDelete();

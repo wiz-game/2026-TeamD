@@ -151,7 +151,7 @@ int MainLoop(HINSTANCE hInstance, HWND hWnd, bool isFullScreen, int iClientWidth
 			VK_DELETE, VK_LSHIFT, VK_TAB, VK_LCONTROL,
 			'W','A','S','D',
 			'Q','E','R','T','Y','U','F','C',
-			'X','B'
+			'X','B','V'
 		};
 		while (WM_QUIT != msg.message) {
 			if (!App::GetApp()->ResetInputState(hWnd, UseKeyVec)) {
