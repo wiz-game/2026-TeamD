@@ -29,16 +29,27 @@ namespace basecross
 		m_trans->SetPosition(m_objectParam.GetPosition());
 
 		m_draw = AddComponent<PNTStaticDraw>();
-		m_draw->SetMeshResource(L"DEFAULT_CUBE");
+		m_draw->SetMeshResource(L"M_Sludge");
+		m_draw->SetTextureResource(L"T_Sludge");
 
 		auto ptrShadow = AddComponent<Shadowmap>();
 		m_draw->SetOwnShadowActive(true);
-		ptrShadow->SetMeshResource(L"DEFAULT_CUBE");
+		ptrShadow->SetMeshResource(L"M_Sludge");
 
 		auto col = AddComponent<CollisionObb>();
 		col->SetDrawActive(true);
 		col->SetAfterCollision(AfterCollision::None);
-		m_draw->SetDiffuse(Col4(1.0f,0.0f,1.0f,1.0f));
+
+		// モデルとトランスフォーム間の差分行列
+		Mat4x4 spanMat;
+		spanMat.affineTransformation(
+			Vec3(0.5f, 1.0f, 0.5f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, -0.5f, 0.0f)
+		);
+
+		m_draw->SetMeshToTransformMatrix(spanMat);
 
 	}
 
