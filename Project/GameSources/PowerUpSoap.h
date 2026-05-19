@@ -18,6 +18,10 @@ namespace basecross
 		std::shared_ptr<PNTStaticDraw> m_draw;
 		std::shared_ptr <CollisionObb> m_colObb;
 		std::shared_ptr<Gravity> m_gravity;
+
+		Vec3 m_Position;
+		Vec3 m_Scale;
+		Vec3 m_Rotation;
 	public:
 		// 構築と破棄
 		PowerUpSoap(const shared_ptr<Stage>& stage) :
@@ -30,7 +34,7 @@ namespace basecross
 		virtual void OnUpdate() override; // 更新
 		//virtual void OnDraw() override; // 描画
 
-		void GetSoapOfCoolDown();
+		//void Rotati
 	};
 
 }
