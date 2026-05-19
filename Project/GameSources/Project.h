@@ -49,6 +49,7 @@
 // UI
 #include "UIBase.h"
 #include "UIBlinking.h"
+#include "UISlide.h"
 
 // ステージ
 #include "TitleStage.h"
