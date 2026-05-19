@@ -199,6 +199,8 @@ namespace basecross
 	void InputManager::GameStart()
 	{
 		GameManager::Instance().SetGameModeAfterTransition(ENUM_GameMode::Select);
+		auto startButton = App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetSharedGameObject<UIBlinking>(L"StartButton");
+		if (startButton) startButton->SetBlinkSpeed(5.0f);
 	}
 
 	void InputManager::StageStart()
