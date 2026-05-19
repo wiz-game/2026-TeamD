@@ -6,10 +6,12 @@ namespace basecross
 {
     void EnemyBase::OnCreate()
     {
+
     }
 
     void EnemyBase::OnUpdate()
     {
+
     }
 
     // ガチ徘徊
@@ -150,6 +152,7 @@ namespace basecross
                 m_isWandering = true;
 
                 m_InitialWanderingTime = randTime;
+                // 一度だけ乱数を格納する
                 m_NumPoint = static_cast<Point>(rand() % 4);
 
                 // 初期値を格納する
@@ -182,69 +185,34 @@ namespace basecross
         // 徘徊時間
         else if (m_isWandering == true)
         {
+            // ターゲット（点）までのベクトルを計算
+            float diffX = m_TargetPosition.x - transPos.x;
+            float diffZ = m_TargetPosition.z - transPos.z;
 
-            // X軸の移動（正）
-            if (transPos.x < m_TargetPosition.x) 
-            {
-                // 移動対象をX軸にプラスに移動させる
-                transPos.x += speed * deltaTime;
-                // 移動しているときにもし点を越してしまったら
-                if (transPos.x > m_TargetPosition.x)
-                {
-                    transPos.x = m_TargetPosition.x;
-                }
-            }
-            // X軸の移動（負）
-            else if (transPos.x > m_TargetPosition.x) 
-            {
-                // 移動対象をX軸にマイナスに移動させる
-                transPos.x -= speed * deltaTime;
-                // 移動しているときにもし点を越してしまったら
-                if (transPos.x < m_TargetPosition.x)
-                {
-                    transPos.x = m_TargetPosition.x;
-                }
-            }
+            // ターゲットまでの距離を計算
+            float distance = sqrtf(diffX * diffX + diffZ * diffZ);
 
-            // Z軸の移動（正）
-            if (transPos.z < m_TargetPosition.z) 
+            if (distance > 0.05f)
             {
-                // 移動対象をZ軸にプラスに移動させる
-                transPos.z += speed * deltaTime;
-                // 移動しているときにもし点を越してしまったら
-                if (transPos.z > m_TargetPosition.z)
-                {
-                    transPos.z = m_TargetPosition.z;
-                }
-            }
-            // Z軸の移動（負）
-            else if (transPos.z > m_TargetPosition.z) 
-            {
-                // 移動対象をZ軸にマイナスに移動させる
-                transPos.z -= speed * deltaTime;
-                // 移動しているときにもし点を越してしまったら
-                if (transPos.z < m_TargetPosition.z)
-                {
-                    transPos.z = m_TargetPosition.z;
-                }
-            }
+                float forward = atan2f(diffX, diffZ);
+                transComp->SetRotation(0.0f, forward, 0.0f);
 
+                transPos.x += (diffX / distance) * speed * deltaTime;
+                transPos.z += (diffZ / distance) * speed * deltaTime;
+            }
             // どれかの点に到達したとき
-            if (transPos.x == m_TargetPosition.x &&
-                transPos.z == m_TargetPosition.z)
+            else
             {
+                // 強制的に点に重ねる
+                transPos.x = m_TargetPosition.x;
+                transPos.z = m_TargetPosition.z;
+
                 // また待機時間に戻す
                 m_isWandering = false;
                 m_isStand = true;
 
                 m_InitialStandTime = randTime;
             }
-
-            float diffX = m_TargetPosition.x - transPos.x;
-            float diffZ = m_TargetPosition.z - transPos.z;
-
-            float angle = atan2f(diffZ, diffX);
-            transComp->SetRotation(0.0f, angle, 0.0f);
 
             // 敵の位置を最終的に更新する
             transComp->SetPosition(transPos);
@@ -312,11 +280,13 @@ namespace basecross
 
         float distance = sqrt((distancePos_X * distancePos_X) + (distancePos_Y * distancePos_Y) + (distancePos_Z * distancePos_Z));
 
-        const float radius = 3.0f;
+        const float radius = 2.5f;
 
         if (distance < radius)
         {
             m_Detection = true;
+            float forward = atan2f(distancePos_X, distancePos_Z);
+            transComp->SetRotation(0.0f, forward, 0.0f);
         }
         else
         {
@@ -339,9 +309,9 @@ namespace basecross
         auto objComp = gameObject->GetComponent<Transform>();
         auto objPos = objComp->GetPosition();
 
-        float stalkerX = objPos.x + (playerPos.x - objPos.x) * stalkerSpeed *  App::GetApp()->GetElapsedTime();
-        float stalkerY = objPos.y + (playerPos.y - objPos.y) * stalkerSpeed *  App::GetApp()->GetElapsedTime();
-        float stalkerZ = objPos.z + (playerPos.z - objPos.z) * stalkerSpeed *  App::GetApp()->GetElapsedTime();
+        float stalkerX = objPos.x + (playerPos.x - objPos.x) * stalkerSpeed * App::GetApp()->GetElapsedTime();
+        float stalkerY = objPos.y + (playerPos.y - objPos.y) * stalkerSpeed * App::GetApp()->GetElapsedTime();
+        float stalkerZ = objPos.z + (playerPos.z - objPos.z) * stalkerSpeed * App::GetApp()->GetElapsedTime();
 
         objComp->SetPosition(stalkerX, stalkerY, stalkerZ);
     }
