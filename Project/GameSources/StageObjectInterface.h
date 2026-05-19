@@ -16,6 +16,7 @@ namespace basecross
 		Tree,
 		Dirt,
 		Stone,
+		FallenTree,
 		Max
 	} ;
 

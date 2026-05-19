@@ -66,6 +66,9 @@ namespace basecross
 			case ENUM_ObjectID::Stone:
 				stage->AddGameObject<Stone>(objParam);
 				break;
+			case ENUM_ObjectID::FallenTree:
+				stage->AddGameObject<FallenTree>(objParam);
+				break;
 			default:
 				break;
 			}
@@ -455,6 +458,9 @@ namespace basecross
 			break;
 		case ENUM_ObjectID::Stone:
 			stage->AddGameObject<Stone>(objParam);
+			break;
+		case ENUM_ObjectID::FallenTree:
+			stage->AddGameObject<FallenTree>(objParam);
 			break;
 		default:
 			break;
