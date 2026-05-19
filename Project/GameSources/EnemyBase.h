@@ -6,6 +6,7 @@
 
 #pragma once
 #include "stdafx.h"
+#include "ItemBase.h"
 
 namespace basecross
 {

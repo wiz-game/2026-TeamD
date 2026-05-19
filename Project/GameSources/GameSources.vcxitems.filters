@@ -112,6 +112,15 @@
     <Filter Include="UIs\UIBlinking">
       <UniqueIdentifier>{18128f1a-83ce-4a96-b9fe-0d49188083f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Items">
+      <UniqueIdentifier>{a83a1d27-3afb-42d3-9a66-d5ba1adea2db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Items\ItemBase">
+      <UniqueIdentifier>{1bfcef49-ef24-46a4-b8c4-0e1d8c928efc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Items\PowerUpSoap">
+      <UniqueIdentifier>{959895b3-abf3-4b57-9b5c-7746a9c9a5f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -225,6 +234,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)UIBlinking.h">
       <Filter>UIs\UIBlinking</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ItemBase.h">
+      <Filter>Items\ItemBase</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)PowerUpSoap.h">
+      <Filter>Items\PowerUpSoap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -325,6 +340,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)UIBlinking.cpp">
       <Filter>UIs\UIBlinking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ItemBase.cpp">
+      <Filter>Items\ItemBase</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)PowerUpSoap.cpp">
+      <Filter>Items\PowerUpSoap</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -41,7 +41,9 @@
 #include "TrampolineBubbles.h"
 #include "Player.h"
 
-#include "MyCamera.h"
+// ƒAƒCƒeƒ€
+#include "ItemBase.h"
+#include "PowerUpSoap.h"
 
 // UI
 #include "UIBase.h"
@@ -51,6 +53,8 @@
 #include "TitleStage.h"
 #include "SelectStage.h"
 #include "GameStage.h"
+
+#include "MyCamera.h"
 
 #include "StageEditor.h"
 

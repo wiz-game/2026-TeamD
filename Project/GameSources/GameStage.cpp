@@ -20,6 +20,7 @@ namespace basecross
 		{
 			m_jphManger.Initialize();
 
+			AddGameObject<SkyBox>();
 			CreateViewLight();
 			CreatePlayer();
 			AddGameObject<EnemyAlpaca>(STRUCT_ObjectParam(ENUM_ObjectID::Mushroom, Vec3(0.3f), Quat(), Vec3(1.0f, 1.0f, 1.0f)));

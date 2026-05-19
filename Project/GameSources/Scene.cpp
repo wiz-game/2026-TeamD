@@ -154,6 +154,13 @@ namespace basecross
 					{
 						App::GetApp()->RegisterWav(registerName, fullPath);
 					}
+					else if (ext == L".bmp")
+					{
+						for (const auto& keyName : SkyBox::pairs) 
+						{
+							App::GetApp()->RegisterTexture(registerName, fullPath);
+						}
+					}
 				}
 			}
 
