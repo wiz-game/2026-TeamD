@@ -25,6 +25,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModelResource.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyAlpaca.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FallenTree.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FirTree.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Gizmo.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ItemBase.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PowerUpSoap.h" />
@@ -72,6 +73,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyAlpaca.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyBase.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FallenTree.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FirTree.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FurBubble.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage.cpp" />
