@@ -10,7 +10,7 @@ namespace basecross
 		GameObject(StagePtr, objectParam),
 		m_nowDeleteCount(0),
 		m_alphaColor(1.0f),
-		m_HP(2.0f)
+		m_HP(10.0f)
 	{
 	}
 
@@ -50,7 +50,6 @@ namespace basecross
 		);
 
 		m_draw->SetMeshToTransformMatrix(spanMat);
-
 	}
 
 	void Dirt::OnUpdate()
@@ -68,5 +67,10 @@ namespace basecross
 
 	void Dirt::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
+		if (Other->FindTag(L"Bubble"))
+		{
+			auto nowScale = m_trans->GetScale();
+			m_trans->SetScale(nowScale * 0.75f);
+		}
 	}
 }
