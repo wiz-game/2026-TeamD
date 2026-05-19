@@ -17,6 +17,8 @@ namespace basecross
 		Dirt,
 		Stone,
 		FallenTree,
+		FirTree,
+		EnemyAlpaca,
 		Max
 	} ;
 
