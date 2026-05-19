@@ -50,6 +50,7 @@ namespace basecross
 		);
 
 		m_draw->SetMeshToTransformMatrix(spanMat);
+		ptrShadow->SetMeshToTransformMatrix(spanMat);
 	}
 
 	void Dirt::OnUpdate()
