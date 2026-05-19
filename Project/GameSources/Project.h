@@ -32,6 +32,7 @@
 #include "Tree.h"
 #include "Mushroom.h"
 #include "Dirt.h"
+#include "Stone.h"
 
 // エネミー
 #include "EnemyBase.h"
