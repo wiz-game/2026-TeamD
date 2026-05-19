@@ -121,6 +121,12 @@
     <Filter Include="Items\PowerUpSoap">
       <UniqueIdentifier>{959895b3-abf3-4b57-9b5c-7746a9c9a5f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StageObjs\Stone">
+      <UniqueIdentifier>{c911c7bb-bfbc-41f9-b3a3-6bbab7fb6765}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UIs\UISlide">
+      <UniqueIdentifier>{d9f67234-b969-4c2e-bdb4-04302f45be52}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -240,6 +246,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)PowerUpSoap.h">
       <Filter>Items\PowerUpSoap</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Stone.h">
+      <Filter>StageObjs\Stone</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)UISlide.h">
+      <Filter>UIs\UISlide</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -346,6 +358,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)PowerUpSoap.cpp">
       <Filter>Items\PowerUpSoap</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Stone.cpp">
+      <Filter>StageObjs\Stone</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UISlide.cpp">
+      <Filter>UIs\UISlide</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

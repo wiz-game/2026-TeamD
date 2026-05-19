@@ -31,9 +31,15 @@ namespace basecross
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");
 
+		auto ptrShadow = AddComponent<Shadowmap>();
+		m_draw->SetOwnShadowActive(true);
+		ptrShadow->SetMeshResource(L"DEFAULT_CUBE");
+
 		auto col = AddComponent<CollisionObb>();
 		col->SetDrawActive(true);
 		col->SetAfterCollision(AfterCollision::None);
+		m_draw->SetDiffuse(Col4(1.0f,0.0f,1.0f,1.0f));
+
 	}
 
 	void Dirt::OnUpdate()
