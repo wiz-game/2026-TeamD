@@ -278,7 +278,6 @@ namespace basecross
 
 	void StageEditor::GizmoDrawActive(const bool& isDraw)
 	{
-		// ギズモが存在していたら非表示
 		if (!m_gizmos[0]) return;
 		for (const auto& gizmo : m_gizmos)
 		{
@@ -352,6 +351,44 @@ namespace basecross
 			break;
 		case ENUM_EditorMode::Scale:
 			ScaleOperation(mousePoint);
+			break;
+		default:
+			break;
+		}
+	}
+
+	void StageEditor::SelectCopy()
+	{
+		if (!m_selectedObj) return;
+
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		if (!stage) return;
+
+		switch (m_selectedObj->GetID())
+		{
+		case ENUM_ObjectID::Ground:
+			stage->AddGameObject<Ground>(m_selectedObj->GetObjectParam());
+			break;
+		case ENUM_ObjectID::Mushroom:
+			stage->AddGameObject<Mushroom>(m_selectedObj->GetObjectParam());
+			break;
+		case ENUM_ObjectID::Tree:
+			stage->AddGameObject<Tree>(m_selectedObj->GetObjectParam());
+			break;
+		case ENUM_ObjectID::Dirt:
+			stage->AddGameObject<Dirt>(m_selectedObj->GetObjectParam());
+			break;
+		case ENUM_ObjectID::Stone:
+			stage->AddGameObject<Stone>(m_selectedObj->GetObjectParam());
+			break;
+		case ENUM_ObjectID::FallenTree:
+			stage->AddGameObject<FallenTree>(m_selectedObj->GetObjectParam());
+			break;
+		case ENUM_ObjectID::FirTree:
+			stage->AddGameObject<FirTree>(m_selectedObj->GetObjectParam());
+			break;
+		case ENUM_ObjectID::EnemyAlpaca:
+			stage->AddGameObject<EnemyAlpaca>(m_selectedObj->GetObjectParam());
 			break;
 		default:
 			break;
