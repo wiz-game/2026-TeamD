@@ -61,8 +61,7 @@ namespace basecross
 			// 1台目のコントローラのAボタンが押されたら または ジャンプしていなかったら
 			if ((control[0].wPressedButtons & XINPUT_GAMEPAD_A) && m_isJumping == false)
 			{
-				m_gravity->StartJump(Vec3(0.0f,9.8f,0.0f));
-				//m_Velocity = m_JumpPower;
+				m_gravity->StartJump(m_VecJumpPower);
 				m_isJumping = true;
 			}
 		}
@@ -204,8 +203,7 @@ namespace basecross
 		{
 			if (Other->GetComponent<Transform>()->GetPosition().y < transPos.y)
 			{
-				m_isJumping = true;
-				m_Velocity = m_JumpPower * Power;
+				m_gravity->StartJump(m_VecJumpPower);
 			}
 		}
 	}
