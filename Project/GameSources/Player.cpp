@@ -23,8 +23,8 @@ namespace basecross
 		// ドローコンポーネントを追加
 		m_draw = AddComponent<PNTDXModelDraw>();
 		auto drawComp = AddComponent<PNTStaticDraw>();
-		drawComp->SetMeshResource(L"M_Alpaca");
-		drawComp->SetTextureResource(L"T_Alpaca");
+		drawComp->SetMeshResource(L"M_Awapaka");
+		drawComp->SetTextureResource(L"T_Awapaka");
 		drawComp->SetDrawActive(true);
 
 		// 当たり判定のコンポーネント
@@ -35,7 +35,7 @@ namespace basecross
 		m_gravity = AddComponent<Gravity>();
 
 		// バブルのコンポーネント
-		auto fbComp = AddComponent<FurBubble>(GetStage());
+		//auto fbComp = AddComponent<FurBubble>(GetStage());
 	}
 
 	// プレイヤーの更新処理
@@ -61,8 +61,7 @@ namespace basecross
 			// 1台目のコントローラのAボタンが押されたら または ジャンプしていなかったら
 			if ((control[0].wPressedButtons & XINPUT_GAMEPAD_A) && m_isJumping == false)
 			{
-				m_gravity->StartJump(Vec3(0.0f,9.8f,0.0f));
-				//m_Velocity = m_JumpPower;
+				m_gravity->StartJump(m_VecJumpPower);
 				m_isJumping = true;
 			}
 		}
@@ -204,8 +203,7 @@ namespace basecross
 		{
 			if (Other->GetComponent<Transform>()->GetPosition().y < transPos.y)
 			{
-				m_isJumping = true;
-				m_Velocity = m_JumpPower * Power;
+				m_gravity->StartJump(m_VecJumpPower);
 			}
 		}
 	}

@@ -27,6 +27,7 @@ namespace basecross
 		Vec3 m_Position;
 		Vec3 m_Rotation;
 		Vec3 m_Scale;
+		Vec3 m_VecJumpPower;
 		bool m_isTargetMode;
 		// 重力の処理
 		float m_Velocity;
@@ -55,10 +56,11 @@ namespace basecross
 		// ステージを引数にしたコンストラクタ【必須】
 		Player(const std::shared_ptr<Stage>& stage, const Vec3& position) :
 			GameObject(stage), // ステージをGameObjectに渡す【必須】
-			m_Velocity(0.0f),
+			m_Velocity(10.0f),
 			m_Position(position),
 			m_Rotation(0.0f, 1.5f, 0.0f),
 			m_Scale(0.3f, 0.3f, 0.3f),
+			m_VecJumpPower(0.0f,9.8f,0.0f),
 			m_isJumping(false),
 			m_JumpPower(6.0f),
 			m_Gravity(9.8f),
