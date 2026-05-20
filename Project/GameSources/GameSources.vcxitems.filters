@@ -139,6 +139,9 @@
     <Filter Include="Stages\GameOverStage">
       <UniqueIdentifier>{f711c955-d733-4d3a-837a-c4c7c985f081}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Stages\GameClearStage">
+      <UniqueIdentifier>{9d7cca78-6ae9-4362-a114-e38776415536}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -276,6 +279,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GameOverStage.h">
       <Filter>Stages\GameOverStage</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameClearStage.h">
+      <Filter>Stages\GameClearStage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -400,6 +406,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)GameOverStage.cpp">
       <Filter>Stages\GameOverStage</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameClearStage.cpp">
+      <Filter>Stages\GameClearStage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
