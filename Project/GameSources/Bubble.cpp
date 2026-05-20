@@ -29,6 +29,8 @@ namespace basecross
 
 	}
 
+	unordered_map<BubbleAbility, bool> Bubble::m_unlockedAvilities;
+	
 	void Bubble::OnCreate()
 	{		
 		AddTag(L"Bubble");
@@ -83,14 +85,11 @@ namespace basecross
 		{
 			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
 		}
-
-		GameManager::Instance().AddDebugStr(L"BubbleHP", m_HP);
 	}
 	
 	void Bubble::ShootBubble()
 	{
 		m_forward = GetCameraForward();
-
 		m_isShoot = true;
 		m_isBubbleMove = false;
 	}
@@ -100,13 +99,10 @@ namespace basecross
 		auto& app = App::GetApp();
 		auto elapsed = app->GetElapsedTime();
 		auto pos = m_trans->GetPosition();
-		auto parent = m_parent.lock();
-		auto player = dynamic_pointer_cast<Player>(parent);
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
 		auto camera = stage->GetView()->GetTargetCamera();
 		auto myCamera = dynamic_pointer_cast<MyCamera>(camera);
 		bool isAiming = myCamera->GetIsAiming();
-		float velocityZero = 0.0f;
 		float decelerationStartRatio = 0.2f;
 
 		// 現在速度が0になるまで
@@ -134,7 +130,6 @@ namespace basecross
 			{
 				pos += m_moveDir * (m_currentVelocity * elapsed);
 			}
-
 		}
 
 		// 現在の速度の割合が始めるぐらいの割合になったら上昇を始める
@@ -167,21 +162,24 @@ namespace basecross
 		m_trans->SetPosition(pos);
 	}
 
-	void Bubble::BubbleAddAblity(BubbleAbility ability)
+	void Bubble::ApplyAblity(BubbleAbility ability)
 	{
-		if (m_abilities[ability])return;
-
-		SetAbility(ability, true);
+		if (!CanUseAbility(ability)) return;
 
 		switch (ability)
 		{
-			case BubbleAbility::RideBubble:
-				m_col->SetAfterCollision(AfterCollision::Auto);
-				break;
-			case BubbleAbility::TranpolineBubble:
-				break;
-			default:
-				break;
+		case BubbleAbility::RideBubble:
+			m_trans->SetScale(Vec3(m_scale.x * 1.5f, m_scale.y, m_scale.z * 1.5f));
+			m_col->SetAfterCollision(AfterCollision::Auto);
+			break;
+
+		case BubbleAbility::TranpolineBubble:
+			// トランポリン挙動
+			m_isTranpolineBubble = true;
+			break;
+
+		default:
+			break;
 		}
 	}
 
@@ -208,6 +206,12 @@ namespace basecross
 		dirt.SetDirtHP(max(0.0f, dirtHP - bubbleHP));
 	}
 
+	void Bubble::BubbleAddAblity(BubbleAbility ability)
+	{		
+		if (m_unlockedAvilities[ability])return;
+		UnlockAbility(ability);
+	}
+
 	void Bubble::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
 		if (Other->FindTag(L"Dirt"))
@@ -227,7 +231,7 @@ namespace basecross
 
 		if (!Other->FindTag(L"Ground")) return;
 
-		if (HasAblity(BubbleAbility::TranpolineBubble))
+		if (m_isTranpolineBubble)
 		{
 			if (m_isSpawnedTrampoline) return;
 			if (m_isHit) return;

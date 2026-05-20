@@ -94,6 +94,17 @@ namespace basecross
 			{
 				PressedStart();
 			}
+
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+			{
+				PressedRButton();
+			}
+
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
+			{
+				PressedLButton();
+			}
+
 			break;
 		case ENUM_GameMode::Editor:
 			// オブジェクト選択とギズモの選択
@@ -270,6 +281,30 @@ namespace basecross
 
 	void InputManager::PressedStart()
 	{
+	}
+
+	void InputManager::PressedRButton()
+	{
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		auto player = stage->GetSharedGameObject<Player>(L"Player");
+		
+		if (player->GetEatSoap())
+		{
+			player->CreateBubble();
+			player->GetHaveBubble()->ApplyAblity(BubbleAbility::RideBubble);
+		}
+	}
+
+	void InputManager::PressedLButton()
+	{
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		auto player = stage->GetSharedGameObject<Player>(L"Player");
+		
+		if (player->GetEatSoap())
+		{
+			player->CreateBubble();
+			player->GetHaveBubble()->ApplyAblity(BubbleAbility::TranpolineBubble);
+		}
 	}
 
 	void InputManager::ReleasedLTrigger()

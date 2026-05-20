@@ -87,6 +87,8 @@ namespace basecross
 		void PressedA();
 		void PressedB();
 		void PressedStart();
+		void PressedRButton();
+		void PressedLButton();
 
 		// Released
 		void ReleasedLTrigger();
