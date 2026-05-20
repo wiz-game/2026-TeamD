@@ -6,9 +6,8 @@
 #pragma once
 #include "stdafx.h"
 
-namespace basecross {
-
-
+namespace basecross 
+{
 	//--------------------------------------------------------------------------------------
 	//	class GenericSprite : public GameObject;
 	//--------------------------------------------------------------------------------------
