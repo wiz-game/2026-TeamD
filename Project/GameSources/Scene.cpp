@@ -37,7 +37,7 @@ namespace basecross
 
 	void Scene::OnCreate2()
 	{
-		GameManager::Instance().SetGameMode(ENUM_GameMode::Title);
+		GameManager::Instance().SetGameMode(ENUM_GameMode::GameOver);
 	}
 
 	void Scene::OnUpdate()
@@ -57,7 +57,6 @@ namespace basecross
 	void Scene::OnEvent(const shared_ptr<Event>& event) 
 	{
 		GameManager::Instance().RemoveDebugLog();
-		SoundManager::Instance().AllStopSE();
 
 		// タイトルステージ
 		if (event->m_MsgStr == L"TitleStage")
@@ -68,6 +67,11 @@ namespace basecross
 		else if (event->m_MsgStr == L"SelectStage")
 		{
 			ResetActiveStage<SelectStage>();
+		}
+		// ゲームオーバーステージ
+		else if (event->m_MsgStr == L"GameOverStage")
+		{
+			ResetActiveStage<GameOverStage>();
 		}
 		// ゲームステージ1
 		else if (event->m_MsgStr == L"GameStage_1") 

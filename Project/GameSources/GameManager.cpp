@@ -6,6 +6,8 @@ namespace basecross
 	void GameManager::EnterGameMode(ENUM_GameMode gameMode)
 	{
 		SoundManager::Instance().StopBGM();
+		SoundManager::Instance().AllStopSE();
+
 		switch (gameMode)
 		{
 		case ENUM_GameMode::Title:
@@ -16,9 +18,12 @@ namespace basecross
 			App::GetApp()->GetScene<Scene>()->ChangeStage(L"SelectStage");
 			SoundManager::Instance().PlayBGM(L"Title_BGM");
 			break;
+		case ENUM_GameMode::GameOver:
+			App::GetApp()->GetScene<Scene>()->ChangeStage(L"GameOverStage");
+			SoundManager::Instance().PlaySE(L"GameOver_BGM");
+			break;
 		case ENUM_GameMode::Play:
 			App::GetApp()->GetScene<Scene>()->ChangeStage(m_serectGameStage);
-			SoundManager::Instance().PlayBGM(L"Title_BGM");
 			break;
 		case ENUM_GameMode::Menu:
 			break;

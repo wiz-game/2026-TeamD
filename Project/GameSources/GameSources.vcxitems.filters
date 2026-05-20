@@ -136,6 +136,9 @@
     <Filter Include="StageObjs\FirTree">
       <UniqueIdentifier>{6f06704e-ccc7-495e-9140-fad968ffe6a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Stages\GameOverStage">
+      <UniqueIdentifier>{f711c955-d733-4d3a-837a-c4c7c985f081}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -270,6 +273,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)FirTree.h">
       <Filter>StageObjs\FirTree</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameOverStage.h">
+      <Filter>Stages\GameOverStage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -391,6 +397,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)FirTree.cpp">
       <Filter>StageObjs\FirTree</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameOverStage.cpp">
+      <Filter>Stages\GameOverStage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

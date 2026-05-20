@@ -59,7 +59,7 @@ namespace basecross
 	{
 		ReSpawn();
 		Jump();
-		//PlayerDied();
+		PlayerDied();
 		LaunchofBubble();
 		DebugString();
 	}
@@ -151,7 +151,7 @@ namespace basecross
 		if (m_PlayerHP <= DIED_HP && m_isDead == false)
 		{
 			m_isDead = true;
-			PostEvent(1.0f, GetThis<ObjectInterface>(), scene, L"TitleStage");
+			GameManager::Instance().SetGameMode(ENUM_GameMode::GameOver);
 		}
 	}
 
