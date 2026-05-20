@@ -29,7 +29,7 @@ namespace basecross
 
 		// 当たり判定のコンポーネント
 		auto obb = AddComponent<CollisionObb>();
-		obb->SetAfterCollision(AfterCollision::Auto);
+		//obb->SetAfterCollision(AfterCollision::Auto);
 
 		// 重力のコンポーネント
 		m_gravity = AddComponent<Gravity>();
@@ -45,6 +45,10 @@ namespace basecross
 
 		drawComp->SetMeshToTransformMatrix(spanMat);
 		// ptrShadow->SetMeshToTransformMatrix(spanMat);
+
+		auto shadowComp = AddComponent<Shadowmap>();
+		shadowComp->SetMeshResource(L"M_Awapaka");
+		shadowComp->SetDrawActive(true);
 
 		// バブルのコンポーネント
 		//auto fbComp = AddComponent<FurBubble>(GetStage());
@@ -77,8 +81,6 @@ namespace basecross
 				m_isJumping = true;
 			}
 		}
-
-		m_transform->SetPosition(transPos);
 	}
 
 	void Player::LaunchofBubble()
@@ -182,12 +184,13 @@ namespace basecross
 	{
 		InputManager* i = &InputManager::Instance();
 		auto slowness = i->GetMoveSpeed() / 2;
+		float slowness2 = 0.9f;
 
 		// ダート（汚れ）
 		if (Other->FindTag(L"Dirt"))
 		{
 			m_PlayerHP -= 1.0f;
-			i->SetMoveSpeed(slowness);
+			i->SetMoveSpeed(slowness2);
 		}
 
 		float Power = 6.0f;
@@ -196,7 +199,6 @@ namespace basecross
 		if (Other->FindTag(L"Ground"))
 		{
 			m_isJumping = false;
-			m_Velocity = 0.0f;
 		}
 
 		// バブル
@@ -205,7 +207,6 @@ namespace basecross
 			if (Other->GetComponent<Transform>()->GetPosition().y < transPos.y)
 			{
 				m_isJumping = false;
-				m_Velocity = 0.0f;
 			}
 		}
 
@@ -237,10 +238,11 @@ namespace basecross
 		InputManager* i = &InputManager::Instance();
 		// 1.0fだと半分のままなので、2倍を掛けてあげることによって通常の速度にする
 		float normalSpeed = i->GetMoveSpeed() * 2.0f;
+		float normalSpeed2 = 1.8f;
 
 		if (Other->FindTag(L"Dirt"))
 		{
-			i->SetMoveSpeed(normalSpeed);
+			i->SetMoveSpeed(normalSpeed2);
 		}
 	}
 

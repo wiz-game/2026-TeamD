@@ -31,6 +31,10 @@ namespace basecross
 
 		m_EnemyHP = 10;
 
+		auto shadowComp = AddComponent<Shadowmap>();
+		shadowComp->SetMeshResource(L"M_Alpaca");
+		shadowComp->SetDrawActive(true);
+
 		m_eStateMachine.reset(new StateMachine<EnemyAlpaca>(GetThis<EnemyAlpaca>()));
 		m_eStateMachine->ChangeState(IdleState::Instance());
 	}
@@ -89,7 +93,7 @@ namespace basecross
 
 	void AngryState::Execute(const shared_ptr<EnemyAlpaca>& Obj)
 	{
-		Obj->Stalker(Obj, 1.0f);
+		Obj->Stalker(Obj, 0.5f);
 		if (Obj->GetDetection() == false)
 		{
 			Obj->m_eStateMachine->ChangeState(IdleState::Instance());
