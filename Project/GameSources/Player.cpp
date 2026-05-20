@@ -59,6 +59,7 @@ namespace basecross
 	{
 		ReSpawn();
 		Jump();
+		//PlayerDied();
 		LaunchofBubble();
 		DebugString();
 	}
@@ -127,8 +128,18 @@ namespace basecross
 	void Player::PlayerDied()
 	{
 		auto scene = App::GetApp()->GetScene<Scene>();
+		if (scene == nullptr)
+		{
+			return;
+		}
+
 		auto stage = scene->GetActiveStage();
 		if (stage == nullptr)
+		{
+			return;
+		}
+
+		if (m_isDead == true)
 		{
 			return;
 		}
@@ -137,9 +148,10 @@ namespace basecross
 		const float DIED_HP = 0.0f;
 
 		// 死亡したらゲームオーバー画面にいかせる
-		if (m_PlayerHP <= DIED_HP)
+		if (m_PlayerHP <= DIED_HP && m_isDead == false)
 		{
-			PostEvent(1.0f, GetThis<ObjectInterface>(), scene, L"ToGameOver");
+			m_isDead = true;
+			PostEvent(1.0f, GetThis<ObjectInterface>(), scene, L"TitleStage");
 		}
 	}
 
@@ -224,6 +236,11 @@ namespace basecross
 			m_iseatSoap = true;
 			m_pBubble->BubbleAddAblity(BubbleAbility::RideBubble);
 			m_pBubble->BubbleAddAblity(BubbleAbility::TranpolineBubble);
+		}
+
+		if (Other->FindTag(L"Enemy"))
+		{
+			m_PlayerHP -= 1.0f;
 		}
 	}
 
