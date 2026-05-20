@@ -55,7 +55,7 @@ namespace basecross
 		// m_trans->SetQuaternion()
 
 		m_col = AddComponent<CollisionSphere>();
-		m_col->SetDrawActive(true);
+		// m_col->SetDrawActive(true);
 		m_col->SetAfterCollision(AfterCollision::None);
 
 		// 透明化処理
