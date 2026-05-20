@@ -42,6 +42,19 @@ namespace basecross
 		{
 			StageEditor::Instance().AddEditorMenuLog(L"FPS", 1.0f / App::GetApp()->GetElapsedTime());
 		}
+
+		int dirtNum = 0;
+		auto gameObjectVec = GetGameObjectVec();
+		for (auto& gameObject : gameObjectVec)
+		{
+			auto dirt = dynamic_pointer_cast<Dirt>(gameObject);
+			if (dirt) dirtNum++;
+		}
+
+		if (dirtNum <= 0)
+		{
+			GameManager::Instance().SetGameMode(ENUM_GameMode::GameClear);
+		}
 	}
 
 	void GameStage::OnUpdate2()
