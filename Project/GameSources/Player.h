@@ -52,6 +52,8 @@ namespace basecross
 		// 泡を吐いたクールタイムを格納するための変数
 		// クールダウンは"LaunchofBubble()"の中にローカル変数として入っているので、そこを変えてださい
 		float m_cooldown;
+
+		bool m_iseatSoap;
 	public :
 		// ステージを引数にしたコンストラクタ【必須】
 		Player(const std::shared_ptr<Stage>& stage, const Vec3& position) :
@@ -77,7 +79,8 @@ namespace basecross
 			m_BubblePowerBulletSpeed(false),
 			m_Attack(2),
 			// クールダウンの初期値
-			m_initCoolDown(0.6)
+			m_initCoolDown(0.6),
+			m_iseatSoap(false)
 		{
 		}
 
@@ -127,6 +130,20 @@ namespace basecross
 		{
 			m_BubblePowerCoolDown = sed;
 		}
+
+		bool GetEatSoap()
+		{
+			return m_iseatSoap;
+		}
+
+		shared_ptr<Bubble> GetHaveBubble()
+		{
+			return m_pBubble;
+		}
+
+		void CreateBubble();
+
+		
 	};
 }
 //end basecross

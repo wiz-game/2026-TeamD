@@ -37,7 +37,7 @@ namespace basecross
 		//ptrShadow->SetMeshResource(L"M_Sludge");
 
 		auto col = AddComponent<CollisionObb>();
-		//col->SetDrawActive(true);
+		// col->SetDrawActive(true);
 		col->SetAfterCollision(AfterCollision::None);
 
 		// モデルとトランスフォーム間の差分行列
@@ -46,7 +46,7 @@ namespace basecross
 			Vec3(0.5f, 1.0f, 0.5f),
 			Vec3(0.0f, 0.0f, 0.0f),
 			Vec3(0.0f, 0.0f, 0.0f),
-			Vec3(0.0f, -0.5f, 0.0f)
+			Vec3(0.0f,-0.5f, 0.0f)
 		);
 
 		m_draw->SetMeshToTransformMatrix(spanMat);
@@ -70,8 +70,14 @@ namespace basecross
 	{
 		if (Other->FindTag(L"Bubble"))
 		{
-			auto nowScale = m_trans->GetScale();
-			m_trans->SetScale(nowScale * 0.75f);
+			auto oldScale = m_trans->GetScale();
+			auto newScale = oldScale * 0.75f;
+
+			auto pos = m_trans->GetPosition();
+			pos.y -= (oldScale.y - newScale.y) * 0.5f;
+
+			m_trans->SetPosition(pos);
+			m_trans->SetScale(newScale);
 		}
 	}
 }
