@@ -46,15 +46,15 @@ namespace basecross
 			}
 			break;
 		case ENUM_GameMode::GameOver:
-			// Aを押してタイトルへ
+			// Aを押してリトライ
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
 			{
-				ReturnTitle();
+				StageStart();
 			}
-			// Bを押してリトライ
+			// Bを押してタイトルへ
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_B)
 			{
-				StageStart();
+				ReturnTitle();
 			}
 			break;
 		case ENUM_GameMode::Play:

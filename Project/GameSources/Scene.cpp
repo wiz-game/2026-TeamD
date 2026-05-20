@@ -37,7 +37,7 @@ namespace basecross
 
 	void Scene::OnCreate2()
 	{
-		GameManager::Instance().SetGameMode(ENUM_GameMode::GameOver);
+		GameManager::Instance().SetGameMode(ENUM_GameMode::Title);
 	}
 
 	void Scene::OnUpdate()
