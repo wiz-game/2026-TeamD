@@ -34,6 +34,18 @@ namespace basecross
 		// 重力のコンポーネント
 		m_gravity = AddComponent<Gravity>();
 
+		Mat4x4 spanMat;
+		spanMat.affineTransformation
+		(
+			Vec3(1.0f, 1.0f, 1.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, XM_PIDIV2, 0.0f),
+			Vec3(0.0f, -0.5f, 0.0f)
+		);
+
+		drawComp->SetMeshToTransformMatrix(spanMat);
+		// ptrShadow->SetMeshToTransformMatrix(spanMat);
+
 		// バブルのコンポーネント
 		//auto fbComp = AddComponent<FurBubble>(GetStage());
 	}
@@ -197,14 +209,20 @@ namespace basecross
 			}
 		}
 
-
 		// トランポリンバブル
-		if (Other->FindTag(L"TranmpolineBase"))
+		if (Other->FindTag(L"TrampolineBubbles"))
 		{
 			if (Other->GetComponent<Transform>()->GetPosition().y < transPos.y)
 			{
 				m_gravity->StartJump(m_VecJumpPower);
 			}
+		}
+
+		if (Other->FindTag(L"Soap"))
+		{
+			m_iseatSoap = true;
+			m_pBubble->BubbleAddAblity(BubbleAbility::RideBubble);
+			m_pBubble->BubbleAddAblity(BubbleAbility::TranpolineBubble);
 		}
 	}
 
@@ -224,6 +242,13 @@ namespace basecross
 		{
 			i->SetMoveSpeed(normalSpeed);
 		}
+	}
+
+	void Player::CreateBubble()
+	{
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		m_pBubble = stage->AddGameObject<Bubble>(GetThis<Player>(), Vec3(0.5f), 5.0f, m_Attack);
+		m_pBubble->ShootBubble();
 	}
 }
 //end basecross
