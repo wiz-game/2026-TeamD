@@ -15,11 +15,13 @@ namespace basecross
 		m_isSpawnedTrampoline(false),
 		m_isHit(false),
 		m_scale(scale),
+		m_pos(Vec3(0.0f)),
 		m_moveTime(0.0f),
 		m_moveTimeLimit(3.0f),
 		m_isShoot(false),
 		m_isBubbleMove(false),
-		m_HP(HP)
+		m_HP(HP),
+		m_isRideBubble(false)
 	{
 
 	}
@@ -46,14 +48,14 @@ namespace basecross
 		float randPosX = static_cast<float>((rand() % 100) - 50) * 0.01f;
 		float randPosZ = static_cast<float>((rand() % 100) - 50) * 0.01f;
 
-		Vec3 spawnPos = Vec3(parentPos.x + randPosX, parentPos.y + 1.0f, parentPos.z + randPosZ) + m_parentForward * 1.25f;
+		m_pos = Vec3(parentPos.x + randPosX, parentPos.y + 1.0f, parentPos.z + randPosZ) + m_parentForward * 1.25f;
 
-		m_trans->SetPosition(spawnPos);
+		m_trans->SetPosition(m_pos);
 		m_trans->SetScale(Vec3(m_scale));
 		// m_trans->SetQuaternion()
 
 		m_col = AddComponent<CollisionSphere>();
-		m_col->SetDrawActive(false);
+		m_col->SetDrawActive(true);
 		m_col->SetAfterCollision(AfterCollision::None);
 
 		// 透明化処理
@@ -63,7 +65,13 @@ namespace basecross
 		m_draw->SetMeshResource(L"M_Bubble");
 		m_draw->SetTextureResource(L"T_Bubble");
 		m_draw->SetDiffuse(Col4(1.0f, 1.0f, 1.0f, 0.3f));
-		// m_draw->SetSpecular(Col4(1.0f));
+        
+		// インスタンス描画用
+		m_activeDraw = AddComponent<PNTStaticInstanceDraw>();
+		m_activeDraw->SetMeshResource(L"M_Bubble");
+		m_activeDraw->SetTextureResource(L"T_Bubble");
+		m_activeDraw->SetDrawActive(false);
+		m_activeDraw->SetDiffuse(Col4(1.0f, 1.0f, 1.0f, 0.3f));
 
 		// モデルとトランスフォーム間の差分行列
 		Mat4x4 spanMat;
@@ -84,6 +92,11 @@ namespace basecross
 		if(m_HP <= 0.0f)
 		{
 			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
+		}
+
+		if (m_isRideBubble)
+		{
+			CreateActiveInstances();
 		}
 	}
 	
@@ -128,7 +141,7 @@ namespace basecross
 
 			if (m_isShoot)
 			{
-				pos += m_moveDir * (m_currentVelocity * elapsed);
+				m_pos += m_moveDir * (m_currentVelocity * elapsed);
 			}
 		}
 
@@ -144,7 +157,7 @@ namespace basecross
 			// 1から2までの補間係数
 			m_upwardVelocity = 1.0f + (1.25f - 1.0f) * t;
 
-			pos.y += m_upwardVelocity * elapsed;
+			m_pos.y += m_upwardVelocity * elapsed;
 		}
 
 		// 時間制限の開始
@@ -159,7 +172,7 @@ namespace basecross
 			return;
 		}
 
-		m_trans->SetPosition(pos);
+		m_trans->SetPosition(m_pos);
 	}
 
 	void Bubble::ApplyAblity(BubbleAbility ability)
@@ -169,8 +182,13 @@ namespace basecross
 		switch (ability)
 		{
 		case BubbleAbility::RideBubble:
-			m_trans->SetScale(Vec3(m_scale.x * 1.5f, m_scale.y, m_scale.z * 1.5f));
+			RemoveComponent<CollisionSphere>();
+			AddComponent<CollisionObb>();
+			m_draw->SetDrawActive(false);
+			//CreateActiveInstances();
+			m_trans->SetScale(Vec3(m_scale * 3.5f));
 			m_col->SetAfterCollision(AfterCollision::Auto);
+			m_isRideBubble = true;
 			break;
 
 		case BubbleAbility::TranpolineBubble:
@@ -274,6 +292,43 @@ namespace basecross
 		{
 			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
 		}
+	}
+
+	void Bubble::CreateActiveInstances()
+	{
+		m_activeDraw->ClearMatrixVec();
+
+		const int clusterCount = 3;
+		const float clusterSpacing = 3.0f;
+
+		const Vec3 offsets[] =
+		{
+			Vec3(0.0f,  0.1f,  0.0f),   // 中心
+			Vec3(1.0f,  0.1f,  0.5f),   // 右
+			Vec3(-1.0f, 0.1f, - 0.75f),  // 左
+			Vec3(-1.0f,  0.1f,  0.75f),  // 前
+			Vec3(1.0f,  0.1f,  -0.5f),  // 後
+		};
+
+		const int bubbleCount = sizeof(offsets) / sizeof(offsets[0]);
+
+		for (int i = 0; i < bubbleCount; i++)
+		{
+			Mat4x4 mat;
+
+			Vec3 instancePos = m_pos + offsets[i];
+
+			mat.affineTransformation(
+				Vec3(0.55f, 0.55f, 0.55f),
+				Vec3(0.0f),
+				Quat(),
+				instancePos
+			);
+
+			m_activeDraw->AddMatrix(mat);
+		}
+
+		m_activeDraw->SetDrawActive(true);
 	}
 
 	ViewBubble::ViewBubble(const shared_ptr<Stage>& stage, const vector<Vec3> *vertices) :

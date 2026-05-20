@@ -16,10 +16,12 @@ namespace basecross
 		BubbleAbility currentAbility;
 		shared_ptr<Transform> m_trans;
 		shared_ptr<PNTStaticDraw> m_draw;
+		shared_ptr<PNTStaticInstanceDraw> m_activeDraw;
 		shared_ptr<CollisionSphere> m_col;
 		weak_ptr<GameObject> m_parent;
 		Vec3 m_parentForward;
 		Vec3 m_scale;
+		Vec3 m_pos;
 		Vec3 m_forward;
 		Vec3 m_moveDir;
 
@@ -54,6 +56,7 @@ namespace basecross
 		float m_HP;
 
 		bool m_isTranpolineBubble;
+		bool m_isRideBubble;
 
 	public :
 		Bubble::Bubble(const shared_ptr<Stage>& stage,const shared_ptr<GameObject>& parent,const Vec3& scale,const float& initialVelocity,const float& HP);
@@ -111,6 +114,8 @@ namespace basecross
 		void ResolveCounteract(Bubble& bubble, Dirt& dirt);
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other);
+
+		void CreateActiveInstances();
 	};
 
 	class ViewBubble : public GameObject
