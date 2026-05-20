@@ -95,12 +95,16 @@ namespace basecross
 				PressedStart();
 			}
 
-			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER &&
+				!(m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE)&&
+				!(m_pad.wPressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER))
 			{
 				PressedRButton();
 			}
 
-			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER &&
+				!(m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE) &&
+				!(m_pad.wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER))
 			{
 				PressedLButton();
 			}
