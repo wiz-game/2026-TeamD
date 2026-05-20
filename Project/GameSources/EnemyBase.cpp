@@ -251,7 +251,8 @@ namespace basecross
             // 石鹸を出す
             auto soap = stage->AddGameObject<PowerUpSoap>();
             auto soapComp = soap->GetComponent<Transform>();
-            soapComp->SetPosition(objPos.x, objPos.y + 1, objPos.z);
+            soap->SetVecPosition(Vec3(objPos.x, objPos.y + 1, objPos.z));
+            //soapComp->SetPosition(objPos.x, objPos.y + 1, objPos.z);
         }
     }
 
@@ -280,7 +281,7 @@ namespace basecross
 
         float distance = sqrt((distancePos_X * distancePos_X) + (distancePos_Y * distancePos_Y) + (distancePos_Z * distancePos_Z));
 
-        const float radius = 2.5f;
+        const float radius = 10.0f;
 
         if (distance < radius)
         {
@@ -310,10 +311,10 @@ namespace basecross
         auto objPos = objComp->GetPosition();
 
         float stalkerX = objPos.x + (playerPos.x - objPos.x) * stalkerSpeed * App::GetApp()->GetElapsedTime();
-        float stalkerY = objPos.y + (playerPos.y - objPos.y) * stalkerSpeed * App::GetApp()->GetElapsedTime();
+        //float stalkerY = objPos.y + (playerPos.y - objPos.y) * stalkerSpeed * App::GetApp()->GetElapsedTime();
         float stalkerZ = objPos.z + (playerPos.z - objPos.z) * stalkerSpeed * App::GetApp()->GetElapsedTime();
 
-        objComp->SetPosition(stalkerX, stalkerY, stalkerZ);
+        objComp->SetPosition(stalkerX, 0.0f, stalkerZ);
     }
 
 
