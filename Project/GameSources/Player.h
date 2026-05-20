@@ -37,6 +37,8 @@ namespace basecross
 		bool m_isJumping; // 現在ジャンプしているかどうか
 
 		bool m_Bresing;
+
+		bool m_isDead;
 		
 		int m_Attack;
 
@@ -80,7 +82,8 @@ namespace basecross
 			m_Attack(2),
 			// クールダウンの初期値
 			m_initCoolDown(0.6),
-			m_iseatSoap(false)
+			m_iseatSoap(false),
+			m_isDead(false)
 		{
 		}
 
