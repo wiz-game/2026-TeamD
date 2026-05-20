@@ -23,8 +23,8 @@ namespace basecross
 		// ドローコンポーネントを追加
 		m_draw = AddComponent<PNTDXModelDraw>();
 		auto drawComp = AddComponent<PNTStaticDraw>();
-		drawComp->SetMeshResource(L"M_Alpaca");
-		drawComp->SetTextureResource(L"T_Alpaca");
+		drawComp->SetMeshResource(L"M_Awapaka");
+		drawComp->SetTextureResource(L"T_Awapaka");
 		drawComp->SetDrawActive(true);
 
 		// 当たり判定のコンポーネント
@@ -35,7 +35,7 @@ namespace basecross
 		m_gravity = AddComponent<Gravity>();
 
 		// バブルのコンポーネント
-		auto fbComp = AddComponent<FurBubble>(GetStage());
+		//auto fbComp = AddComponent<FurBubble>(GetStage());
 	}
 
 	// プレイヤーの更新処理
