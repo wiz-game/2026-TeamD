@@ -27,7 +27,7 @@ namespace basecross
 
 		auto obb = AddComponent<CollisionObb>();
 
-		m_gravity = AddComponent<Gravity>();
+		//m_gravity = AddComponent<Gravity>();
 
 		m_EnemyHP = 10;
 

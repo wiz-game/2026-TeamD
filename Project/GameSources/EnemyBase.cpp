@@ -310,10 +310,10 @@ namespace basecross
         auto objPos = objComp->GetPosition();
 
         float stalkerX = objPos.x + (playerPos.x - objPos.x) * stalkerSpeed * App::GetApp()->GetElapsedTime();
-        float stalkerY = objPos.y + (playerPos.y - objPos.y) * stalkerSpeed * App::GetApp()->GetElapsedTime();
+        //float stalkerY = objPos.y + (playerPos.y - objPos.y) * stalkerSpeed * App::GetApp()->GetElapsedTime();
         float stalkerZ = objPos.z + (playerPos.z - objPos.z) * stalkerSpeed * App::GetApp()->GetElapsedTime();
 
-        objComp->SetPosition(stalkerX, stalkerY, stalkerZ);
+        objComp->SetPosition(stalkerX, 0.0f, stalkerZ);
     }
 
 
