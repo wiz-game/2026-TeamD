@@ -32,7 +32,7 @@ namespace basecross
 		// 構築と破棄
 		PowerUpSoap(const shared_ptr<Stage>& stage) :
 			ItemBase(stage),
-			m_Position(1.0f,1.0f,1.0f),
+			//m_Position(1.0f,1.0f,1.0f),
 			m_Scale(1.1f, 0.5f, 1.1f),
 			m_Rotation(0.0f,0.0f,XMConvertToRadians(45.0f)),
 			m_RotationSpeed(1.0f),
@@ -49,6 +49,12 @@ namespace basecross
 		void Rotation();
 		void UpDown();
 		void DebugStr();
+
+		void SetVecPosition(Vec3 p)
+		{
+			m_Position = p;
+			m_InitPosition = p;
+		}
 	};
 
 }
