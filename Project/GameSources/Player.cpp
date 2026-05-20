@@ -61,8 +61,7 @@ namespace basecross
 			// 1台目のコントローラのAボタンが押されたら または ジャンプしていなかったら
 			if ((control[0].wPressedButtons & XINPUT_GAMEPAD_A) && m_isJumping == false)
 			{
-				m_gravity->StartJump(Vec3(0.0f,9.8f,0.0f));
-				//m_Velocity = m_JumpPower;
+				m_gravity->StartJump(m_VecJumpPower);
 				m_isJumping = true;
 			}
 		}
@@ -85,11 +84,11 @@ namespace basecross
 
 		if (m_BubblePowerCoolDown == true)
 		{
-			m_initCoolDown = 0.6f;
+			m_initCoolDown = 0.3f;
 		}
 		else
 		{
-			m_initCoolDown = 0.3;
+			m_initCoolDown = 0.6f;
 		}
 
 		if (control[0].bRightTrigger && m_Bresing == false)
@@ -142,6 +141,7 @@ namespace basecross
 		GameManager::Instance().AddDebugStr(L"PlayerRotation.z", m_transform->GetRotation().z);
 		GameManager::Instance().AddDebugStr(L"PlayerHP", m_PlayerHP);
 		GameManager::Instance().AddDebugStr(L"Attack", m_Attack);
+		GameManager::Instance().AddDebugStr(L"Cooldown", m_BubblePowerCoolDown);
 	}
 
 	void Player::ReSpawn()
@@ -203,8 +203,7 @@ namespace basecross
 		{
 			if (Other->GetComponent<Transform>()->GetPosition().y < transPos.y)
 			{
-				m_isJumping = true;
-				m_Velocity = m_JumpPower * Power;
+				m_gravity->StartJump(m_VecJumpPower);
 			}
 		}
 	}
