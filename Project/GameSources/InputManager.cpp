@@ -45,6 +45,30 @@ namespace basecross
 				ChangeSelectGameStage();
 			}
 			break;
+		case ENUM_GameMode::GameClear:
+			// Aを押してリトライ
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
+			{
+				StageStart();
+			}
+			// Bを押してタイトルへ
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_B)
+			{
+				ReturnTitle();
+			}
+			break;
+		case ENUM_GameMode::GameOver:
+			// Aを押してリトライ
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
+			{
+				StageStart();
+			}
+			// Bを押してタイトルへ
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_B)
+			{
+				ReturnTitle();
+			}
+			break;
 		case ENUM_GameMode::Play:
 			// プレイヤーの移動
 			if (m_pad.fThumbLX > STACK_DEADZONE_L || m_pad.fThumbLX < -STACK_DEADZONE_L ||

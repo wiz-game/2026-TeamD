@@ -13,6 +13,8 @@ namespace basecross
 	{
 		Title,
 		Select,
+		GameClear,
+		GameOver,
 		Play,
 		Menu,
 		Editor,
