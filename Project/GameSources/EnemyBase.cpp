@@ -317,6 +317,20 @@ namespace basecross
         objComp->SetPosition(stalkerX, 0.0f, stalkerZ);
     }
 
+    // 泡を吐くドロップ
+    void EnemyBase::DropDirt(const shared_ptr<GameObject>& gameObject)
+    {
+        auto objTrans = gameObject->GetComponent<Transform>();
+        auto objPos = objTrans->GetPosition();
+        STRUCT_ObjectParam objParm = STRUCT_ObjectParam(ENUM_ObjectID::Dirt,Vec3(1.0f),Quat(0.0f),Vec3(objPos));
+        auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+        m_LaunchofDirtCoolDown -= App::GetApp()->GetElapsedTime();
+        if (m_LaunchofDirtCoolDown <= 0.0f)
+        {
+            auto dirt = stage->AddGameObject<Dirt>(objParm);
+            m_LaunchofDirtCoolDown = m_InitCoolDown;
+        }
+    }
 
     void EnemyBase::OnCollisionEnter(shared_ptr<GameObject>& Other)
     {
