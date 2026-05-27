@@ -102,6 +102,7 @@ namespace basecross
 		void Stalker(const shared_ptr<GameObject>& gameObject, float stalkerSpeed);
 		void FunctionGravity(const shared_ptr<GameObject>& gameObject);
 		void DropDirt(const shared_ptr<GameObject>& gameObject);
+		void MazeWandering(const shared_ptr<GameObject>& gameObject,float moveSpeed);
 
 		// ゲッターセッター関数
 		bool GetDetection()
