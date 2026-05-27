@@ -317,7 +317,7 @@ namespace basecross
         objComp->SetPosition(stalkerX, 0.0f, stalkerZ);
     }
 
-    // 泡を吐くドロップ
+    // 泡を吐く
     void EnemyBase::DropDirt(const shared_ptr<GameObject>& gameObject)
     {
         auto objTrans = gameObject->GetComponent<Transform>();
@@ -329,6 +329,29 @@ namespace basecross
         {
             auto dirt = stage->AddGameObject<Dirt>(objParm);
             m_LaunchofDirtCoolDown = m_InitCoolDown;
+        }
+    }
+
+    void EnemyBase::MazeWandering(const shared_ptr<GameObject>& gameObject,float moveSpeed)
+    {
+        auto objTrans = gameObject->GetComponent<Transform>();
+        auto objPos = objTrans->GetPosition();
+        auto objRot = objTrans->GetRotation();
+
+        float rotDistance = 90.0f;
+        const float ZERO_ROTATION = 0.0f,MAX_ROTATION = 360.0f;
+
+        // 向いている方向に壁がある場合は90°回転する
+        if (gameObject->FindTag(L"Ground"))
+        {
+            objRot.y += rotDistance * App::GetApp()->GetElapsedTime();
+
+            if (objRot.y >= MAX_ROTATION)
+            {
+                objRot.y -= ZERO_ROTATION;
+            }
+
+            objTrans->SetRotation(objRot);
         }
     }
 
@@ -356,5 +379,4 @@ namespace basecross
     {
 
     }
-
 }

@@ -45,8 +45,8 @@ namespace basecross
 		m_eStateMachine->Update();
 
 		Died(GetThis<EnemyAlpaca>());
-		DetectionRange(GetThis<EnemyAlpaca>());
-
+		//DetectionRange(GetThis<EnemyAlpaca>());
+		MazeWandering(GetThis<EnemyAlpaca>(), 3.0f);
 		m_eStateMachine->Update();
 
 		DropDirt(GetThis<EnemyAlpaca>());
