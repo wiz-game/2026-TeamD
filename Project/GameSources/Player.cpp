@@ -34,6 +34,10 @@ namespace basecross
 		// 重力のコンポーネント
 		m_gravity = AddComponent<Gravity>();
 
+		auto shadowComp = AddComponent<Shadowmap>();
+		shadowComp->SetMeshResource(L"M_Awapaka");
+		shadowComp->SetDrawActive(true);
+
 		Mat4x4 spanMat;
 		spanMat.affineTransformation
 		(
@@ -44,11 +48,8 @@ namespace basecross
 		);
 
 		drawComp->SetMeshToTransformMatrix(spanMat);
-		// ptrShadow->SetMeshToTransformMatrix(spanMat);
+		shadowComp->SetMeshToTransformMatrix(spanMat);
 
-		auto shadowComp = AddComponent<Shadowmap>();
-		shadowComp->SetMeshResource(L"M_Awapaka");
-		shadowComp->SetDrawActive(true);
 
 		// バブルのコンポーネント
 		//auto fbComp = AddComponent<FurBubble>(GetStage());
