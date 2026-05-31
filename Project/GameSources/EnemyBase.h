@@ -50,6 +50,8 @@ namespace basecross
 
 		float m_LaunchofDirtCoolDown;
 		float m_InitCoolDown;
+
+		bool m_isRotated;
 	public:
 		EnemyBase(const shared_ptr<Stage>& stage, const STRUCT_ObjectParam& objectParam) :
 			GameObject(stage, objectParam),
@@ -64,7 +66,8 @@ namespace basecross
 			m_isFirstTime(true),
 			m_Detection(false),
 			m_LaunchofDirtCoolDown(0.0f),
-			m_InitCoolDown(3.0f)
+			m_InitCoolDown(3.0f),
+			m_isRotated(false)
 			//m_EnemyHP(hp)
 		{
 		}
@@ -102,7 +105,8 @@ namespace basecross
 		void Stalker(const shared_ptr<GameObject>& gameObject, float stalkerSpeed);
 		void FunctionGravity(const shared_ptr<GameObject>& gameObject);
 		void DropDirt(const shared_ptr<GameObject>& gameObject);
-		void MazeWandering(const shared_ptr<GameObject>& gameObject,float moveSpeed);
+		void MazeWandering(const shared_ptr<GameObject>& gameObject);
+		void aStar(const shared_ptr<GameObject>& gameObject);
 
 		// ゲッターセッター関数
 		bool GetDetection()

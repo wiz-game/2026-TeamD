@@ -45,11 +45,10 @@ namespace basecross
 		m_eStateMachine->Update();
 
 		Died(GetThis<EnemyAlpaca>());
-		//DetectionRange(GetThis<EnemyAlpaca>());
-		MazeWandering(GetThis<EnemyAlpaca>(), 3.0f);
+		DetectionRange(GetThis<EnemyAlpaca>());
 		m_eStateMachine->Update();
 
-		DropDirt(GetThis<EnemyAlpaca>());
+		//DropDirt(GetThis<EnemyAlpaca>());
 		DebugString();
 	}
 
@@ -67,7 +66,7 @@ namespace basecross
 
 	void IdleState::Execute(const shared_ptr<EnemyAlpaca>& Obj)
 	{
-		Obj->PointMove(Obj, 1.0f);
+		Obj->MazeWandering(Obj);
 
 		if (Obj->GetDetection() == true)
 		{
@@ -94,7 +93,7 @@ namespace basecross
 
 	void AngryState::Execute(const shared_ptr<EnemyAlpaca>& Obj)
 	{
-		Obj->Stalker(Obj, 0.5f);
+		Obj->aStar(Obj);
 		// 索敵外から出たら徘徊に戻る
 		if (Obj->GetDetection() == false)
 		{
