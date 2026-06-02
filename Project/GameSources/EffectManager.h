@@ -70,7 +70,7 @@ namespace basecross
 			@param EfkFilePash エフェクトのファイルパス
 			@return	なし
 		*/
-		void RegisterEffect(const wstring EfkKey, const wstring EfkFilePash);
+		void RegisterEffect(const wstring& EfkKey, const wstring& EfkFilePash);
 		//----------------------------------------------------------------------------------
 		/*
 			エフェクトを再生する
@@ -79,7 +79,7 @@ namespace basecross
 			@param StartFreme 開始フレーム
 			@return	なし
 		*/
-		Handle PlayEffect(const wstring EfkKey, const Vec3 Emitter, const float StartFreme = 0.0f);
+		Handle PlayEffect(const wstring& EfkKey, const Vec3& Emitter, const int& StartFreme = 0);
 		//----------------------------------------------------------------------------------
 		/*
 			エフェクトの位置に加算する
@@ -87,7 +87,7 @@ namespace basecross
 			@param Position 加算する値 
 			@return	なし
 		*/
-		void AddPosition(const Handle& EfkHandle, const Vec3 Position);
+		void AddPosition(const Handle& EfkHandle, const Vec3& Position);
 		//----------------------------------------------------------------------------------
 		/*
 			エフェクトの位置を指定する
@@ -95,7 +95,7 @@ namespace basecross
 			@param Position 指定する値 
 			@return	なし
 		*/
-		void SetPosition(const Handle& EfkHandle, const Vec3 Position);
+		void SetPosition(const Handle& EfkHandle, const Vec3& Position);
 		//----------------------------------------------------------------------------------
 		/*
 			エフェクトをオイラー角による回転で設定する
@@ -103,7 +103,7 @@ namespace basecross
 			@param EulerAngles オイラー角
 			@return	なし
 		*/
-		void SetRotationFromEulerAngles(const Handle& EfkHandle, const Vec3 EulerAngles);
+		void SetRotationFromEulerAngles(const Handle& EfkHandle, const Vec3& EulerAngles);
 		//----------------------------------------------------------------------------------
 		/*
 			エフェクトをクォータニオンによる回転で設定する
@@ -111,7 +111,7 @@ namespace basecross
 			@param Quaternion クォータニオンの値
 			@return	なし
 		*/
-		void SetRotationFromQuaternion(const Handle& EfkHandle, const Quat Quaternion);
+		void SetRotationFromQuaternion(const Handle& EfkHandle, const Quat& Quaternion);
 		//----------------------------------------------------------------------------------
 		/*
 			エフェクトを軸と角度による回転で設定する
@@ -120,7 +120,7 @@ namespace basecross
 			@param Angle 角度
 			@return	なし
 		*/
-		void SetRotationFromAxisAngle(const Handle& EfkHandle, const Vec3 Axis, const float Angle);
+		void SetRotationFromAxisAngle(const Handle& EfkHandle, const Vec3& Axis, const float& Angle);
 		//----------------------------------------------------------------------------------
 		/*
 			エフェクトの拡大率を指定する。
@@ -128,7 +128,7 @@ namespace basecross
 			@param Scale 拡大する値
 			@return	なし
 		*/
-		void SetScale(const Handle& EfkHandle, const Vec3 Scale);
+		void SetScale(const Handle& EfkHandle, const Vec3& Scale);
 		//----------------------------------------------------------------------------------
 		/*
 			エフェクトの全体の色を指定する
@@ -136,7 +136,7 @@ namespace basecross
 			@param Col 色の値
 			@return	なし
 		*/
-		void SetAllColor(const Handle& EfkHandle, const Col4 Col);
+		void SetAllColor(const Handle& EfkHandle, const Col4& Col);
 		//----------------------------------------------------------------------------------
 		/*
 			エフェクトの再生を止める

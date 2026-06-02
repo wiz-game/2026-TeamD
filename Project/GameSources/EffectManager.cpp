@@ -56,7 +56,7 @@ namespace basecross
 		m_isCreateEffectManager = true;
 	}
 
-	void EffectManager::RegisterEffect(const wstring EfkKey, const wstring EfkFilePash)
+	void EffectManager::RegisterEffect(const wstring& EfkKey, const wstring& EfkFilePash)
 	{
 		// ファイルパスのnullチェック
 		try 
@@ -104,7 +104,7 @@ namespace basecross
 		}
 	}
 
-	Handle EffectManager::PlayEffect(const wstring EfkKey, const Vec3 Emitter, const float StartFreme)
+	Handle EffectManager::PlayEffect(const wstring& EfkKey, const Vec3& Emitter, const int& StartFreme)
 	{
 		// エフェクトのキーのエラーチェック
 		bool isEfkKey = false;
@@ -130,17 +130,17 @@ namespace basecross
 		return m_manager->Play(m_effectList[EfkKey], Vector3D(Emitter.x, Emitter.y, Emitter.z), StartFreme);
 	}
 
-	void EffectManager::AddPosition(const Handle& EfkHandle, const Vec3 Position)
+	void EffectManager::AddPosition(const Handle& EfkHandle, const Vec3& Position)
 	{
 		m_manager->AddLocation(EfkHandle, Vector3D(Position.x, Position.y, Position.z));
 	}
 
-	void EffectManager::SetPosition(const Handle& EfkHandle, const Vec3 Position)
+	void EffectManager::SetPosition(const Handle& EfkHandle, const Vec3& Position)
 	{
 		m_manager->SetLocation(EfkHandle, Vector3D(Position.x, Position.y, Position.z));
 	}
 
-	void EffectManager::SetRotationFromEulerAngles(const Handle& EfkHandle, const Vec3 EulerAngles)
+	void EffectManager::SetRotationFromEulerAngles(const Handle& EfkHandle, const Vec3& EulerAngles)
 	{
 		float pitch = XMConvertToRadians(EulerAngles.x);
 		float yaw   = XMConvertToRadians(EulerAngles.y);
@@ -172,7 +172,7 @@ namespace basecross
 		m_manager->SetRotation(EfkHandle, Vector3D(axis.x, axis.y, axis.z), angle);
 	}
 	
-	void EffectManager::SetRotationFromQuaternion(const Handle& EfkHandle, const Quat Quaternion)
+	void EffectManager::SetRotationFromQuaternion(const Handle& EfkHandle, const Quat& Quaternion)
 	{
 		// クォータニオンの成分を抽出
 		float x = XMVectorGetX(Quaternion);
@@ -198,20 +198,21 @@ namespace basecross
 		m_manager->SetRotation(EfkHandle, Vector3D(axis.x, axis.y, axis.z), angle);
 	}
 
-	void EffectManager::SetRotationFromAxisAngle(const Handle& EfkHandle, const Vec3 Axis, const float Angle)
+	void EffectManager::SetRotationFromAxisAngle(const Handle& EfkHandle, const Vec3& Axis, const float& Angle)
 	{
 		m_manager->SetRotation(EfkHandle, Vector3D(Axis.x, Axis.y, Axis.z), Angle);
 	}
 
-	void EffectManager::SetScale(const Handle& EfkHandle, const Vec3 Scale)
+	void EffectManager::SetScale(const Handle& EfkHandle, const Vec3& Scale)
 	{
 		m_manager->SetScale(EfkHandle, Scale.x, Scale.y, Scale.z);
 	}
 	
-	void EffectManager::SetAllColor(const Handle& EfkHandle, const Col4 Col)
+	void EffectManager::SetAllColor(const Handle& EfkHandle, const Col4& Col)
 	{
 		auto color = Col4(Col) * 255;
-		m_manager->SetAllColor(EfkHandle, Color(color.x, color.y, color.z, color.w));
+		Color finalColor(static_cast<uint8_t>(color.x), static_cast<uint8_t>(color.y), static_cast<uint8_t>(color.z), static_cast<uint8_t>(color.w));
+		m_manager->SetAllColor(EfkHandle, finalColor);
 	}
 
 	void EffectManager::StopEffect(const Handle& EfkHandle)
