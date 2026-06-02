@@ -169,6 +169,12 @@
     <Filter Include="StageObjs\Board">
       <UniqueIdentifier>{662d1943-5051-445d-8e89-298a5c9a21ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StageObjs\Apple">
+      <UniqueIdentifier>{2ed110a8-0bc7-4f86-9d53-d53a9aa8478f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StageObjs\Shrub">
+      <UniqueIdentifier>{46a9c8db-ec4e-472b-9f2a-c7843b8d5b39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -336,6 +342,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Board.h">
       <Filter>StageObjs\Board</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Apple.h">
+      <Filter>StageObjs\Apple</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Shrub.h">
+      <Filter>StageObjs\Shrub</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -490,6 +502,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Board.cpp">
       <Filter>StageObjs\Board</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Apple.cpp">
+      <Filter>StageObjs\Apple</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Shrub.cpp">
+      <Filter>StageObjs\Shrub</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
