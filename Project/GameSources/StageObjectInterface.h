@@ -24,6 +24,8 @@ namespace basecross
 		LongMushroom,
 		Foothold,
 		Board,
+		Apple,
+		Shrub,
 		Max
 	} ;
 
