@@ -73,6 +73,7 @@ namespace basecross
 			{
 				SetPlayerState(PlayerState::Default);
 			}
+			break;
 		case PlayerState::Dead:
 			break;
 		default:
