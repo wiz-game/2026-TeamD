@@ -8,11 +8,13 @@
 
 #include "Scene.h"
 
+// 汎用的な関数や構造体ヘッダーファイル
+#include "Utils.h"
+
 // エディター用クラス
 #include "StageObjectInterface.h"
 #include "DebugLog.h"
 #include "BinaryFile.h"
-#include "Conversion.h"
 #include "Gizmo.h"
 
 // マネージャークラス
@@ -35,6 +37,7 @@
 #include "Stone.h"
 #include "FallenTree.h"
 #include "FirTree.h"
+#include "Slope.h"
 
 // エネミー
 #include "EnemyBase.h"
