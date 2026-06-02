@@ -397,7 +397,8 @@ namespace basecross
             };
 
         // 直線追従（フォールバック用の移動処理）
-        auto fallbackChase = [&]() {
+        auto fallbackChase = [&]() 
+            {
             auto dir = playerPos - objPos;
             float len = std::sqrt(dir.x * dir.x + dir.y * dir.y + dir.z * dir.z);
             if (len > 0.05f)
@@ -657,7 +658,8 @@ namespace basecross
         }
 
         auto force = bubble->GetBubbleHP();
-        if (Other->FindTag(L"Bubble"))
+        bool soup = bubble->GetBubblePowerUp();
+        if (Other->FindTag(L"Bubble") && soup == true)
         {
             m_EnemyHP -= force;
         }
