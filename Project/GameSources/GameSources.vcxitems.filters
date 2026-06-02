@@ -142,6 +142,9 @@
     <Filter Include="Stages\GameClearStage">
       <UniqueIdentifier>{9d7cca78-6ae9-4362-a114-e38776415536}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StageObjs\Slope">
+      <UniqueIdentifier>{c235be90-4ae1-4493-a111-42f4303a8887}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -282,6 +285,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GameClearStage.h">
       <Filter>Stages\GameClearStage</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Slope.h">
+      <Filter>StageObjs\Slope</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -409,6 +415,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)GameClearStage.cpp">
       <Filter>Stages\GameClearStage</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Slope.cpp">
+      <Filter>StageObjs\Slope</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
