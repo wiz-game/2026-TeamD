@@ -27,6 +27,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)LoadMedia.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LongMushroom.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MenuManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Shrub.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Utils.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DebugLog.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Dirt.h" />
@@ -114,6 +115,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)PowerUpSoap.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Shrub.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyBox.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Slope.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp" />
