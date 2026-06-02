@@ -166,6 +166,9 @@
     <Filter Include="StageObjs\Foothold">
       <UniqueIdentifier>{90afa0f6-2429-4491-9990-d849f30fba46}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StageObjs\Board">
+      <UniqueIdentifier>{662d1943-5051-445d-8e89-298a5c9a21ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -330,6 +333,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Foothold.h">
       <Filter>StageObjs\Foothold</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Board.h">
+      <Filter>StageObjs\Board</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -481,6 +487,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Foothold.cpp">
       <Filter>StageObjs\Foothold</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Board.cpp">
+      <Filter>StageObjs\Board</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -46,6 +46,7 @@
 #include "Fence.h"
 #include "LongMushroom.h"
 #include "Foothold.h"
+#include "Board.h"
 
 // エネミー
 #include "EnemyBase.h"

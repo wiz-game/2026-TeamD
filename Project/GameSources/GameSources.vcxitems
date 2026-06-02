@@ -15,6 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)BinaryFile.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Board.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Bubble.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h" />
@@ -70,6 +71,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)UITransitionSlide.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Board.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Bubble.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)CharacterController.cpp" />
