@@ -40,7 +40,7 @@ namespace basecross
 
 		bool m_isDead;
 		
-		int m_Attack;
+		float m_Attack;
 
 		// 強化状態
 		bool m_BubblePowerCoolDown;		// クールダウン

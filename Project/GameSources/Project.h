@@ -5,19 +5,25 @@
 
 #pragma once
 
+// mediaファイルの読み込みクラス
+#include "LoadMedia.h"
 
 #include "Scene.h"
+
+// 汎用的な関数や構造体ヘッダーファイル
+#include "Utils.h"
 
 // エディター用クラス
 #include "StageObjectInterface.h"
 #include "DebugLog.h"
 #include "BinaryFile.h"
-#include "Conversion.h"
 #include "Gizmo.h"
 
 // マネージャークラス
 #include "GameManager.h"
 #include "SoundManager.h"
+#include "EffectManager.h"
+#include "EffectUpdateDrawManager.h"
 
 // オリジナルコンポーネント
 #include "Move.h"
@@ -35,6 +41,7 @@
 #include "Stone.h"
 #include "FallenTree.h"
 #include "FirTree.h"
+#include "Slope.h"
 
 // エネミー
 #include "EnemyBase.h"
