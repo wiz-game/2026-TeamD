@@ -19,7 +19,11 @@ namespace basecross
 		m_transform->SetRotation(m_Rotation);
 
 		m_draw = AddComponent<PNTStaticDraw>();
-		m_draw->SetMeshResource(L"DEFAULT_CUBE");
+		m_draw->SetMeshResource(L"M_Soap");
+		m_draw->SetTextureResource(L"T_Soap_1");
+
+		auto shadow = AddComponent<Shadowmap>();	
+		shadow->SetMeshResource(L"M_Soap");
 
 		m_colObb = AddComponent<CollisionObb>();
 

@@ -3,7 +3,7 @@
 
 namespace basecross
 {
-	Bubble::Bubble(const shared_ptr<Stage>& stage, const shared_ptr<GameObject>& parent,const Vec3& scale, const float& initialVelocity, const float& HP) :
+	Bubble::Bubble(const shared_ptr<Stage>& stage, const shared_ptr<GameObject>& parent,const Vec3& scale, const float& initialVelocity, const float& HP, const bool& isPowerUp) :
 		GameObject(stage),
 		m_parent(parent),
 		m_speedRatio(0.0f),
@@ -21,7 +21,8 @@ namespace basecross
 		m_isShoot(false),
 		m_isBubbleMove(false),
 		m_HP(HP),
-		m_isRideBubble(false)
+		m_isRideBubble(false),
+		m_isPowerUp(isPowerUp)
 	{
 
 	}
