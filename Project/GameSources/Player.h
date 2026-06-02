@@ -9,9 +9,17 @@
 
 namespace basecross 
 {
+	enum class PlayerState
+	{
+		Default,
+		PowerUp,
+		Dead
+	};
+
 	// GameObjectクラスを継承した「Player」クラスを定義
 	class Player : public GameObject // GameObjectクラスの継承【必須】
 	{
+		PlayerState m_playerState;
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
 		std::shared_ptr<Move> m_move;
@@ -56,6 +64,11 @@ namespace basecross
 		float m_cooldown;
 
 		bool m_iseatSoap;
+
+		// プレイヤーがパワーアップしたか
+		bool m_isPlayerPowerUp;
+		// カウント時間
+		Timer m_timer;
 	public :
 		// ステージを引数にしたコンストラクタ【必須】
 		Player(const std::shared_ptr<Stage>& stage, const Vec3& position) :
@@ -83,7 +96,10 @@ namespace basecross
 			// クールダウンの初期値
 			m_initCoolDown(0.6),
 			m_iseatSoap(false),
-			m_isDead(false)
+			m_isDead(false),
+			m_isPlayerPowerUp(false),
+			m_playerState(PlayerState::Default),
+			m_timer(4.0f)
 		{
 		}
 
@@ -146,6 +162,9 @@ namespace basecross
 
 		void CreateBubble();
 
+		void SetPlayerState(PlayerState state);
+		void EnterPlayerState(PlayerState state);
+		void ExitPlayerState(PlayerState state);
 		
 	};
 }
