@@ -274,6 +274,7 @@ namespace basecross
 
         auto transComp = gameObject->GetComponent<Transform>();
         auto transPos = transComp->GetPosition();
+        auto transRot = transComp->GetRotation();
 
         auto distancePos_X = playerPos.x - transPos.x;
         auto distancePos_Y = playerPos.y - transPos.y;
@@ -281,9 +282,19 @@ namespace basecross
 
         float distance = sqrt((distancePos_X * distancePos_X) + (distancePos_Y * distancePos_Y) + (distancePos_Z * distancePos_Z));
 
+        float angleX = distancePos_X / distance;
+        float angleY = distancePos_Y / distance;
+        float angleZ = distancePos_Z / distance;
+
+        float yawX = sinf(transRot.y);
+        float yawY = 0.0f;
+        float yawZ = cosf(transRot.y);
+
+        float dot = (yawX * angleX) + (yawY * angleY) + (yawZ * angleZ);
+
         const float radius = 10.0f;
 
-        if (distance < radius)
+        if (distance < radius && dot >= cosf(45.0f))
         {
             m_Detection = true;
             float forward = atan2f(distancePos_X, distancePos_Z);
