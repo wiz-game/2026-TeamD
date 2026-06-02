@@ -43,6 +43,7 @@
 #include "FirTree.h"
 #include "Slope.h"
 #include "Fence.h"
+#include "LongMushroom.h"
 
 // エネミー
 #include "EnemyBase.h"
