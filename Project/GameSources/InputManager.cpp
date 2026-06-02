@@ -336,6 +336,7 @@ namespace basecross
 
 	void InputManager::PressedStart()
 	{
+		GameManager::Instance().SetGameMode(ENUM_GameMode::Menu);
 	}
 
 	void InputManager::PressedRButton()
