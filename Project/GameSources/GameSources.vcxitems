@@ -14,13 +14,16 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Apple.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BinaryFile.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Board.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Bubble.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectUpdateDrawManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Fence.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Foothold.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LoadMedia.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LongMushroom.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MenuManager.h" />
@@ -69,6 +72,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)UITransitionSlide.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Apple.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Board.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Bubble.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)CharacterController.cpp" />
@@ -86,6 +91,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)FallenTree.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Fence.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FirTree.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Foothold.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FurBubble.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameClearStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp" />

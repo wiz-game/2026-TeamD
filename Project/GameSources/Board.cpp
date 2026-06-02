@@ -3,7 +3,7 @@
 
 namespace basecross
 {
-	Fence::Fence
+	Board::Board
 	(
 		const shared_ptr<Stage>& StagePtr,
 		const STRUCT_ObjectParam& objectParam
@@ -12,22 +12,22 @@ namespace basecross
 	{
 	};
 
-	Fence::~Fence()
+	Board::~Board()
 	{
 	}
 
-	void Fence::OnCreate()
+	void Board::OnCreate()
 	{
-		AddTag(L"Fence");
+		AddTag(L"Board");
 		SetIsEditorSave(true);
 
 		auto ptrDraw = AddComponent<PNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"M_Fence");
-		ptrDraw->SetTextureResource(L"T_Fence");
+		ptrDraw->SetMeshResource(L"M_Board");
+		ptrDraw->SetTextureResource(L"T_Board");
 
 		auto ptrShadow = AddComponent<Shadowmap>();
 		ptrDraw->SetOwnShadowActive(true);
-		ptrShadow->SetMeshResource(L"M_Fence");
+		ptrShadow->SetMeshResource(L"M_Board");
 
 		m_sPtrTrans = AddComponent<Transform>();
 		m_sPtrTrans->SetScale(m_objectParam.GetScale());

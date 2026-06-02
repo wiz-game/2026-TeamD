@@ -120,7 +120,7 @@ namespace basecross
 			}
 
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER &&
-				!(m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE)&&
+				!(m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE) &&
 				!(m_pad.wPressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER))
 			{
 				PressedRButton();
@@ -131,6 +131,33 @@ namespace basecross
 				!(m_pad.wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER))
 			{
 				PressedLButton();
+			}
+
+			break;
+		case ENUM_GameMode::Menu:
+			// ゲームに戻る
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_START)
+			{
+				ReturnGame();
+			}
+
+			// 一つ戻る
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_B)
+			{
+				ReturnOneMenu();
+			}
+
+			// カーソルを移動
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP ||
+				m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+			{
+				MoveMenuCursor();
+			}
+
+			// 決定
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
+			{
+				PressedAMenu();
 			}
 
 			break;
@@ -338,6 +365,22 @@ namespace basecross
 	void InputManager::ReleasedLTrigger()
 	{
 		GetMyCamera()->SetIsAiming(false);
+	}
+
+	void InputManager::ReturnGame()
+	{
+	}
+
+	void InputManager::ReturnOneMenu()
+	{
+	}
+
+	void InputManager::MoveMenuCursor()
+	{
+	}
+
+	void InputManager::PressedAMenu()
+	{
 	}
 
 	void InputManager::ObjectOperation()

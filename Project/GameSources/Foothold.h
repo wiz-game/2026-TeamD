@@ -3,18 +3,19 @@
 
 namespace basecross
 {
-	class LongMushroom : public GameObject
+	class Foothold : public GameObject
 	{
 	private:
 		shared_ptr<Transform> m_sPtrTrans;
 	public:
-		LongMushroom
+		Foothold
 		(
 			const shared_ptr<Stage>& StagePtr,
 			const STRUCT_ObjectParam& objectParam
 		);
-		virtual ~LongMushroom();
+		virtual ~Foothold();
 
 		virtual void OnCreate() override;
 	};
 }
+
