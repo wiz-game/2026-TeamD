@@ -25,7 +25,7 @@ namespace basecross
 			// ƒŠƒ\[ƒXì¬
 			RegisterMediaFiles(App::GetApp()->GetDataDirWString());
 
-			GameManager::Instance().Initialize(true);
+			GameManager::Instance().Initialize(false);
 			InputManager::Instance().Initialize();
 			StageEditor::Instance().Initialize();
 		}
@@ -37,7 +37,7 @@ namespace basecross
 
 	void Scene::OnCreate2()
 	{
-		GameManager::Instance().SetGameMode(ENUM_GameMode::GameClear);
+		GameManager::Instance().SetGameMode(ENUM_GameMode::Title);
 	}
 
 	void Scene::OnUpdate()
