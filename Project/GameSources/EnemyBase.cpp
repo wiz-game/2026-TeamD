@@ -659,10 +659,7 @@ namespace basecross
         auto force = bubble->GetBubbleHP();
         if (Other->FindTag(L"Bubble"))
         {
-            if (bubble->GetBubblePowerUp())
-            {
-                m_EnemyHP -= force;
-            }
+            m_EnemyHP -= force;
         }
     }
 
