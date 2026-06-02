@@ -5,6 +5,8 @@
 
 #pragma once
 
+// mediaファイルの読み込みクラス
+#include "LoadMedia.h"
 
 #include "Scene.h"
 
@@ -20,6 +22,8 @@
 // マネージャークラス
 #include "GameManager.h"
 #include "SoundManager.h"
+#include "EffectManager.h"
+#include "EffectUpdateDrawManager.h"
 
 // オリジナルコンポーネント
 #include "Move.h"
