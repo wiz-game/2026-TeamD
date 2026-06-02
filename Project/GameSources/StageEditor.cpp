@@ -75,6 +75,9 @@ namespace basecross
 			case ENUM_ObjectID::EnemyAlpaca:
 				stage->AddGameObject<EnemyAlpaca>(objParam);
 				break;
+			case ENUM_ObjectID::Slope:
+				stage->AddGameObject<Slope>(objParam);
+				break;
 			default:
 				break;
 			}
@@ -414,6 +417,9 @@ namespace basecross
 		case ENUM_ObjectID::EnemyAlpaca:
 			stage->AddGameObject<EnemyAlpaca>(originalObjParam);
 			break;
+		case ENUM_ObjectID::Slope:
+			stage->AddGameObject<Slope>(originalObjParam);
+			break;
 		default:
 			break;
 		}
@@ -536,6 +542,9 @@ namespace basecross
 			break;
 		case ENUM_ObjectID::EnemyAlpaca:
 			newObj = stage->AddGameObject<EnemyAlpaca>(objParam);
+			break;
+		case ENUM_ObjectID::Slope:
+			newObj = stage->AddGameObject<Slope>(objParam);
 			break;
 		default:
 			break;
