@@ -145,6 +145,9 @@
     <Filter Include="StageObjs\Slope">
       <UniqueIdentifier>{c235be90-4ae1-4493-a111-42f4303a8887}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Other\LoadMedia">
+      <UniqueIdentifier>{95f26bde-4502-4f0e-9682-0e65e0e2daf5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -225,9 +228,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)BinaryFile.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Conversion.h">
-      <Filter>Other</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)StageObjectInterface.h">
       <Filter>Other</Filter>
     </ClInclude>
@@ -287,6 +287,12 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Slope.h">
       <Filter>StageObjs\Slope</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Utils.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)LoadMedia.h">
+      <Filter>Other\LoadMedia</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -418,6 +424,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Slope.cpp">
       <Filter>StageObjs\Slope</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)LoadMedia.cpp">
+      <Filter>Other\LoadMedia</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

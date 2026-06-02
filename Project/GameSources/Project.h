@@ -5,6 +5,8 @@
 
 #pragma once
 
+// mediaファイルの読み込みクラス
+#include "LoadMedia.h"
 
 #include "Scene.h"
 
