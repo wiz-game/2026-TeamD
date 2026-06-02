@@ -160,6 +160,15 @@
     <Filter Include="StageObjs\LongMushroom">
       <UniqueIdentifier>{2c9a2adc-de3a-430d-b100-cb9c2694b0e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Managers\MenuManager">
+      <UniqueIdentifier>{96a36892-591d-4647-969b-876d95d57693}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StageObjs\Foothold">
+      <UniqueIdentifier>{90afa0f6-2429-4491-9990-d849f30fba46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StageObjs\Board">
+      <UniqueIdentifier>{662d1943-5051-445d-8e89-298a5c9a21ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -318,6 +327,15 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)LongMushroom.h">
       <Filter>StageObjs\LongMushroom</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MenuManager.h">
+      <Filter>Managers\MenuManager</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Foothold.h">
+      <Filter>StageObjs\Foothold</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Board.h">
+      <Filter>StageObjs\Board</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -463,6 +481,15 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)LongMushroom.cpp">
       <Filter>StageObjs\LongMushroom</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MenuManager.cpp">
+      <Filter>Managers\MenuManager</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Foothold.cpp">
+      <Filter>StageObjs\Foothold</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Board.cpp">
+      <Filter>StageObjs\Board</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
