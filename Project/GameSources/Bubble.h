@@ -12,13 +12,16 @@ namespace basecross
 
 	class Bubble : public GameObject
 	{
-		unordered_map<BubbleAbility,bool> m_abilities;
+		static unordered_map<BubbleAbility,bool> m_unlockedAvilities;
+		BubbleAbility currentAbility;
 		shared_ptr<Transform> m_trans;
 		shared_ptr<PNTStaticDraw> m_draw;
+		shared_ptr<PNTStaticInstanceDraw> m_activeDraw;
 		shared_ptr<CollisionSphere> m_col;
 		weak_ptr<GameObject> m_parent;
 		Vec3 m_parentForward;
 		Vec3 m_scale;
+		Vec3 m_pos;
 		Vec3 m_forward;
 		Vec3 m_moveDir;
 
@@ -52,6 +55,9 @@ namespace basecross
 		// 相殺力
 		float m_HP;
 
+		bool m_isTranpolineBubble;
+		bool m_isRideBubble;
+
 	public :
 		Bubble::Bubble(const shared_ptr<Stage>& stage,const shared_ptr<GameObject>& parent,const Vec3& scale,const float& initialVelocity,const float& HP);
 		Bubble::~Bubble();
@@ -64,20 +70,21 @@ namespace basecross
 		//　泡の動きの挙動
 		void BubbleMove();
 		
-		// 泡のアビリティを持っているかどうか
-		bool HasAblity(BubbleAbility ability)
+		void UnlockAbility(BubbleAbility ability)
 		{
-			auto it = m_abilities.find(ability);
-
-			if (it == m_abilities.end()) return false;
-			return it->second;
+			m_unlockedAvilities[ability] = true;
 		}
 
-		// 泡のアビリティをセットする
-		void SetAbility(BubbleAbility ability, bool value)
+		void ApplyAblity(BubbleAbility ability);
+
+		bool CanUseAbility(BubbleAbility a)
 		{
-			// キーとそのキーがtureかfalseかをセットする
-			m_abilities[ability] = value;
+			auto it = m_unlockedAvilities.find(a);
+
+			if (it == m_unlockedAvilities.end())
+				return false;
+
+			return it->second;
 		}
 
 		// 泡のアビリティを追加する
@@ -107,6 +114,8 @@ namespace basecross
 		void ResolveCounteract(Bubble& bubble, Dirt& dirt);
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other);
+
+		void CreateActiveInstances();
 	};
 
 	class ViewBubble : public GameObject

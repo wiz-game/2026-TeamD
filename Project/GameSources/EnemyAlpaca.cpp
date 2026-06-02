@@ -27,9 +27,13 @@ namespace basecross
 
 		auto obb = AddComponent<CollisionObb>();
 
-		m_gravity = AddComponent<Gravity>();
+		//m_gravity = AddComponent<Gravity>();
 
 		m_EnemyHP = 10;
+
+		auto shadowComp = AddComponent<Shadowmap>();
+		shadowComp->SetMeshResource(L"M_Alpaca");
+		shadowComp->SetDrawActive(true);
 
 		m_eStateMachine.reset(new StateMachine<EnemyAlpaca>(GetThis<EnemyAlpaca>()));
 		m_eStateMachine->ChangeState(IdleState::Instance());
@@ -42,9 +46,9 @@ namespace basecross
 
 		Died(GetThis<EnemyAlpaca>());
 		DetectionRange(GetThis<EnemyAlpaca>());
-
 		m_eStateMachine->Update();
 
+		//DropDirt(GetThis<EnemyAlpaca>());
 		DebugString();
 	}
 
@@ -62,7 +66,7 @@ namespace basecross
 
 	void IdleState::Execute(const shared_ptr<EnemyAlpaca>& Obj)
 	{
-		Obj->PointMove(Obj, 1.0f);
+		Obj->MazeWandering(Obj);
 
 		if (Obj->GetDetection() == true)
 		{
@@ -89,7 +93,8 @@ namespace basecross
 
 	void AngryState::Execute(const shared_ptr<EnemyAlpaca>& Obj)
 	{
-		Obj->Stalker(Obj, 1.0f);
+		Obj->aStar(Obj);
+		// 索敵外から出たら徘徊に戻る
 		if (Obj->GetDetection() == false)
 		{
 			Obj->m_eStateMachine->ChangeState(IdleState::Instance());

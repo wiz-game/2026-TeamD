@@ -14,22 +14,30 @@ namespace basecross
 	class PowerUpSoap : public ItemBase
 	{
 	private:
+		Quat q;
 		std::shared_ptr<Transform> m_transform;
 		std::shared_ptr<PNTStaticDraw> m_draw;
 		std::shared_ptr <CollisionObb> m_colObb;
-		std::shared_ptr<Gravity> m_gravity;
 
 		Vec3 m_Position;
+		Vec3 m_InitPosition;
 		Vec3 m_Scale;
 		Vec3 m_Rotation;
 
 		float m_RotationSpeed;
+		float m_UpSpeed;
+
+		bool m_isUp;
 	public:
 		// 構築と破棄
 		PowerUpSoap(const shared_ptr<Stage>& stage) :
 			ItemBase(stage),
+			//m_Position(1.0f,1.0f,1.0f),
 			m_Scale(1.1f, 0.5f, 1.1f),
-			m_RotationSpeed(45.0f)
+			m_Rotation(0.0f,0.0f,XMConvertToRadians(45.0f)),
+			m_RotationSpeed(1.0f),
+			m_UpSpeed(1.0f),
+			m_isUp(false)
 		{}
 		virtual ~PowerUpSoap()
 		{}
@@ -41,6 +49,12 @@ namespace basecross
 		void Rotation();
 		void UpDown();
 		void DebugStr();
+
+		void SetVecPosition(Vec3 p)
+		{
+			m_Position = p;
+			m_InitPosition = p;
+		}
 	};
 
 }

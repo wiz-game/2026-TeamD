@@ -58,6 +58,8 @@
 #include "TitleStage.h"
 #include "SelectStage.h"
 #include "GameStage.h"
+#include "GameClearStage.h"
+#include "GameOverStage.h"
 
 #include "MyCamera.h"
 

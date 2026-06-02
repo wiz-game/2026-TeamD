@@ -15,11 +15,13 @@ namespace basecross
 		m_isSpawnedTrampoline(false),
 		m_isHit(false),
 		m_scale(scale),
+		m_pos(Vec3(0.0f)),
 		m_moveTime(0.0f),
 		m_moveTimeLimit(3.0f),
 		m_isShoot(false),
 		m_isBubbleMove(false),
-		m_HP(HP)
+		m_HP(HP),
+		m_isRideBubble(false)
 	{
 
 	}
@@ -29,6 +31,8 @@ namespace basecross
 
 	}
 
+	unordered_map<BubbleAbility, bool> Bubble::m_unlockedAvilities;
+	
 	void Bubble::OnCreate()
 	{		
 		AddTag(L"Bubble");
@@ -44,14 +48,14 @@ namespace basecross
 		float randPosX = static_cast<float>((rand() % 100) - 50) * 0.01f;
 		float randPosZ = static_cast<float>((rand() % 100) - 50) * 0.01f;
 
-		Vec3 spawnPos = Vec3(parentPos.x + randPosX, parentPos.y + 1.0f, parentPos.z + randPosZ) + m_parentForward * 1.25f;
+		m_pos = Vec3(parentPos.x + randPosX, parentPos.y + 1.0f, parentPos.z + randPosZ) + m_parentForward * 1.25f;
 
-		m_trans->SetPosition(spawnPos);
+		m_trans->SetPosition(m_pos);
 		m_trans->SetScale(Vec3(m_scale));
 		// m_trans->SetQuaternion()
 
 		m_col = AddComponent<CollisionSphere>();
-		m_col->SetDrawActive(false);
+		// m_col->SetDrawActive(true);
 		m_col->SetAfterCollision(AfterCollision::None);
 
 		// 透明化処理
@@ -61,7 +65,13 @@ namespace basecross
 		m_draw->SetMeshResource(L"M_Bubble");
 		m_draw->SetTextureResource(L"T_Bubble");
 		m_draw->SetDiffuse(Col4(1.0f, 1.0f, 1.0f, 0.3f));
-		// m_draw->SetSpecular(Col4(1.0f));
+        
+		// インスタンス描画用
+		m_activeDraw = AddComponent<PNTStaticInstanceDraw>();
+		m_activeDraw->SetMeshResource(L"M_Bubble");
+		m_activeDraw->SetTextureResource(L"T_Bubble");
+		m_activeDraw->SetDrawActive(false);
+		m_activeDraw->SetDiffuse(Col4(1.0f, 1.0f, 1.0f, 0.3f));
 
 		// モデルとトランスフォーム間の差分行列
 		Mat4x4 spanMat;
@@ -84,13 +94,15 @@ namespace basecross
 			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
 		}
 
-		GameManager::Instance().AddDebugStr(L"BubbleHP", m_HP);
+		if (m_isRideBubble)
+		{
+			CreateActiveInstances();
+		}
 	}
 	
 	void Bubble::ShootBubble()
 	{
 		m_forward = GetCameraForward();
-
 		m_isShoot = true;
 		m_isBubbleMove = false;
 	}
@@ -100,13 +112,10 @@ namespace basecross
 		auto& app = App::GetApp();
 		auto elapsed = app->GetElapsedTime();
 		auto pos = m_trans->GetPosition();
-		auto parent = m_parent.lock();
-		auto player = dynamic_pointer_cast<Player>(parent);
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
 		auto camera = stage->GetView()->GetTargetCamera();
 		auto myCamera = dynamic_pointer_cast<MyCamera>(camera);
 		bool isAiming = myCamera->GetIsAiming();
-		float velocityZero = 0.0f;
 		float decelerationStartRatio = 0.2f;
 
 		// 現在速度が0になるまで
@@ -132,9 +141,8 @@ namespace basecross
 
 			if (m_isShoot)
 			{
-				pos += m_moveDir * (m_currentVelocity * elapsed);
+				m_pos += m_moveDir * (m_currentVelocity * elapsed);
 			}
-
 		}
 
 		// 現在の速度の割合が始めるぐらいの割合になったら上昇を始める
@@ -149,7 +157,7 @@ namespace basecross
 			// 1から2までの補間係数
 			m_upwardVelocity = 1.0f + (1.25f - 1.0f) * t;
 
-			pos.y += m_upwardVelocity * elapsed;
+			m_pos.y += m_upwardVelocity * elapsed;
 		}
 
 		// 時間制限の開始
@@ -164,24 +172,32 @@ namespace basecross
 			return;
 		}
 
-		m_trans->SetPosition(pos);
+		m_trans->SetPosition(m_pos);
 	}
 
-	void Bubble::BubbleAddAblity(BubbleAbility ability)
+	void Bubble::ApplyAblity(BubbleAbility ability)
 	{
-		if (m_abilities[ability])return;
-
-		SetAbility(ability, true);
+		if (!CanUseAbility(ability)) return;
 
 		switch (ability)
 		{
-			case BubbleAbility::RideBubble:
-				m_col->SetAfterCollision(AfterCollision::Auto);
-				break;
-			case BubbleAbility::TranpolineBubble:
-				break;
-			default:
-				break;
+		case BubbleAbility::RideBubble:
+			RemoveComponent<CollisionSphere>();
+			AddComponent<CollisionObb>();
+			m_draw->SetDrawActive(false);
+			//CreateActiveInstances();
+			m_trans->SetScale(Vec3(m_scale * 3.5f));
+			m_col->SetAfterCollision(AfterCollision::Auto);
+			m_isRideBubble = true;
+			break;
+
+		case BubbleAbility::TranpolineBubble:
+			// トランポリン挙動
+			m_isTranpolineBubble = true;
+			break;
+
+		default:
+			break;
 		}
 	}
 
@@ -208,6 +224,12 @@ namespace basecross
 		dirt.SetDirtHP(max(0.0f, dirtHP - bubbleHP));
 	}
 
+	void Bubble::BubbleAddAblity(BubbleAbility ability)
+	{		
+		if (m_unlockedAvilities[ability])return;
+		UnlockAbility(ability);
+	}
+
 	void Bubble::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
 		if (Other->FindTag(L"Dirt"))
@@ -227,7 +249,7 @@ namespace basecross
 
 		if (!Other->FindTag(L"Ground")) return;
 
-		if (HasAblity(BubbleAbility::TranpolineBubble))
+		if (m_isTranpolineBubble)
 		{
 			if (m_isSpawnedTrampoline) return;
 			if (m_isHit) return;
@@ -270,6 +292,43 @@ namespace basecross
 		{
 			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
 		}
+	}
+
+	void Bubble::CreateActiveInstances()
+	{
+		m_activeDraw->ClearMatrixVec();
+
+		const int clusterCount = 3;
+		const float clusterSpacing = 3.0f;
+
+		const Vec3 offsets[] =
+		{
+			Vec3(0.0f,  0.1f,  0.0f),   // 中心
+			Vec3(1.0f,  0.1f,  0.5f),   // 右
+			Vec3(-1.0f, 0.1f, - 0.75f),  // 左
+			Vec3(-1.0f,  0.1f,  0.75f),  // 前
+			Vec3(1.0f,  0.1f,  -0.5f),  // 後
+		};
+
+		const int bubbleCount = sizeof(offsets) / sizeof(offsets[0]);
+
+		for (int i = 0; i < bubbleCount; i++)
+		{
+			Mat4x4 mat;
+
+			Vec3 instancePos = m_pos + offsets[i];
+
+			mat.affineTransformation(
+				Vec3(0.55f, 0.55f, 0.55f),
+				Vec3(0.0f),
+				Quat(),
+				instancePos
+			);
+
+			m_activeDraw->AddMatrix(mat);
+		}
+
+		m_activeDraw->SetDrawActive(true);
 	}
 
 	ViewBubble::ViewBubble(const shared_ptr<Stage>& stage, const vector<Vec3> *vertices) :

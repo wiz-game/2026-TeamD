@@ -16,35 +16,50 @@ namespace basecross
 
 		m_transform = AddComponent<Transform>();
 		m_transform->SetScale(m_Scale);
-		m_transform->SetRotation(0.0f, 0.0f, XMConvertToRadians(45.0f));
+		m_transform->SetRotation(m_Rotation);
 
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");
 
 		m_colObb = AddComponent<CollisionObb>();
 
-		//m_gravity = AddComponent<Gravity>();
+		m_InitPosition = m_Position;
 	}
 
 	// 更新
 	void PowerUpSoap::OnUpdate()
 	{
 		Rotation();
+		UpDown();
 		DebugStr();
 	}
 
 	void PowerUpSoap::Rotation()
 	{
-		auto transRot = m_transform->GetRotation();
-		transRot.y += m_RotationSpeed * App::GetApp()->GetElapsedTime();
-		m_transform->SetRotation(transRot);
+		m_Rotation.y += m_RotationSpeed * App::GetApp()->GetElapsedTime();
+		m_transform->SetRotation(m_Rotation.x,m_Rotation.y,m_Rotation.z);
 	}
 
 	void PowerUpSoap::UpDown()
 	{
-		auto transPos = m_transform->GetPosition();
-		transPos.y += App::GetApp()->GetElapsedTime();
-		//m_transform->SetPosition()
+		float upDown = 0.5;
+		if (m_isUp == true)
+		{
+			m_Position.y += m_UpSpeed * App::GetApp()->GetElapsedTime();
+			if (m_Position.y >= m_InitPosition.y + upDown)
+			{
+				m_isUp = false;
+			}
+		}
+		else 
+		{
+			m_Position.y -= m_UpSpeed * App::GetApp()->GetElapsedTime();
+			if (m_Position.y <= m_InitPosition.y - upDown)
+			{
+				m_isUp = true;
+			}
+		}
+		m_transform->SetPosition(m_Position.x,m_Position.y,m_Position.z);
 	}
 
 	void PowerUpSoap::DebugStr()

@@ -45,6 +45,30 @@ namespace basecross
 				ChangeSelectGameStage();
 			}
 			break;
+		case ENUM_GameMode::GameClear:
+			// Aを押してリトライ
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
+			{
+				StageStart();
+			}
+			// Bを押してタイトルへ
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_B)
+			{
+				ReturnTitle();
+			}
+			break;
+		case ENUM_GameMode::GameOver:
+			// Aを押してリトライ
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
+			{
+				StageStart();
+			}
+			// Bを押してタイトルへ
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_B)
+			{
+				ReturnTitle();
+			}
+			break;
 		case ENUM_GameMode::Play:
 			// プレイヤーの移動
 			if (m_pad.fThumbLX > STACK_DEADZONE_L || m_pad.fThumbLX < -STACK_DEADZONE_L ||
@@ -94,6 +118,21 @@ namespace basecross
 			{
 				PressedStart();
 			}
+
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER &&
+				!(m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE)&&
+				!(m_pad.wPressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER))
+			{
+				PressedRButton();
+			}
+
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER &&
+				!(m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE) &&
+				!(m_pad.wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER))
+			{
+				PressedLButton();
+			}
+
 			break;
 		case ENUM_GameMode::Editor:
 			// オブジェクト選択とギズモの選択
@@ -270,6 +309,30 @@ namespace basecross
 
 	void InputManager::PressedStart()
 	{
+	}
+
+	void InputManager::PressedRButton()
+	{
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		auto player = stage->GetSharedGameObject<Player>(L"Player");
+		
+		if (player->GetEatSoap())
+		{
+			player->CreateBubble();
+			player->GetHaveBubble()->ApplyAblity(BubbleAbility::RideBubble);
+		}
+	}
+
+	void InputManager::PressedLButton()
+	{
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		auto player = stage->GetSharedGameObject<Player>(L"Player");
+		
+		if (player->GetEatSoap())
+		{
+			player->CreateBubble();
+			player->GetHaveBubble()->ApplyAblity(BubbleAbility::TranpolineBubble);
+		}
 	}
 
 	void InputManager::ReleasedLTrigger()

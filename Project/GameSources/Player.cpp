@@ -23,19 +23,36 @@ namespace basecross
 		// ドローコンポーネントを追加
 		m_draw = AddComponent<PNTDXModelDraw>();
 		auto drawComp = AddComponent<PNTStaticDraw>();
-		drawComp->SetMeshResource(L"M_Alpaca");
-		drawComp->SetTextureResource(L"T_Alpaca");
+		drawComp->SetMeshResource(L"M_Awapaka");
+		drawComp->SetTextureResource(L"T_Awapaka");
 		drawComp->SetDrawActive(true);
 
 		// 当たり判定のコンポーネント
 		auto obb = AddComponent<CollisionObb>();
-		obb->SetAfterCollision(AfterCollision::Auto);
+		//obb->SetAfterCollision(AfterCollision::Auto);
 
 		// 重力のコンポーネント
 		m_gravity = AddComponent<Gravity>();
 
+		auto shadowComp = AddComponent<Shadowmap>();
+		shadowComp->SetMeshResource(L"M_Awapaka");
+		shadowComp->SetDrawActive(true);
+
+		Mat4x4 spanMat;
+		spanMat.affineTransformation
+		(
+			Vec3(1.0f, 1.0f, 1.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, XM_PIDIV2, 0.0f),
+			Vec3(0.0f, -0.5f, 0.0f)
+		);
+
+		drawComp->SetMeshToTransformMatrix(spanMat);
+		shadowComp->SetMeshToTransformMatrix(spanMat);
+
+
 		// バブルのコンポーネント
-		auto fbComp = AddComponent<FurBubble>(GetStage());
+		//auto fbComp = AddComponent<FurBubble>(GetStage());
 	}
 
 	// プレイヤーの更新処理
@@ -43,6 +60,7 @@ namespace basecross
 	{
 		ReSpawn();
 		Jump();
+		PlayerDied();
 		LaunchofBubble();
 		DebugString();
 	}
@@ -65,8 +83,6 @@ namespace basecross
 				m_isJumping = true;
 			}
 		}
-
-		m_transform->SetPosition(transPos);
 	}
 
 	void Player::LaunchofBubble()
@@ -113,8 +129,18 @@ namespace basecross
 	void Player::PlayerDied()
 	{
 		auto scene = App::GetApp()->GetScene<Scene>();
+		if (scene == nullptr)
+		{
+			return;
+		}
+
 		auto stage = scene->GetActiveStage();
 		if (stage == nullptr)
+		{
+			return;
+		}
+
+		if (m_isDead == true)
 		{
 			return;
 		}
@@ -123,9 +149,10 @@ namespace basecross
 		const float DIED_HP = 0.0f;
 
 		// 死亡したらゲームオーバー画面にいかせる
-		if (m_PlayerHP <= DIED_HP)
+		if (m_PlayerHP <= DIED_HP && m_isDead == false)
 		{
-			PostEvent(1.0f, GetThis<ObjectInterface>(), scene, L"ToGameOver");
+			m_isDead = true;
+			GameManager::Instance().SetGameMode(ENUM_GameMode::GameOver);
 		}
 	}
 
@@ -170,12 +197,13 @@ namespace basecross
 	{
 		InputManager* i = &InputManager::Instance();
 		auto slowness = i->GetMoveSpeed() / 2;
+		float slowness2 = 0.9f;
 
 		// ダート（汚れ）
 		if (Other->FindTag(L"Dirt"))
 		{
 			m_PlayerHP -= 1.0f;
-			i->SetMoveSpeed(slowness);
+			i->SetMoveSpeed(slowness2);
 		}
 
 		float Power = 6.0f;
@@ -184,7 +212,6 @@ namespace basecross
 		if (Other->FindTag(L"Ground"))
 		{
 			m_isJumping = false;
-			m_Velocity = 0.0f;
 		}
 
 		// バブル
@@ -193,18 +220,28 @@ namespace basecross
 			if (Other->GetComponent<Transform>()->GetPosition().y < transPos.y)
 			{
 				m_isJumping = false;
-				m_Velocity = 0.0f;
 			}
 		}
 
-
 		// トランポリンバブル
-		if (Other->FindTag(L"TranmpolineBase"))
+		if (Other->FindTag(L"TrampolineBubbles"))
 		{
 			if (Other->GetComponent<Transform>()->GetPosition().y < transPos.y)
 			{
 				m_gravity->StartJump(m_VecJumpPower);
 			}
+		}
+
+		if (Other->FindTag(L"Soap"))
+		{
+			m_iseatSoap = true;
+			m_pBubble->BubbleAddAblity(BubbleAbility::RideBubble);
+			m_pBubble->BubbleAddAblity(BubbleAbility::TranpolineBubble);
+		}
+
+		if (Other->FindTag(L"Enemy"))
+		{
+			m_PlayerHP -= 1.0f;
 		}
 	}
 
@@ -219,11 +256,19 @@ namespace basecross
 		InputManager* i = &InputManager::Instance();
 		// 1.0fだと半分のままなので、2倍を掛けてあげることによって通常の速度にする
 		float normalSpeed = i->GetMoveSpeed() * 2.0f;
+		float normalSpeed2 = 1.8f;
 
 		if (Other->FindTag(L"Dirt"))
 		{
-			i->SetMoveSpeed(normalSpeed);
+			i->SetMoveSpeed(normalSpeed2);
 		}
+	}
+
+	void Player::CreateBubble()
+	{
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		m_pBubble = stage->AddGameObject<Bubble>(GetThis<Player>(), Vec3(0.5f), 5.0f, m_Attack);
+		m_pBubble->ShootBubble();
 	}
 }
 //end basecross
