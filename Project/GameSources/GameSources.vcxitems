@@ -21,6 +21,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectUpdateDrawManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Fence.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Foothold.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LoadMedia.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LongMushroom.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MenuManager.h" />
@@ -86,6 +87,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)FallenTree.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Fence.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FirTree.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Foothold.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FurBubble.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameClearStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp" />

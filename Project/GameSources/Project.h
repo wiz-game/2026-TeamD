@@ -45,6 +45,7 @@
 #include "Slope.h"
 #include "Fence.h"
 #include "LongMushroom.h"
+#include "Foothold.h"
 
 // エネミー
 #include "EnemyBase.h"
