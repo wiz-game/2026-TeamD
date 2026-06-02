@@ -63,6 +63,21 @@ namespace basecross
 		PlayerDied();
 		LaunchofBubble();
 		DebugString();
+
+		switch (m_playerState)
+		{
+		case PlayerState::Default:
+			break;
+		case PlayerState::PowerUp :
+			if (m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
+			{
+				SetPlayerState(PlayerState::Default);
+			}
+		case PlayerState::Dead:
+			break;
+		default:
+			break;
+		}
 	}
 
 	void Player::Jump()
@@ -109,7 +124,7 @@ namespace basecross
 
 		if (control[0].bRightTrigger && m_Bresing == false)
 		{
-			m_pBubble = stage->AddGameObject<Bubble>(GetThis<Player>(), Vec3(0.5f), 5.0f, m_Attack);
+			m_pBubble = stage->AddGameObject<Bubble>(GetThis<Player>(), Vec3(0.5f), 5.0f, m_Attack, m_isPlayerPowerUp);
 			m_pBubble->ShootBubble();
 			m_Bresing = true;
 			m_cooldown = m_initCoolDown;
@@ -169,6 +184,9 @@ namespace basecross
 		GameManager::Instance().AddDebugStr(L"PlayerHP", m_PlayerHP);
 		GameManager::Instance().AddDebugStr(L"Attack", m_Attack);
 		GameManager::Instance().AddDebugStr(L"Cooldown", m_BubblePowerCoolDown);
+		GameManager::Instance().AddDebugStr(L"PlayerPowerUp", m_isPlayerPowerUp);
+		GameManager::Instance().AddDebugStr(L"PowerUpTimer", m_timer.GetCounter());
+		GameManager::Instance().AddDebugStr(L"PlayerPowerUp", m_isPlayerPowerUp);
 	}
 
 	void Player::ReSpawn()
@@ -237,6 +255,7 @@ namespace basecross
 			m_iseatSoap = true;
 			m_pBubble->BubbleAddAblity(BubbleAbility::RideBubble);
 			m_pBubble->BubbleAddAblity(BubbleAbility::TranpolineBubble);
+			SetPlayerState(PlayerState::PowerUp);
 		}
 
 		if (Other->FindTag(L"Enemy"))
@@ -267,8 +286,49 @@ namespace basecross
 	void Player::CreateBubble()
 	{
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-		m_pBubble = stage->AddGameObject<Bubble>(GetThis<Player>(), Vec3(0.5f), 5.0f, m_Attack);
+		m_pBubble = stage->AddGameObject<Bubble>(GetThis<Player>(), Vec3(0.5f), 5.0f, m_Attack,m_isPlayerPowerUp);
 		m_pBubble->ShootBubble();
+	}
+
+	void Player::SetPlayerState(PlayerState state)
+	{
+		ExitPlayerState(m_playerState);
+		m_playerState = state;
+		EnterPlayerState(m_playerState);
+	}
+
+	void Player::EnterPlayerState(PlayerState state)
+	{
+		switch (state)
+		{
+		case PlayerState::Default:
+			Timer(4.0f);
+			m_timer.SetCounter();
+			m_isPlayerPowerUp = false;
+			break;
+		case PlayerState::PowerUp:
+			m_isPlayerPowerUp = true;
+			break;
+		case PlayerState::Dead:
+			break;
+		default:
+			break;
+		}
+	}
+
+	void Player::ExitPlayerState(PlayerState state)
+	{
+		switch (state)
+		{
+		case PlayerState::Default:
+			break;
+		case PlayerState::PowerUp:
+			break;
+		case PlayerState::Dead:
+			break;
+		default:
+			break;
+		}
 	}
 }
 //end basecross
