@@ -47,6 +47,7 @@
 #include "LongMushroom.h"
 #include "Foothold.h"
 #include "Board.h"
+#include "Apple.h"
 
 // エネミー
 #include "EnemyBase.h"

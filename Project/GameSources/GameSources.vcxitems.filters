@@ -169,6 +169,9 @@
     <Filter Include="StageObjs\Board">
       <UniqueIdentifier>{662d1943-5051-445d-8e89-298a5c9a21ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StageObjs\Apple">
+      <UniqueIdentifier>{2ed110a8-0bc7-4f86-9d53-d53a9aa8478f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -336,6 +339,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Board.h">
       <Filter>StageObjs\Board</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Apple.h">
+      <Filter>StageObjs\Apple</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -490,6 +496,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Board.cpp">
       <Filter>StageObjs\Board</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Apple.cpp">
+      <Filter>StageObjs\Apple</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
