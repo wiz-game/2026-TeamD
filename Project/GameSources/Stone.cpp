@@ -36,7 +36,7 @@ namespace basecross
 		Mat4x4 spanMat;
 		spanMat.affineTransformation
 		(
-			Vec3(1.0f, 1.0f, 1.0f),
+			Vec3(0.75f),
 			Vec3(0.0f, 0.0f, 0.0f),
 			Vec3(0.0f, 0.0f, 0.0f),
 			Vec3(0.0f, -0.5f, 0.0f)
@@ -45,6 +45,9 @@ namespace basecross
 		ptrDraw->SetMeshToTransformMatrix(spanMat);
 		ptrShadow->SetMeshToTransformMatrix(spanMat);
 
+		auto ptrCollision = AddComponent<CollisionObb>();
+		ptrCollision->SetDrawActive(true);
+		ptrCollision->SetFixed(true);
 	}
 
 }

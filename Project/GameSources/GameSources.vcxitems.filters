@@ -136,6 +136,24 @@
     <Filter Include="StageObjs\FirTree">
       <UniqueIdentifier>{6f06704e-ccc7-495e-9140-fad968ffe6a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Stages\GameOverStage">
+      <UniqueIdentifier>{f711c955-d733-4d3a-837a-c4c7c985f081}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stages\GameClearStage">
+      <UniqueIdentifier>{9d7cca78-6ae9-4362-a114-e38776415536}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StageObjs\Slope">
+      <UniqueIdentifier>{c235be90-4ae1-4493-a111-42f4303a8887}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Other\LoadMedia">
+      <UniqueIdentifier>{95f26bde-4502-4f0e-9682-0e65e0e2daf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\EffectUpdateDrawManager">
+      <UniqueIdentifier>{7a0421e3-dc6b-4b74-a23f-3fb2fb9d26c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\EffectManager">
+      <UniqueIdentifier>{5e811e18-8067-4aee-b08f-e641e0fe2d7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -216,9 +234,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)BinaryFile.h">
       <Filter>Other</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Conversion.h">
-      <Filter>Other</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)StageObjectInterface.h">
       <Filter>Other</Filter>
     </ClInclude>
@@ -269,6 +284,27 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)FirTree.h">
       <Filter>StageObjs\FirTree</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameOverStage.h">
+      <Filter>Stages\GameOverStage</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameClearStage.h">
+      <Filter>Stages\GameClearStage</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Slope.h">
+      <Filter>StageObjs\Slope</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Utils.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)LoadMedia.h">
+      <Filter>Other\LoadMedia</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h">
+      <Filter>Managers\EffectManager</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EffectUpdateDrawManager.h">
+      <Filter>Managers\EffectUpdateDrawManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -391,6 +427,24 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)FirTree.cpp">
       <Filter>StageObjs\FirTree</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameOverStage.cpp">
+      <Filter>Stages\GameOverStage</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameClearStage.cpp">
+      <Filter>Stages\GameClearStage</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Slope.cpp">
+      <Filter>StageObjs\Slope</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)LoadMedia.cpp">
+      <Filter>Other\LoadMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp">
+      <Filter>Managers\EffectManager</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EffectUpdateDrawManager.cpp">
+      <Filter>Managers\EffectUpdateDrawManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

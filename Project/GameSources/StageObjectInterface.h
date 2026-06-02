@@ -19,6 +19,7 @@ namespace basecross
 		FallenTree,
 		FirTree,
 		EnemyAlpaca,
+		Slope,
 		Max
 	} ;
 

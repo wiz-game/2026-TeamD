@@ -18,7 +18,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Bubble.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Conversion.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)EffectUpdateDrawManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LoadMedia.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Utils.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DebugLog.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Dirt.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModel.h" />
@@ -26,11 +29,14 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyAlpaca.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FallenTree.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FirTree.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameClearStage.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameOverStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Gizmo.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ItemBase.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PowerUpSoap.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SkyBox.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Slope.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StageObjectInterface.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyBase.h" />
@@ -70,12 +76,16 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)DXModelResource.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)EffectUpdateDrawManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyAlpaca.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyBase.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FallenTree.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FirTree.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FurBubble.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameClearStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameOverStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Gizmo.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Ground.cpp" />
@@ -83,6 +93,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ItemBase.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltRigidBody.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)LoadMedia.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mushroom.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Move.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MyCamera.cpp" />
@@ -92,6 +103,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyBox.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Slope.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StageEditor.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Stone.cpp" />

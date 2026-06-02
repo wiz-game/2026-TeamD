@@ -13,37 +13,64 @@ namespace basecross
 	void PowerUpSoap::OnCreate()
 	{
 		AddTag(L"Soap");
+
+		m_transform = AddComponent<Transform>();
+		m_transform->SetScale(m_Scale);
+		m_transform->SetRotation(m_Rotation);
+
 		m_draw = AddComponent<PNTStaticDraw>();
-		m_draw->SetMeshResource(L"DEFAULT_CUBE");
+		m_draw->SetMeshResource(L"M_Soap");
+		m_draw->SetTextureResource(L"T_Soap_1");
+
+		auto shadow = AddComponent<Shadowmap>();	
+		shadow->SetMeshResource(L"M_Soap");
 
 		m_colObb = AddComponent<CollisionObb>();
 
-		//m_gravity = AddComponent<Gravity>();
+		m_InitPosition = m_Position;
 	}
 
 	// 更新
 	void PowerUpSoap::OnUpdate()
 	{
-		GetItem(GetThis<PowerUpSoap>());
+		Rotation();
+		UpDown();
+		DebugStr();
 	}
 
-	void PowerUpSoap::GetSoapOfCoolDown()
+	void PowerUpSoap::Rotation()
 	{
-		// 現在有効なステージの情報を取得する
-		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-		if (stage == nullptr)	// エラー対策
-		{
-			return;
-		}
+		m_Rotation.y += m_RotationSpeed * App::GetApp()->GetElapsedTime();
+		m_transform->SetRotation(m_Rotation.x,m_Rotation.y,m_Rotation.z);
+	}
 
-		// Playerの情報を取得する
-		auto player = stage->GetSharedGameObject<Player>(L"Player");
-		if (player == nullptr)	// エラー対策
+	void PowerUpSoap::UpDown()
+	{
+		float upDown = 0.5;
+		if (m_isUp == true)
 		{
-			return;
+			m_Position.y += m_UpSpeed * App::GetApp()->GetElapsedTime();
+			if (m_Position.y >= m_InitPosition.y + upDown)
+			{
+				m_isUp = false;
+			}
 		}
+		else 
+		{
+			m_Position.y -= m_UpSpeed * App::GetApp()->GetElapsedTime();
+			if (m_Position.y <= m_InitPosition.y - upDown)
+			{
+				m_isUp = true;
+			}
+		}
+		m_transform->SetPosition(m_Position.x,m_Position.y,m_Position.z);
+	}
 
-		player->SetCoolDown(true);
+	void PowerUpSoap::DebugStr()
+	{
+		auto transRot = m_transform->GetRotation();
+	
+		GameManager::Instance().AddDebugStr(L"Rotation_Y", transRot.y);
 	}
 }
 //end basecross

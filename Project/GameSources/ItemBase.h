@@ -6,9 +6,8 @@
 #pragma once
 #include "stdafx.h"
 
-namespace basecross {
-
-
+namespace basecross 
+{
 	//--------------------------------------------------------------------------------------
 	//	class GenericSprite : public GameObject;
 	//--------------------------------------------------------------------------------------
@@ -30,6 +29,7 @@ namespace basecross {
 		//virtual void OnDraw() override; // 描画
 
 		void GetItem(const shared_ptr<GameObject>& gameObject);
+		void GetSoapOfCoolDown();
 
 		// --- 当たり判定 ---
 		void OnCollisionEnter(shared_ptr<GameObject>& Other);	//	当たり判定

@@ -23,19 +23,36 @@ namespace basecross
 		// ドローコンポーネントを追加
 		m_draw = AddComponent<PNTDXModelDraw>();
 		auto drawComp = AddComponent<PNTStaticDraw>();
-		drawComp->SetMeshResource(L"M_Alpaca");
-		drawComp->SetTextureResource(L"T_Alpaca");
+		drawComp->SetMeshResource(L"M_Awapaka");
+		drawComp->SetTextureResource(L"T_Awapaka");
 		drawComp->SetDrawActive(true);
 
 		// 当たり判定のコンポーネント
 		auto obb = AddComponent<CollisionObb>();
-		obb->SetAfterCollision(AfterCollision::Auto);
+		//obb->SetAfterCollision(AfterCollision::Auto);
 
 		// 重力のコンポーネント
 		m_gravity = AddComponent<Gravity>();
 
+		auto shadowComp = AddComponent<Shadowmap>();
+		shadowComp->SetMeshResource(L"M_Awapaka");
+		shadowComp->SetDrawActive(true);
+
+		Mat4x4 spanMat;
+		spanMat.affineTransformation
+		(
+			Vec3(1.0f, 1.0f, 1.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, XM_PIDIV2, 0.0f),
+			Vec3(0.0f, -0.5f, 0.0f)
+		);
+
+		drawComp->SetMeshToTransformMatrix(spanMat);
+		shadowComp->SetMeshToTransformMatrix(spanMat);
+
+
 		// バブルのコンポーネント
-		auto fbComp = AddComponent<FurBubble>(GetStage());
+		//auto fbComp = AddComponent<FurBubble>(GetStage());
 	}
 
 	// プレイヤーの更新処理
@@ -43,8 +60,25 @@ namespace basecross
 	{
 		ReSpawn();
 		Jump();
+		PlayerDied();
 		LaunchofBubble();
 		DebugString();
+
+		switch (m_playerState)
+		{
+		case PlayerState::Default:
+			break;
+		case PlayerState::PowerUp :
+			if (m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
+			{
+				SetPlayerState(PlayerState::Default);
+			}
+			break;
+		case PlayerState::Dead:
+			break;
+		default:
+			break;
+		}
 	}
 
 	void Player::Jump()
@@ -61,13 +95,10 @@ namespace basecross
 			// 1台目のコントローラのAボタンが押されたら または ジャンプしていなかったら
 			if ((control[0].wPressedButtons & XINPUT_GAMEPAD_A) && m_isJumping == false)
 			{
-				m_gravity->StartJump(Vec3(0.0f,9.8f,0.0f));
-				//m_Velocity = m_JumpPower;
+				m_gravity->StartJump(m_VecJumpPower);
 				m_isJumping = true;
 			}
 		}
-
-		m_transform->SetPosition(transPos);
 	}
 
 	void Player::LaunchofBubble()
@@ -85,16 +116,16 @@ namespace basecross
 
 		if (m_BubblePowerCoolDown == true)
 		{
-			m_initCoolDown = 0.6f;
+			m_initCoolDown = 0.3f;
 		}
 		else
 		{
-			m_initCoolDown = 0.3;
+			m_initCoolDown = 0.6f;
 		}
 
 		if (control[0].bRightTrigger && m_Bresing == false)
 		{
-			m_pBubble = stage->AddGameObject<Bubble>(GetThis<Player>(), Vec3(0.5f), 5.0f, m_Attack);
+			m_pBubble = stage->AddGameObject<Bubble>(GetThis<Player>(), Vec3(0.5f), 5.0f, m_Attack, m_isPlayerPowerUp);
 			m_pBubble->ShootBubble();
 			m_Bresing = true;
 			m_cooldown = m_initCoolDown;
@@ -114,8 +145,18 @@ namespace basecross
 	void Player::PlayerDied()
 	{
 		auto scene = App::GetApp()->GetScene<Scene>();
+		if (scene == nullptr)
+		{
+			return;
+		}
+
 		auto stage = scene->GetActiveStage();
 		if (stage == nullptr)
+		{
+			return;
+		}
+
+		if (m_isDead == true)
 		{
 			return;
 		}
@@ -124,9 +165,10 @@ namespace basecross
 		const float DIED_HP = 0.0f;
 
 		// 死亡したらゲームオーバー画面にいかせる
-		if (m_PlayerHP <= DIED_HP)
+		if (m_PlayerHP <= DIED_HP && m_isDead == false)
 		{
-			PostEvent(1.0f, GetThis<ObjectInterface>(), scene, L"ToGameOver");
+			m_isDead = true;
+			GameManager::Instance().SetGameMode(ENUM_GameMode::GameOver);
 		}
 	}
 
@@ -142,6 +184,10 @@ namespace basecross
 		GameManager::Instance().AddDebugStr(L"PlayerRotation.z", m_transform->GetRotation().z);
 		GameManager::Instance().AddDebugStr(L"PlayerHP", m_PlayerHP);
 		GameManager::Instance().AddDebugStr(L"Attack", m_Attack);
+		GameManager::Instance().AddDebugStr(L"Cooldown", m_BubblePowerCoolDown);
+		GameManager::Instance().AddDebugStr(L"PlayerPowerUp", m_isPlayerPowerUp);
+		GameManager::Instance().AddDebugStr(L"PowerUpTimer", m_timer.GetCounter());
+		GameManager::Instance().AddDebugStr(L"PlayerPowerUp", m_isPlayerPowerUp);
 	}
 
 	void Player::ReSpawn()
@@ -170,12 +216,13 @@ namespace basecross
 	{
 		InputManager* i = &InputManager::Instance();
 		auto slowness = i->GetMoveSpeed() / 2;
+		float slowness2 = 0.9f;
 
 		// ダート（汚れ）
 		if (Other->FindTag(L"Dirt"))
 		{
 			m_PlayerHP -= 1.0f;
-			i->SetMoveSpeed(slowness);
+			i->SetMoveSpeed(slowness2);
 		}
 
 		float Power = 6.0f;
@@ -184,7 +231,6 @@ namespace basecross
 		if (Other->FindTag(L"Ground"))
 		{
 			m_isJumping = false;
-			m_Velocity = 0.0f;
 		}
 
 		// バブル
@@ -193,19 +239,29 @@ namespace basecross
 			if (Other->GetComponent<Transform>()->GetPosition().y < transPos.y)
 			{
 				m_isJumping = false;
-				m_Velocity = 0.0f;
 			}
 		}
 
-
 		// トランポリンバブル
-		if (Other->FindTag(L"TranmpolineBase"))
+		if (Other->FindTag(L"TrampolineBubbles"))
 		{
 			if (Other->GetComponent<Transform>()->GetPosition().y < transPos.y)
 			{
-				m_isJumping = true;
-				m_Velocity = m_JumpPower * Power;
+				m_gravity->StartJump(m_VecJumpPower);
 			}
+		}
+
+		if (Other->FindTag(L"Soap"))
+		{
+			m_iseatSoap = true;
+			m_pBubble->BubbleAddAblity(BubbleAbility::RideBubble);
+			m_pBubble->BubbleAddAblity(BubbleAbility::TranpolineBubble);
+			SetPlayerState(PlayerState::PowerUp);
+		}
+
+		if (Other->FindTag(L"Enemy"))
+		{
+			m_PlayerHP -= 1.0f;
 		}
 	}
 
@@ -220,10 +276,59 @@ namespace basecross
 		InputManager* i = &InputManager::Instance();
 		// 1.0fだと半分のままなので、2倍を掛けてあげることによって通常の速度にする
 		float normalSpeed = i->GetMoveSpeed() * 2.0f;
+		float normalSpeed2 = 1.8f;
 
 		if (Other->FindTag(L"Dirt"))
 		{
-			i->SetMoveSpeed(normalSpeed);
+			i->SetMoveSpeed(normalSpeed2);
+		}
+	}
+
+	void Player::CreateBubble()
+	{
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		m_pBubble = stage->AddGameObject<Bubble>(GetThis<Player>(), Vec3(0.5f), 5.0f, m_Attack,m_isPlayerPowerUp);
+		m_pBubble->ShootBubble();
+	}
+
+	void Player::SetPlayerState(PlayerState state)
+	{
+		ExitPlayerState(m_playerState);
+		m_playerState = state;
+		EnterPlayerState(m_playerState);
+	}
+
+	void Player::EnterPlayerState(PlayerState state)
+	{
+		switch (state)
+		{
+		case PlayerState::Default:
+			Timer(4.0f);
+			m_timer.SetCounter();
+			m_isPlayerPowerUp = false;
+			break;
+		case PlayerState::PowerUp:
+			m_isPlayerPowerUp = true;
+			break;
+		case PlayerState::Dead:
+			break;
+		default:
+			break;
+		}
+	}
+
+	void Player::ExitPlayerState(PlayerState state)
+	{
+		switch (state)
+		{
+		case PlayerState::Default:
+			break;
+		case PlayerState::PowerUp:
+			break;
+		case PlayerState::Dead:
+			break;
+		default:
+			break;
 		}
 	}
 }

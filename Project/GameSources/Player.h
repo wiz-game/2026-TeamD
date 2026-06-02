@@ -9,9 +9,17 @@
 
 namespace basecross 
 {
+	enum class PlayerState
+	{
+		Default,
+		PowerUp,
+		Dead
+	};
+
 	// GameObjectクラスを継承した「Player」クラスを定義
 	class Player : public GameObject // GameObjectクラスの継承【必須】
 	{
+		PlayerState m_playerState;
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
 		std::shared_ptr<Move> m_move;
@@ -27,6 +35,7 @@ namespace basecross
 		Vec3 m_Position;
 		Vec3 m_Rotation;
 		Vec3 m_Scale;
+		Vec3 m_VecJumpPower;
 		bool m_isTargetMode;
 		// 重力の処理
 		float m_Velocity;
@@ -36,8 +45,10 @@ namespace basecross
 		bool m_isJumping; // 現在ジャンプしているかどうか
 
 		bool m_Bresing;
+
+		bool m_isDead;
 		
-		int m_Attack;
+		float m_Attack;
 
 		// 強化状態
 		bool m_BubblePowerCoolDown;		// クールダウン
@@ -51,14 +62,22 @@ namespace basecross
 		// 泡を吐いたクールタイムを格納するための変数
 		// クールダウンは"LaunchofBubble()"の中にローカル変数として入っているので、そこを変えてださい
 		float m_cooldown;
+
+		bool m_iseatSoap;
+
+		// プレイヤーがパワーアップしたか
+		bool m_isPlayerPowerUp;
+		// カウント時間
+		Timer m_timer;
 	public :
 		// ステージを引数にしたコンストラクタ【必須】
 		Player(const std::shared_ptr<Stage>& stage, const Vec3& position) :
 			GameObject(stage), // ステージをGameObjectに渡す【必須】
-			m_Velocity(0.0f),
+			m_Velocity(10.0f),
 			m_Position(position),
 			m_Rotation(0.0f, 1.5f, 0.0f),
 			m_Scale(0.3f, 0.3f, 0.3f),
+			m_VecJumpPower(0.0f,9.8f,0.0f),
 			m_isJumping(false),
 			m_JumpPower(6.0f),
 			m_Gravity(9.8f),
@@ -75,7 +94,12 @@ namespace basecross
 			m_BubblePowerBulletSpeed(false),
 			m_Attack(2),
 			// クールダウンの初期値
-			m_initCoolDown(0.6)
+			m_initCoolDown(0.6),
+			m_iseatSoap(false),
+			m_isDead(false),
+			m_isPlayerPowerUp(false),
+			m_playerState(PlayerState::Default),
+			m_timer(4.0f)
 		{
 		}
 
@@ -125,6 +149,23 @@ namespace basecross
 		{
 			m_BubblePowerCoolDown = sed;
 		}
+
+		bool GetEatSoap()
+		{
+			return m_iseatSoap;
+		}
+
+		shared_ptr<Bubble> GetHaveBubble()
+		{
+			return m_pBubble;
+		}
+
+		void CreateBubble();
+
+		void SetPlayerState(PlayerState state);
+		void EnterPlayerState(PlayerState state);
+		void ExitPlayerState(PlayerState state);
+		
 	};
 }
 //end basecross

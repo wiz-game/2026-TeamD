@@ -75,6 +75,9 @@ namespace basecross
 			case ENUM_ObjectID::EnemyAlpaca:
 				stage->AddGameObject<EnemyAlpaca>(objParam);
 				break;
+			case ENUM_ObjectID::Slope:
+				stage->AddGameObject<Slope>(objParam);
+				break;
 			default:
 				break;
 			}
@@ -414,6 +417,9 @@ namespace basecross
 		case ENUM_ObjectID::EnemyAlpaca:
 			stage->AddGameObject<EnemyAlpaca>(originalObjParam);
 			break;
+		case ENUM_ObjectID::Slope:
+			stage->AddGameObject<Slope>(originalObjParam);
+			break;
 		default:
 			break;
 		}
@@ -508,36 +514,45 @@ namespace basecross
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
 		if (!stage) return;
 
+		shared_ptr<GameObject> newObj = nullptr;
+
 		STRUCT_ObjectParam objParam(m_objID);
 		switch (m_objID)
 		{
 		case ENUM_ObjectID::Ground:
-			stage->AddGameObject<Ground>(objParam);
+			newObj = stage->AddGameObject<Ground>(objParam);
 			break;
 		case ENUM_ObjectID::Mushroom:
-			stage->AddGameObject<Mushroom>(objParam);
+			newObj = stage->AddGameObject<Mushroom>(objParam);
 			break;
 		case ENUM_ObjectID::Tree:
-			stage->AddGameObject<Tree>(objParam);
+			newObj = stage->AddGameObject<Tree>(objParam);
 			break;
 		case ENUM_ObjectID::Dirt:
-			stage->AddGameObject<Dirt>(objParam);
+			newObj = stage->AddGameObject<Dirt>(objParam);
 			break;
 		case ENUM_ObjectID::Stone:
-			stage->AddGameObject<Stone>(objParam);
+			newObj = stage->AddGameObject<Stone>(objParam);
 			break;
 		case ENUM_ObjectID::FallenTree:
-			stage->AddGameObject<FallenTree>(objParam);
+			newObj = stage->AddGameObject<FallenTree>(objParam);
 			break;
 		case ENUM_ObjectID::FirTree:
-			stage->AddGameObject<FirTree>(objParam);
+			newObj = stage->AddGameObject<FirTree>(objParam);
 			break;
 		case ENUM_ObjectID::EnemyAlpaca:
-			stage->AddGameObject<EnemyAlpaca>(objParam);
+			newObj = stage->AddGameObject<EnemyAlpaca>(objParam);
+			break;
+		case ENUM_ObjectID::Slope:
+			newObj = stage->AddGameObject<Slope>(objParam);
 			break;
 		default:
 			break;
 		}
+
+		if (!newObj) return;
+
+		newObj->SetUpdateActive(false);
 	}
 
 	void StageEditor::ChangeObject(bool yKeyPressed, bool uKeyPressed)
