@@ -90,6 +90,12 @@ namespace basecross
 			case ENUM_ObjectID::Board:
 				stage->AddGameObject<Board>(objParam);
 				break;
+			case ENUM_ObjectID::Apple:
+				stage->AddGameObject<Apple>(objParam);
+				break;
+			case ENUM_ObjectID::Shrub:
+				stage->AddGameObject<Shrub>(objParam);
+				break;
 			default:
 				break;
 			}
@@ -444,6 +450,12 @@ namespace basecross
 		case ENUM_ObjectID::Board:
 			stage->AddGameObject<Board>(originalObjParam);
 			break;
+		case ENUM_ObjectID::Apple:
+			stage->AddGameObject<Apple>(originalObjParam);
+			break;
+		case ENUM_ObjectID::Shrub:
+			stage->AddGameObject<Shrub>(originalObjParam);
+			break;
 		default:
 			break;
 		}
@@ -581,6 +593,12 @@ namespace basecross
 			break;
 		case ENUM_ObjectID::Board:
 			newObj = stage->AddGameObject<Board>(objParam);
+			break;
+		case ENUM_ObjectID::Apple:
+			newObj = stage->AddGameObject<Apple>(objParam);
+			break;
+		case ENUM_ObjectID::Shrub:
+			newObj = stage->AddGameObject<Shrub>(objParam);
 			break;
 		default:
 			break;
