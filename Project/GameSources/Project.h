@@ -22,6 +22,8 @@
 // マネージャークラス
 #include "GameManager.h"
 #include "SoundManager.h"
+#include "EffectManager.h"
+#include "EffectUpdateDrawManager.h"
 
 // オリジナルコンポーネント
 #include "Move.h"
