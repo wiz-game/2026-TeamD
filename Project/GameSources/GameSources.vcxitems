@@ -20,6 +20,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectUpdateDrawManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Fence.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LoadMedia.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Utils.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DebugLog.h" />
@@ -81,6 +82,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyAlpaca.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyBase.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FallenTree.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Fence.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FirTree.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FurBubble.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameClearStage.cpp" />

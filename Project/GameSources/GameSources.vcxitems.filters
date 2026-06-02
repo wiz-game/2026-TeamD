@@ -154,6 +154,9 @@
     <Filter Include="Managers\EffectManager">
       <UniqueIdentifier>{5e811e18-8067-4aee-b08f-e641e0fe2d7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StageObjs\Fence">
+      <UniqueIdentifier>{67fc20dd-d343-4dbf-b62f-c162fc813711}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -306,6 +309,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectUpdateDrawManager.h">
       <Filter>Managers\EffectUpdateDrawManager</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Fence.h">
+      <Filter>StageObjs\Fence</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -445,6 +451,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectUpdateDrawManager.cpp">
       <Filter>Managers\EffectUpdateDrawManager</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Fence.cpp">
+      <Filter>StageObjs\Fence</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

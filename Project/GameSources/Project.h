@@ -42,6 +42,7 @@
 #include "FallenTree.h"
 #include "FirTree.h"
 #include "Slope.h"
+#include "Fence.h"
 
 // エネミー
 #include "EnemyBase.h"
