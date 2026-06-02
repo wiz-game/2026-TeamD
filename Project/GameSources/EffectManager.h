@@ -182,9 +182,9 @@ namespace basecross
 	};
 
 	//--------------------------------------------------------------------------------------
-	// S_EffHandle : エフェクトハンドル構造体
+	// EffectHandle : エフェクトハンドル構造体
 	//--------------------------------------------------------------------------------------
-	struct S_EffHandle
+	struct EffectHandle
 	{
 	private:
 		Handle handle;
@@ -193,17 +193,17 @@ namespace basecross
 		/*
 			コンストラクタ
 		*/
-		S_EffHandle() : handle(EffectManager::Instance().GetEffNull()) {}
+		EffectHandle() : handle(EffectManager::Instance().GetEffNull()) {}
 		//----------------------------------------------------------------------------------
 		/*
 			デストラクタ
 		*/
-		~S_EffHandle() {};
+		~EffectHandle() {};
 		//----------------------------------------------------------------------------------
 		/*
 			Handle型からの代入
 		*/
-		S_EffHandle& operator=(const Handle& H) { handle = H; return *this; }
+		EffectHandle& operator=(const Handle& H) { handle = H; return *this; }
 		//----------------------------------------------------------------------------------
 		/*
 			Handle型への暗黙キャスト
