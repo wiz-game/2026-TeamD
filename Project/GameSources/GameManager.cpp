@@ -31,6 +31,7 @@ namespace basecross
 			App::GetApp()->GetScene<Scene>()->ChangeStage(m_serectGameStage);
 			break;
 		case ENUM_GameMode::Menu:
+			MenuManager::Instance().Pause();
 			break;
 		case ENUM_GameMode::Editor:
 			SetAllGameObjectsUpdateActive(false);
