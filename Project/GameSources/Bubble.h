@@ -58,8 +58,10 @@ namespace basecross
 		bool m_isTranpolineBubble;
 		bool m_isRideBubble;
 
+		bool m_isPowerUp;
+
 	public :
-		Bubble::Bubble(const shared_ptr<Stage>& stage,const shared_ptr<GameObject>& parent,const Vec3& scale,const float& initialVelocity,const float& HP);
+		Bubble::Bubble(const shared_ptr<Stage>& stage,const shared_ptr<GameObject>& parent,const Vec3& scale,const float& initialVelocity,const float& HP,const bool& isPowerUp);
 		Bubble::~Bubble();
 
 		void OnCreate() override;
@@ -116,6 +118,11 @@ namespace basecross
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other);
 
 		void CreateActiveInstances();
+
+		bool GetBubblePowerUp()
+		{
+			return m_isPowerUp;
+		}
 	};
 
 	class ViewBubble : public GameObject
