@@ -75,6 +75,10 @@ namespace basecross
 			}
 			break;
 		case PlayerState::Dead:
+			if (m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
+			{
+				GameManager::Instance().SetGameMode(ENUM_GameMode::GameOver);
+			}
 			break;
 		default:
 			break;
@@ -168,7 +172,7 @@ namespace basecross
 		if (m_PlayerHP <= DIED_HP && m_isDead == false)
 		{
 			m_isDead = true;
-			GameManager::Instance().SetGameMode(ENUM_GameMode::GameOver);
+			SetPlayerState(PlayerState::Dead);
 		}
 	}
 
@@ -261,7 +265,7 @@ namespace basecross
 
 		if (Other->FindTag(L"Enemy"))
 		{
-			m_PlayerHP -= 1.0f;
+			m_PlayerHP -= 10.0f;
 		}
 	}
 
@@ -303,7 +307,7 @@ namespace basecross
 		switch (state)
 		{
 		case PlayerState::Default:
-			Timer(4.0f);
+			m_timer = Timer(6.0f);
 			m_timer.SetCounter();
 			m_isPlayerPowerUp = false;
 			break;
@@ -311,6 +315,8 @@ namespace basecross
 			m_isPlayerPowerUp = true;
 			break;
 		case PlayerState::Dead:
+			m_timer = Timer(0.0f);
+			m_timer.SetCounter();
 			break;
 		default:
 			break;
