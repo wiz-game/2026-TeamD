@@ -20,6 +20,12 @@ namespace basecross
 		FirTree,
 		EnemyAlpaca,
 		Slope,
+		Fence,
+		LongMushroom,
+		Foothold,
+		Board,
+		Apple,
+		Shrub,
 		Max
 	} ;
 

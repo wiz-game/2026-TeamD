@@ -8,29 +8,31 @@ namespace basecross
 		SoundManager::Instance().StopBGM();
 		SoundManager::Instance().AllStopSE();
 
+		auto scene = App::GetApp()->GetScene<Scene>();
 		switch (gameMode)
 		{
 		case ENUM_GameMode::Title:
-			App::GetApp()->GetScene<Scene>()->ChangeStage(L"TitleStage");
+			scene->ChangeStage(L"TitleStage");
 			SoundManager::Instance().PlayBGM(L"Title_BGM");
 			break;
 		case ENUM_GameMode::Select:
-			App::GetApp()->GetScene<Scene>()->ChangeStage(L"SelectStage");
+			scene->ChangeStage(L"SelectStage");
 			SoundManager::Instance().PlayBGM(L"Title_BGM");
 			break;
 		case ENUM_GameMode::GameClear:
-			App::GetApp()->GetScene<Scene>()->ChangeStage(L"GameClearStage");
+			scene->ChangeStage(L"GameClearStage");
 			SoundManager::Instance().PlaySE(L"GameClear_BGM");
 			break;
-			break;
 		case ENUM_GameMode::GameOver:
-			App::GetApp()->GetScene<Scene>()->ChangeStage(L"GameOverStage");
+			scene->ChangeStage(L"GameOverStage");
 			SoundManager::Instance().PlaySE(L"GameOver_BGM");
 			break;
 		case ENUM_GameMode::Play:
-			App::GetApp()->GetScene<Scene>()->ChangeStage(m_serectGameStage);
+			if (scene->GetNowStageName() != m_selectGameStage)
+				scene->ChangeStage(m_selectGameStage);
 			break;
 		case ENUM_GameMode::Menu:
+			MenuManager::Instance().Pause();
 			break;
 		case ENUM_GameMode::Editor:
 			SetAllGameObjectsUpdateActive(false);
@@ -57,6 +59,7 @@ namespace basecross
 		case ENUM_GameMode::Play:
 			break;
 		case ENUM_GameMode::Menu:
+			MenuManager::Instance().ClosePause();
 			break;
 		case ENUM_GameMode::Editor:
 			SetAllGameObjectsUpdateActive(true);
@@ -131,12 +134,12 @@ namespace basecross
 	void GameManager::ChangeSelectGameStage(const int& incrDecrNum)
 	{
 		// 現在のステージ番号を取得
-		int stageNum = _wtoi(m_serectGameStage.substr(m_serectGameStage.find_last_of(L"_") + 1).c_str());
+		int stageNum = _wtoi(m_selectGameStage.substr(m_selectGameStage.find_last_of(L"_") + 1).c_str());
 
 		stageNum += incrDecrNum;
 		stageNum = max(stageNum, GAMESTAGE_MIN);
 		stageNum = min(stageNum, GAMESTAGE_MAX);
 
-		m_serectGameStage = L"GameStage_" + to_wstring(stageNum);
+		m_selectGameStage = L"GameStage_" + to_wstring(stageNum);
 	}
 }

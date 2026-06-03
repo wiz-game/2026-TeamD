@@ -78,6 +78,24 @@ namespace basecross
 			case ENUM_ObjectID::Slope:
 				stage->AddGameObject<Slope>(objParam);
 				break;
+			case ENUM_ObjectID::Fence:
+				stage->AddGameObject<Fence>(objParam);
+				break;
+			case ENUM_ObjectID::LongMushroom:
+				stage->AddGameObject<LongMushroom>(objParam);
+				break;
+			case ENUM_ObjectID::Foothold:
+				stage->AddGameObject<Foothold>(objParam);
+				break;
+			case ENUM_ObjectID::Board:
+				stage->AddGameObject<Board>(objParam);
+				break;
+			case ENUM_ObjectID::Apple:
+				stage->AddGameObject<Apple>(objParam);
+				break;
+			case ENUM_ObjectID::Shrub:
+				stage->AddGameObject<Shrub>(objParam);
+				break;
 			default:
 				break;
 			}
@@ -420,6 +438,24 @@ namespace basecross
 		case ENUM_ObjectID::Slope:
 			stage->AddGameObject<Slope>(originalObjParam);
 			break;
+		case ENUM_ObjectID::Fence:
+			stage->AddGameObject<Fence>(originalObjParam);
+			break;
+		case ENUM_ObjectID::LongMushroom:
+			stage->AddGameObject<LongMushroom>(originalObjParam);
+			break;
+		case ENUM_ObjectID::Foothold:
+			stage->AddGameObject<Foothold>(originalObjParam);
+			break;
+		case ENUM_ObjectID::Board:
+			stage->AddGameObject<Board>(originalObjParam);
+			break;
+		case ENUM_ObjectID::Apple:
+			stage->AddGameObject<Apple>(originalObjParam);
+			break;
+		case ENUM_ObjectID::Shrub:
+			stage->AddGameObject<Shrub>(originalObjParam);
+			break;
 		default:
 			break;
 		}
@@ -545,6 +581,24 @@ namespace basecross
 			break;
 		case ENUM_ObjectID::Slope:
 			newObj = stage->AddGameObject<Slope>(objParam);
+			break;
+		case ENUM_ObjectID::Fence:
+			newObj = stage->AddGameObject<Fence>(objParam);
+			break;
+		case ENUM_ObjectID::LongMushroom:
+			newObj = stage->AddGameObject<LongMushroom>(objParam);
+			break;
+		case ENUM_ObjectID::Foothold:
+			newObj = stage->AddGameObject<Foothold>(objParam);
+			break;
+		case ENUM_ObjectID::Board:
+			newObj = stage->AddGameObject<Board>(objParam);
+			break;
+		case ENUM_ObjectID::Apple:
+			newObj = stage->AddGameObject<Apple>(objParam);
+			break;
+		case ENUM_ObjectID::Shrub:
+			newObj = stage->AddGameObject<Shrub>(objParam);
 			break;
 		default:
 			break;

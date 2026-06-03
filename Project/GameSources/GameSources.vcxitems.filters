@@ -154,6 +154,27 @@
     <Filter Include="Managers\EffectManager">
       <UniqueIdentifier>{5e811e18-8067-4aee-b08f-e641e0fe2d7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StageObjs\Fence">
+      <UniqueIdentifier>{67fc20dd-d343-4dbf-b62f-c162fc813711}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StageObjs\LongMushroom">
+      <UniqueIdentifier>{2c9a2adc-de3a-430d-b100-cb9c2694b0e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\MenuManager">
+      <UniqueIdentifier>{96a36892-591d-4647-969b-876d95d57693}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StageObjs\Foothold">
+      <UniqueIdentifier>{90afa0f6-2429-4491-9990-d849f30fba46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StageObjs\Board">
+      <UniqueIdentifier>{662d1943-5051-445d-8e89-298a5c9a21ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StageObjs\Apple">
+      <UniqueIdentifier>{2ed110a8-0bc7-4f86-9d53-d53a9aa8478f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StageObjs\Shrub">
+      <UniqueIdentifier>{46a9c8db-ec4e-472b-9f2a-c7843b8d5b39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -306,6 +327,27 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectUpdateDrawManager.h">
       <Filter>Managers\EffectUpdateDrawManager</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Fence.h">
+      <Filter>StageObjs\Fence</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)LongMushroom.h">
+      <Filter>StageObjs\LongMushroom</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MenuManager.h">
+      <Filter>Managers\MenuManager</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Foothold.h">
+      <Filter>StageObjs\Foothold</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Board.h">
+      <Filter>StageObjs\Board</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Apple.h">
+      <Filter>StageObjs\Apple</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Shrub.h">
+      <Filter>StageObjs\Shrub</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -445,6 +487,27 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectUpdateDrawManager.cpp">
       <Filter>Managers\EffectUpdateDrawManager</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Fence.cpp">
+      <Filter>StageObjs\Fence</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)LongMushroom.cpp">
+      <Filter>StageObjs\LongMushroom</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MenuManager.cpp">
+      <Filter>Managers\MenuManager</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Foothold.cpp">
+      <Filter>StageObjs\Foothold</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Board.cpp">
+      <Filter>StageObjs\Board</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Apple.cpp">
+      <Filter>StageObjs\Apple</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Shrub.cpp">
+      <Filter>StageObjs\Shrub</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

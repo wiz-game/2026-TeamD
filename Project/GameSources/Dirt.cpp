@@ -68,16 +68,5 @@ namespace basecross
 
 	void Dirt::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
-		if (Other->FindTag(L"Bubble"))
-		{
-			auto oldScale = m_trans->GetScale();
-			auto newScale = oldScale * 0.75f;
-
-			auto pos = m_trans->GetPosition();
-			pos.y -= (oldScale.y - newScale.y) * 0.5f;
-
-			m_trans->SetPosition(pos);
-			m_trans->SetScale(newScale);
-		}
 	}
 }

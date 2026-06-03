@@ -93,6 +93,12 @@ namespace basecross
 		// Released
 		void ReleasedLTrigger();
 
+		// GameMode：Menu用の入力関数
+		void ReturnGame();
+		void ReturnOneMenu();
+		void MoveMenuCursor();
+		void PressedAMenu();
+
 		// GameMode：Editer用の入力関数
 		// ギズモによる操作
 		void ObjectOperation();

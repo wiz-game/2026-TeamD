@@ -22,6 +22,7 @@
 // マネージャークラス
 #include "GameManager.h"
 #include "SoundManager.h"
+#include "MenuManager.h"
 #include "EffectManager.h"
 #include "EffectUpdateDrawManager.h"
 
@@ -42,6 +43,12 @@
 #include "FallenTree.h"
 #include "FirTree.h"
 #include "Slope.h"
+#include "Fence.h"
+#include "LongMushroom.h"
+#include "Foothold.h"
+#include "Board.h"
+#include "Apple.h"
+#include "Shrub.h"
 
 // エネミー
 #include "EnemyBase.h"

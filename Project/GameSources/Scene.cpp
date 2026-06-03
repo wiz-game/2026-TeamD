@@ -38,7 +38,7 @@ namespace basecross
 
 	void Scene::OnCreate2()
 	{
-		GameManager::Instance().SetGameMode(ENUM_GameMode::GameClear);
+		GameManager::Instance().SetGameMode(ENUM_GameMode::Title);
 	}
 
 	void Scene::OnUpdate()
@@ -104,5 +104,8 @@ namespace basecross
 		{
 			ResetActiveStage<GameStage>(L"GameStage_5");
 		}
+
+		// 現在のステージ名を更新
+		m_nowStageName = event->m_MsgStr;
 	}
 }
