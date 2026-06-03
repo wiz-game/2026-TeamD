@@ -29,6 +29,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)LongMushroom.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MenuManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Shrub.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIMenu.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Utils.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DebugLog.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Dirt.h" />
@@ -128,6 +129,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Tree.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UIBase.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UIBlinking.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIMenu.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UISlide.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UITransitionSlide.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />
