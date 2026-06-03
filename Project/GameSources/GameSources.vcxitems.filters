@@ -178,6 +178,9 @@
     <Filter Include="Collision">
       <UniqueIdentifier>{8b712c98-1a5d-4c66-ab1b-9dbcbadbdd8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UIs\UIMenu">
+      <UniqueIdentifier>{b234b89a-e6f9-4d71-a4d9-eaa31d9a9d2e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -354,6 +357,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)CollisionObject.h">
       <Filter>Collision</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIMenu.h">
+      <Filter>UIs\UIMenu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -517,6 +523,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)CollisionObject.cpp">
       <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIMenu.cpp">
+      <Filter>UIs\UIMenu</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

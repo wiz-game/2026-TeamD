@@ -67,6 +67,7 @@
 #include "UIBlinking.h"
 #include "UISlide.h"
 #include "UITransitionSlide.h"
+#include "UIMenu.h"
 
 // 判定のみオブジェクト
 #include "CollisionObject.h"
