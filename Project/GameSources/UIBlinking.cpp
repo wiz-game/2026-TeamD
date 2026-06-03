@@ -51,6 +51,6 @@ namespace basecross
 			}
 		}
 		
-		m_sPtrDraw->SetDiffuse(Col4(m_color.x, m_color.y, m_color.z, m_blinkAlpha));
+		m_sPtrDraw->SetDiffuse(Col4(m_uiParam.Color.x, m_uiParam.Color.y, m_uiParam.Color.z, m_blinkAlpha));
 	}
 }

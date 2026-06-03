@@ -13,8 +13,7 @@ namespace basecross
 		: GameObject(stage),
 		m_uiParam(uiParam),
 		m_width(1920.0f * m_uiParam.ImageSizeRatio),
-		m_height(1080.0f * m_uiParam.ImageSizeRatio),
-		m_color(1.0f, 1.0f, 1.0f, 1.0f)
+		m_height(1080.0f * m_uiParam.ImageSizeRatio)
 	{
 	}
 
@@ -22,17 +21,17 @@ namespace basecross
 	{
 		m_vertices =
 		{
-			{ Vec3(-m_width * 0.5f,  m_height * 0.5f, 0), m_color, Vec2(0.0f, 0.0f) },
-			{ Vec3( m_width * 0.5f,  m_height * 0.5f, 0), m_color, Vec2(1.0f, 0.0f) },
-			{ Vec3(-m_width * 0.5f, -m_height * 0.5f, 0), m_color, Vec2(0.0f, 1.0f) },
-			{ Vec3( m_width * 0.5f, -m_height * 0.5f, 0), m_color, Vec2(1.0f, 1.0f) }
+			{ Vec3(-m_width * 0.5f,  m_height * 0.5f, 0), m_uiParam.Color, Vec2(0.0f, 0.0f) },
+			{ Vec3( m_width * 0.5f,  m_height * 0.5f, 0), m_uiParam.Color, Vec2(1.0f, 0.0f) },
+			{ Vec3(-m_width * 0.5f, -m_height * 0.5f, 0), m_uiParam.Color, Vec2(0.0f, 1.0f) },
+			{ Vec3( m_width * 0.5f, -m_height * 0.5f, 0), m_uiParam.Color, Vec2(1.0f, 1.0f) }
 		};
 
 		m_indices = { 0,1,2, 2,1,3 };
 		m_sPtrDraw = AddComponent<PCTSpriteDraw>(m_vertices, m_indices);
 		m_sPtrDraw->SetTextureResource(m_uiParam.MeshName);
 		m_sPtrDraw->SetSamplerState(SamplerState::LinearWrap);
-		m_sPtrDraw->SetDiffuse(m_color);
+		m_sPtrDraw->SetDiffuse(m_uiParam.Color);
 		SetAlphaActive(true);
 
 		m_sPtrTrans = AddComponent<Transform>();

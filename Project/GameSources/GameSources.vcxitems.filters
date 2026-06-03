@@ -470,9 +470,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Stone.cpp">
       <Filter>StageObjs\Stone</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)UISlide.cpp">
-      <Filter>UIs\UISlide</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)UITransitionSlide.cpp">
       <Filter>UIs\UITransitionSlide</Filter>
     </ClCompile>
@@ -526,6 +523,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)UIMenu.cpp">
       <Filter>UIs\UIMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UISlide.cpp">
+      <Filter>Stages\SelectStage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
