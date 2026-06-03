@@ -99,7 +99,7 @@ namespace basecross
 			m_isDead(false),
 			m_isPlayerPowerUp(false),
 			m_playerState(PlayerState::Default),
-			m_timer(4.0f)
+			m_timer(0.0f)
 		{
 		}
 
