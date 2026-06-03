@@ -14,6 +14,8 @@ namespace basecross
 		void RegisterMediaFiles(const wstring& Directory);
 		bool ShouldSkipFolder(const wstring& ParentDir, const wstring& FolderName);
 		void RegisterSingleModel(const wstring& Key, const wstring& ModelDir, const wstring& ModelFile, bool AccessWrite = false);
+
+		wstring m_nowStageName;
 	public:
 		Scene() :SceneBase(){}
 		virtual ~Scene();
@@ -22,6 +24,8 @@ namespace basecross
 		virtual void OnCreate2();
 		virtual void OnUpdate() override;
 		virtual void OnEvent(const shared_ptr<Event>& event) override;
+
+		wstring GetNowStageName() const { return m_nowStageName; }
 
 		void ChangeStage(const wstring& stageName) 
 		{

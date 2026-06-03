@@ -25,7 +25,7 @@ namespace basecross
 			// リソース作成
 			RegisterMediaFiles(App::GetApp()->GetDataDirWString());
 
-			GameManager::Instance().Initialize(false);
+			GameManager::Instance().Initialize(true);
 			InputManager::Instance().Initialize();
 			StageEditor::Instance().Initialize();
 		}
@@ -103,6 +103,9 @@ namespace basecross
 		{
 			ResetActiveStage<GameStage>(L"GameStage_5");
 		}
+
+		// 現在のステージ名を更新
+		m_nowStageName = event->m_MsgStr;
 	}
 
 	void Scene::RegisterMediaFiles(const wstring& Directory)
