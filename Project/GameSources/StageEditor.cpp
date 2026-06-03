@@ -96,6 +96,15 @@ namespace basecross
 			case ENUM_ObjectID::Shrub:
 				stage->AddGameObject<Shrub>(objParam);
 				break;
+			case ENUM_ObjectID::CollisionObb:
+				stage->AddGameObject<CollisionObbObject>(objParam);
+				break;
+			case ENUM_ObjectID::CollisionSphere:
+				stage->AddGameObject<CollisionSphereObject>(objParam);
+				break;
+			case ENUM_ObjectID::CollisionCapsule:
+				stage->AddGameObject<CollisionCapsuleObject>(objParam);
+				break;
 			default:
 				break;
 			}
@@ -457,6 +466,15 @@ namespace basecross
 		case ENUM_ObjectID::Shrub:
 			stage->AddGameObject<Shrub>(originalObjParam);
 			break;
+		case ENUM_ObjectID::CollisionObb:
+			stage->AddGameObject<CollisionObbObject>(originalObjParam);
+			break;
+		case ENUM_ObjectID::CollisionSphere:
+			stage->AddGameObject<CollisionSphereObject>(originalObjParam);
+			break;
+		case ENUM_ObjectID::CollisionCapsule:
+			stage->AddGameObject<CollisionCapsuleObject>(originalObjParam);
+			break;
 		default:
 			break;
 		}
@@ -600,6 +618,15 @@ namespace basecross
 			break;
 		case ENUM_ObjectID::Shrub:
 			newObj = stage->AddGameObject<Shrub>(objParam);
+			break;
+		case ENUM_ObjectID::CollisionObb:
+			newObj = stage->AddGameObject<CollisionObbObject>(objParam);
+			break;
+		case ENUM_ObjectID::CollisionSphere:
+			newObj = stage->AddGameObject<CollisionSphereObject>(objParam);
+			break;
+		case ENUM_ObjectID::CollisionCapsule:
+			newObj = stage->AddGameObject<CollisionCapsuleObject>(objParam);
 			break;
 		default:
 			break;
