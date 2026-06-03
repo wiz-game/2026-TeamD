@@ -44,10 +44,5 @@ namespace basecross
 
 		ptrDraw->SetMeshToTransformMatrix(spanMat);
 		ptrShadow->SetMeshToTransformMatrix(spanMat);
-
-		auto ptrCollision = AddComponent<CollisionObb>();
-		ptrCollision->SetDrawActive(true);
-		ptrCollision->SetFixed(true);
 	}
-
 }
