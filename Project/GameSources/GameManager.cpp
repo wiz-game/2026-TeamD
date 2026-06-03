@@ -74,7 +74,11 @@ namespace basecross
 	void GameManager::SetAllGameObjectsUpdateActive(bool isActive)
 	{
 		for (auto& gameObject : App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetGameObjectVec())
+		{
 			gameObject->SetUpdateActive(isActive);
+			auto coll = gameObject->GetComponent<Collision>(false);
+			if (coll) coll->SetDrawActive(!isActive);
+		}
 	}
 
 	void GameManager::RegisterDebugLog(const wstring& logName, const wstring& debugLog)
