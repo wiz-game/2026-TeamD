@@ -15,9 +15,15 @@ namespace basecross
 	{
 		try 
 		{
+			// フルスクリーンモードにする
 			App::GetApp()->SetFullScreenMode();
 
+			// 各マネージャーを初期化
 			JoltManager::StaticInitialize();
+			GameManager::Instance().Initialize(true);
+			InputManager::Instance().Initialize();
+			StageEditor::Instance().Initialize();
+			EffectManager::Instance().CreateEfkInterface();
 
 			// 背景色を設定
 			SetClearColor(Col4(0.0f, 0.3f, 0.6f, 1.0f));
@@ -25,10 +31,6 @@ namespace basecross
 			// リソース作成
 			LoadMedia loadMedia;
 			loadMedia.RegisterMediaFiles(App::GetApp()->GetDataDirWString());
-
-			GameManager::Instance().Initialize(true);
-			InputManager::Instance().Initialize();
-			StageEditor::Instance().Initialize();
 		}
 		catch (...) 
 		{
