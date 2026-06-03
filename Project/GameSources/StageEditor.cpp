@@ -247,6 +247,7 @@ namespace basecross
 		{
 			for (const auto& gizmo : m_gizmos)
 			{
+				gizmo->SetUpdateActive(true);
 				auto selectPos = m_selectedObj->GetComponent<Transform>()->GetPosition();
 				gizmo->GetComponent<Transform>()->SetPosition(selectPos);
 			}

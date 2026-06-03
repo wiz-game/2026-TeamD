@@ -30,7 +30,7 @@ namespace basecross
 		ENUM_GameMode m_transitionAfterGameMode = ENUM_GameMode::Null;
 
 		bool m_isDebug = false;
-		wstring m_serectGameStage = L"GameStage_1";
+		wstring m_selectGameStage = L"GameStage_1";
 
 		const int GAMESTAGE_MIN = 1;
 		const int GAMESTAGE_MAX = 5;
@@ -67,8 +67,8 @@ namespace basecross
 		bool GetIsDebug() const { return m_isDebug; }
 		void SetIsDebug(bool isDebug) { m_isDebug = isDebug; }
 
-		wstring GetSelectGameStage() const { return m_serectGameStage; }
-		void SetSelectGameStage(const wstring& stageName) { m_serectGameStage = stageName; }
+		wstring GetSelectGameStage() const { return m_selectGameStage; }
+		void SetSelectGameStage(const wstring& stageName) { m_selectGameStage = stageName; }
 		void ChangeSelectGameStage(const int& incrDecrNum);
 
 		ENUM_GameMode GetTransitionAfterGameMode() const { return m_transitionAfterGameMode; }
