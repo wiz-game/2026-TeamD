@@ -20,6 +20,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Bubble.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)CollisionObject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectUpdateDrawManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Fence.h" />
@@ -78,6 +79,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Bubble.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)CharacterController.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)CollisionObject.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DebugLog.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Dirt.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DXModel.cpp">

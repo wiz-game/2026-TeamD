@@ -175,6 +175,9 @@
     <Filter Include="StageObjs\Shrub">
       <UniqueIdentifier>{46a9c8db-ec4e-472b-9f2a-c7843b8d5b39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Collision">
+      <UniqueIdentifier>{8b712c98-1a5d-4c66-ab1b-9dbcbadbdd8e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -348,6 +351,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Shrub.h">
       <Filter>StageObjs\Shrub</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)CollisionObject.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -508,6 +514,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Shrub.cpp">
       <Filter>StageObjs\Shrub</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)CollisionObject.cpp">
+      <Filter>Collision</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
