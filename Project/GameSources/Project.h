@@ -68,6 +68,9 @@
 #include "UISlide.h"
 #include "UITransitionSlide.h"
 
+// 判定のみオブジェクト
+#include "CollisionObject.h"
+
 // ステージ
 #include "TitleStage.h"
 #include "SelectStage.h"
