@@ -3,7 +3,7 @@
 
 namespace basecross
 {
-	Apple::Apple
+	Shrub::Shrub
 	(
 		const shared_ptr<Stage>& StagePtr,
 		const STRUCT_ObjectParam& objectParam
@@ -12,22 +12,22 @@ namespace basecross
 	{
 	};
 
-	Apple::~Apple()
+	Shrub::~Shrub()
 	{
 	}
 
-	void Apple::OnCreate()
+	void Shrub::OnCreate()
 	{
-		AddTag(L"Apple");
+		AddTag(L"Shrub");
 		SetIsEditorSave(true);
 
 		auto ptrDraw = AddComponent<PNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"M_Apple");
-		ptrDraw->SetTextureResource(L"T_Apple");
+		ptrDraw->SetMeshResource(L"M_Shrub");
+		ptrDraw->SetTextureResource(L"T_Shrub");
 
 		auto ptrShadow = AddComponent<Shadowmap>();
 		ptrDraw->SetOwnShadowActive(true);
-		ptrShadow->SetMeshResource(L"M_Apple");
+		ptrShadow->SetMeshResource(L"M_Shrub");
 
 		m_sPtrTrans = AddComponent<Transform>();
 		m_sPtrTrans->SetScale(m_objectParam.GetScale());

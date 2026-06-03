@@ -58,6 +58,7 @@ namespace basecross
 		case ENUM_GameMode::Play:
 			break;
 		case ENUM_GameMode::Menu:
+			MenuManager::Instance().ClosePause();
 			break;
 		case ENUM_GameMode::Editor:
 			SetAllGameObjectsUpdateActive(true);

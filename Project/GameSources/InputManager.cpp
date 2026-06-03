@@ -370,6 +370,7 @@ namespace basecross
 
 	void InputManager::ReturnGame()
 	{
+		GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
 	}
 
 	void InputManager::ReturnOneMenu()

@@ -3,17 +3,17 @@
 
 namespace basecross
 {
-	class Apple : public GameObject
+	class Shrub : public GameObject
 	{
 	private:
 		shared_ptr<Transform> m_sPtrTrans;
 	public:
-		Apple
+		Shrub
 		(
 			const shared_ptr<Stage>& StagePtr,
 			const STRUCT_ObjectParam& objectParam
 		);
-		virtual ~Apple();
+		virtual ~Shrub();
 
 		virtual void OnCreate() override;
 	};

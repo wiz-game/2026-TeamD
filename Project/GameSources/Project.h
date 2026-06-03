@@ -48,6 +48,7 @@
 #include "Foothold.h"
 #include "Board.h"
 #include "Apple.h"
+#include "Shrub.h"
 
 // エネミー
 #include "EnemyBase.h"
