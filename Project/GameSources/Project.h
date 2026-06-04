@@ -47,6 +47,8 @@
 #include "LongMushroom.h"
 #include "Foothold.h"
 #include "Board.h"
+#include "Apple.h"
+#include "Shrub.h"
 
 // エネミー
 #include "EnemyBase.h"
@@ -65,6 +67,10 @@
 #include "UIBlinking.h"
 #include "UISlide.h"
 #include "UITransitionSlide.h"
+#include "UIMenu.h"
+
+// 判定のみオブジェクト
+#include "CollisionObject.h"
 
 // ステージ
 #include "TitleStage.h"

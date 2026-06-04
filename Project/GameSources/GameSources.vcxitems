@@ -14,11 +14,13 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Apple.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BinaryFile.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Board.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Bubble.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)CollisionObject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectUpdateDrawManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Fence.h" />
@@ -26,6 +28,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)LoadMedia.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LongMushroom.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MenuManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Shrub.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIMenu.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Utils.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DebugLog.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Dirt.h" />
@@ -71,10 +75,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)UITransitionSlide.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Apple.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Board.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Bubble.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)CharacterController.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)CollisionObject.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DebugLog.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Dirt.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DXModel.cpp">
@@ -112,6 +118,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)PowerUpSoap.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Shrub.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyBox.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Slope.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp" />
@@ -122,6 +129,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Tree.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UIBase.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UIBlinking.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIMenu.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UISlide.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UITransitionSlide.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />
