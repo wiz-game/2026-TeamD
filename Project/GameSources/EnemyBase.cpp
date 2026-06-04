@@ -355,8 +355,8 @@ namespace basecross
         auto drawComp = gameObject->GetComponent<PNTStaticDraw>();
 
         float range = 3.0f;
-        float forward_X = transPos.x + (sinf(transRot.y) * range);
-        float forward_Z = transPos.z + (cosf(transRot.y) * range);
+        float forward_X = transPos.x + (sinf(m_rotY) * range);
+        float forward_Z = transPos.z + (cosf(m_rotY) * range);
 
         Vec3 endSp(forward_X, transPos.y, forward_Z);
 
