@@ -19,6 +19,7 @@ namespace basecross
 		m_transform->SetPosition(m_objectParam.GetPosition());
 		m_transform->SetScale(m_objectParam.GetScale());
 		m_transform->SetQuaternion(m_objectParam.GetQuaternion());
+		m_transform->SetRotation(0.0f, 0.0f, 0.0f);
 
 		auto drawComp = AddComponent<PNTStaticDraw>();
 		drawComp->SetMeshResource(L"M_Alpaca");
@@ -45,8 +46,8 @@ namespace basecross
 		m_eStateMachine->Update();
 
 		Died(GetThis<EnemyAlpaca>());
-		DetectionRange(GetThis<EnemyAlpaca>());
-		m_eStateMachine->Update();
+		//DetectionRange(GetThis<EnemyAlpaca>());
+		//m_eStateMachine->Update();
 
 		//DropDirt(GetThis<EnemyAlpaca>());
 		DebugString();
