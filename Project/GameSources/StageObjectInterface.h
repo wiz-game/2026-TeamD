@@ -27,6 +27,7 @@ namespace basecross
 		Apple,
 		Shrub,
 		CollisionObject,
+		SoilWall,
 		Max
 	} ;
 

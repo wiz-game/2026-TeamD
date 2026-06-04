@@ -184,6 +184,9 @@
     <Filter Include="Managers\MovieManager">
       <UniqueIdentifier>{51072dd6-5d80-477f-9d47-51fbdd04dfbd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StageObjs\SoilWall">
+      <UniqueIdentifier>{48f68fb5-6140-4cf2-8915-fd1e9b94c578}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -366,6 +369,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)MovieManager.h">
       <Filter>Managers\MovieManager</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SoilWall.h">
+      <Filter>StageObjs\SoilWall</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -535,6 +541,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)MovieManager.cpp">
       <Filter>Managers\MovieManager</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SoilWall.cpp">
+      <Filter>StageObjs\SoilWall</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
