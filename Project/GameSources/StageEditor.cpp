@@ -96,14 +96,8 @@ namespace basecross
 			case ENUM_ObjectID::Shrub:
 				stage->AddGameObject<Shrub>(objParam);
 				break;
-			case ENUM_ObjectID::CollisionObb:
-				stage->AddGameObject<CollisionObbObject>(objParam);
-				break;
-			case ENUM_ObjectID::CollisionSphere:
-				stage->AddGameObject<CollisionSphereObject>(objParam);
-				break;
-			case ENUM_ObjectID::CollisionCapsule:
-				stage->AddGameObject<CollisionCapsuleObject>(objParam);
+			case ENUM_ObjectID::CollisionObject:
+				stage->AddGameObject<CollisionObject>(objParam);
 				break;
 			default:
 				break;
@@ -239,6 +233,7 @@ namespace basecross
 		DeselectObj();
 		m_selectedObj = risultObj;
 		m_isSelectedObj = true;
+		m_defaultObjColor = risultObj->GetComponent<PNTStaticDraw>(false)->GetDiffuse();
 		risultObj->GetComponent<PNTStaticDraw>(false)->SetDiffuse(m_selectedObjColor);
 
 		// ギズモを生成
@@ -466,14 +461,8 @@ namespace basecross
 		case ENUM_ObjectID::Shrub:
 			stage->AddGameObject<Shrub>(originalObjParam);
 			break;
-		case ENUM_ObjectID::CollisionObb:
-			stage->AddGameObject<CollisionObbObject>(originalObjParam);
-			break;
-		case ENUM_ObjectID::CollisionSphere:
-			stage->AddGameObject<CollisionSphereObject>(originalObjParam);
-			break;
-		case ENUM_ObjectID::CollisionCapsule:
-			stage->AddGameObject<CollisionCapsuleObject>(originalObjParam);
+		case ENUM_ObjectID::CollisionObject:
+			stage->AddGameObject<CollisionObject>(originalObjParam, true);
 			break;
 		default:
 			break;
@@ -619,14 +608,8 @@ namespace basecross
 		case ENUM_ObjectID::Shrub:
 			newObj = stage->AddGameObject<Shrub>(objParam);
 			break;
-		case ENUM_ObjectID::CollisionObb:
-			newObj = stage->AddGameObject<CollisionObbObject>(objParam);
-			break;
-		case ENUM_ObjectID::CollisionSphere:
-			newObj = stage->AddGameObject<CollisionSphereObject>(objParam);
-			break;
-		case ENUM_ObjectID::CollisionCapsule:
-			newObj = stage->AddGameObject<CollisionCapsuleObject>(objParam);
+		case ENUM_ObjectID::CollisionObject:
+			newObj = stage->AddGameObject<CollisionObject>(objParam, true);
 			break;
 		default:
 			break;
