@@ -76,8 +76,12 @@ namespace basecross
 		for (auto& gameObject : App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetGameObjectVec())
 		{
 			gameObject->SetUpdateActive(isActive);
-			auto coll = gameObject->GetComponent<Collision>(false);
-			if (coll) coll->SetDrawActive(!isActive);
+
+			if (gameObject->FindTag(L"CollisionObject"))
+			{
+				auto draw = gameObject->GetComponent<PNTStaticDraw>(false);
+				if (draw) draw->SetDrawActive(!isActive);
+			}
 		}
 	}
 
