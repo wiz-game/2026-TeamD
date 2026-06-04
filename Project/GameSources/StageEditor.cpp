@@ -551,6 +551,9 @@ namespace basecross
 		default:
 			break;
 		}
+
+		auto ground = dynamic_pointer_cast<Ground>(m_selectedObj);
+		if (ground) ground->UpdateTexture();
 	}
 
 	void StageEditor::AddGameObject()
