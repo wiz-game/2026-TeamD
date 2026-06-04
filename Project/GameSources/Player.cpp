@@ -59,7 +59,7 @@ namespace basecross
 	void Player::OnUpdate()
 	{
 		ReSpawn();
-		Jump();
+		// Jump();
 		PlayerDied();
 		LaunchofBubble();
 		DebugString();
