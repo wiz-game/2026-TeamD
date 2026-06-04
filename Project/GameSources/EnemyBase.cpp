@@ -26,8 +26,8 @@ namespace basecross
         auto transPos = transComp->GetPosition();
 
         // 時間（乱数）
-        float randTime = rand() % 3 + 1;
-        float randRotation = rand() % 361;
+        float randTime = (float)(rand() % 3 + 1);
+        float randRotation = (float)(rand() % 361);
 
         // ゼロ
         const float ZERO_TIME = 0.0f;
@@ -232,8 +232,11 @@ namespace basecross
     {
         auto transComp = GetComponent<Transform>();
         auto transPos = transComp->GetPosition();
+        auto transRot = transComp->GetRotation();
 
         GameManager::Instance().AddDebugStr(L"Detection", m_Detection);
+        GameManager::Instance().AddDebugStr(L"isRotated", m_isRotated);
+        GameManager::Instance().AddDebugStr(L"EnemyRotY", transRot.y);
     }
 
     void EnemyBase::Died(const shared_ptr<GameObject>& gameObject)
@@ -345,39 +348,79 @@ namespace basecross
 
     void EnemyBase::MazeWandering(const shared_ptr<GameObject>& gameObject)
     {
-        auto objTrans = gameObject->GetComponent<Transform>();
-        auto objPos = objTrans->GetPosition();
-        auto objRot = objTrans->GetRotation();
+        auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+        auto transComp = gameObject->GetComponent<Transform>();
+        auto transPos = transComp->GetPosition();
+        auto transRot = transComp->GetRotation();
+        auto drawComp = gameObject->GetComponent<PNTStaticDraw>();
 
-        float rotDistance = 90.0f;
-        const float ZERO_ROTATION = 0.0f, MAX_ROTATION = 360.0f;
+        float range = 3.0f;
+        float forward_X = transPos.x + (sinf(transRot.y) * range);
+        float forward_Z = transPos.z + (cosf(transRot.y) * range);
 
-        float rotation = objRot.y;
+        Vec3 endSp(forward_X, transPos.y, forward_Z);
 
-        // 向いている方向に壁がある場合は90°回転する
-        if (m_isRotated == true)
+        float minT = 1.0f;
+        float speed = 10.0f;
+        for (auto obj : stage->GetGameObjectVec())
         {
-            // 無限に回転をするので、一度だけにする
-            objRot.y += 90.0f;
-
-            // 360°を越えたら0°に戻す
-            if (objRot.y >= MAX_ROTATION)
+            if (obj == gameObject)
             {
-                objRot.y -= MAX_ROTATION ;
+                continue;
             }
-            objTrans->SetRotation(0.0f, objRot.y, 0.0f);
-            m_isRotated = false;
+
+            auto objDrawComp = obj->GetComponent<PNTStaticDraw>(false);
+            if (objDrawComp)
+            {
+                Vec3 hitPoint;
+                TRIANGLE tri;
+                size_t index;
+
+                // 注視点(at)から本来のカメラ位置(eye)までの線分と、オブジェクトのメッシュとの衝突判定
+                if (objDrawComp->HitTestStaticMeshSegmentTrianglesToAffine(transPos, endSp, hitPoint, tri, index))
+                {
+                    if (obj->FindTag(L"Ground"))
+                    {
+                        if (!m_isRotated)
+                        {
+                            m_isRotated = true;
+                            m_startRotY = m_rotY;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (m_isRotated)
+        {
+            m_rotY += App::GetApp()->GetElapsedTime() * m_rotationSpeed;
+
+            // 現在の角度と1フレーム前の角度で、90度の区間（0〜90, 90〜180...）が変わったかを判定
+            if (floor(m_rotY / XMConvertToRadians(90.0f)) !=
+                floor((m_rotY - App::GetApp()->GetElapsedTime() * m_rotationSpeed) / XMConvertToRadians(90.0f)))
+            {
+                // 行き過ぎてしまった角度を、90°の倍数にする
+                m_rotY = std::floor(m_rotY / XMConvertToRadians(90.0f)) * XMConvertToRadians(90.0f);
+
+                if (m_rotY >= XMConvertToRadians(360.0f))
+                {
+                    m_rotY = 0.0f;
+                }
+                m_isRotated = false;
+            }
+            transComp->SetRotation(0.0f, m_rotY, 0.0f);
         }
         else
         {
-            // 向いている方向に移動させる
-            float angleRot = objRot.y;
-            float rotX = sinf(angleRot);
-            float rotZ = -cosf(angleRot);
-            objPos.x += rotX * App::GetApp()->GetElapsedTime() * 3.0f;
-            objPos.z += rotZ * App::GetApp()->GetElapsedTime() * 3.0f;
-            objTrans->SetPosition(objPos);
+            transPos.x = transPos.x + (sinf(m_rotY) * speed * App::GetApp()->GetElapsedTime());
+            transPos.z = transPos.z + (cosf(m_rotY) * speed * App::GetApp()->GetElapsedTime());
+            transComp->SetPosition(transPos.x, 0.1f, transPos.z);
         }
+        GameManager::Instance().AddDebugStr(L"forward_X", forward_X);
+        GameManager::Instance().AddDebugStr(L"forward_Z", forward_Z);
+        GameManager::Instance().AddDebugStr(L"endSpX", endSp.x);
+        GameManager::Instance().AddDebugStr(L"endSpY", endSp.y);
+        GameManager::Instance().AddDebugStr(L"endSpZ", endSp.z);
     }
 
     void EnemyBase::aStar(const shared_ptr<GameObject>& gameObject)
@@ -544,8 +587,7 @@ namespace basecross
                             // 進入制限（コスト）チェック
                             const auto& piece = cellVec[neighborX][neighborZ];
 
-                            // ★コストが一定以上（例：100以上）、または負の値なら壁（進入不可）として扱う
-                            // お使いのプロジェクトにおける「壁」のコストに合わせて数値を変更してください。
+                            // コストが一定以上（例：100以上）、または負の値なら壁（進入不可）として扱う
                             if (piece.m_Cost >= 100 || piece.m_Cost < 0) 
                             {
                                 continue;
@@ -590,14 +632,13 @@ namespace basecross
                             AABB aabb;
                             if (cellMap->FindAABB(tempIdx, aabb))
                             {
-                                // AABBの中心座標を計算（m_Min と m_Max がある場合の標準的な式です）
-                                // もし aabb.GetCenter() が使える場合はそれに書き換えてください。
+                                // AABBの中心座標を計算
                                 auto center = aabb.m_Min + aabb.m_Max;
                                 center.x *= 0.5f;
                                 center.y *= 0.5f;
                                 center.z *= 0.5f;
 
-                                // 敵が浮かないように、Y座標は現在の敵の高さに合わせます
+                                // 敵が浮かないように、Y座標は現在の敵の高さに合わせる
                                 center.y = objPos.y;
 
                                 cachedPath.push_back(center);
@@ -659,7 +700,7 @@ namespace basecross
     {
         if (Other->FindTag(L"Ground"))
         {
-            m_isRotated = true;
+            //m_isRotated = true;
         }
 
         auto bubble = dynamic_pointer_cast<Bubble>(Other);

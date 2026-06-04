@@ -3,47 +3,19 @@
 
 namespace basecross
 {
-	class CollisionObbObject : public GameObject
+	class CollisionObject : public GameObject
 	{
 	private:
 		shared_ptr<Transform> m_sPtrTrans;
+		bool m_isMeshDraw;
 	public:
-		CollisionObbObject
+		CollisionObject
 		(
 			const shared_ptr<Stage>& StagePtr,
-			const STRUCT_ObjectParam& objectParam
+			const STRUCT_ObjectParam& objectParam,
+			const bool& isMeshDraw = false
 		);
-		virtual ~CollisionObbObject();
-
-		virtual void OnCreate() override;
-	};
-
-	class CollisionSphereObject : public GameObject
-	{
-	private:
-		shared_ptr<Transform> m_sPtrTrans;
-	public:
-		CollisionSphereObject
-		(
-			const shared_ptr<Stage>& StagePtr,
-			const STRUCT_ObjectParam& objectParam
-		);
-		virtual ~CollisionSphereObject();
-
-		virtual void OnCreate() override;
-	};
-
-	class CollisionCapsuleObject : public GameObject
-	{
-	private:
-		shared_ptr<Transform> m_sPtrTrans;
-	public:
-		CollisionCapsuleObject
-		(
-			const shared_ptr<Stage>& StagePtr,
-			const STRUCT_ObjectParam& objectParam
-		);
-		virtual ~CollisionCapsuleObject();
+		virtual ~CollisionObject();
 
 		virtual void OnCreate() override;
 	};
