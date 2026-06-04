@@ -28,6 +28,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)LoadMedia.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LongMushroom.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MenuManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovieManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Shrub.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)UIMenu.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Utils.h" />
@@ -110,6 +111,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)LoadMedia.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)LongMushroom.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MenuManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MovieManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mushroom.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Move.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MyCamera.cpp" />
