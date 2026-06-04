@@ -43,10 +43,10 @@ namespace basecross
 		// モデルとトランスフォーム間の差分行列
 		Mat4x4 spanMat;
 		spanMat.affineTransformation(
-			Vec3(0.5f, 1.0f, 0.5f),
+			Vec3(0.45f, 6.7f, 0.45f),
 			Vec3(0.0f, 0.0f, 0.0f),
 			Vec3(0.0f, 0.0f, 0.0f),
-			Vec3(0.0f,-0.5f, 0.0f)
+			Vec3(0.05f,-0.5f, 0.0f)
 		);
 
 		m_draw->SetMeshToTransformMatrix(spanMat);
