@@ -12,8 +12,10 @@ namespace basecross
 	{
 	private:
 		shared_ptr<Transform> m_sPtrTrans;
+		vector<VertexPositionNormalTexture> m_vertices;
+
+		void SetVertices();
 	public:
-		// コンストラクタ
 		Ground
 		(
 			const shared_ptr<Stage>& StagePtr,
@@ -22,5 +24,6 @@ namespace basecross
 		virtual ~Ground();
 
 		virtual void OnCreate() override;
+		void UpdateTexture();
 	};
 }
