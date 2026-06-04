@@ -30,6 +30,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)MenuManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MovieManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Shrub.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SoilWall.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)UIMenu.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Utils.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DebugLog.h" />
@@ -123,6 +124,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Shrub.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyBox.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Slope.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SoilWall.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StageEditor.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Stone.cpp" />

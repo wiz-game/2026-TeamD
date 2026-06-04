@@ -50,6 +50,7 @@
 #include "Board.h"
 #include "Apple.h"
 #include "Shrub.h"
+#include "SoilWall.h"
 
 // エネミー
 #include "EnemyBase.h"
