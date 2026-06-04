@@ -116,8 +116,8 @@ namespace basecross
         auto transPos = transComp->GetPosition();
 
         // 時間（乱数）
-        float randTime = rand() % 3 + 1;
-        float randRotation = rand() % 361;
+        float randTime = (float)(rand() % 3 + 1);
+        float randRotation = (float)(rand() % 361);
 
         // ゼロ
         const float ZERO_TIME = 0.0f;
