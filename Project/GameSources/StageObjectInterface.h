@@ -26,9 +26,7 @@ namespace basecross
 		Board,
 		Apple,
 		Shrub,
-		CollisionObb,
-		CollisionSphere,
-		CollisionCapsule,
+		CollisionObject,
 		Max
 	} ;
 

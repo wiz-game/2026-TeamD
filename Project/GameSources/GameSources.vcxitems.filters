@@ -181,6 +181,9 @@
     <Filter Include="UIs\UIMenu">
       <UniqueIdentifier>{b234b89a-e6f9-4d71-a4d9-eaa31d9a9d2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Managers\MovieManager">
+      <UniqueIdentifier>{51072dd6-5d80-477f-9d47-51fbdd04dfbd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -360,6 +363,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)UIMenu.h">
       <Filter>UIs\UIMenu</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovieManager.h">
+      <Filter>Managers\MovieManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -526,6 +532,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)UIMenu.cpp">
       <Filter>UIs\UIMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MovieManager.cpp">
+      <Filter>Managers\MovieManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

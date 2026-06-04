@@ -25,6 +25,7 @@
 #include "MenuManager.h"
 #include "EffectManager.h"
 #include "EffectUpdateDrawManager.h"
+#include "MovieManager.h"
 
 // オリジナルコンポーネント
 #include "Move.h"
