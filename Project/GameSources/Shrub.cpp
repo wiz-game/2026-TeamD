@@ -26,7 +26,6 @@ namespace basecross
 		ptrDraw->SetTextureResource(L"T_Shrub");
 
 		auto ptrShadow = AddComponent<Shadowmap>();
-		ptrDraw->SetOwnShadowActive(true);
 		ptrShadow->SetMeshResource(L"M_Shrub");
 
 		m_sPtrTrans = AddComponent<Transform>();
