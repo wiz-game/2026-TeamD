@@ -86,7 +86,7 @@ JPH_OBJECT_STREAM;JPH_PROFILE_ENABLED;JPH_DISABLE_CUSTOM_ALLOCATOR;_HAS_STD_BYTE
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)External\Jolt\lib\Debug\</AdditionalLibraryDirectories>
       <AdditionalDependencies>Jolt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
