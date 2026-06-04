@@ -52,6 +52,11 @@ namespace basecross
 		float m_InitCoolDown;
 
 		bool m_isRotated;
+
+		float m_rotationSpeed;
+		float m_rotY;
+
+		float m_startRotY = 0.0f;
 	public:
 		EnemyBase(const shared_ptr<Stage>& stage, const STRUCT_ObjectParam& objectParam) :
 			GameObject(stage, objectParam),
@@ -67,7 +72,9 @@ namespace basecross
 			m_Detection(false),
 			m_LaunchofDirtCoolDown(0.0f),
 			m_InitCoolDown(3.0f),
-			m_isRotated(false)
+			m_isRotated(false),
+			m_rotationSpeed(2.0f),
+			m_rotY(0.0f)
 			//m_EnemyHP(hp)
 		{
 		}
@@ -112,6 +119,11 @@ namespace basecross
 		bool GetDetection()
 		{
 			return m_Detection;
+		}
+
+		bool GetRotation()
+		{
+			return m_isRotated;
 		}
 
 		// --- 当たり判定 ---
