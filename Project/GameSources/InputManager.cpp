@@ -324,6 +324,45 @@ namespace basecross
 
 	void InputManager::PushRTrigger()
 	{
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		auto player = stage->GetSharedGameObject<Player>(L"Player");
+		auto attack = player->GetAttack();
+		auto playerPowerUp = player->GetPlayerPowerUp();
+		auto bubble = player->GetHaveBubble();
+		auto initCoolDown = 0.6f;
+		auto bresing = player->GetBresing();
+		auto pos = player->GetComponent<Transform>()->GetPosition();
+		auto forward = player->GetComponent<Transform>()->GetForward();
+		forward.normalize();
+		auto rotation = player->GetComponent<Transform>()->GetRotation();
+		
+		auto baseforward = Vec3(1.0f, 0.0f, 0.0f);
+		Vec3 axis = baseforward;
+		axis.cross(forward);
+		float dot = baseforward.dot(forward);
+		dot = clamp(dot, -1.0f, 1.0f);
+		float angle = acos(dot);
+
+		//GameManager::Instance().AddDebugStr(L"AxisX ",axis.x);
+		//GameManager::Instance().AddDebugStr(L"AxisY",axis.y);
+		//GameManager::Instance().AddDebugStr(L"AxisZ",axis.z);
+		//GameManager::Instance().AddDebugStr(L"forwardX ", forward.x);
+		//GameManager::Instance().AddDebugStr(L"forwardY", forward.y);
+		//GameManager::Instance().AddDebugStr(L"forwardZ", forward.z);
+		//GameManager::Instance().AddDebugStr(L"dot", dot);
+		
+		if (!bresing)
+		{
+			bubble = stage->AddGameObject<Bubble>(player, Vec3(0.5f), 5.0f, attack, playerPowerUp);
+			bubble->ShootBubble();
+			player->SetBresing(true);
+			player->SetCoolDown(initCoolDown);
+
+			//EffectHandle effHandle;
+			//effHandle = EffectManager::Instance().PlayEffect(L"Bubble", pos + forward);
+			//EffectManager::Instance().SetScale(effHandle, Vec3(0.25f));
+			//EffectManager::Instance().SetRotationFromAxisAngle(effHandle, axis, angle);
+		}
 	}
 
 	void InputManager::PressedA()
