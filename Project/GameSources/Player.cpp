@@ -23,8 +23,8 @@ namespace basecross
 		// ドローコンポーネントを追加
 		m_draw = AddComponent<PNTDXModelDraw>();
 		auto drawComp = AddComponent<PNTStaticDraw>();
-		drawComp->SetMeshResource(L"M_Awapaka");
-		drawComp->SetTextureResource(L"T_Awapaka");
+		drawComp->SetMeshResource(L"AwaPaka");
+		drawComp->SetTextureResource(L"T_AwaPaka_Body");
 		drawComp->SetDrawActive(true);
 
 		// 当たり判定のコンポーネント
@@ -35,15 +35,15 @@ namespace basecross
 		m_gravity = AddComponent<Gravity>();
 
 		auto shadowComp = AddComponent<Shadowmap>();
-		shadowComp->SetMeshResource(L"M_Awapaka");
+		shadowComp->SetMeshResource(L"AwaPaka");
 		shadowComp->SetDrawActive(true);
 
 		Mat4x4 spanMat;
 		spanMat.affineTransformation
 		(
-			Vec3(1.0f, 1.0f, 1.0f),
+			Vec3(0.5f, 0.5f, 0.5f),
 			Vec3(0.0f, 0.0f, 0.0f),
-			Vec3(0.0f, XM_PIDIV2, 0.0f),
+			Vec3(0.0f, XM_PI, 0.0f),
 			Vec3(0.0f, -0.5f, 0.0f)
 		);
 
@@ -59,7 +59,7 @@ namespace basecross
 	void Player::OnUpdate()
 	{
 		ReSpawn();
-		Jump();
+		// Jump();
 		PlayerDied();
 		LaunchofBubble();
 		DebugString();
@@ -108,8 +108,6 @@ namespace basecross
 	void Player::LaunchofBubble()
 	{
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-		auto device = App::GetApp()->GetInputDevice();
-		auto control = device.GetControlerVec();
 
 		if (!stage)
 		{
@@ -125,14 +123,6 @@ namespace basecross
 		else
 		{
 			m_initCoolDown = 0.6f;
-		}
-
-		if (control[0].bRightTrigger && m_Bresing == false)
-		{
-			m_pBubble = stage->AddGameObject<Bubble>(GetThis<Player>(), Vec3(0.5f), 5.0f, m_Attack, m_isPlayerPowerUp);
-			m_pBubble->ShootBubble();
-			m_Bresing = true;
-			m_cooldown = m_initCoolDown;
 		}
 
 		if (m_Bresing == true)

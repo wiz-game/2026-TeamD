@@ -116,8 +116,8 @@ namespace basecross
         auto transPos = transComp->GetPosition();
 
         // 時間（乱数）
-        float randTime = rand() % 3 + 1;
-        float randRotation = rand() % 361;
+        float randTime = (float)(rand() % 3 + 1);
+        float randRotation = (float)(rand() % 361);
 
         // ゼロ
         const float ZERO_TIME = 0.0f;
@@ -355,8 +355,8 @@ namespace basecross
         auto drawComp = gameObject->GetComponent<PNTStaticDraw>();
 
         float range = 3.0f;
-        float forward_X = transPos.x + (sinf(transRot.y) * range);
-        float forward_Z = transPos.z + (cosf(transRot.y) * range);
+        float forward_X = transPos.x + (sinf(m_rotY) * range);
+        float forward_Z = transPos.z + (cosf(m_rotY) * range);
 
         Vec3 endSp(forward_X, transPos.y, forward_Z);
 

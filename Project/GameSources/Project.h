@@ -25,6 +25,7 @@
 #include "MenuManager.h"
 #include "EffectManager.h"
 #include "EffectUpdateDrawManager.h"
+#include "MovieManager.h"
 
 // オリジナルコンポーネント
 #include "Move.h"
@@ -49,6 +50,7 @@
 #include "Board.h"
 #include "Apple.h"
 #include "Shrub.h"
+#include "SoilWall.h"
 
 // エネミー
 #include "EnemyBase.h"
