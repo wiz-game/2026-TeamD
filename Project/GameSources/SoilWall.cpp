@@ -1,6 +1,6 @@
 /*!
-@file Ground.cpp
-@brief 地面
+@file SoilWall.cpp
+@brief 土の壁
 */
 
 #include "stdafx.h"
@@ -8,21 +8,22 @@
 
 namespace basecross
 {
-	Ground::Ground
+	SoilWall::SoilWall
 	(
 		const shared_ptr<Stage>& StagePtr,
 		const STRUCT_ObjectParam& objectParam
 	) :
 		GameObject(StagePtr, objectParam)
-	{}
-
-	Ground::~Ground()
 	{
 	}
 
-	void Ground::OnCreate()
+	SoilWall::~SoilWall()
 	{
-		AddTag(L"Ground");
+	}
+
+	void SoilWall::OnCreate()
+	{
+		AddTag(L"SoilWall");
 		SetIsEditorSave(true);
 		SetAlphaActive(true);
 
@@ -39,24 +40,24 @@ namespace basecross
 		ptrDraw->CreateOriginalMesh(m_vertices, indices);
 		ptrDraw->SetOriginalMeshUse(true);
 		ptrDraw->SetOwnShadowActive(true);
-		ptrDraw->SetTextureResource(L"T_Field");
+		ptrDraw->SetTextureResource(L"T_Soil");
 		ptrDraw->SetSamplerState(SamplerState::LinearWrap);
 
 		auto ptrShadow = AddComponent<Shadowmap>();
 		ptrShadow->SetMeshResource(L"DEFAULT_CUBE");
-		
+
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetFixed(true);
 	}
 
-	void Ground::UpdateTexture()
+	void SoilWall::UpdateTexture()
 	{
 		SetVertices();
 		auto ptrDraw = GetComponent<PNTStaticDraw>();
 		ptrDraw->UpdateVertices(m_vertices);
 	}
 
-	void Ground::SetVertices()
+	void SoilWall::SetVertices()
 	{
 		for (int i = 0; i < m_vertices.size(); i += 4)
 		{

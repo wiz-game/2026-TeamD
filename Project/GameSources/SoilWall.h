@@ -1,6 +1,6 @@
 /*!
-@file Ground.h
-@brief 地面
+@file SoilWall.h
+@brief 土の壁
 */
 
 #pragma once
@@ -8,7 +8,7 @@
 
 namespace basecross
 {
-	class Ground : public GameObject
+	class SoilWall : public GameObject
 	{
 	private:
 		shared_ptr<Transform> m_sPtrTrans;
@@ -16,12 +16,12 @@ namespace basecross
 
 		void SetVertices();
 	public:
-		Ground
+		SoilWall
 		(
 			const shared_ptr<Stage>& StagePtr,
 			const STRUCT_ObjectParam& objectParam
 		);
-		virtual ~Ground();
+		virtual ~SoilWall();
 
 		virtual void OnCreate() override;
 		void UpdateTexture();
