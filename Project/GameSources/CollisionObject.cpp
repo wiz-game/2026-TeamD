@@ -21,6 +21,7 @@ namespace basecross
 	void CollisionObject::OnCreate()
 	{
 		AddTag(L"CollisionObject");
+		AddTag(L"Wall");
 		SetIsEditorSave(true);
 		SetAlphaActive(true);
 
