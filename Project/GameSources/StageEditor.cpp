@@ -99,6 +99,9 @@ namespace basecross
 			case ENUM_ObjectID::CollisionObject:
 				stage->AddGameObject<CollisionObject>(objParam);
 				break;
+			case ENUM_ObjectID::SoilWall:
+				stage->AddGameObject<SoilWall>(objParam);
+				break;
 			default:
 				break;
 			}
@@ -464,6 +467,9 @@ namespace basecross
 		case ENUM_ObjectID::CollisionObject:
 			stage->AddGameObject<CollisionObject>(originalObjParam, true);
 			break;
+		case ENUM_ObjectID::SoilWall:
+			stage->AddGameObject<SoilWall>(originalObjParam);
+			break;
 		default:
 			break;
 		}
@@ -551,6 +557,12 @@ namespace basecross
 		default:
 			break;
 		}
+
+		auto ground = dynamic_pointer_cast<Ground>(m_selectedObj);
+		if (ground) ground->UpdateTexture();
+
+		auto soilWall = dynamic_pointer_cast<SoilWall>(m_selectedObj);
+		if (soilWall) soilWall->UpdateTexture();
 	}
 
 	void StageEditor::AddGameObject()
@@ -610,6 +622,9 @@ namespace basecross
 			break;
 		case ENUM_ObjectID::CollisionObject:
 			newObj = stage->AddGameObject<CollisionObject>(objParam, true);
+			break;
+		case ENUM_ObjectID::SoilWall:
+			newObj = stage->AddGameObject<SoilWall>(objParam);
 			break;
 		default:
 			break;

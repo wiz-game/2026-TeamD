@@ -57,6 +57,9 @@ namespace basecross
 	{
 		if(m_HP <= 0.0f)
 		{
+			EffectHandle effHandle;
+			effHandle = EffectManager::Instance().PlayEffect(L"Clean", GetComponent<Transform>()->GetPosition());
+
 			GetStage()->RemoveGameObject<Dirt>(GetThis<Dirt>());
 		}
 	}

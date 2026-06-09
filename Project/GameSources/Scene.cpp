@@ -16,7 +16,7 @@ namespace basecross
 		try 
 		{
 			// フルスクリーンモードにする
-			App::GetApp()->SetFullScreenMode();
+			//App::GetApp()->SetFullScreenMode();
 
 			// 各マネージャーを初期化
 			JoltManager::StaticInitialize();
