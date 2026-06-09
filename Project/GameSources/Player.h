@@ -160,6 +160,31 @@ namespace basecross
 			return m_pBubble;
 		}
 
+		float GetAttack()
+		{
+			return m_Attack;
+		}
+
+		bool GetPlayerPowerUp()
+		{
+			return m_isPlayerPowerUp;
+		}
+
+		void SetBresing(bool flag)
+		{
+			m_Bresing = flag;
+		}
+
+		bool GetBresing()
+		{
+			return m_Bresing;
+		}
+
+		void SetCoolDown(float cd)
+		{
+			m_cooldown = cd;
+		}
+
 		void CreateBubble();
 
 		void SetPlayerState(PlayerState state);
