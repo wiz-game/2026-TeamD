@@ -13,10 +13,10 @@ namespace basecross
 	{
 	private:
 	public:
-		UIMenu();
-		virtual ~UIMenu();
+		UIMenu(const shared_ptr<Stage>& stage, const STRUCT_UIParam& uiParam);
+		virtual ~UIMenu(){}
 		virtual void OnCreate() override;
-		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
 	};
 
 }
