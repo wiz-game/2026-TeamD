@@ -14,11 +14,13 @@ namespace basecross
 		wstring MeshName;
 		Vec3 Position;
 		float ImageSizeRatio;
+		Col4 Color;
 
-		STRUCT_UIParam(const wstring& meshName, const Vec3& position, const float& imageSizeRatio = 1.0f)
+		STRUCT_UIParam(const wstring& meshName, const Vec3& position, const float& imageSizeRatio = 1.0f, const Col4& color = Col4(1.0f))
 			: MeshName(meshName), 
 			Position(position), 
-			ImageSizeRatio(imageSizeRatio)
+			ImageSizeRatio(imageSizeRatio),
+			Color(color)
 		{
 		}
 	};
@@ -32,7 +34,6 @@ namespace basecross
 		shared_ptr<Transform> m_sPtrTrans;
 		STRUCT_UIParam m_uiParam;
 
-		Col4 m_color;
 		float m_width;
 		float m_height;
 	public:
