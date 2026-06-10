@@ -83,7 +83,7 @@ namespace basecross
 	// Player‚ğì¬‚·‚é
 	void GameStage::CreatePlayer()
 	{
-		auto player = AddGameObject<Player>(Vec3(0.0f, 0.0f, 0.0f));
+		auto player = AddGameObject<Player>(Vec3(0.0f, 0.75f, 0.0f));
 		SetSharedGameObject(L"Player", player);
 	}
 
