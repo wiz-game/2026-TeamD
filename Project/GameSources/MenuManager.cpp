@@ -11,9 +11,10 @@ namespace basecross
 
 	void MenuManager::Pause()
 	{
-		
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		auto ui = stage->AddGameObject<UIBase>(STRUCT_UIParam(L"MenuBack", Vec3(0.0f, 0.0f, 0.0f), 1.0f, Col4(1.0f, 1.0f, 1.0f, 0.25f)));
 		SetAllUpdateActive(false);
-		
+
 	}
 
 	void MenuManager::ClosePause()
@@ -31,11 +32,5 @@ namespace basecross
 		{
 			gameObject->SetUpdateActive(isUpdateActive);
 		}
-
 	}
-
-
-
-
-
 }

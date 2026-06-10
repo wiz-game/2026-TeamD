@@ -12,7 +12,10 @@ namespace basecross
 	class MenuManager
 	{
 	private:
-		MenuManager(){}
+
+		MenuManager()
+		{
+		}
 		virtual ~MenuManager() {}
 		void SetAllUpdateActive(const bool& isUpdateActive);
 

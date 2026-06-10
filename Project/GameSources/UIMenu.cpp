@@ -8,17 +8,13 @@ namespace basecross
 
 	void UIMenu::OnCreate()
 	{
-		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-
-		auto backscreen = stage->AddGameObject<UIBase>(STRUCT_UIParam(L"MenuBack", Vec3(0.0f, 0.0f, 0.0f), 1.0f, Col4(1.0f, 1.0f, 1.0f, 0.25f)));
-		m_backscreen = backscreen;
-
-
+		UIBase::OnCreate();
 	}
 
 	void UIMenu::OnUpdate()
 	{
-
+		UIBase::OnUpdate();
+		UIDrawActive(true);
 	}
 
 	void UIMenu::UIDrawActive(bool isActive)
