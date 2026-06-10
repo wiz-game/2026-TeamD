@@ -27,6 +27,14 @@ namespace basecross
 
 		// 移動速度
 		float m_MoveSpeed = 1.8f;
+
+		// 時間
+		Timer m_timer = 0.0f;
+		// エフェクトを表示するか
+		bool  m_isEffectDraw = false;
+		// 左右どちらかの判定
+		bool  m_isRight = false;
+
 	public:
 		static InputManager& Instance()
 		{
