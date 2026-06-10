@@ -20,6 +20,5 @@ namespace basecross
 		static MenuManager& Instance();
 		void Pause();
 		void ClosePause();
-
 	};
 }

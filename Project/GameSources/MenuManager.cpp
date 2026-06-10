@@ -11,10 +11,9 @@ namespace basecross
 
 	void MenuManager::Pause()
 	{
-		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-		stage->AddGameObject<UIBase>(STRUCT_UIParam(L"MenuBack", Vec3(0.0f, 0.0f, 0.0f), 1.0f, Col4(1.0f, 1.0f, 1.0f, 0.25f)));
-
+		
 		SetAllUpdateActive(false);
+		
 	}
 
 	void MenuManager::ClosePause()
@@ -22,6 +21,7 @@ namespace basecross
 		SetAllUpdateActive(true);
 	}
 
+	//ステージの全オブジェクトのUpdateを管理する
 	void MenuManager::SetAllUpdateActive(const bool& isUpdateActive)
 	{
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
@@ -33,5 +33,9 @@ namespace basecross
 		}
 
 	}
+
+
+
+
 
 }
