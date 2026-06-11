@@ -81,7 +81,7 @@ namespace basecross
 		eye = targetPos + Vec3
 		(
 			slope,
-			7.0f,
+			14.0f,
 			slope
 		);
 		Vec3 forward = at - eye;
