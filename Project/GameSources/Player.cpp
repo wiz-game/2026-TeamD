@@ -29,6 +29,7 @@ namespace basecross
 
 		// 当たり判定のコンポーネント
 		auto obb = AddComponent<CollisionObb>();
+		//obb->SetDrawActive(true);
 		//obb->SetAfterCollision(AfterCollision::Auto);
 
 		// 重力のコンポーネント
@@ -41,7 +42,7 @@ namespace basecross
 		Mat4x4 spanMat;
 		spanMat.affineTransformation
 		(
-			Vec3(0.5f, 0.5f, 0.5f),
+			Vec3(0.1f, 0.075f, 0.075f),
 			Vec3(0.0f, 0.0f, 0.0f),
 			Vec3(0.0f, XM_PI, 0.0f),
 			Vec3(0.0f, -0.5f, 0.0f)
@@ -169,19 +170,19 @@ namespace basecross
 	// デバッグ用の文字列
 	void Player::DebugString()
 	{
-		GameManager::Instance().AddDebugStr(L"CameraAngle", GetStickRY());
-		GameManager::Instance().AddDebugStr(L"PlayerPosition.x", m_transform->GetPosition().x);
-		GameManager::Instance().AddDebugStr(L"PlayerPosition.y", m_transform->GetPosition().y);
-		GameManager::Instance().AddDebugStr(L"PlayerPosition.z", m_transform->GetPosition().z);
-		GameManager::Instance().AddDebugStr(L"PlayerRotation.x", m_transform->GetRotation().x);
-		GameManager::Instance().AddDebugStr(L"PlayerRotation.y", m_transform->GetRotation().y);
-		GameManager::Instance().AddDebugStr(L"PlayerRotation.z", m_transform->GetRotation().z);
-		GameManager::Instance().AddDebugStr(L"PlayerHP", m_PlayerHP);
-		GameManager::Instance().AddDebugStr(L"Attack", m_Attack);
-		GameManager::Instance().AddDebugStr(L"Cooldown", m_BubblePowerCoolDown);
-		GameManager::Instance().AddDebugStr(L"PlayerPowerUp", m_isPlayerPowerUp);
-		GameManager::Instance().AddDebugStr(L"PowerUpTimer", m_timer.GetCounter());
-		GameManager::Instance().AddDebugStr(L"PlayerPowerUp", m_isPlayerPowerUp);
+		//GameManager::Instance().AddDebugStr(L"CameraAngle", GetStickRY());
+		//GameManager::Instance().AddDebugStr(L"PlayerPosition.x", m_transform->GetPosition().x);
+		//GameManager::Instance().AddDebugStr(L"PlayerPosition.y", m_transform->GetPosition().y);
+		//GameManager::Instance().AddDebugStr(L"PlayerPosition.z", m_transform->GetPosition().z);
+		//GameManager::Instance().AddDebugStr(L"PlayerRotation.x", m_transform->GetRotation().x);
+		//GameManager::Instance().AddDebugStr(L"PlayerRotation.y", m_transform->GetRotation().y);
+		//GameManager::Instance().AddDebugStr(L"PlayerRotation.z", m_transform->GetRotation().z);
+		//GameManager::Instance().AddDebugStr(L"PlayerHP", m_PlayerHP);
+		//GameManager::Instance().AddDebugStr(L"Attack", m_Attack);
+		//GameManager::Instance().AddDebugStr(L"Cooldown", m_BubblePowerCoolDown);
+		//GameManager::Instance().AddDebugStr(L"PlayerPowerUp", m_isPlayerPowerUp);
+		//GameManager::Instance().AddDebugStr(L"PowerUpTimer", m_timer.GetCounter());
+		//GameManager::Instance().AddDebugStr(L"PlayerPowerUp", m_isPlayerPowerUp);
 	}
 
 	void Player::ReSpawn()
