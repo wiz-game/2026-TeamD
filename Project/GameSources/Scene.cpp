@@ -16,14 +16,14 @@ namespace basecross
 		try 
 		{
 			// フルスクリーンモードにする
-			//App::GetApp()->SetFullScreenMode();
+			App::GetApp()->SetFullScreenMode();
 
 			// 各マネージャーを初期化
 			JoltManager::StaticInitialize();
 			GameManager::Instance().Initialize(true);
 			InputManager::Instance().Initialize();
 			StageEditor::Instance().Initialize();
-			EffectManager::Instance().CreateEfkInterface();
+			EffectManager::Instance().CreateEfkInterface(20000);
 
 			// 背景色を設定
 			SetClearColor(Col4(0.0f, 0.3f, 0.6f, 1.0f));

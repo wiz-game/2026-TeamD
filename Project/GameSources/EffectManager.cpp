@@ -27,7 +27,7 @@ namespace basecross
 		return m_manager;
 	}
 
-	void EffectManager::CreateEfkInterface()
+	void EffectManager::CreateEfkInterface(const int32_t& SquareMaxCount)
 	{
 		if (m_isCreateEffectManager) return;
 		// デバイスの取得
@@ -36,10 +36,10 @@ namespace basecross
 		auto pID3D11DeviceContext = dev->GetD3DDeviceContext();
 
 		// 描画用インスタンスの生成
-		m_renderer = Renderer::Create(pDx11Device, pID3D11DeviceContext, 12000);
+		m_renderer = Renderer::Create(pDx11Device, pID3D11DeviceContext, SquareMaxCount);
 		
 		// エフェクト管理用インスタンスの生成
-		m_manager = Manager::Create(12000);
+		m_manager = Manager::Create(SquareMaxCount);
 
 		// 描画用インスタンスから描画機能を設定
 		m_manager->SetSpriteRenderer(m_renderer->CreateSpriteRenderer());
