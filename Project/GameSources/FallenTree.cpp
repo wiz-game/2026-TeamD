@@ -27,7 +27,7 @@ namespace basecross
 
 		auto ptrDraw = AddComponent<PNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"M_FallenTree");
-		ptrDraw->SetMeshResource(L"T_FallenTree");
+		ptrDraw->SetTextureResource(L"T_FallenTree");
 
 		auto ptrShadow = AddComponent<Shadowmap>();
 		ptrDraw->SetOwnShadowActive(true);
