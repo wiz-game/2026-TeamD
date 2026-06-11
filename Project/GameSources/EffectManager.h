@@ -59,10 +59,10 @@ namespace basecross
 		//----------------------------------------------------------------------------------
 		/*
 			Effekseerのインターフェース設定
-			@param なし
+			@param SquareMaxCount 最大描画スプライト数 
 			@return なし
 		*/
-		void CreateEfkInterface();
+		void CreateEfkInterface(const int32_t& SquareMaxCount);
 		//----------------------------------------------------------------------------------
 		/*
 			エフェクトを登録する
