@@ -44,6 +44,14 @@ namespace basecross
 		}
 		m_NumPoint;
 
+		enum ENUM_RANDOMROT
+		{
+			RandomRotL,
+			RandomRotR,
+
+			RandomRotNum,
+		}m_NumRandRot;
+
 	protected:
 		float m_EnemyHP;
 		bool m_Detection;
@@ -57,6 +65,15 @@ namespace basecross
 		float m_rotY;
 
 		float m_startRotY = 0.0f;
+
+		// 左が行けるか
+		bool m_canGoLeft;
+		// 右が行けるか
+		bool m_canGoRight;
+
+		bool m_canGoForward;
+
+		float m_targetRotY;
 	public:
 		EnemyBase(const shared_ptr<Stage>& stage, const STRUCT_ObjectParam& objectParam) :
 			GameObject(stage, objectParam),
@@ -74,7 +91,11 @@ namespace basecross
 			m_InitCoolDown(3.0f),
 			m_isRotated(false),
 			m_rotationSpeed(2.0f),
-			m_rotY(0.0f)
+			m_rotY(0.0f),
+			m_canGoLeft(true),
+			m_canGoRight(true),
+			m_canGoForward(true),
+			m_targetRotY(0.0f)
 			//m_EnemyHP(hp)
 		{
 		}

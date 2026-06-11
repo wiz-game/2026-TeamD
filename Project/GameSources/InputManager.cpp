@@ -302,8 +302,48 @@ namespace basecross
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
 		if (!stage) return;
 
-		stage->GetSharedGameObject<Player>(L"Player")->GetComponent<Move>()
+		auto player = stage->GetSharedGameObject<Player>(L"Player");
+		auto pos = player->GetComponent<Transform>()->GetPosition();
+		auto forward = player->GetComponent<Transform>()->GetForward();
+		auto right = player->GetComponent<Transform>()->GetRight();
+		Vec3 effectPos = pos;
+
+		float side = m_isRight ? 0.3f : -0.3f;
+		effectPos += forward * 0.75f;
+		effectPos += right * side;
+		effectPos.y -= 0.68f;
+
+		auto baseforward = Vec3(1.0f, 0.0f, 0.0f);
+		Vec3 axis = baseforward;
+		axis.cross(forward);
+		axis.normalize();
+		float dot = baseforward.dot(forward);
+		dot = clamp(dot, -1.0f, 1.0f);
+		float angle = acos(dot);
+		Quat rot = Quat(axis, angle);
+
+		player->GetComponent<Move>()
 			->VectorMove(Vec3(m_pad.fThumbLX * m_MoveSpeed, 0.0f, m_pad.fThumbLY * m_MoveSpeed));
+
+		if (!m_isEffectDraw)
+		{
+			m_timer = Timer(0.3f);
+			m_timer.SetCounter();
+			m_isEffectDraw = true;
+		}
+
+		if (m_isEffectDraw)
+		{
+			if (m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
+			{
+				m_isRight = !m_isRight;
+				EffectHandle effHandle;
+				effHandle = EffectManager::Instance().PlayEffect(L"Smoke", Vec3(effectPos));
+				EffectManager::Instance().SetScale(effHandle,Vec3(0.15f));
+				EffectManager::Instance().SetRotationFromQuaternion(effHandle,rot);
+				m_isEffectDraw = false;
+			}
+		}
 	}
 
 	void InputManager::MoveCamera()
@@ -324,6 +364,7 @@ namespace basecross
 
 	void InputManager::PushRTrigger()
 	{
+		// 泡を吐く
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
 		auto player = stage->GetSharedGameObject<Player>(L"Player");
 		auto attack = player->GetAttack();
@@ -332,25 +373,20 @@ namespace basecross
 		auto initCoolDown = 0.6f;
 		auto bresing = player->GetBresing();
 		auto pos = player->GetComponent<Transform>()->GetPosition();
+		// エフェクトの回転
 		auto forward = player->GetComponent<Transform>()->GetForward();
 		forward.normalize();
-		auto rotation = player->GetComponent<Transform>()->GetRotation();
-		
 		auto baseforward = Vec3(1.0f, 0.0f, 0.0f);
 		Vec3 axis = baseforward;
 		axis.cross(forward);
+		axis.normalize();
 		float dot = baseforward.dot(forward);
 		dot = clamp(dot, -1.0f, 1.0f);
 		float angle = acos(dot);
+		Quat rot = Quat(axis, angle);
+		Quat offset(Vec3(0, 1, 0), XMConvertToRadians(10.0f));
+		Quat finalRot = offset * rot;
 
-		//GameManager::Instance().AddDebugStr(L"AxisX ",axis.x);
-		//GameManager::Instance().AddDebugStr(L"AxisY",axis.y);
-		//GameManager::Instance().AddDebugStr(L"AxisZ",axis.z);
-		//GameManager::Instance().AddDebugStr(L"forwardX ", forward.x);
-		//GameManager::Instance().AddDebugStr(L"forwardY", forward.y);
-		//GameManager::Instance().AddDebugStr(L"forwardZ", forward.z);
-		//GameManager::Instance().AddDebugStr(L"dot", dot);
-		
 		if (!bresing)
 		{
 			bubble = stage->AddGameObject<Bubble>(player, Vec3(0.5f), 5.0f, attack, playerPowerUp);
@@ -358,10 +394,10 @@ namespace basecross
 			player->SetBresing(true);
 			player->SetCoolDown(initCoolDown);
 
-			//EffectHandle effHandle;
-			//effHandle = EffectManager::Instance().PlayEffect(L"Bubble", pos + forward);
-			//EffectManager::Instance().SetScale(effHandle, Vec3(0.25f));
-			//EffectManager::Instance().SetRotationFromAxisAngle(effHandle, axis, angle);
+			EffectHandle effHandle;
+			effHandle = EffectManager::Instance().PlayEffect(L"Bubble", pos + forward);
+			EffectManager::Instance().SetScale(effHandle, Vec3(0.35f));
+			EffectManager::Instance().SetRotationFromQuaternion(effHandle, finalRot);
 		}
 	}
 

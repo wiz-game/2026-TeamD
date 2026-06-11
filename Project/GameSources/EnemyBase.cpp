@@ -354,16 +354,38 @@ namespace basecross
         auto transRot = transComp->GetRotation();
         auto drawComp = gameObject->GetComponent<PNTStaticDraw>();
 
-        float range = 3.0f;
-        float forward_X = transPos.x + (sinf(m_rotY) * range);
-        float forward_Z = transPos.z + (cosf(m_rotY) * range);
+        float forward_X = 0.0f, forward_Z = 0.0f;
+        // forward_Xとforward_Zを格納するための変数
+        float rot_X = 0.0f, rot_Z = 0.0f;
 
-        Vec3 endSp(forward_X, transPos.y, forward_Z);
+        m_canGoLeft = true;
+        m_canGoRight = true;
+        m_canGoForward = true;
+
+        // レイ
+        float rayRange = 1.3f;
+        // 右
+        float forward_RX = transPos.x + (sinf((m_rotY + XMConvertToRadians(90.0f))) * rayRange);
+        float forward_RZ = transPos.z + (cosf((m_rotY + XMConvertToRadians(90.0f))) * rayRange);
+
+        // 左
+        float forward_LX = transPos.x + (sinf((m_rotY) - XMConvertToRadians(90.0f)) * rayRange);
+        float forward_LZ = transPos.z + (cosf((m_rotY) - XMConvertToRadians(90.0f)) * rayRange);
+
+        Vec3 endRSp(forward_RX, transPos.y - 0.5f, forward_RZ);
+        Vec3 endLSp(forward_LX, transPos.y - 0.5f, forward_LZ);
+
+        // 正面
+        float forward_FX = transPos.x + (sinf(m_rotY) * rayRange);
+        float forward_FZ = transPos.z + (cosf(m_rotY) * rayRange);
+        Vec3 endFSp(forward_FX, transPos.y - 0.5f, forward_FZ);
 
         float minT = 1.0f;
         float speed = 10.0f;
+        // 全てのゲームオブジェクトを探す
         for (auto obj : stage->GetGameObjectVec())
         {
+            // 自身が引数のgameObjectと等しければ次にいく
             if (obj == gameObject)
             {
                 continue;
@@ -375,52 +397,153 @@ namespace basecross
                 Vec3 hitPoint;
                 TRIANGLE tri;
                 size_t index;
-
-                // 注視点(at)から本来のカメラ位置(eye)までの線分と、オブジェクトのメッシュとの衝突判定
-                if (objDrawComp->HitTestStaticMeshSegmentTrianglesToAffine(transPos, endSp, hitPoint, tri, index))
+                if (obj->FindTag(L"Ground") && m_isRotated == false)
                 {
-                    if (obj->FindTag(L"Ground"))
+                    float dirX = 0.0f, dirZ = 0.0f,len = 0.0f;
+
+                    if (objDrawComp->HitTestStaticMeshSegmentTrianglesToAffine(transPos, endLSp, hitPoint, tri, index))
                     {
-                        if (!m_isRotated)
+                        // 左
+                        dirX = hitPoint.x - transPos.x;
+                        dirZ = hitPoint.z - transPos.z;
+                        Vec3 dir(dirX, 0.0f, dirZ);
+                        len = dir.length();
+
+                        if (len >= 0.6f && len <= rayRange)
                         {
-                            m_isRotated = true;
-                            m_startRotY = m_rotY;
+                            // 壁に触れた
+                            m_canGoLeft = false;
+                        }
+                    }
+                    
+                    if (objDrawComp->HitTestStaticMeshSegmentTrianglesToAffine(transPos, endRSp, hitPoint, tri, index))
+                    {
+                        // 右
+                        dirX = hitPoint.x - transPos.x;
+                        dirZ = hitPoint.z - transPos.z;
+                        Vec3 dir(dirX, 0.0f, dirZ);
+                        len = dir.length();
+
+                        if (len >= 0.6f && len <= rayRange)
+                        {
+                            // 壁に触れた
+                            m_canGoRight = false;
+                        }
+                    }
+                   
+                    if (objDrawComp->HitTestStaticMeshSegmentTrianglesToAffine(transPos, endFSp, hitPoint, tri, index))
+                    {
+                        // 正面
+                        dirX = hitPoint.x - transPos.x;
+                        dirZ = hitPoint.z - transPos.z;
+                        Vec3 dir(dirX, 0.0f, dirZ);
+                        len = dir.length();
+
+                        if (len >= 0.6f && len <= rayRange)
+                        {
+                            // 壁に触れた
+                            m_canGoForward = false;
                         }
                     }
                 }
             }
         }
 
+        if (m_isRotated == false && m_canGoForward == false)
+        {
+            // 左右どちらも行けるならどちらかをランダムに決定して移動
+            if ((m_canGoLeft == true && m_canGoRight == true) && m_isRotated == false)
+            {
+                m_NumRandRot = static_cast<ENUM_RANDOMROT>(rand() % RandomRotNum);
+                switch (m_NumRandRot)
+                {
+                case RandomRotL:
+                    //m_rotY -= XMConvertToRadians(90.0f);
+                    m_targetRotY = m_rotY - XMConvertToRadians(90.0f);
+                    break;
+
+                case RandomRotR:
+                    //m_rotY += XMConvertToRadians(90.0f);
+                    m_targetRotY = m_rotY + XMConvertToRadians(90.0f);
+                    break;
+
+                default:
+                    break;
+                }
+                m_isRotated = true;
+            }
+            // 片方のみならその方向に決定して移動
+            // 左回転
+            else if (m_canGoLeft == true)
+            {
+                //m_rotY -= XMConvertToRadians(90.0f);
+                m_targetRotY = m_rotY - XMConvertToRadians(90.0f);
+                m_isRotated = true;
+            }
+            // 右回転
+            else if (m_canGoRight == true)
+            {
+                //m_rotY += XMConvertToRadians(90.0f);
+                m_targetRotY = m_rotY + XMConvertToRadians(90.0f);
+                m_isRotated = true;
+            }
+            // どちらもダメなら自分の真後ろに決定して移動
+            else
+            {
+                //m_rotY += XMConvertToRadians(180.0f);
+                m_targetRotY = m_rotY + XMConvertToRadians(180.0f);
+                m_isRotated = true;
+            }
+        }
+
+        const float LIMIT_ANGLE = 360.0f,ZERO_ANGLE = 0.0f;
         if (m_isRotated)
         {
-            m_rotY += App::GetApp()->GetElapsedTime() * m_rotationSpeed;
-
-            // 現在の角度と1フレーム前の角度で、90度の区間（0〜90, 90〜180...）が変わったかを判定
-            if (floor(m_rotY / XMConvertToRadians(90.0f)) !=
-                floor((m_rotY - App::GetApp()->GetElapsedTime() * m_rotationSpeed) / XMConvertToRadians(90.0f)))
+            // 現在の角度より目標の角度が大きい場合
+            if(m_rotY < m_targetRotY)
             {
-                // 行き過ぎてしまった角度を、90°の倍数にする
-                m_rotY = std::floor(m_rotY / XMConvertToRadians(90.0f)) * XMConvertToRadians(90.0f);
+                m_rotY += App::GetApp()->GetElapsedTime() * m_rotationSpeed;
 
-                if (m_rotY >= XMConvertToRadians(360.0f))
+                // 目標の角度を超過してしまった場合
+                if (m_rotY >= m_targetRotY)
                 {
-                    m_rotY = 0.0f;
+                    m_rotY = m_targetRotY;
+                    m_isRotated = false;
                 }
-                m_isRotated = false;
             }
+
+            // 目標の角度より現在の角度が大きい場合
+            if (m_rotY > m_targetRotY)
+            {
+                m_rotY -= App::GetApp()->GetElapsedTime() * m_rotationSpeed;
+
+                // 目標の角度より小さくなってしまった場合
+                if (m_rotY <= m_targetRotY)
+                {
+                    m_rotY = m_targetRotY;
+                    m_isRotated = false;
+                }
+            }
+
+            // 360°以上になったら0°に戻す
+            if (m_rotY >= XMConvertToRadians(LIMIT_ANGLE))
+            {
+                m_rotY = XMConvertToRadians(ZERO_ANGLE);
+            }
+
             transComp->SetRotation(0.0f, m_rotY, 0.0f);
         }
         else
         {
             transPos.x = transPos.x + (sinf(m_rotY) * speed * App::GetApp()->GetElapsedTime());
             transPos.z = transPos.z + (cosf(m_rotY) * speed * App::GetApp()->GetElapsedTime());
-            transComp->SetPosition(transPos.x, 0.1f, transPos.z);
+            transComp->SetPosition(transPos.x, 2.0f, transPos.z);
         }
-        GameManager::Instance().AddDebugStr(L"forward_X", forward_X);
-        GameManager::Instance().AddDebugStr(L"forward_Z", forward_Z);
-        GameManager::Instance().AddDebugStr(L"endSpX", endSp.x);
-        GameManager::Instance().AddDebugStr(L"endSpY", endSp.y);
-        GameManager::Instance().AddDebugStr(L"endSpZ", endSp.z);
+
+        // デバッグ文字
+        GameManager::Instance().AddDebugStr(L"m_canGoLeft", (bool)m_canGoLeft);
+        GameManager::Instance().AddDebugStr(L"m_canGoRight", (bool)m_canGoRight);
+        GameManager::Instance().AddDebugStr(L"m_canGoForward", (bool)m_canGoForward);
     }
 
     void EnemyBase::aStar(const shared_ptr<GameObject>& gameObject)

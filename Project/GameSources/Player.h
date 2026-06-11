@@ -76,7 +76,7 @@ namespace basecross
 			m_Velocity(10.0f),
 			m_Position(position),
 			m_Rotation(0.0f, 1.5f, 0.0f),
-			m_Scale(0.3f, 0.3f, 0.3f),
+			m_Scale(1.0f, 1.5f, 1.5f),
 			m_VecJumpPower(0.0f,9.8f,0.0f),
 			m_isJumping(false),
 			m_JumpPower(6.0f),

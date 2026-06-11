@@ -16,5 +16,6 @@ namespace basecross
 		virtual ~Tree();
 		
 		virtual void OnCreate() override;
+		virtual void OnUpdate() {};
 	};
 }

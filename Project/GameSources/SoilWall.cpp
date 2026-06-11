@@ -24,6 +24,7 @@ namespace basecross
 	void SoilWall::OnCreate()
 	{
 		AddTag(L"SoilWall");
+		AddTag(L"Wall");
 		SetIsEditorSave(true);
 		SetAlphaActive(true);
 
