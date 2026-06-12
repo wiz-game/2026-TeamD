@@ -20,7 +20,6 @@ namespace basecross
 		{
 			m_jphManger.Initialize();
 
-			AddGameObject<SkyBox>();
 			CreateViewLight();
 			CreatePlayer();
 			AddGameObject<UITransitionSlide>(STRUCT_UIParam(L"Awas", Vec3(0.0f, 0.0f, 0.0f), 1.3f), 600.0f);

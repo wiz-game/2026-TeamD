@@ -21,6 +21,7 @@ namespace basecross
 	void Dirt::OnCreate()
 	{
 		AddTag(L"Dirt");
+		AddTag(L"Wall");
 		SetIsEditorSave(true);
 
 		m_trans = AddComponent<Transform>();
@@ -31,14 +32,12 @@ namespace basecross
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"M_Sludge");
 		m_draw->SetTextureResource(L"T_Sludge");
-
-		//auto ptrShadow = AddComponent<Shadowmap>();
-		//m_draw->SetOwnShadowActive(true);
-		//ptrShadow->SetMeshResource(L"M_Sludge");
+		m_draw->SetOwnShadowActive(true);
 
 		auto col = AddComponent<CollisionObb>();
 		// col->SetDrawActive(true);
-		col->SetAfterCollision(AfterCollision::None);
+		col->SetFixed(true);
+		col->SetAfterCollision(AfterCollision::Auto);
 
 		// モデルとトランスフォーム間の差分行列
 		Mat4x4 spanMat;
@@ -50,7 +49,6 @@ namespace basecross
 		);
 
 		m_draw->SetMeshToTransformMatrix(spanMat);
-		//ptrShadow->SetMeshToTransformMatrix(spanMat);
 	}
 
 	void Dirt::OnUpdate()
