@@ -27,6 +27,7 @@ namespace basecross
 		drawComp->SetDrawActive(true);
 
 		auto obb = AddComponent<CollisionObb>();
+		//obb->
 
 		//m_gravity = AddComponent<Gravity>();
 
@@ -46,7 +47,7 @@ namespace basecross
 		m_eStateMachine->Update();
 
 		Died(GetThis<EnemyAlpaca>());
-		//DetectionRange(GetThis<EnemyAlpaca>());
+		DetectionRange(GetThis<EnemyAlpaca>());
 		//m_eStateMachine->Update();
 
 		//DropDirt(GetThis<EnemyAlpaca>());
@@ -94,7 +95,7 @@ namespace basecross
 
 	void AngryState::Execute(const shared_ptr<EnemyAlpaca>& Obj)
 	{
-		Obj->aStar(Obj);
+		Obj->Stalker(Obj,1.0f);
 		// 索敵外から出たら徘徊に戻る
 		if (Obj->GetDetection() == false)
 		{
