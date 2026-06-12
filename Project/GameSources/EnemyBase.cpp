@@ -25,7 +25,7 @@ namespace basecross
         m_canGoRight(true),
         m_canGoForward(true),
         m_targetRotY(0.0f),
-        m_rayRange(3.5f)
+        m_rayRange(2.0f)
         //m_EnemyHP(hp)
     {}
 
