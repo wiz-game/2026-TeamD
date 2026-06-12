@@ -209,12 +209,6 @@ namespace basecross
 	// 入ったとき
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
-		// ダート（汚れ）
-		if (Other->FindTag(L"Dirt"))
-		{
-			m_PlayerHP -= 1.0f;
-		}
-
 		float Power = 6.0f;
 		auto transPos = m_transform->GetPosition();
 		// 床
