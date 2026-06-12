@@ -33,7 +33,7 @@ namespace basecross
 
 	void EffectUpdateDrawManager::OnUpdate()
 	{
-		m_manager->Update();
+		m_manager->Update(60.0f * App::GetApp()->GetElapsedTime());
 		auto stage  = App::GetApp()->GetScene<Scene>()->GetActiveStage();
 		auto camera = stage->GetView()->GetTargetCamera();
 		SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());

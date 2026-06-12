@@ -74,31 +74,10 @@ namespace basecross
 		bool m_canGoForward;
 
 		float m_targetRotY;
+
+		float m_rayRange;
 	public:
-		EnemyBase(const shared_ptr<Stage>& stage, const STRUCT_ObjectParam& objectParam) :
-			GameObject(stage, objectParam),
-			m_InitialWanderingTime(0.0f),
-			m_RandRotation(0.0f),
-			m_WanderSpeed(1.0f),
-			m_isWandering(false),
-			m_InitialStandTime(0.0f),
-			m_isStand(true),
-			m_angle(0.0f),
-			m_TargetPosition(),
-			m_isFirstTime(true),
-			m_Detection(false),
-			m_LaunchofDirtCoolDown(0.0f),
-			m_InitCoolDown(3.0f),
-			m_isRotated(false),
-			m_rotationSpeed(2.0f),
-			m_rotY(0.0f),
-			m_canGoLeft(true),
-			m_canGoRight(true),
-			m_canGoForward(true),
-			m_targetRotY(0.0f)
-			//m_EnemyHP(hp)
-		{
-		}
+		EnemyBase(const shared_ptr<Stage>& stage, const STRUCT_ObjectParam& objectParam);
 
 		~EnemyBase()
 		{
@@ -135,6 +114,7 @@ namespace basecross
 		void DropDirt(const shared_ptr<GameObject>& gameObject);
 		void MazeWandering(const shared_ptr<GameObject>& gameObject);
 		void aStar(const shared_ptr<GameObject>& gameObject);
+		void Tracking(const shared_ptr<GameObject>& gameObject,float speed);
 
 		// ゲッターセッター関数
 		bool GetDetection()
