@@ -504,7 +504,7 @@ namespace basecross
                 Vec3 hitPoint;
                 TRIANGLE tri;
                 size_t index;
-                if (obj->FindTag(L"Ground") && m_isRotated == false)
+                if (obj->FindTag(L"Wall") && m_isRotated == false)
                 {
                     float dirX = 0.0f, dirZ = 0.0f,len = 0.0f;
 
@@ -644,7 +644,7 @@ namespace basecross
         {
             transPos.x = transPos.x + (sinf(m_rotY) * speed * App::GetApp()->GetElapsedTime());
             transPos.z = transPos.z + (cosf(m_rotY) * speed * App::GetApp()->GetElapsedTime());
-            transComp->SetPosition(transPos.x, 2.0f, transPos.z);
+            transComp->SetPosition(transPos.x, .0f, transPos.z);
         }
 
         // デバッグ文字
