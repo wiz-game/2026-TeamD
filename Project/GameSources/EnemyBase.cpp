@@ -488,7 +488,7 @@ namespace basecross
         Vec3 endFSp(forward_FX, transPos.y , forward_FZ);
 
         float minT = 1.0f;
-        float speed = 10.0f;
+        float speed = 1.4f;
         // 全てのゲームオブジェクトを探す
         for (auto obj : stage->GetGameObjectVec())
         {
