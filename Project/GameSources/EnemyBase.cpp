@@ -25,7 +25,8 @@ namespace basecross
         m_canGoRight(true),
         m_canGoForward(true),
         m_targetRotY(0.0f),
-        m_rayRange(2.0f)
+        m_rayRange(2.0f),
+        m_Speed(1.4f)
         //m_EnemyHP(hp)
     {}
 
@@ -318,9 +319,9 @@ namespace basecross
         float angleY = distancePos_Y / distance;
         float angleZ = distancePos_Z / distance;
 
-        float yawX = sinf(transRot.y);
+        float yawX = XMConvertToRadians(transRot.y);
         float yawY = 0.0f;
-        float yawZ = cosf(transRot.y);
+        float yawZ = XMConvertToRadians(transRot.y);
 
         float dot = (yawX * angleX) + (yawY * angleY) + (yawZ * angleZ);
 
@@ -488,7 +489,6 @@ namespace basecross
         Vec3 endFSp(forward_FX, transPos.y , forward_FZ);
 
         float minT = 1.0f;
-        float speed = 1.4f;
         // 全てのゲームオブジェクトを探す
         for (auto obj : stage->GetGameObjectVec())
         {
@@ -642,8 +642,8 @@ namespace basecross
         }
         else
         {
-            transPos.x = transPos.x + (sinf(m_rotY) * speed * App::GetApp()->GetElapsedTime());
-            transPos.z = transPos.z + (cosf(m_rotY) * speed * App::GetApp()->GetElapsedTime());
+            transPos.x = transPos.x + (sinf(m_rotY) * m_Speed * App::GetApp()->GetElapsedTime());
+            transPos.z = transPos.z + (cosf(m_rotY) * m_Speed * App::GetApp()->GetElapsedTime());
             transComp->SetPosition(transPos.x, .0f, transPos.z);
         }
 
