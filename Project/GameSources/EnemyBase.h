@@ -87,34 +87,19 @@ namespace basecross
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 
-		void Move
-		(
-			const shared_ptr<GameObject>& gameObject,
-			float speed
-		);
-
-		void CircleMove
-		(
-			const shared_ptr<GameObject>& gameObject,
-			float radius,		// 回転半径
-			float moveSpeed		// 回転速度
-		);
-
-		void PointMove
-		(
-			const shared_ptr<GameObject>& gameObject,
-			float speed
-		);
+		//void Move(const shared_ptr<GameObject>& gameObject, float speed);
+		//void CircleMove(const shared_ptr<GameObject>& gameObject, float radius, float moveSpeed);
+		//void PointMove(const shared_ptr<GameObject>& gameObject,float speed);
 
 		void DebugString();
 
 		void Died(const shared_ptr<GameObject>& gameObject);
 		void DetectionRange(const shared_ptr<GameObject>& gameObject);
 		void Stalker(const shared_ptr<GameObject>& gameObject, float stalkerSpeed);
-		void FunctionGravity(const shared_ptr<GameObject>& gameObject);
-		void DropDirt(const shared_ptr<GameObject>& gameObject);
+		//void FunctionGravity(const shared_ptr<GameObject>& gameObject);
+		//void DropDirt(const shared_ptr<GameObject>& gameObject);
 		void MazeWandering(const shared_ptr<GameObject>& gameObject);
-		void aStar(const shared_ptr<GameObject>& gameObject);
+		//void aStar(const shared_ptr<GameObject>& gameObject);
 		void Tracking(const shared_ptr<GameObject>& gameObject,float speed);
 
 		// ゲッターセッター関数
