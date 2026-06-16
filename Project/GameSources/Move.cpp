@@ -8,6 +8,12 @@
 
 namespace basecross 
 {
+	Move::Move(const shared_ptr<GameObject>& gameObject) :
+		Component(gameObject),
+		m_Speed(10.0f)
+	{
+	}
+
 	//初期化
 	void Move::OnCreate()
 	{
@@ -59,16 +65,13 @@ namespace basecross
 			float vectorx = 0.0f;
 			float vectorz = 0.0f;
 
-			// 移動速度
-			float speed = 3.0f;
-
 			// 前後移動
-			vectorx += forward.x * Input.z * deltaTime * speed;
-			vectorz += forward.z * Input.z * deltaTime * speed;
+			vectorx += forward.x * Input.z * deltaTime * m_Speed;
+			vectorz += forward.z * Input.z * deltaTime * m_Speed;
 
 			// 左右移動
-			vectorx += forwardMove.x * Input.x * deltaTime * speed;
-			vectorz += forwardMove.z * Input.x * deltaTime * speed;
+			vectorx += forwardMove.x * Input.x * deltaTime * m_Speed;
+			vectorz += forwardMove.z * Input.x * deltaTime * m_Speed;
 
 			// 前後左右で移動した計算結果をVectorに代入する
 			initPos.x += vectorx;
