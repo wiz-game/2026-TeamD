@@ -12,6 +12,7 @@ namespace basecross
 	class MenuManager
 	{
 	private:
+		vector<shared_ptr<UIBase>> m_uipointers;
 
 		MenuManager()
 		{
@@ -23,5 +24,7 @@ namespace basecross
 		static MenuManager& Instance();
 		void Pause();
 		void ClosePause();
+		void UIDrawActive(bool isActive);
+		void SetUIPointers(const vector<shared_ptr<UIBase>>& uipointers);
 	};
 }

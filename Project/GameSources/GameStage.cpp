@@ -23,6 +23,7 @@ namespace basecross
 			AddGameObject<SkyBox>();
 			CreateViewLight();
 			CreatePlayer();
+			CreateMenu();
 			AddGameObject<UITransitionSlide>(STRUCT_UIParam(L"Awas", Vec3(0.0f, 0.0f, 0.0f), 1.3f), 600.0f);
 
 			// ステージの作成
@@ -85,6 +86,19 @@ namespace basecross
 	{
 		auto player = AddGameObject<Player>(Vec3(0.0f, 0.75f, 0.0f));
 		SetSharedGameObject(L"Player", player);
+	}
+
+	void GameStage::CreateMenu()
+	{
+		vector<shared_ptr<UIBase>> uipointers;
+		uipointers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			L"MenuBack",
+			Vec3(0.0f, 0.0f, 0.0f), 
+			1.0f,
+			Col4(1.0f,1.0f,1.0f,0.25f))));
+
+		MenuManager::Instance().SetUIPointers(uipointers);
+		MenuManager::Instance().UIDrawActive(false);
 	}
 
 	void GameStage::SetCollRange()

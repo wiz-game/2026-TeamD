@@ -14,15 +14,6 @@ namespace basecross
 	void UIMenu::OnUpdate()
 	{
 		UIBase::OnUpdate();
-		UIDrawActive(true);
-	}
-
-	void UIMenu::UIDrawActive(bool isActive)
-	{
-		//メニューの後ろの画面をぼかすやつ
-		auto backscreen = m_backscreen.lock();
-		m_backscreen = backscreen;
-		backscreen->SetDrawActive(isActive);
 	}
 
 }

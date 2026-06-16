@@ -33,4 +33,17 @@ namespace basecross
 			gameObject->SetUpdateActive(isUpdateActive);
 		}
 	}
+
+	void MenuManager::UIDrawActive(bool isActive)
+	{
+		for (auto& uipointer : m_uipointers)
+		{
+			uipointer->GetComponent<PCTSpriteDraw>()->SetDrawActive(isActive);
+		}
+	}
+
+	void MenuManager::SetUIPointers(const vector<shared_ptr<UIBase>>& uipointers)
+	{
+		m_uipointers = uipointers;
+	}
 }
