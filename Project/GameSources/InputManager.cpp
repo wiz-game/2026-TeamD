@@ -71,8 +71,9 @@ namespace basecross
 			break;
 		case ENUM_GameMode::Play:
 			// プレイヤーの移動
-			if (m_pad.fThumbLX > STACK_DEADZONE_L || m_pad.fThumbLX < -STACK_DEADZONE_L ||
-				m_pad.fThumbLY > STACK_DEADZONE_L || m_pad.fThumbLY < -STACK_DEADZONE_L)
+			if ((m_pad.fThumbLX > STACK_DEADZONE_L || m_pad.fThumbLX < -STACK_DEADZONE_L ||
+				m_pad.fThumbLY > STACK_DEADZONE_L || m_pad.fThumbLY < -STACK_DEADZONE_L) &&
+				!m_pad.bRightTrigger)
 			{
 				Moves();
 			}
