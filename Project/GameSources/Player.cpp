@@ -26,6 +26,7 @@ namespace basecross
 		drawComp->SetMeshResource(L"AwaPaka");
 		drawComp->SetTextureResource(L"T_AwaPaka_Body");
 		drawComp->SetDrawActive(true);
+		drawComp->SetOwnShadowActive(true);
 
 		// 当たり判定のコンポーネント
 		auto obb = AddComponent<CollisionObb>();
