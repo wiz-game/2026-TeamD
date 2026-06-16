@@ -144,6 +144,7 @@ namespace basecross
 			// 一つ戻る
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_B)
 			{
+				ReturnGame();
 				ReturnOneMenu();
 			}
 
@@ -450,10 +451,38 @@ namespace basecross
 
 	void InputManager::ReturnOneMenu()
 	{
+		
 	}
 
 	void InputManager::MoveMenuCursor()
 	{
+		if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP)
+		{
+			MenuManager::Instance().ChangeSelectMenuMode(-1);
+		}
+		else if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+		{
+			MenuManager::Instance().ChangeSelectMenuMode(+1);
+		}
+
+			//switch (MenuManager::Instance().GetMenuMode())
+			//{
+			//case ENUM_MenuMode::Restart:
+			//	MenuManager::Instance().SetMenuMode(ENUM_MenuMode::Setting);
+			//	break;
+
+			//case ENUM_MenuMode::Setting:
+			//	MenuManager::Instance().SetMenuMode(ENUM_MenuMode::Howtoplay);
+			//	break;
+
+			//case ENUM_MenuMode::Howtoplay:
+			//	MenuManager::Instance().SetMenuMode(ENUM_MenuMode::Retitle);
+			//	break;
+
+			//case ENUM_MenuMode::Retitle:
+			//	MenuManager::Instance().SetMenuMode(ENUM_MenuMode::Restart);
+			//	break;
+			//}
 	}
 
 	void InputManager::PressedAMenu()

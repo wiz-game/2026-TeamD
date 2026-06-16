@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Project.h"
+#include "MenuManager.h"
 
 namespace basecross
 {
@@ -19,6 +20,7 @@ namespace basecross
 	void MenuManager::ClosePause()
 	{
 		SetAllUpdateActive(true);
+		UIDrawActive(false);
 	}
 
 	//ステージの全オブジェクトのUpdateを管理する
@@ -44,5 +46,24 @@ namespace basecross
 	void MenuManager::SetUIPointers(const vector<shared_ptr<UIBase>>& uipointers)
 	{
 		m_uipointers = uipointers;
+	}
+	
+	void basecross::MenuManager::SetMenuMode(ENUM_MenuMode menumode)
+	{
+		m_menuMode = menumode;
+	}
+
+	void MenuManager::ChangeSelectMenuMode(const int& num)
+	{
+		auto menuNow = GetMenuMode();
+		int menuAfter = static_cast<int>(menuNow);
+		menuAfter += num;
+
+		if (menuAfter == -1) menuAfter = 3;
+		if (menuAfter == 4) menuAfter = 0;
+
+		ENUM_MenuMode setAfter = static_cast<ENUM_MenuMode>(menuAfter); 
+
+		SetMenuMode(setAfter);
 	}
 }
