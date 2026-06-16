@@ -32,6 +32,7 @@ namespace basecross
 		// 1度だけ原点として記憶するやつ
 		bool m_isFirstTime;
 
+		float m_Speed;
 
 		enum Point
 		{
