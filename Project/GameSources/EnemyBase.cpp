@@ -25,11 +25,11 @@ namespace basecross
         m_canGoRight(true),
         m_canGoForward(true),
         m_targetRotY(0.0f),
-        m_rayRange(2.0f),
+        m_rayRange(1.6f),
 
         // 移動速度
         m_Speed(1.4f),
-        m_rotToHeadLeap(0.7f)
+        m_rotToHeadLeap(0.1f)
     {}
 
     void EnemyBase::OnCreate()
