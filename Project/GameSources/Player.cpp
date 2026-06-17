@@ -22,11 +22,11 @@ namespace basecross
 
 		// ドローコンポーネントを追加
 		m_draw = AddComponent<PNTDXModelDraw>();
-		auto drawComp = AddComponent<PNTStaticDraw>();
-		drawComp->SetMeshResource(L"AwaPaka");
-		drawComp->SetTextureResource(L"T_AwaPaka_Body");
-		drawComp->SetDrawActive(true);
-		drawComp->SetOwnShadowActive(true);
+		m_pntDraw = AddComponent<PNTStaticDraw>();
+		m_pntDraw->SetMeshResource(L"AwaPaka");
+		m_pntDraw->SetTextureResource(L"T_AwaPaka_Body");
+		m_pntDraw->SetDrawActive(true);
+		m_pntDraw->SetOwnShadowActive(true);
 
 		// 当たり判定のコンポーネント
 		auto obb = AddComponent<CollisionObb>();
@@ -49,9 +49,13 @@ namespace basecross
 			Vec3(0.0f, -0.5f, 0.0f)
 		);
 
-		drawComp->SetMeshToTransformMatrix(spanMat);
+		m_pntDraw->SetMeshToTransformMatrix(spanMat);
 		shadowComp->SetMeshToTransformMatrix(spanMat);
 
+		auto loopFlag = true;
+		m_pntDraw->AddAnimation(L"ALL", 0, 999, loopFlag, 60.0f);
+
+		m_pntDraw->ChangeCurrentAnimation(L"ALL");
 
 		// バブルのコンポーネント
 		//auto fbComp = AddComponent<FurBubble>(GetStage());
@@ -65,6 +69,7 @@ namespace basecross
 		PlayerDied();
 		LaunchofBubble();
 		DebugString();
+		PlayerAnimation();
 
 		switch (m_playerState)
 		{
@@ -258,15 +263,6 @@ namespace basecross
 	// 出たとき
 	void Player::OnCollisionExit(shared_ptr<GameObject>& Other)
 	{
-		InputManager* i = &InputManager::Instance();
-		// 1.0fだと半分のままなので、2倍を掛けてあげることによって通常の速度にする
-		float normalSpeed = i->GetMoveSpeed() * 2.0f;
-		float normalSpeed2 = 1.8f;
-
-		if (Other->FindTag(L"Dirt"))
-		{
-			i->SetMoveSpeed(normalSpeed2);
-		}
 	}
 
 	void Player::CreateBubble()
@@ -317,6 +313,12 @@ namespace basecross
 		default:
 			break;
 		}
+	}
+	void Player::PlayerAnimation()
+	{
+		//m_pntDraw->UpdateAnimation(App::GetApp()->GetElapsedTime());
+		//GameManager::Instance().AddDebugStr(L"NowAnimation", m_pntDraw->GetCurrentAnimation());
+		//GameManager::Instance().AddDebugStr(L"AnimationTime", m_pntDraw->GetCurrentAnimationTime());
 	}
 }
 //end basecross
