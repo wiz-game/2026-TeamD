@@ -73,7 +73,7 @@ namespace basecross
 			// プレイヤーの移動
 			if ((m_pad.fThumbLX > STACK_DEADZONE_L || m_pad.fThumbLX < -STACK_DEADZONE_L ||
 				m_pad.fThumbLY > STACK_DEADZONE_L || m_pad.fThumbLY < -STACK_DEADZONE_L) &&
-				!m_pad.bRightTrigger)
+				m_moveStopTimer.TimeCount(App::GetApp()->GetElapsedTime(), false))
 			{
 				Moves();
 			}
@@ -265,6 +265,11 @@ namespace basecross
 			PressedCKey();
 		}
 
+		if (m_key.m_bPressedKeyTbl['V'])
+		{
+			PressedVKey();
+		}
+
 		// マウスポイントの更新
 		m_beforeMouseClientPoint = m_key.m_MouseClientPoint;
 		m_beforeWheelDelta = m_wheelDelta;
@@ -386,8 +391,9 @@ namespace basecross
 		dot = clamp(dot, -1.0f, 1.0f);
 		float angle = acos(dot);
 		Quat rot = Quat(axis, angle);
-		Quat offset(Vec3(0, 1, 0), XMConvertToRadians(10.0f));
+		Quat offset(Vec3(0, 1, 0), XMConvertToRadians(13.0f));
 		Quat finalRot = offset * rot;
+		m_BubbleRateTimer = Timer(0.5f);
 
 		if (!bresing)
 		{
@@ -401,6 +407,8 @@ namespace basecross
 			EffectManager::Instance().SetScale(effHandle, Vec3(0.35f));
 			EffectManager::Instance().SetRotationFromQuaternion(effHandle, finalRot);
 		}
+
+		m_moveStopTimer = Timer(0.1f);
 	}
 
 	void InputManager::PressedA()
@@ -409,6 +417,7 @@ namespace basecross
 
 	void InputManager::PressedB()
 	{
+		GameManager::Instance().SetGameMode(ENUM_GameMode::Movie);
 	}
 
 	void InputManager::PressedStart()
@@ -592,5 +601,18 @@ namespace basecross
 		{
 			GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
 		}
+	}
+
+	void InputManager::PressedVKey()
+	{
+		if (GameManager::Instance().GetGameMode() == ENUM_GameMode::Play)
+		{
+			GameManager::Instance().SetGameMode(ENUM_GameMode::Movie);
+		}
+		else
+		{
+			GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
+		}
+
 	}
 }
