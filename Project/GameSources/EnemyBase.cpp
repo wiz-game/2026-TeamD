@@ -15,7 +15,7 @@ namespace basecross
         m_angle(0.0f),
         m_TargetPosition(),
         m_isFirstTime(true),
-        m_Detection(false),
+        m_Detection(true),
         m_LaunchofDirtCoolDown(0.0f),
         m_InitCoolDown(3.0f),
         m_isRotated(false),
@@ -107,17 +107,16 @@ namespace basecross
         float angleY = distancePos_Y / distance;
         float angleZ = distancePos_Z / distance;
 
-        float yawX = sinf(XMConvertToRadians(transRot.y));
-        float yawY = 0.0f;
-        float yawZ = cosf(XMConvertToRadians(transRot.y));
+        auto forward = transComp->GetForward();
+        forward.normalize();
 
-        float dot = (yawX * angleX) + (yawY * angleY) + (yawZ * angleZ);
+        auto dot = (forward.x * angleX) + (forward.y * angleY) + (forward.z * angleZ);
 
-        const float radius = 10.0f;
+        const float radius = 7.0f, rangeHeight = 0.3f;
 
         Vec3 startReyPos = Vec3(transPos.x, 0.3f, transPos.z);
-        Vec3 endPSp(playerPos.x, transPos.y, playerPos.z);
 
+        Vec3 endPSp(playerPos.x, transPos.y + rangeHeight, playerPos.z);
 
         float dotAngle = XMConvertToRadians(45.0f);
 
@@ -143,8 +142,8 @@ namespace basecross
                         disX = hitPoint.x - playerPos.x;
                         disZ = hitPoint.z - playerPos.z;
                         Vec3 dir(disX, 0.0f, disZ);
-                        float errorLen = len = dir.length();
-                        if (len <= 0.5f)
+                        dir.length();
+                        if (len <= m_rayRange)
                         {
                             m_Detection = true;
                             break;
@@ -158,9 +157,8 @@ namespace basecross
             m_Detection = false;
         }
         // デバッグ文字
-        GameManager::Instance().AddDebugStr(L"m_transRotY", transRot.y);
-        //GameManager::Instance().AddDebugStr(L"m_canGoRight", (bool)m_canGoRight);
-        //GameManager::Instance().AddDebugStr(L"m_canGoForward", (bool)m_canGoForward);
+        GameManager::Instance().AddDebugStr(L"m_Detection", m_Detection);
+        GameManager::Instance().AddDebugStr(L"dot", dot);
     }
 
     // 追跡AI
@@ -259,12 +257,12 @@ namespace basecross
         m_canGoForward = true;
 
         // 右
-        float forward_RX = transPos.x + (sinf((m_rotY + XMConvertToRadians(90.0f))) * m_rayRange);
-        float forward_RZ = transPos.z + (cosf((m_rotY + XMConvertToRadians(90.0f))) * m_rayRange);
+        float forward_RX = transPos.x + ((sinf(m_rotY) + XMConvertToRadians(90.0f))) * m_rayRange;
+        float forward_RZ = transPos.z + ((cosf(m_rotY) + XMConvertToRadians(90.0f))) * m_rayRange;
 
         // 左
-        float forward_LX = transPos.x + (sinf((m_rotY)-XMConvertToRadians(90.0f)) * m_rayRange);
-        float forward_LZ = transPos.z + (cosf((m_rotY)-XMConvertToRadians(90.0f)) * m_rayRange);
+        float forward_LX = transPos.x + ((sinf(m_rotY)-XMConvertToRadians(90.0f))) * m_rayRange;
+        float forward_LZ = transPos.z + ((cosf(m_rotY)-XMConvertToRadians(90.0f))) * m_rayRange;
 
         Vec3 endRSp(forward_RX, transPos.y, forward_RZ);
         Vec3 endLSp(forward_LX, transPos.y, forward_LZ);
@@ -278,7 +276,7 @@ namespace basecross
 
         float minT = 1.0f;
         // 全てのゲームオブジェクトを探す
-        for (auto obj : stage->GetGameObjectVec())
+        for (auto& obj : stage->GetGameObjectVec())
         {
             // 自身が引数のgameObjectと等しければ次にいく
             if (obj == gameObject)
@@ -426,6 +424,13 @@ namespace basecross
             {
                 m_rotY = XMConvertToRadians(ZERO_ANGLE);
             }
+
+            if (m_rotY <= XMConvertToRadians(-LIMIT_ANGLE))
+            {
+                m_rotY = XMConvertToRadians(ZERO_ANGLE);
+            }
+
+            transComp->SetRotation(0.0f, m_rotY, 0.0f);
         }
         else
         {
