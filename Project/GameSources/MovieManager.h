@@ -1,2 +1,99 @@
 #pragma once
 #include "stdafx.h"
+
+namespace basecross
+{
+	struct CameraKeyframe
+	{
+		float time;
+		Vec3 eye;
+		Vec3 lookat;
+		float armLength;
+		float fov;
+		enum Easing { Linear = 0, EaseInOut = 1 } easing = Linear;
+	};
+
+	struct CameraTrack
+	{
+		vector<CameraKeyframe> keys;
+		void Evaluate(float& t,Vec3& outEye,Vec3& outLookAt,float& outArmLength,float& outFov)const;
+	};
+
+	enum MovieType
+	{
+		None,
+		Title,
+		Select,
+		Play,
+		EnemySpotted,
+		Cleaned,
+		GameClear,
+		GameOver,
+		Max
+	};
+
+	using MovieCallback = function<void()>;
+	class MyCamera;
+	struct MovieEvent
+	{
+		// イベントの長さ
+		float duration = 0.0f;
+		// カメラトラック
+		optional<CameraTrack> cameraTrack;
+		// イベント完了時に呼ぶ
+		MovieCallback onComplete = nullptr;
+		// 割り込み許可フラグ
+		bool interruptible = true;
+
+		vector<pair<float, MovieCallback>> keyCallbacks;
+		vector<char> keyCalled;
+
+		bool onCompleteCalled = false;
+	};
+
+	class MovieManager
+	{
+	private:
+		MovieType m_currentMovie;
+		bool m_isPlayMove;
+		Timer m_timer;
+
+		vector<vector<MovieEvent>> m_eventsPerMovie;
+	
+		size_t m_currentEventIndex;
+		float m_currentEventTime;
+	
+		MovieManager();
+		~MovieManager();
+	public:
+		static MovieManager& Instance()
+		{
+			static MovieManager instance;
+			return instance;
+		}
+
+		void Initialize();
+		void OnUpdate();
+
+		// 制御
+		void PlayMovie(const MovieType& movie);
+		void StopMovie();
+
+		void SetMovieEvents(MovieType movie,const vector<MovieEvent>& events);
+		
+		// カメラ関連
+		shared_ptr<MyCamera> GetStageCamera();
+
+		// 共通部分、MovieTypeごとの初期化
+		void InitializeMovie(const MovieType& movie);
+		// 共通部分、MovieTypeごとの後始末
+		void FinalizeMovie();
+		// Playが呼ばれたときのカメラ挙動
+		void PlayMovieCamera();
+
+		// 全てのゲームオブジェクトの更新フラグを変更する
+		void SetAllGameObjectsUpdateActive(bool isActive);
+
+		pair<Vec3, Vec3> MoveCameraInFrontPlayer(float distance, float height, float lookAtHeight);
+	};
+}
