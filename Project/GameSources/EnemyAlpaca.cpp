@@ -22,8 +22,8 @@ namespace basecross
 		m_transform->SetRotation(0.0f, 0.0f, 0.0f);
 
 		auto drawComp = AddComponent<PNTStaticDraw>();
-		drawComp->SetMeshResource(L"M_Alpaca");
-		drawComp->SetTextureResource(L"T_Alpaca");
+		drawComp->SetMeshResource(L"DoroPaka");
+		drawComp->SetTextureResource(L"T_DoroPaka_Body");
 		drawComp->SetDrawActive(true);
 
 		auto obb = AddComponent<CollisionObb>();
@@ -34,9 +34,21 @@ namespace basecross
 		m_EnemyHP = 10;
 
 		auto shadowComp = AddComponent<Shadowmap>();
-		shadowComp->SetMeshResource(L"M_Alpaca");
+		shadowComp->SetMeshResource(L"DoroPaka");
 		shadowComp->SetDrawActive(true);
 
+		Mat4x4 spanMat;
+		spanMat.affineTransformation
+		(
+			Vec3(0.5f, 0.5f, 0.5f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, XM_PI, 0.0f),
+			Vec3(0.0f, -0.5f, 0.0f)
+		);
+
+		drawComp->SetMeshToTransformMatrix(spanMat);
+		shadowComp->SetMeshToTransformMatrix(spanMat);
+		
 		m_eStateMachine.reset(new StateMachine<EnemyAlpaca>(GetThis<EnemyAlpaca>()));
 		m_eStateMachine->ChangeState(IdleState::Instance());
 	}
@@ -47,7 +59,7 @@ namespace basecross
 		m_eStateMachine->Update();
 
 		Died(GetThis<EnemyAlpaca>());
-		//DetectionRange(GetThis<EnemyAlpaca>());
+		DetectionRange(GetThis<EnemyAlpaca>());
 		//m_eStateMachine->Update();
 
 		//DropDirt(GetThis<EnemyAlpaca>());
@@ -95,7 +107,7 @@ namespace basecross
 
 	void AngryState::Execute(const shared_ptr<EnemyAlpaca>& Obj)
 	{
-		Obj->Stalker(Obj,1.0f);
+		Obj->Stalker(Obj,3.0f);
 		// 索敵外から出たら徘徊に戻る
 		if (Obj->GetDetection() == false)
 		{

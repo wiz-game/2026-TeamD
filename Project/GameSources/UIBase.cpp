@@ -36,6 +36,7 @@ namespace basecross
 
 		m_sPtrTrans = AddComponent<Transform>();
 		m_sPtrTrans->SetPosition(m_uiParam.Position);
+		SetDrawLayer(2);
 	}
 
 	void UIBase::OnUpdate()

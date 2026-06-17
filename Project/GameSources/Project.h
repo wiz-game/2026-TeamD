@@ -22,7 +22,6 @@
 // マネージャークラス
 #include "GameManager.h"
 #include "SoundManager.h"
-#include "MenuManager.h"
 #include "EffectManager.h"
 #include "EffectUpdateDrawManager.h"
 #include "MovieManager.h"
@@ -85,4 +84,5 @@
 
 #include "StageEditor.h"
 
+#include "MenuManager.h"
 #include "InputManager.h"

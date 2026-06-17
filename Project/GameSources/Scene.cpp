@@ -24,6 +24,7 @@ namespace basecross
 			InputManager::Instance().Initialize();
 			StageEditor::Instance().Initialize();
 			EffectManager::Instance().CreateEfkInterface(20000);
+			MovieManager::Instance().Initialize();
 
 			// îwåiêFÇê›íË
 			SetClearColor(Col4(0.0f, 0.3f, 0.6f, 1.0f));
@@ -40,7 +41,7 @@ namespace basecross
 
 	void Scene::OnCreate2()
 	{
-		GameManager::Instance().SetGameMode(ENUM_GameMode::Title);
+		GameManager::Instance().SetGameMode(ENUM_GameMode::Play);// Title);
 	}
 
 	void Scene::OnUpdate()
@@ -49,6 +50,8 @@ namespace basecross
 		InputManager::Instance().Update();
 
 		SceneBase::OnUpdate();
+
+		MovieManager::Instance().OnUpdate();
 	}
 
 
