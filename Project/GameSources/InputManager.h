@@ -26,7 +26,7 @@ namespace basecross
 		int m_wheelDelta = 0;
 
 		// 移動速度
-		float m_MoveSpeed = 1.8f;
+		float m_MoveSpeed = 0.6f;
 
 		// 時間
 		Timer m_timer = 0.0f;
