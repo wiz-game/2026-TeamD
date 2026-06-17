@@ -417,7 +417,7 @@ namespace basecross
 
 	void InputManager::PressedB()
 	{
-		GameManager::Instance().SetGameMode(ENUM_GameMode::Movie);
+		// GameManager::Instance().SetGameMode(ENUM_GameMode::Movie);
 	}
 
 	void InputManager::PressedStart()
@@ -607,7 +607,7 @@ namespace basecross
 	{
 		if (GameManager::Instance().GetGameMode() == ENUM_GameMode::Play)
 		{
-			GameManager::Instance().SetGameMode(ENUM_GameMode::Movie);
+			//GameManager::Instance().SetGameMode(ENUM_GameMode::Movie);
 		}
 		else
 		{
