@@ -27,7 +27,7 @@ namespace basecross
 		drawComp->SetDrawActive(true);
 
 		auto obb = AddComponent<CollisionObb>();
-		//obb->
+		obb->AddExcludeCollisionTag(L"Enemy");
 
 		//m_gravity = AddComponent<Gravity>();
 
@@ -47,7 +47,7 @@ namespace basecross
 		m_eStateMachine->Update();
 
 		Died(GetThis<EnemyAlpaca>());
-		DetectionRange(GetThis<EnemyAlpaca>());
+		//DetectionRange(GetThis<EnemyAlpaca>());
 		//m_eStateMachine->Update();
 
 		//DropDirt(GetThis<EnemyAlpaca>());

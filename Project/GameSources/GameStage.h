@@ -19,6 +19,7 @@ namespace basecross
 
 		void CreateViewLight();
 		void CreatePlayer();
+		void CreateMenu();
 
 		void SetCollRange();
 	public:
