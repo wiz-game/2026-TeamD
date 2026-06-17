@@ -32,6 +32,7 @@ namespace basecross
 		// 1度だけ原点として記憶するやつ
 		bool m_isFirstTime;
 
+		float m_Speed;
 
 		enum Point
 		{
@@ -74,31 +75,10 @@ namespace basecross
 		bool m_canGoForward;
 
 		float m_targetRotY;
+
+		float m_rayRange;
 	public:
-		EnemyBase(const shared_ptr<Stage>& stage, const STRUCT_ObjectParam& objectParam) :
-			GameObject(stage, objectParam),
-			m_InitialWanderingTime(0.0f),
-			m_RandRotation(0.0f),
-			m_WanderSpeed(1.0f),
-			m_isWandering(false),
-			m_InitialStandTime(0.0f),
-			m_isStand(true),
-			m_angle(0.0f),
-			m_TargetPosition(),
-			m_isFirstTime(true),
-			m_Detection(false),
-			m_LaunchofDirtCoolDown(0.0f),
-			m_InitCoolDown(3.0f),
-			m_isRotated(false),
-			m_rotationSpeed(2.0f),
-			m_rotY(0.0f),
-			m_canGoLeft(true),
-			m_canGoRight(true),
-			m_canGoForward(true),
-			m_targetRotY(0.0f)
-			//m_EnemyHP(hp)
-		{
-		}
+		EnemyBase(const shared_ptr<Stage>& stage, const STRUCT_ObjectParam& objectParam);
 
 		~EnemyBase()
 		{
@@ -107,34 +87,20 @@ namespace basecross
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 
-		void Move
-		(
-			const shared_ptr<GameObject>& gameObject,
-			float speed
-		);
-
-		void CircleMove
-		(
-			const shared_ptr<GameObject>& gameObject,
-			float radius,		// 回転半径
-			float moveSpeed		// 回転速度
-		);
-
-		void PointMove
-		(
-			const shared_ptr<GameObject>& gameObject,
-			float speed
-		);
+		//void Move(const shared_ptr<GameObject>& gameObject, float speed);
+		//void CircleMove(const shared_ptr<GameObject>& gameObject, float radius, float moveSpeed);
+		//void PointMove(const shared_ptr<GameObject>& gameObject,float speed);
 
 		void DebugString();
 
 		void Died(const shared_ptr<GameObject>& gameObject);
 		void DetectionRange(const shared_ptr<GameObject>& gameObject);
 		void Stalker(const shared_ptr<GameObject>& gameObject, float stalkerSpeed);
-		void FunctionGravity(const shared_ptr<GameObject>& gameObject);
-		void DropDirt(const shared_ptr<GameObject>& gameObject);
+		//void FunctionGravity(const shared_ptr<GameObject>& gameObject);
+		//void DropDirt(const shared_ptr<GameObject>& gameObject);
 		void MazeWandering(const shared_ptr<GameObject>& gameObject);
-		void aStar(const shared_ptr<GameObject>& gameObject);
+		//void aStar(const shared_ptr<GameObject>& gameObject);
+		void Tracking(const shared_ptr<GameObject>& gameObject,float speed);
 
 		// ゲッターセッター関数
 		bool GetDetection()

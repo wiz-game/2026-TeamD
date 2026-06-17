@@ -70,7 +70,7 @@ namespace basecross
 	protected:
 		STRUCT_ObjectParam m_objectParam;
 		bool m_isEditorSave;
-
+		
 		void SetIsEditorSave(const bool& isEditorSave) { m_isEditorSave = isEditorSave; }
 	public:
 		StageObjectInterface(const STRUCT_ObjectParam& objectParams) : m_objectParam(objectParams) { m_isEditorSave = false; }

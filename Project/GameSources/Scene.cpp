@@ -20,7 +20,7 @@ namespace basecross
 
 			// 各マネージャーを初期化
 			JoltManager::StaticInitialize();
-			GameManager::Instance().Initialize(true);
+			GameManager::Instance().Initialize(false);
 			InputManager::Instance().Initialize();
 			StageEditor::Instance().Initialize();
 			EffectManager::Instance().CreateEfkInterface(20000);
@@ -60,6 +60,7 @@ namespace basecross
 	void Scene::OnEvent(const shared_ptr<Event>& event) 
 	{
 		GameManager::Instance().RemoveDebugLog();
+		EffectManager::Instance().StopAllEffect();
 
 		// タイトルステージ
 		if (event->m_MsgStr == L"TitleStage")

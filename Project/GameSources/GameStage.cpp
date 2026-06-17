@@ -20,7 +20,6 @@ namespace basecross
 		{
 			m_jphManger.Initialize();
 
-			AddGameObject<SkyBox>();
 			CreateViewLight();
 			CreatePlayer();
 			CreateMenu();

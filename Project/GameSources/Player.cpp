@@ -26,6 +26,7 @@ namespace basecross
 		drawComp->SetMeshResource(L"AwaPaka");
 		drawComp->SetTextureResource(L"T_AwaPaka_Body");
 		drawComp->SetDrawActive(true);
+		drawComp->SetOwnShadowActive(true);
 
 		// 当たり判定のコンポーネント
 		auto obb = AddComponent<CollisionObb>();
@@ -209,17 +210,6 @@ namespace basecross
 	// 入ったとき
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
-		InputManager* i = &InputManager::Instance();
-		auto slowness = i->GetMoveSpeed() / 2;
-		float slowness2 = 0.9f;
-
-		// ダート（汚れ）
-		if (Other->FindTag(L"Dirt"))
-		{
-			m_PlayerHP -= 1.0f;
-			i->SetMoveSpeed(slowness2);
-		}
-
 		float Power = 6.0f;
 		auto transPos = m_transform->GetPosition();
 		// 床
