@@ -47,7 +47,7 @@ namespace basecross
 		m_eStateMachine->Update();
 
 		Died(GetThis<EnemyAlpaca>());
-		//DetectionRange(GetThis<EnemyAlpaca>());
+		DetectionRange(GetThis<EnemyAlpaca>());
 		//m_eStateMachine->Update();
 
 		//DropDirt(GetThis<EnemyAlpaca>());
@@ -95,7 +95,7 @@ namespace basecross
 
 	void AngryState::Execute(const shared_ptr<EnemyAlpaca>& Obj)
 	{
-		Obj->Stalker(Obj,1.0f);
+		Obj->Stalker(Obj,3.0f);
 		// 索敵外から出たら徘徊に戻る
 		if (Obj->GetDetection() == false)
 		{

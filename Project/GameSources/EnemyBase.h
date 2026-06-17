@@ -34,6 +34,8 @@ namespace basecross
 
 		float m_Speed;
 
+		float m_rotToHeadLeap;
+
 		enum Point
 		{
 			Point0,
