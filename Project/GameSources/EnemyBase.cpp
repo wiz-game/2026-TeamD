@@ -112,12 +112,11 @@ namespace basecross
 
         auto dot = (forward.x * angleX) + (forward.y * angleY) + (forward.z * angleZ);
 
-        const float radius = 10.0f,rangeHeight = 0.3f;
+        const float radius = 7.0f, rangeHeight = 0.3f;
 
         Vec3 startReyPos = Vec3(transPos.x, 0.3f, transPos.z);
 
         Vec3 endPSp(playerPos.x, transPos.y + rangeHeight, playerPos.z);
-        endPSp.normalize();
 
         float dotAngle = XMConvertToRadians(45.0f);
 
