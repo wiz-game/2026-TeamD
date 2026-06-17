@@ -24,6 +24,7 @@ namespace basecross
 			InputManager::Instance().Initialize();
 			StageEditor::Instance().Initialize();
 			EffectManager::Instance().CreateEfkInterface(20000);
+			MovieManager::Instance().Initialize();
 
 			// ”wŒiF‚ğİ’è
 			SetClearColor(Col4(0.0f, 0.3f, 0.6f, 1.0f));
@@ -49,6 +50,8 @@ namespace basecross
 		InputManager::Instance().Update();
 
 		SceneBase::OnUpdate();
+
+		MovieManager::Instance().OnUpdate();
 	}
 
 
