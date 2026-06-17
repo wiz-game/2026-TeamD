@@ -100,26 +100,28 @@ namespace basecross
 			Vec3(0.0f, 0.0f, 0.0f), 
 			0.75f,
 			Col4(1.0f))));
+
+		Col4 blackOutColor = Col4(0.8f, 0.8f, 0.8f, 1.0f);
 		uipointers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionButton_1",
 			Vec3(0.0f, 150.0f, 0.0f),
 			0.25f,
-			Col4(1.0f))));
+			blackOutColor)));
 		uipointers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionButton_2",
 			Vec3(0.0f, 25.0f, 0.0f),
 			0.25f,
-			Col4(1.0f))));
+			blackOutColor)));
 		uipointers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionButton_3",
 			Vec3(0.0f, -100.0f, 0.0f),
 			0.25f,
-			Col4(1.0f))));
+			blackOutColor)));
 		uipointers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionButton_4",
 			Vec3(0.0f, -225.0f, 0.0f),
 			0.25f,
-			Col4(1.0f))));
+			blackOutColor)));
 
 		MenuManager::Instance().SetUIPointers(uipointers);
 		MenuManager::Instance().UIDrawActive(false);
