@@ -22,7 +22,7 @@ namespace basecross
 
 		// ドローコンポーネントを追加
 		m_draw = AddComponent<PNTDXModelDraw>();
-		m_pntDraw = AddComponent<PNTStaticDraw>();
+		m_pntDraw = AddComponent<PNTBoneModelDraw>();
 		m_pntDraw->SetMeshResource(L"AwaPaka");
 		m_pntDraw->SetTextureResource(L"T_AwaPaka_Body");
 		m_pntDraw->SetDrawActive(true);
@@ -50,12 +50,15 @@ namespace basecross
 		);
 
 		m_pntDraw->SetMeshToTransformMatrix(spanMat);
-		shadowComp->SetMeshToTransformMatrix(spanMat);
+		shadowComp->SetMeshToTransformMatrix(spanMat) ;
 
 		auto loopFlag = true;
+		m_pntDraw->AddAnimation(L"Idle",  0,  65, loopFlag, 60.0f);
+		m_pntDraw->AddAnimation(L"Walk", 70, 80, loopFlag, 60.0f);
+		m_pntDraw->AddAnimation(L"Bubble", 155, 30, loopFlag, 60.0f);
 		m_pntDraw->AddAnimation(L"ALL", 0, 999, loopFlag, 60.0f);
 
-		m_pntDraw->ChangeCurrentAnimation(L"ALL");
+		m_pntDraw->ChangeCurrentAnimation(L"Idle");
 
 		// バブルのコンポーネント
 		//auto fbComp = AddComponent<FurBubble>(GetStage());
@@ -316,7 +319,7 @@ namespace basecross
 	}
 	void Player::PlayerAnimation()
 	{
-		//m_pntDraw->UpdateAnimation(App::GetApp()->GetElapsedTime());
+		m_pntDraw->UpdateAnimation(App::GetApp()->GetElapsedTime());
 		//GameManager::Instance().AddDebugStr(L"NowAnimation", m_pntDraw->GetCurrentAnimation());
 		//GameManager::Instance().AddDebugStr(L"AnimationTime", m_pntDraw->GetCurrentAnimationTime());
 	}
