@@ -57,6 +57,9 @@ namespace basecross
 		{
 			GameManager::Instance().SetGameMode(ENUM_GameMode::GameClear);
 		}
+
+		// メニュー画面のボタンの切り替え
+		MenuManager::Instance().ChangeUIDiffuse();
 	}
 
 	void GameStage::OnUpdate2()
@@ -89,7 +92,9 @@ namespace basecross
 
 	void GameStage::CreateMenu()
 	{
+		Col4 blackOutColor = Col4(1.0f, 1.0f, 1.0f, 1.0f);
 		vector<shared_ptr<UIBase>> uipointers;
+
 		uipointers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionFade",
 			Vec3(0.0f, 0.0f, 0.0f), 
@@ -100,8 +105,6 @@ namespace basecross
 			Vec3(0.0f, 0.0f, 0.0f), 
 			0.75f,
 			Col4(1.0f))));
-
-		Col4 blackOutColor = Col4(0.8f, 0.8f, 0.8f, 1.0f);
 		uipointers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionButton_1",
 			Vec3(0.0f, 150.0f, 0.0f),
@@ -123,9 +126,9 @@ namespace basecross
 			0.25f,
 			blackOutColor)));
 
+		MenuManager::Instance().ChangeUIDiffuse();
 		MenuManager::Instance().SetUIPointers(uipointers);
 		MenuManager::Instance().UIDrawActive(false);
-		MenuManager::Instance().SetButtonDiffuse(blackOutColor);
 	}
 
 	void GameStage::SetCollRange()
