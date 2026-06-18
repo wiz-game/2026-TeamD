@@ -284,7 +284,7 @@ namespace basecross
                 continue;
             }
 
-            auto objDrawComp = obj->GetComponent<PNTBoneModelDraw>(false);
+            auto objDrawComp = obj->GetComponent<PNTStaticDraw>(false);
             if (objDrawComp)
             {
                 Vec3 hitPoint;
