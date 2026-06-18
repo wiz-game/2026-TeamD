@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Project.h"
+#include "InputManager.h"
 
 namespace basecross 
 {
@@ -73,9 +74,13 @@ namespace basecross
 			// プレイヤーの移動
 			if ((m_pad.fThumbLX > STACK_DEADZONE_L || m_pad.fThumbLX < -STACK_DEADZONE_L ||
 				m_pad.fThumbLY > STACK_DEADZONE_L || m_pad.fThumbLY < -STACK_DEADZONE_L) &&
-				!m_pad.bRightTrigger)
+				m_moveStopTimer.TimeCount(App::GetApp()->GetElapsedTime(), false))
 			{
 				Moves();
+			}
+			else
+			{
+				SetIdelAnimation();
 			}
 
 			// 視点移動
@@ -265,6 +270,11 @@ namespace basecross
 			PressedCKey();
 		}
 
+		if (m_key.m_bPressedKeyTbl['V'])
+		{
+			PressedVKey();
+		}
+
 		// マウスポイントの更新
 		m_beforeMouseClientPoint = m_key.m_MouseClientPoint;
 		m_beforeWheelDelta = m_wheelDelta;
@@ -305,6 +315,12 @@ namespace basecross
 		if (!stage) return;
 
 		auto player = stage->GetSharedGameObject<Player>(L"Player");
+		auto modelDraw = player->GetComponent<PNTBoneModelDraw>();
+		if (modelDraw->GetCurrentAnimation() != L"Walk")
+		{
+			modelDraw->ChangeCurrentAnimation(L"Walk");
+		}
+		
 		auto pos = player->GetComponent<Transform>()->GetPosition();
 		auto forward = player->GetComponent<Transform>()->GetForward();
 		auto right = player->GetComponent<Transform>()->GetRight();
@@ -341,8 +357,8 @@ namespace basecross
 				m_isRight = !m_isRight;
 				EffectHandle effHandle;
 				effHandle = EffectManager::Instance().PlayEffect(L"Smoke", Vec3(effectPos));
-				EffectManager::Instance().SetScale(effHandle,Vec3(0.15f));
-				EffectManager::Instance().SetRotationFromQuaternion(effHandle,rot);
+				EffectManager::Instance().SetScale(effHandle, Vec3(0.15f));
+				EffectManager::Instance().SetRotationFromQuaternion(effHandle, rot);
 				m_isEffectDraw = false;
 			}
 		}
@@ -369,6 +385,7 @@ namespace basecross
 		// 泡を吐く
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
 		auto player = stage->GetSharedGameObject<Player>(L"Player");
+		auto modelDraw = player->GetComponent<PNTBoneModelDraw>();
 		auto attack = player->GetAttack();
 		auto playerPowerUp = player->GetPlayerPowerUp();
 		auto bubble = player->GetHaveBubble();
@@ -386,21 +403,34 @@ namespace basecross
 		dot = clamp(dot, -1.0f, 1.0f);
 		float angle = acos(dot);
 		Quat rot = Quat(axis, angle);
-		Quat offset(Vec3(0, 1, 0), XMConvertToRadians(10.0f));
+		Quat offset(Vec3(0, 1, 0), XMConvertToRadians(13.0f));
 		Quat finalRot = offset * rot;
+		float bubbleRate = 0.25f;
+
+		if (modelDraw->GetCurrentAnimation() != L"Bubble")
+		{
+			modelDraw->ChangeCurrentAnimation(L"Bubble");
+		}
 
 		if (!bresing)
 		{
-			bubble = stage->AddGameObject<Bubble>(player, Vec3(0.5f), 5.0f, attack, playerPowerUp);
-			bubble->ShootBubble();
-			player->SetBresing(true);
-			player->SetCoolDown(initCoolDown);
+			if (m_bubbleRateTimer.TimeCount(App::GetApp()->GetElapsedTime(), false))
+			{
+				bubble = stage->AddGameObject<Bubble>(player, Vec3(0.5f), 5.0f, attack, playerPowerUp);
+				bubble->ShootBubble();
+				player->SetBresing(true);
+				player->SetCoolDown(initCoolDown);
 
-			EffectHandle effHandle;
-			effHandle = EffectManager::Instance().PlayEffect(L"Bubble", pos + forward);
-			EffectManager::Instance().SetScale(effHandle, Vec3(0.35f));
-			EffectManager::Instance().SetRotationFromQuaternion(effHandle, finalRot);
+				EffectHandle effHandle;
+				effHandle = EffectManager::Instance().PlayEffect(L"Bubble", pos + forward);
+				EffectManager::Instance().SetScale(effHandle, Vec3(0.35f));
+				EffectManager::Instance().SetRotationFromQuaternion(effHandle, finalRot);
+				m_bubbleRateTimer = Timer(bubbleRate);
+				m_bubbleRateTimer.SetCounter();
+			}
 		}
+
+		m_moveStopTimer = Timer(0.1f);
 	}
 
 	void InputManager::PressedA()
@@ -409,6 +439,7 @@ namespace basecross
 
 	void InputManager::PressedB()
 	{
+		// GameManager::Instance().SetGameMode(ENUM_GameMode::Movie);
 	}
 
 	void InputManager::PressedStart()
@@ -591,6 +622,35 @@ namespace basecross
 		else
 		{
 			GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
+		}
+	}
+
+	void InputManager::PressedVKey()
+	{
+		if (GameManager::Instance().GetGameMode() == ENUM_GameMode::Play)
+		{
+			//GameManager::Instance().SetGameMode(ENUM_GameMode::Movie);
+		}
+		else
+		{
+			GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
+		}
+
+	}
+
+	void basecross::InputManager::SetIdelAnimation()
+	{
+		if (m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE)
+		{
+			return;
+		}
+
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		auto player = stage->GetSharedGameObject<Player>(L"Player");
+		auto modelDraw = player->GetComponent<PNTBoneModelDraw>();
+		if (modelDraw->GetCurrentAnimation() != L"Idle")
+		{
+			modelDraw->ChangeCurrentAnimation(L"Idle");
 		}
 	}
 }

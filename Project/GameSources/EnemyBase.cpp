@@ -25,11 +25,11 @@ namespace basecross
         m_canGoRight(true),
         m_canGoForward(true),
         m_targetRotY(0.0f),
-        m_rayRange(2.0f),
+        m_rayRange(1.6f),
 
         // 移動速度
         m_Speed(1.4f),
-        m_rotToHeadLeap(0.7f)
+        m_rotToHeadLeap(0.1f)
     {}
 
     void EnemyBase::OnCreate()
@@ -130,7 +130,7 @@ namespace basecross
                     continue;
                 }
 
-                auto drawComp = obj->GetComponent<PNTStaticDraw>(false);
+                auto drawComp = obj->GetComponent<PNTBoneModelDraw>(false);
                 if (drawComp)
                 {
                     Vec3 hitPoint;
@@ -246,7 +246,7 @@ namespace basecross
         auto transComp = gameObject->GetComponent<Transform>();
         auto transPos = transComp->GetPosition();
         auto transRot = transComp->GetRotation();
-        auto drawComp = gameObject->GetComponent<PNTStaticDraw>();
+        auto drawComp = gameObject->GetComponent<PNTBoneModelDraw>();
 
         float forward_X = 0.0f, forward_Z = 0.0f;
         // forward_Xとforward_Zを格納するための変数
@@ -284,7 +284,7 @@ namespace basecross
                 continue;
             }
 
-            auto objDrawComp = obj->GetComponent<PNTStaticDraw>(false);
+            auto objDrawComp = obj->GetComponent<PNTBoneModelDraw>(false);
             if (objDrawComp)
             {
                 Vec3 hitPoint;
