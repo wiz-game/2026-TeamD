@@ -125,6 +125,7 @@ namespace basecross
 
 		MenuManager::Instance().SetUIPointers(uipointers);
 		MenuManager::Instance().UIDrawActive(false);
+		MenuManager::Instance().SetButtonDiffuse(blackOutColor);
 	}
 
 	void GameStage::SetCollRange()

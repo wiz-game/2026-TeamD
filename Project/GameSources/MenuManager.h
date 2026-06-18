@@ -21,6 +21,7 @@ namespace basecross
 	{
 	private:
 		vector<shared_ptr<UIBase>> m_uipointers;
+		Col4 m_buttondiffuse;
 		ENUM_MenuMode m_menuMode = ENUM_MenuMode::Restart;
 
 		MenuManager()
@@ -34,7 +35,9 @@ namespace basecross
 		void Pause();
 		void ClosePause();
 		void UIDrawActive(bool isActive);
+		void ChangeUIDiffuse(Col4 diffuse);
 		void SetUIPointers(const vector<shared_ptr<UIBase>>& uipointers);
+		void SetButtonDiffuse(Col4 diffuse);
 
 		void SetMenuMode(ENUM_MenuMode menumode);
 		ENUM_MenuMode GetMenuMode() const { return m_menuMode; }

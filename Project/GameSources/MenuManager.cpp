@@ -43,9 +43,37 @@ namespace basecross
 		}
 	}
 
+	void MenuManager::ChangeUIDiffuse(Col4 diffuse)
+	{
+		Col4 defaultCol = Col4(0.0f, 0.0f, 0.0f, 1.0f);
+		Col4 elseCol = Col4(0.8f, 0.8f, 0.8f, 1.0f);
+
+		switch (GetMenuMode())
+		{
+		case ENUM_MenuMode::Restart:
+			m_buttondiffuse = defaultCol;
+			break;
+		case ENUM_MenuMode::Setting:
+
+			break;
+		case ENUM_MenuMode::Howtoplay:
+
+			break;
+		case ENUM_MenuMode::Retitle:
+
+			break;
+
+		}
+	}
+
 	void MenuManager::SetUIPointers(const vector<shared_ptr<UIBase>>& uipointers)
 	{
 		m_uipointers = uipointers;
+	}
+
+	void MenuManager::SetButtonDiffuse(Col4 diffuse)
+	{
+		m_buttondiffuse = diffuse;
 	}
 	
 	void basecross::MenuManager::SetMenuMode(ENUM_MenuMode menumode)
