@@ -33,6 +33,7 @@ namespace basecross
 			break;
 		case ENUM_GameMode::Menu:
 			MenuManager::Instance().Pause();
+			MenuManager::Instance().SetMenuMode(ENUM_MenuMode::Restart);
 			break;
 		case ENUM_GameMode::Editor:
 			SetAllGameObjectsUpdateActive(false);

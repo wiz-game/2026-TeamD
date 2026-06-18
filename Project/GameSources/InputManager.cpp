@@ -497,28 +497,29 @@ namespace basecross
 			MenuManager::Instance().ChangeSelectMenuMode(+1);
 		}
 
-			//switch (MenuManager::Instance().GetMenuMode())
-			//{
-			//case ENUM_MenuMode::Restart:
-			//	MenuManager::Instance().SetMenuMode(ENUM_MenuMode::Setting);
-			//	break;
-
-			//case ENUM_MenuMode::Setting:
-			//	MenuManager::Instance().SetMenuMode(ENUM_MenuMode::Howtoplay);
-			//	break;
-
-			//case ENUM_MenuMode::Howtoplay:
-			//	MenuManager::Instance().SetMenuMode(ENUM_MenuMode::Retitle);
-			//	break;
-
-			//case ENUM_MenuMode::Retitle:
-			//	MenuManager::Instance().SetMenuMode(ENUM_MenuMode::Restart);
-			//	break;
-			//}
 	}
 
 	void InputManager::PressedAMenu()
 	{
+		switch (MenuManager::Instance().GetMenuMode())
+		{
+		case ENUM_MenuMode::Restart:
+			ReturnGame();
+			break;
+
+		case ENUM_MenuMode::Setting:
+			//EnterSetting();
+			break;
+
+		case ENUM_MenuMode::Howtoplay:
+			//EnterHowtoplay();
+			break;
+
+		case ENUM_MenuMode::Retitle:
+			ReturnTitle();
+			break;
+		}
+
 	}
 
 	void InputManager::ObjectOperation()
