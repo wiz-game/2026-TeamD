@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Project.h"
+#include "InputManager.h"
 
 namespace basecross 
 {
@@ -76,6 +77,10 @@ namespace basecross
 				m_moveStopTimer.TimeCount(App::GetApp()->GetElapsedTime(), false))
 			{
 				Moves();
+			}
+			else
+			{
+				SetIdelAnimation();
 			}
 
 			// 視点移動
@@ -310,6 +315,12 @@ namespace basecross
 		if (!stage) return;
 
 		auto player = stage->GetSharedGameObject<Player>(L"Player");
+		auto modelDraw = player->GetComponent<PNTBoneModelDraw>();
+		if (modelDraw->GetCurrentAnimation() != L"Walk")
+		{
+			modelDraw->ChangeCurrentAnimation(L"Walk");
+		}
+		
 		auto pos = player->GetComponent<Transform>()->GetPosition();
 		auto forward = player->GetComponent<Transform>()->GetForward();
 		auto right = player->GetComponent<Transform>()->GetRight();
@@ -346,8 +357,8 @@ namespace basecross
 				m_isRight = !m_isRight;
 				EffectHandle effHandle;
 				effHandle = EffectManager::Instance().PlayEffect(L"Smoke", Vec3(effectPos));
-				EffectManager::Instance().SetScale(effHandle,Vec3(0.15f));
-				EffectManager::Instance().SetRotationFromQuaternion(effHandle,rot);
+				EffectManager::Instance().SetScale(effHandle, Vec3(0.15f));
+				EffectManager::Instance().SetRotationFromQuaternion(effHandle, rot);
 				m_isEffectDraw = false;
 			}
 		}
@@ -374,6 +385,7 @@ namespace basecross
 		// 泡を吐く
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
 		auto player = stage->GetSharedGameObject<Player>(L"Player");
+		auto modelDraw = player->GetComponent<PNTBoneModelDraw>();
 		auto attack = player->GetAttack();
 		auto playerPowerUp = player->GetPlayerPowerUp();
 		auto bubble = player->GetHaveBubble();
@@ -393,19 +405,29 @@ namespace basecross
 		Quat rot = Quat(axis, angle);
 		Quat offset(Vec3(0, 1, 0), XMConvertToRadians(13.0f));
 		Quat finalRot = offset * rot;
-		m_BubbleRateTimer = Timer(0.5f);
+		float bubbleRate = 0.25f;
+
+		if (modelDraw->GetCurrentAnimation() != L"Bubble")
+		{
+			modelDraw->ChangeCurrentAnimation(L"Bubble");
+		}
 
 		if (!bresing)
 		{
-			bubble = stage->AddGameObject<Bubble>(player, Vec3(0.5f), 5.0f, attack, playerPowerUp);
-			bubble->ShootBubble();
-			player->SetBresing(true);
-			player->SetCoolDown(initCoolDown);
+			if (m_bubbleRateTimer.TimeCount(App::GetApp()->GetElapsedTime(), false))
+			{
+				bubble = stage->AddGameObject<Bubble>(player, Vec3(0.5f), 5.0f, attack, playerPowerUp);
+				bubble->ShootBubble();
+				player->SetBresing(true);
+				player->SetCoolDown(initCoolDown);
 
-			EffectHandle effHandle;
-			effHandle = EffectManager::Instance().PlayEffect(L"Bubble", pos + forward);
-			EffectManager::Instance().SetScale(effHandle, Vec3(0.35f));
-			EffectManager::Instance().SetRotationFromQuaternion(effHandle, finalRot);
+				EffectHandle effHandle;
+				effHandle = EffectManager::Instance().PlayEffect(L"Bubble", pos + forward);
+				EffectManager::Instance().SetScale(effHandle, Vec3(0.35f));
+				EffectManager::Instance().SetRotationFromQuaternion(effHandle, finalRot);
+				m_bubbleRateTimer = Timer(bubbleRate);
+				m_bubbleRateTimer.SetCounter();
+			}
 		}
 
 		m_moveStopTimer = Timer(0.1f);
@@ -614,5 +636,21 @@ namespace basecross
 			GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
 		}
 
+	}
+
+	void basecross::InputManager::SetIdelAnimation()
+	{
+		if (m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE)
+		{
+			return;
+		}
+
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		auto player = stage->GetSharedGameObject<Player>(L"Player");
+		auto modelDraw = player->GetComponent<PNTBoneModelDraw>();
+		if (modelDraw->GetCurrentAnimation() != L"Idle")
+		{
+			modelDraw->ChangeCurrentAnimation(L"Idle");
+		}
 	}
 }

@@ -22,7 +22,7 @@ namespace basecross
 		PlayerState m_playerState;
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
-		std::shared_ptr<PNTStaticDraw> m_pntDraw; // ドローコンポーネント
+		std::shared_ptr<PNTBoneModelDraw> m_pntDraw; // ドローコンポーネント
 		std::shared_ptr<Move> m_move;
 		std::shared_ptr<Gravity> m_gravity;
 
