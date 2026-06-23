@@ -97,7 +97,7 @@ namespace basecross
 
 		void Died(const shared_ptr<GameObject>& gameObject);
 		void DetectionRange(const shared_ptr<GameObject>& gameObject);
-		void Stalker(const shared_ptr<GameObject>& gameObject, float stalkerSpeed);
+		//void Stalker(const shared_ptr<GameObject>& gameObject, float stalkerSpeed);
 		//void FunctionGravity(const shared_ptr<GameObject>& gameObject);
 		//void DropDirt(const shared_ptr<GameObject>& gameObject);
 		void MazeWandering(const shared_ptr<GameObject>& gameObject);
