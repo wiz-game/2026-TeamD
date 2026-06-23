@@ -34,7 +34,9 @@ namespace basecross
 		void Pause();
 		void ClosePause();
 		void UIDrawActive(bool isActive);
+		void ChangeUIDiffuse();
 		void SetUIPointers(const vector<shared_ptr<UIBase>>& uipointers);
+		void SetButtonDiffuse(int i, const Col4& diffuse);
 
 		void SetMenuMode(ENUM_MenuMode menumode);
 		ENUM_MenuMode GetMenuMode() const { return m_menuMode; }

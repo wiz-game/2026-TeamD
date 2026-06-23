@@ -113,6 +113,7 @@ HWND InitInstance(HINSTANCE hInstance, int nCmdShow, bool isFullScreen, int iCli
 		hWnd,       //取得したウインドウのハンドル
 		nCmdShow    //WinMainに渡されたパラメータ
 	);
+	ShowCursor(false);
 	UpdateWindow(hWnd);
 	return hWnd;
 }

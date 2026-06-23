@@ -23,6 +23,7 @@ namespace basecross
 
 		std::shared_ptr<Transform> m_transform;
 		std::shared_ptr<Gravity> m_gravity;
+		std::shared_ptr<PNTBoneModelDraw> m_draw;
 
 		float m_Speed;
 	public:

@@ -30,10 +30,13 @@ namespace basecross
 
 		// 時間
 		Timer m_timer = 0.0f;
+		Timer m_moveStopTimer = 0.0f;
+		Timer m_bubbleRateTimer = 0.0f;
 		// エフェクトを表示するか
 		bool  m_isEffectDraw = false;
 		// 左右どちらかの判定
 		bool  m_isRight = false;
+		// 
 
 	public:
 		static InputManager& Instance()
@@ -139,5 +142,8 @@ namespace basecross
 		void PressedRKey();
 		void PressedFKey();
 		void PressedCKey();
+		void PressedVKey();
+
+		void SetIdelAnimation();
 	};
 }
