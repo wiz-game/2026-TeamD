@@ -69,7 +69,6 @@ namespace basecross
             auto soap = stage->AddGameObject<PowerUpSoap>();
             auto soapComp = soap->GetComponent<Transform>();
             soap->SetVecPosition(Vec3(objPos.x, objPos.y + 1, objPos.z));
-            //soapComp->SetPosition(objPos.x, objPos.y + 1, objPos.z);
         }
     }
 
@@ -162,60 +161,15 @@ namespace basecross
     }
 
     // 追跡AI
-    void EnemyBase::Tracking(const shared_ptr<GameObject>& gameObject,float speed)
+    void EnemyBase::Tracking(const shared_ptr<GameObject>& gameObject, float speed)
     {
-        // 引数の情報を取得する
-        auto transComp = gameObject->GetComponent<Transform>();
-        auto transPos = transComp->GetPosition();
-
-        // ステージ情報を取得する
         auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
         if (stage == nullptr)
         {
             return;
         }
 
-        // プレイヤーの情報を取得する
-        auto player = stage->GetSharedGameObject<Player>(L"Player");
-        if (player == nullptr)
-        {
-            return;
-        }
-        auto playerComp = player->GetComponent<Transform>();
-        // プレイヤーの位置を取得する
-        auto playerPos = playerComp->GetPosition();
-
-        // 索敵しているとき
-        if (m_Detection == true)
-        {
-            // プレイヤーと敵の位置を計算する
-            float distanceX = playerPos.x - transPos.x;
-            float distanceY = playerPos.y - transPos.y;
-            float distanceZ = playerPos.z - transPos.z;
-            float distance = sqrt((distanceX * distanceX) + (distanceY * distanceY) + (distanceZ * distanceZ));
-
-            // 向き用
-            float angleX = 0.0f, angleZ = 0.0f;
-            float angleY = atan2f(distanceX, distanceZ);
-            transComp->SetRotation(angleX, angleY, angleZ);
-
-            // 向きを求める
-            float forwardX = distanceX / distance;
-            float forwardY = 0.0f;
-            float forwardZ = distanceZ / distance;
-               
-            // 位置を更新する
-            transPos.x += forwardX * App::GetApp()->GetElapsedTime() * speed;
-            transPos.z += forwardZ * App::GetApp()->GetElapsedTime() * speed;
-            // 位置を設定する
-            transComp->SetPosition(transPos);
-        }
-
-    }
-
-    // ストーカー
-    void EnemyBase::Stalker(const shared_ptr<GameObject>& gameObject, float stalkerSpeed)
-    {
+        // ステージ情報を取得する
         auto player = App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetSharedGameObject<Player>(L"Player");
         if (player == nullptr)
         {
@@ -223,20 +177,130 @@ namespace basecross
         }
 
         auto playerComp = player->GetComponent<Transform>();
+        // プレイヤーの位置を取得する
         auto playerPos = playerComp->GetPosition();
 
-        auto objComp = gameObject->GetComponent<Transform>();
-        auto objPos = objComp->GetPosition();
+        // 引数の情報を取得する
+        auto transComp = gameObject->GetComponent<Transform>();
+        auto transPos = transComp->GetPosition();
 
-        Vec3 targetVec = playerPos - objPos;
+        // ここまでがストーカーと同じコード
+        // プレイヤーの位置から自分の位置を引いて正規化する
+        Vec3 targetVec = playerPos - transPos;
         targetVec.y = 0.0f;
         targetVec.normalize();
 
-        objPos.x += targetVec.x * stalkerSpeed * App::GetApp()->GetElapsedTime();
-        objPos.z += targetVec.z * stalkerSpeed * App::GetApp()->GetElapsedTime();
+        Vec3 startReyPos = Vec3(transPos.x, transPos.y, transPos.z);
+       
+        float distanceRange = 2.0f; // ここは最終的にメンバ変数にするぅ
 
-        objComp->SetPosition(objPos);
+        // 正面
+        float endX = startReyPos.x + (targetVec.x * distanceRange);
+        float endZ = startReyPos.z + (targetVec.z * distanceRange);
+        Vec3 endSp(endX, transPos.y, endZ);
 
+        // targetVecに寄せた計算をする-------------------------------------------------------------
+        // 右
+        Vec3 dirR = targetVec + Vec3(-targetVec.z, transPos.y, targetVec.x);
+        dirR.normalize();
+        float endRX = startReyPos.x + (dirR.x * distanceRange);
+        float endRZ = startReyPos.z + (dirR.z * distanceRange);
+        Vec3 endRSp(endRX, transPos.y, endRZ);
+
+        // 左
+        Vec3 dirL = targetVec + Vec3(targetVec.z, transPos.y, -targetVec.x);
+        dirL.normalize();
+        float endLX = startReyPos.x + (dirL.x * distanceRange);
+        float endLZ = startReyPos.z + (dirL.z * distanceRange);
+        Vec3 endLSp(endLX, transPos.y, endLZ);
+        //------------------------------------------------------------------------------------------
+
+        m_canGoForward = true;
+        m_canGoLeft = true;
+        m_canGoRight = true;
+
+        for (auto& obj : stage->GetGameObjectVec())
+        {
+            if (obj == gameObject)
+            {
+                continue;
+            }
+
+            auto modelObj = obj->GetComponent<PNTStaticDraw>(false);
+            if (modelObj)
+            {
+                Vec3 hitPoint;
+                TRIANGLE tri;
+                size_t index;
+                if (obj->FindTag(L"Wall"))
+                {
+                    float dirX = 0.0f, dirZ = 0.0f, len = 0.0f;
+
+                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endSp, hitPoint, tri, index))
+                    {
+                        // 正面
+                        dirX = hitPoint.x - transPos.x;
+                        dirZ = hitPoint.z - transPos.z;
+                        Vec3 dir(dirX, transPos.y, dirZ);
+                        len = dir.length();
+
+                        if (len <= distanceRange)
+                        {
+                            // 壁に触れた
+                            m_canGoForward = false;
+                        }
+                    }
+
+                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endLSp, hitPoint, tri, index))
+                    {
+                        // 左
+                        dirX = hitPoint.x - transPos.x;
+                        dirZ = hitPoint.z - transPos.z;
+                        Vec3 dir(dirX, transPos.y, dirZ);
+                        len = dir.length();
+
+                        if (len <= distanceRange)
+                        {
+                            // 壁に触れた
+                            m_canGoLeft = false;
+                        }
+                    }
+
+                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endRSp, hitPoint, tri, index))
+                    {
+                        // 右
+                        dirX = hitPoint.x - transPos.x;
+                        dirZ = hitPoint.z - transPos.z;
+                        Vec3 dir(dirX, transPos.y, dirZ);
+                        len = dir.length();
+
+                        if (len <= distanceRange)
+                        {
+                            // 壁に触れた
+                            m_canGoRight = false;
+                        }
+                    }
+
+                }
+            }
+        }
+
+        if (m_canGoForward == false)
+        {
+            if (m_canGoLeft == true)
+            {
+                targetVec = dirL;
+            }
+            
+            else if (m_canGoRight == true)
+            {
+                targetVec = dirR;
+            }
+        }
+
+        transPos.x += targetVec.x * speed * App::GetApp()->GetElapsedTime();
+        transPos.z += targetVec.z * speed * App::GetApp()->GetElapsedTime();
+        transComp->SetPosition(transPos);
         GetBehavior<UtilBehavior>()->RotToHead(targetVec, m_rotToHeadLeap);
     }
 
@@ -259,12 +323,11 @@ namespace basecross
         // 右
         float forward_RX = transPos.x + ((sinf(m_rotY) + XMConvertToRadians(90.0f))) * m_rayRange;
         float forward_RZ = transPos.z + ((cosf(m_rotY) + XMConvertToRadians(90.0f))) * m_rayRange;
+        Vec3 endRSp(forward_RX, transPos.y, forward_RZ);
 
         // 左
-        float forward_LX = transPos.x + ((sinf(m_rotY)-XMConvertToRadians(90.0f))) * m_rayRange;
-        float forward_LZ = transPos.z + ((cosf(m_rotY)-XMConvertToRadians(90.0f))) * m_rayRange;
-
-        Vec3 endRSp(forward_RX, transPos.y, forward_RZ);
+        float forward_LX = transPos.x + ((sinf(m_rotY) - XMConvertToRadians(90.0f))) * m_rayRange;
+        float forward_LZ = transPos.z + ((cosf(m_rotY) - XMConvertToRadians(90.0f))) * m_rayRange;
         Vec3 endLSp(forward_LX, transPos.y, forward_LZ);
 
         // 正面
