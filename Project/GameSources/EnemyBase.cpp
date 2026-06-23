@@ -117,7 +117,7 @@ namespace basecross
 
         Vec3 endPSp(playerPos.x, transPos.y + rangeHeight, playerPos.z);
 
-        float dotAngle = XMConvertToRadians(45.0f);
+        float dotAngle = XMConvertToRadians(180.0f);
 
         if (distance < radius && dot >= cosf(dotAngle))
         {
