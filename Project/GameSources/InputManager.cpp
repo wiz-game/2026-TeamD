@@ -514,13 +514,27 @@ namespace basecross
 
 	void InputManager::MoveMenuCursor()
 	{
-		if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP)
+		switch (MenuManager::Instance().GetMenuMode())
 		{
-			MenuManager::Instance().ChangeSelectMenuMode(-1);
-		}
-		else if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
-		{
-			MenuManager::Instance().ChangeSelectMenuMode(+1);
+		case ENUM_MenuMode::Default:
+			break;
+
+		case ENUM_MenuMode::MenuStart:
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP)
+			{
+				MenuManager::Instance().ChangeSelectMenuMode(-1);
+			}
+			else if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+			{
+				MenuManager::Instance().ChangeSelectMenuMode(+1);
+			}
+			break;
+			
+		case ENUM_MenuMode::Setting:
+			break;
+
+		case ENUM_MenuMode::Howtoplay:
+			break;
 		}
 
 	}
