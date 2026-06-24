@@ -122,36 +122,33 @@ namespace basecross
 
         Vec3 endPSp(playerPos.x, transPos.y + rangeHeight, playerPos.z);
 
-        float dotAngle = XMConvertToRadians(180.0f);
+        float dotAngle = XMConvertToRadians(100.0f);
 
+        // プレイヤーが視界内に入っていたら
         if (distance < radius && dot >= cosf(dotAngle))
         {
-            m_Detection = false;
+            m_Detection = true;
+            // 全てのオブジェクトを探す
             for (auto obj : stage->GetGameObjectVec())
             {
-                if (obj == gameObject)
+                // Wallのタグを持っているオブジェクトのみ判定をする
+                if (!obj->FindTag(L"Wall"))
                 {
                     continue;
                 }
 
-                auto drawComp = obj->GetComponent<PNTBoneModelDraw>(false);
+                // コンポーネントが静的だったら
+                auto drawComp = obj->GetComponent<PNTStaticDraw>(false);
                 if (drawComp)
                 {
-                    Vec3 hitPoint;
-                    TRIANGLE tri;
-                    size_t index;
+                    Vec3 hitPoint;  // レイがメッシュと衝突した座標
+                    TRIANGLE tri;   // メッシュ
+                    size_t index;   //
+                    // 対象のオブジェクトと自分のレイの間に障害物があったら視界に入っていない
                     if (drawComp->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endPSp, hitPoint, tri, index))
                     {
-                        float disX = 0.0f, disZ = 0.0f, len = 0.0f;
-                        disX = hitPoint.x - playerPos.x;
-                        disZ = hitPoint.z - playerPos.z;
-                        Vec3 dir(disX, 0.0f, disZ);
-                        dir.length();
-                        if (len <= m_rayRange)
-                        {
-                            m_Detection = true;
-                            break;
-                        }
+                        m_Detection = false;
+                        break;
                     }
                 }
             }
@@ -237,56 +234,54 @@ namespace basecross
                 Vec3 hitPoint;
                 TRIANGLE tri;
                 size_t index;
-                if (obj->FindTag(L"Wall"))
+                float dirX = 0.0f, dirZ = 0.0f, len = 0.0f;
+
+                if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endSp, hitPoint, tri, index))
                 {
-                    float dirX = 0.0f, dirZ = 0.0f, len = 0.0f;
+                    // 正面
+                    dirX = hitPoint.x - transPos.x;
+                    dirZ = hitPoint.z - transPos.z;
+                    Vec3 dir(dirX, transPos.y, dirZ);
+                    len = dir.length();
 
-                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endSp, hitPoint, tri, index))
+                    if (len <= distanceRange)
                     {
-                        // 正面
-                        dirX = hitPoint.x - transPos.x;
-                        dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, transPos.y, dirZ);
-                        len = dir.length();
-
-                        if (len <= distanceRange)
-                        {
-                            // 壁に触れた
-                            m_canGoForward = false;
-                        }
+                        // 壁に触れた
+                        m_canGoForward = false;
                     }
-
-                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endLSp, hitPoint, tri, index))
-                    {
-                        // 左
-                        dirX = hitPoint.x - transPos.x;
-                        dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, transPos.y, dirZ);
-                        len = dir.length();
-
-                        if (len <= distanceRange)
-                        {
-                            // 壁に触れた
-                            m_canGoLeft = false;
-                        }
-                    }
-
-                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endRSp, hitPoint, tri, index))
-                    {
-                        // 右
-                        dirX = hitPoint.x - transPos.x;
-                        dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, transPos.y, dirZ);
-                        len = dir.length();
-
-                        if (len <= distanceRange)
-                        {
-                            // 壁に触れた
-                            m_canGoRight = false;
-                        }
-                    }
-
                 }
+
+                if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endLSp, hitPoint, tri, index))
+                {
+                    // 左
+                    dirX = hitPoint.x - transPos.x;
+                    dirZ = hitPoint.z - transPos.z;
+                    Vec3 dir(dirX, transPos.y, dirZ);
+                    len = dir.length();
+
+                    if (len <= distanceRange)
+                    {
+                        // 壁に触れた
+                        m_canGoLeft = false;
+                    }
+                }
+
+                if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endRSp, hitPoint, tri, index))
+                {
+                    // 右
+                    dirX = hitPoint.x - transPos.x;
+                    dirZ = hitPoint.z - transPos.z;
+                    Vec3 dir(dirX, transPos.y, dirZ);
+                    len = dir.length();
+
+                    if (len <= distanceRange)
+                    {
+                        // 壁に触れた
+                        m_canGoRight = false;
+                    }
+                }
+
+
             }
         }
 
