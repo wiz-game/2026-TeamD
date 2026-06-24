@@ -134,9 +134,59 @@ namespace basecross
 			0.25f,
 			blackOutColor)));
 
-		MenuManager::Instance().ChangeUIDiffuse();
 		MenuManager::Instance().SetUIDefaults(uidefaults);
 		MenuManager::Instance().UIDrawActive(false, uidefaults);
+
+
+		uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			L"UI_OptionSound",
+			Vec3(0.0f, 150.0f, 0.0f),
+			0.1f,
+			Col4(1.0f))));
+		uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			L"UI_OptionBGM",
+			Vec3(0.0f, 25.0f, 0.0f),
+			0.1f,
+			Col4(1.0f))));
+		uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			L"UI_OptionSE",
+			Vec3(0.0f, -100.0f, 0.0f),
+			0.1f,
+			Col4(1.0f))));
+		uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			L"UI_OptionBaymax",
+			Vec3(0.0f, -40.0f, 0.0f),
+			0.25f,
+			Col4(1.0f))));
+		uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			L"UI_OptionBaymax",
+			Vec3(0.0f, -165.0f, 0.0f),
+			0.25f,
+			Col4(1.0f))));
+		uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			L"UI_OptionReturn",
+			Vec3(0.0f, -220.0f, 0.0f),
+			0.1f,
+			Col4(1.0f))));
+
+		MenuManager::Instance().SetUISettings(uisettings);
+		MenuManager::Instance().UIDrawActive(false, uisettings);
+
+
+		uihowtoplays.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			L"UI_OptionHowtoplay",
+			Vec3(0.0f, 0.0f, 0.0f),
+			0.50f,
+			Col4(1.0f))));
+
+		MenuManager::Instance().SetUIHowtoplays(uihowtoplays);
+		MenuManager::Instance().UIDrawActive(false, uihowtoplays);
+
+
+
+
+
+		MenuManager::Instance().ChangeUIDiffuse();
 	}
 
 	void GameStage::SetCollRange()

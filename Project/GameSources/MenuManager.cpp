@@ -89,21 +89,29 @@ namespace basecross
 		case ENUM_MenuMode::Default:
 			UIDrawActive(false, m_uidefaults);
 			UIDrawActive(false, m_uiframes);
+			UIDrawActive(false, m_uisettings);
+			UIDrawActive(false, m_uihowtoplays);
 			break;
 
 		case ENUM_MenuMode::MenuStart:
 			UIDrawActive(true, m_uiframes);
 			UIDrawActive(true, m_uidefaults);
+			UIDrawActive(false, m_uisettings);
+			UIDrawActive(false, m_uihowtoplays);
 			break;
 
 		case ENUM_MenuMode::Setting:
 			UIDrawActive(true, m_uiframes);
 			UIDrawActive(false, m_uidefaults);
+			UIDrawActive(true, m_uisettings);
+			UIDrawActive(false, m_uihowtoplays);
 			break;
 
 		case ENUM_MenuMode::Howtoplay:
 			UIDrawActive(true, m_uiframes);
 			UIDrawActive(false, m_uidefaults);
+			UIDrawActive(false, m_uisettings);
+			UIDrawActive(true, m_uihowtoplays);
 			break;
 		}
 	}
