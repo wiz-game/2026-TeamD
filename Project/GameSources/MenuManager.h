@@ -9,7 +9,7 @@
 
 namespace basecross
 {
-	enum class ENUM_MenuMode
+	enum class ENUM_MenuUI
 	{
 		Restart,
 		Setting,
@@ -17,11 +17,24 @@ namespace basecross
 		Retitle
 	};
 
+	enum class ENUM_MenuMode
+	{
+		Default,
+		MenuStart,
+		Setting,
+		Howtoplay
+	};
+
 	class MenuManager
 	{
 	private:
-		vector<shared_ptr<UIBase>> m_uipointers;
-		ENUM_MenuMode m_menuMode = ENUM_MenuMode::Restart;
+		vector<shared_ptr<UIBase>> m_uiframes;
+		vector<shared_ptr<UIBase>> m_uidefaults;
+		vector<shared_ptr<UIBase>> m_uisettings;
+		vector<shared_ptr<UIBase>> m_uihowtoplays;
+
+		ENUM_MenuUI m_menuUI = ENUM_MenuUI::Restart;
+		ENUM_MenuMode m_menuMode = ENUM_MenuMode::Default;
 
 		MenuManager()
 		{
@@ -33,12 +46,22 @@ namespace basecross
 		static MenuManager& Instance();
 		void Pause();
 		void ClosePause();
-		void UIDrawActive(bool isActive);
 		void ChangeUIDiffuse();
-		void SetUIPointers(const vector<shared_ptr<UIBase>>& uipointers);
-		void SetButtonDiffuse(int i, const Col4& diffuse);
+		void ChangeMenuMode();
+
+		void UIFrameDrawActive(bool isActive);
+		void UIDrawActive(bool isActive, vector<shared_ptr<UIBase>> uipointers);
+
+		void SetUIFrames(const vector<shared_ptr<UIBase>>& uiframes);
+		void SetUIDefaults(const vector<shared_ptr<UIBase>>& uidefaults);
+		void SetUISettings(const vector<shared_ptr<UIBase>>& uisettings);
+		void SetUIHowtoplays(const vector<shared_ptr<UIBase>>& uihowtoplays);
+
+		void SetButtonDiffuse(int i, const Col4& diffuse, Col4& emissive);
 
 		void SetMenuMode(ENUM_MenuMode menumode);
+		void SetMenuUI(ENUM_MenuUI menuui);
+		ENUM_MenuUI GetMenuUI() const { return m_menuUI; }
 		ENUM_MenuMode GetMenuMode() const { return m_menuMode; }
 
 		void ChangeSelectMenuMode(const int& num);

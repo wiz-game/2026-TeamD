@@ -93,42 +93,50 @@ namespace basecross
 	void GameStage::CreateMenu()
 	{
 		Col4 blackOutColor = Col4(1.0f, 1.0f, 1.0f, 1.0f);
-		vector<shared_ptr<UIBase>> uipointers;
+		vector<shared_ptr<UIBase>> uiframes;
+		vector<shared_ptr<UIBase>> uidefaults;
+		vector<shared_ptr<UIBase>> uisettings;
+		vector<shared_ptr<UIBase>> uihowtoplays;
 
-		uipointers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+		uiframes.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionFade",
 			Vec3(0.0f, 0.0f, 0.0f), 
 			1.0f,
 			Col4(1.0f))));
-		uipointers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+		uiframes.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionFrame",
 			Vec3(0.0f, 0.0f, 0.0f), 
 			0.75f,
 			Col4(1.0f))));
-		uipointers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+
+		MenuManager::Instance().SetUIFrames(uiframes);
+		MenuManager::Instance().UIDrawActive(false, uiframes);
+
+
+		uidefaults.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionButton_1",
 			Vec3(0.0f, 150.0f, 0.0f),
 			0.25f,
 			blackOutColor)));
-		uipointers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+		uidefaults.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionButton_2",
 			Vec3(0.0f, 25.0f, 0.0f),
 			0.25f,
 			blackOutColor)));
-		uipointers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+		uidefaults.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionButton_3",
 			Vec3(0.0f, -100.0f, 0.0f),
 			0.25f,
 			blackOutColor)));
-		uipointers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+		uidefaults.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionButton_4",
 			Vec3(0.0f, -225.0f, 0.0f),
 			0.25f,
 			blackOutColor)));
 
 		MenuManager::Instance().ChangeUIDiffuse();
-		MenuManager::Instance().SetUIPointers(uipointers);
-		MenuManager::Instance().UIDrawActive(false);
+		MenuManager::Instance().SetUIDefaults(uidefaults);
+		MenuManager::Instance().UIDrawActive(false, uidefaults);
 	}
 
 	void GameStage::SetCollRange()
