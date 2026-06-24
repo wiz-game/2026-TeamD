@@ -36,6 +36,11 @@ namespace basecross
 
 		float m_rotToHeadLeap;
 
+		// 座標を格納するための変数
+		Vec3 m_Point1Position;
+		Vec3 m_Point2Position;
+		Vec3 m_Point3Position;
+
 		enum Point
 		{
 			Point0,
@@ -91,7 +96,7 @@ namespace basecross
 
 		//void Move(const shared_ptr<GameObject>& gameObject, float speed);
 		//void CircleMove(const shared_ptr<GameObject>& gameObject, float radius, float moveSpeed);
-		//void PointMove(const shared_ptr<GameObject>& gameObject,float speed);
+		void PointMove(const shared_ptr<GameObject>& gameObject,float speed);
 
 		void DebugString();
 

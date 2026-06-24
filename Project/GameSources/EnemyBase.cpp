@@ -29,7 +29,12 @@ namespace basecross
 
         // 移動速度
         m_Speed(1.4f),
-        m_rotToHeadLeap(0.1f)
+        m_rotToHeadLeap(0.1f),
+
+        // 座標を格納するための変数
+        m_Point1Position(),
+        m_Point2Position(),
+        m_Point3Position()
     {}
 
     void EnemyBase::OnCreate()
@@ -503,6 +508,124 @@ namespace basecross
         }
 
         transComp->SetRotation(0.0f, m_rotY, 0.0f);
+    }
+
+    // 4つのポイントを置いてランダムに動く
+    void EnemyBase::PointMove
+    (
+        const shared_ptr<GameObject>& gameObject,
+        float speed
+    )
+    {
+        // そのゲームオブジェクトの情報を取得する
+        auto transComp = gameObject->GetComponent<Transform>();
+        auto transPos = transComp->GetPosition();
+
+        // 時間（乱数）
+        float randTime = (float)(rand() % 3 + 1);
+        float randRotation = (float)(rand() % 361);
+
+        // ゼロ
+        const float ZERO_TIME = 0.0f;
+
+        // タイマースピード
+        float timerSpeed = 1.0f;
+
+        // 移動距離
+        float distance = 3.0f;
+
+        // 次のポイントに行くための変数
+        int pointNext = 1;
+
+        // 経過時間を取得する
+        auto deltaTime = App::GetApp()->GetElapsedTime();
+
+        // 初期位置を取得したらそれ以降は絶対に位置を更新してはイケない
+        if (m_isFirstTime == true)
+        {
+            m_InitialPosition = transPos;
+            m_isFirstTime = false;
+        }
+
+        // 待機時間
+        if (m_isStand == true)
+        {
+            //m_InitialStandTime = standingTime;
+            if (m_InitialStandTime > ZERO_TIME)
+            {
+                m_InitialStandTime -= deltaTime;
+            }
+            else if (m_InitialStandTime <= ZERO_TIME)
+            {
+                m_isStand = false;
+                m_isWandering = true;
+
+                m_InitialWanderingTime = randTime;
+
+                // 一度だけ乱数を格納する
+                m_NumPoint = static_cast<Point>((static_cast<int>(m_NumPoint) + pointNext) % Number);
+
+                // 初期値を格納する
+                m_TargetPosition = m_InitialPosition;
+
+                switch (m_NumPoint)
+                {
+                case Point0: // 原点
+                    m_TargetPosition = m_InitialPosition;
+                    break;
+
+                case Point1:
+                    m_TargetPosition = m_Point1Position;
+                    break;
+
+                case Point2:
+                    m_TargetPosition = m_Point2Position;
+                    break;
+
+                case Point3:
+                    m_TargetPosition = m_Point3Position;
+                    break;
+
+                default:
+                    break;
+                }
+            }
+        }
+        // 徘徊時間
+        else if (m_isWandering == true)
+        {
+            // ターゲット（点）までのベクトルを計算
+            float diffX = m_TargetPosition.x - transPos.x;
+            float diffZ = m_TargetPosition.z - transPos.z;
+
+            // ターゲットまでの距離を計算
+            float distance = sqrtf(diffX * diffX + diffZ * diffZ);
+
+            if (distance > 0.05f)
+            {
+                float forward = atan2f(diffX, diffZ);
+                transComp->SetRotation(0.0f, forward, 0.0f);
+
+                transPos.x += (diffX / distance) * speed * deltaTime;
+                transPos.z += (diffZ / distance) * speed * deltaTime;
+            }
+            // どれかの点に到達したとき
+            else
+            {
+                // 強制的に点に重ねる
+                transPos.x = m_TargetPosition.x;
+                transPos.z = m_TargetPosition.z;
+
+                // また待機時間に戻す
+                m_isWandering = false;
+                m_isStand = true;
+
+                m_InitialStandTime = randTime;
+            }
+
+            // 敵の位置を最終的に更新する
+            transComp->SetPosition(transPos);
+        }
     }
 
     void EnemyBase::OnCollisionEnter(shared_ptr<GameObject>& Other)
