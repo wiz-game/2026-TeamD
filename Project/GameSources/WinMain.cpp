@@ -9,12 +9,13 @@ using namespace basecross;
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 
 //定数
-const wchar_t* pClassName = L"BaseCrossFullClass";
-const wchar_t* pWndTitle = L"BaseCrossFullSample";
+const wchar_t* pClassName = L"あわパカ";
+const wchar_t* pWndTitle = L"あわパカ";
 //ウィンドウモードの時の幅と高さ
 int g_ClientWidth = 1280;
 int g_ClientHeight = 800;
 
+bool isMouseCursor = true;
 
 //--------------------------------------------------------------------------------------
 //
@@ -113,7 +114,7 @@ HWND InitInstance(HINSTANCE hInstance, int nCmdShow, bool isFullScreen, int iCli
 		hWnd,       //取得したウインドウのハンドル
 		nCmdShow    //WinMainに渡されたパラメータ
 	);
-	ShowCursor(false);
+	ShowCursor(isMouseCursor);
 	UpdateWindow(hWnd);
 	return hWnd;
 }
