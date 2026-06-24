@@ -106,6 +106,8 @@ namespace basecross
 
 		// GameMode：Menu用の入力関数
 		void ReturnGame();
+		void EnterSetting();
+		void EnterHowtoplay();
 		void ReturnOneMenu();
 		void MoveMenuCursor();
 		void PressedAMenu();
