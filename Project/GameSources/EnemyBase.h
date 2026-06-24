@@ -52,6 +52,8 @@ namespace basecross
 		}
 		m_NumPoint;
 
+		//enum Vec3 
+
 		enum ENUM_RANDOMROT
 		{
 			RandomRotL,
