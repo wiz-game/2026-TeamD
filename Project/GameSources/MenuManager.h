@@ -9,14 +9,6 @@
 
 namespace basecross
 {
-	enum class ENUM_MenuUI
-	{
-		Restart,
-		Setting,
-		Howtoplay,
-		Retitle
-	};
-
 	enum class ENUM_MenuMode
 	{
 		Default,
@@ -24,6 +16,27 @@ namespace basecross
 		Setting,
 		Howtoplay
 	};
+
+	enum class ENUM_MenuStart
+	{
+		Restart,
+		Setting,
+		Howtoplay,
+		Retitle
+	};
+
+	enum class ENUM_Setting
+	{
+		BGM,
+		SE,
+		Return
+	};
+
+	enum class ENUM_Howtoplay
+	{
+		Return
+	};
+
 
 	class MenuManager
 	{
@@ -33,7 +46,7 @@ namespace basecross
 		vector<shared_ptr<UIBase>> m_uisettings;
 		vector<shared_ptr<UIBase>> m_uihowtoplays;
 
-		ENUM_MenuUI m_menuUI = ENUM_MenuUI::Restart;
+		ENUM_MenuStart m_menuUI = ENUM_MenuStart::Restart;
 		ENUM_MenuMode m_menuMode = ENUM_MenuMode::Default;
 
 		MenuManager()
@@ -60,8 +73,8 @@ namespace basecross
 		void SetButtonDiffuse(int i, const Col4& diffuse, Col4& emissive);
 
 		void SetMenuMode(ENUM_MenuMode menumode);
-		void SetMenuUI(ENUM_MenuUI menuui);
-		ENUM_MenuUI GetMenuUI() const { return m_menuUI; }
+		void SetMenuUI(ENUM_MenuStart menuui);
+		ENUM_MenuStart GetMenuUI() const { return m_menuUI; }
 		ENUM_MenuMode GetMenuMode() const { return m_menuMode; }
 
 		void ChangeSelectMenuMode(const int& num);
