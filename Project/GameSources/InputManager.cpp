@@ -151,7 +151,6 @@ namespace basecross
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_B)
 			{
 				ReturnGame();
-				ReturnOneMenu();
 			}
 
 			// カーソルを移動
@@ -478,7 +477,34 @@ namespace basecross
 
 	void InputManager::ReturnGame()
 	{
-		GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
+		switch (MenuManager::Instance().GetMenuMode())
+		{
+		case ENUM_MenuMode::MenuStart:
+			GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
+			break;
+
+		case ENUM_MenuMode::Setting:
+			MenuManager::Instance().SetMenuMode(ENUM_MenuMode::MenuStart);
+			MenuManager::Instance().ChangeMenuMode();
+			break;
+
+		case ENUM_MenuMode::Howtoplay:
+			MenuManager::Instance().SetMenuMode(ENUM_MenuMode::MenuStart);
+			MenuManager::Instance().ChangeMenuMode();
+			break;
+		}
+	}
+
+	void InputManager::EnterSetting()
+	{
+		MenuManager::Instance().SetMenuMode(ENUM_MenuMode::Setting);
+		MenuManager::Instance().ChangeMenuMode();
+	}
+
+	void InputManager::EnterHowtoplay()
+	{
+		MenuManager::Instance().SetMenuMode(ENUM_MenuMode::Howtoplay);
+		MenuManager::Instance().ChangeMenuMode();
 	}
 
 	void InputManager::ReturnOneMenu()
@@ -501,21 +527,21 @@ namespace basecross
 
 	void InputManager::PressedAMenu()
 	{
-		switch (MenuManager::Instance().GetMenuMode())
+		switch (MenuManager::Instance().GetMenuUI())
 		{
-		case ENUM_MenuMode::Restart:
+		case ENUM_MenuUI::Restart:
 			ReturnGame();
 			break;
 
-		case ENUM_MenuMode::Setting:
-			//EnterSetting();
+		case ENUM_MenuUI::Setting:
+			EnterSetting();
 			break;
 
-		case ENUM_MenuMode::Howtoplay:
-			//EnterHowtoplay();
+		case ENUM_MenuUI::Howtoplay:
+			EnterHowtoplay();
 			break;
 
-		case ENUM_MenuMode::Retitle:
+		case ENUM_MenuUI::Retitle:
 			ReturnTitle();
 			break;
 		}
