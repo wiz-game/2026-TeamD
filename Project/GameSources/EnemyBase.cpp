@@ -320,6 +320,7 @@ namespace basecross
         float forward_X = 0.0f, forward_Z = 0.0f;
         // forward_Xとforward_Zを格納するための変数
         float rot_X = 0.0f, rot_Z = 0.0f;
+        float startReyPos_Y = 0.3f;
 
         m_canGoLeft = true;
         m_canGoRight = true;
@@ -339,7 +340,7 @@ namespace basecross
         float forward_FX = transPos.x + (sinf(m_rotY) * m_rayRange);
         float forward_FZ = transPos.z + (cosf(m_rotY) * m_rayRange);
 
-        Vec3 startReyPos = Vec3(transPos.x, 0.3f, transPos.z);
+        Vec3 startReyPos = Vec3(transPos.x, startReyPos_Y, transPos.z);
         Vec3 endFSp(forward_FX, transPos.y, forward_FZ);
 
         float minT = 1.0f;
@@ -360,14 +361,14 @@ namespace basecross
                 size_t index;
                 if (obj->FindTag(L"Wall") && m_isRotated == false)
                 {
-                    float dirX = 0.0f, dirZ = 0.0f, len = 0.0f;
+                    float dirX = 0.0f, dirY = 0.0f, dirZ = 0.0f, len = 0.0f;
 
                     if (objDrawComp->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endLSp, hitPoint, tri, index))
                     {
                         // 左
                         dirX = hitPoint.x - transPos.x;
                         dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, 0.0f, dirZ);
+                        Vec3 dir(dirX, dirY, dirZ);
                         len = dir.length();
 
                         if (len <= m_rayRange)
@@ -382,7 +383,7 @@ namespace basecross
                         // 右
                         dirX = hitPoint.x - transPos.x;
                         dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, 0.0f, dirZ);
+                        Vec3 dir(dirX, dirY, dirZ);
                         len = dir.length();
 
                         if (len <= m_rayRange)
@@ -397,7 +398,7 @@ namespace basecross
                         // 正面
                         dirX = hitPoint.x - transPos.x;
                         dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, 0.0f, dirZ);
+                        Vec3 dir(dirX, dirY, dirZ);
                         len = dir.length();
 
                         if (len <= m_rayRange)
@@ -498,7 +499,7 @@ namespace basecross
                 m_rotY = XMConvertToRadians(ZERO_ANGLE);
             }
 
-            transComp->SetRotation(0.0f, m_rotY, 0.0f);
+            transComp->SetRotation(rot_X, m_rotY, rot_Z);
         }
         else
         {
@@ -507,7 +508,7 @@ namespace basecross
             transComp->SetPosition(transPos);
         }
 
-        transComp->SetRotation(0.0f, m_rotY, 0.0f);
+        transComp->SetRotation(rot_X, m_rotY, rot_Z);
     }
 
     // 4つのポイントを置いてランダムに動く
@@ -520,6 +521,7 @@ namespace basecross
         // そのゲームオブジェクトの情報を取得する
         auto transComp = gameObject->GetComponent<Transform>();
         auto transPos = transComp->GetPosition();
+        auto transRot = transComp->GetRotation();
 
         // 時間（乱数）
         float randTime = (float)(rand() % 3 + 1);
@@ -532,7 +534,7 @@ namespace basecross
         float timerSpeed = 1.0f;
 
         // 移動距離
-        float distance = 3.0f;
+        float distance = 3.0f,distanceArrow = 0.05f;
 
         // 次のポイントに行くための変数
         int pointNext = 1;
@@ -550,7 +552,6 @@ namespace basecross
         // 待機時間
         if (m_isStand == true)
         {
-            //m_InitialStandTime = standingTime;
             if (m_InitialStandTime > ZERO_TIME)
             {
                 m_InitialStandTime -= deltaTime;
@@ -562,7 +563,7 @@ namespace basecross
 
                 m_InitialWanderingTime = randTime;
 
-                // 一度だけ乱数を格納する
+                // 
                 m_NumPoint = static_cast<Point>((static_cast<int>(m_NumPoint) + pointNext) % Number);
 
                 // 初期値を格納する
@@ -601,10 +602,10 @@ namespace basecross
             // ターゲットまでの距離を計算
             float distance = sqrtf(diffX * diffX + diffZ * diffZ);
 
-            if (distance > 0.05f)
+            if (distance > distanceArrow)
             {
                 float forward = atan2f(diffX, diffZ);
-                transComp->SetRotation(0.0f, forward, 0.0f);
+                transComp->SetRotation(transRot.x, forward, transRot.z);
 
                 transPos.x += (diffX / distance) * speed * deltaTime;
                 transPos.z += (diffZ / distance) * speed * deltaTime;
