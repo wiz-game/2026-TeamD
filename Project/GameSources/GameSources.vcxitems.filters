@@ -187,6 +187,9 @@
     <Filter Include="StageObjs\SoilWall">
       <UniqueIdentifier>{48f68fb5-6140-4cf2-8915-fd1e9b94c578}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemys\EnemyAlpacaFixedMove">
+      <UniqueIdentifier>{b783f4da-5f29-4934-a161-33d16710ce51}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -372,6 +375,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SoilWall.h">
       <Filter>StageObjs\SoilWall</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EnemyAlpacaFixedMove.h">
+      <Filter>Enemys\EnemyAlpacaFixedMove</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -544,6 +550,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)UISlide.cpp">
       <Filter>Stages\SelectStage</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EnemyAlpacaFixedMove.cpp">
+      <Filter>Enemys\EnemyAlpacaFixedMove</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

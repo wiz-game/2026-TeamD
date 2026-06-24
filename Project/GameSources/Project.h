@@ -54,7 +54,7 @@
 // エネミー
 #include "EnemyBase.h"
 #include "EnemyAlpaca.h"
-
+#include "EnemyAlpacaFixedMove.h"
 #include "Bubble.h"
 #include "TrampolineBubbles.h"
 #include "Player.h"
