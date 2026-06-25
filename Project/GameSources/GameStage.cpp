@@ -44,6 +44,7 @@ namespace basecross
 		{
 			StageEditor::Instance().AddEditorMenuLog(L"FPS", 1.0f / App::GetApp()->GetElapsedTime());
 		}
+		GameManager::Instance().AddDebugStr(L"FPS", 1.0f / App::GetApp()->GetElapsedTime());
 
 		int dirtNum = 0;
 		auto gameObjectVec = GetGameObjectVec();
