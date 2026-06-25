@@ -19,6 +19,12 @@ namespace basecross
 		float m_distance = 1.0f;
 
 		float m_viewPointMoveSpeed;
+
+		// 半透明処理用の変数
+		float m_fadeTime;
+		float m_fadeAlpha;
+		float m_notFadeAlpha = 1.0f;
+		float m_fadeLength;
 	public:
 		MyCamera();
 		virtual ~MyCamera();
@@ -45,5 +51,6 @@ namespace basecross
 		void UpdatePlayMode();
 		void UpdateMenuMode();
 		void UpdateEditorMode();
+		void FadeStageObjectAlpha();
 	};
 }

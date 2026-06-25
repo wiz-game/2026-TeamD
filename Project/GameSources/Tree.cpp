@@ -18,6 +18,7 @@ namespace basecross
 	void Tree::OnCreate()
 	{
 		AddTag(L"Tree");
+		AddTag(L"Fade");
 		SetIsEditorSave(true);
 
 		auto ptrDraw = AddComponent<PNTStaticDraw>();
@@ -49,5 +50,12 @@ namespace basecross
 		EffectHandle effHandle;
 		effHandle = EffectManager::Instance().PlayEffect(L"Leaf", Vec3(pos.x, pos.y - 0.76f, pos.z));
 		EffectManager::Instance().SetScale(effHandle, Vec3(0.5f));
+
+		SetAlphaActive(true);
+	}
+
+	void Tree::OnUpdate()
+	{
+		m_stageObjectFade.UpdateFade(GetComponent<PNTStaticDraw>(), App::GetApp()->GetElapsedTime());
 	}
 }

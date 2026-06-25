@@ -543,19 +543,19 @@ namespace basecross
 	{
 		switch (MenuManager::Instance().GetMenuUI())
 		{
-		case ENUM_MenuUI::Restart:
+		case ENUM_MenuStart::Restart:
 			ReturnGame();
 			break;
 
-		case ENUM_MenuUI::Setting:
+		case ENUM_MenuStart::Setting:
 			EnterSetting();
 			break;
 
-		case ENUM_MenuUI::Howtoplay:
+		case ENUM_MenuStart::Howtoplay:
 			EnterHowtoplay();
 			break;
 
-		case ENUM_MenuUI::Retitle:
+		case ENUM_MenuStart::Retitle:
 			ReturnTitle();
 			break;
 		}
