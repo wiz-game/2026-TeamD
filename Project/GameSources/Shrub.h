@@ -16,5 +16,6 @@ namespace basecross
 		virtual ~Shrub();
 
 		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
 	};
 }

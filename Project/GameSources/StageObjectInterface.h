@@ -65,6 +65,43 @@ namespace basecross
 		void SetPosition(const bsm::Vec3& position) { Position = position; }
 	};
 
+	struct STRUCT_StageObjectFade
+	{
+	private:
+		bsm::Col4 m_fadeStartDiffuse = bsm::Col4();
+		float m_elapsedFadeTime = 0.0f;
+		float m_targetTime = 0.0f;
+		float m_targetAlpha = 1.0f;
+		bool m_isFade = false;
+	public:
+		void Fade(const bsm::Col4& fadeStartDiffuse, const float& targetAlpha, const float& targetTime)
+		{
+			m_fadeStartDiffuse = fadeStartDiffuse;
+			m_targetAlpha = targetAlpha;
+			m_targetTime = targetTime;
+			m_elapsedFadeTime = 0.0f;
+			m_isFade = true;
+		}
+
+		void UpdateFade(const shared_ptr<PNTStaticDraw>& sPtrDrawComp, const float& elapsedTime)
+		{
+			if (!m_isFade) return;
+
+			m_elapsedFadeTime += elapsedTime;
+			if (m_elapsedFadeTime >= m_targetTime || m_targetTime <= 0.0f)
+			{
+				sPtrDrawComp->SetDiffuse(bsm::Col4(m_fadeStartDiffuse.x, m_fadeStartDiffuse.y, m_fadeStartDiffuse.z, m_targetAlpha));
+				m_isFade = false;
+			}
+			else
+			{
+				float t = m_elapsedFadeTime / m_targetTime;
+				float newVolume = m_fadeStartDiffuse.w + (m_targetAlpha - m_fadeStartDiffuse.w) * t;
+				sPtrDrawComp->SetDiffuse(bsm::Col4(m_fadeStartDiffuse.x, m_fadeStartDiffuse.y, m_fadeStartDiffuse.z, newVolume));
+			}
+		}
+	};
+
 	class StageObjectInterface
 	{
 	protected:
@@ -73,6 +110,8 @@ namespace basecross
 		
 		void SetIsEditorSave(const bool& isEditorSave) { m_isEditorSave = isEditorSave; }
 	public:
+		STRUCT_StageObjectFade m_stageObjectFade;
+
 		StageObjectInterface(const STRUCT_ObjectParam& objectParams) : m_objectParam(objectParams) { m_isEditorSave = false; }
 		virtual ~StageObjectInterface() {}
 

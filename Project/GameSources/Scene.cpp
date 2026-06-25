@@ -20,7 +20,7 @@ namespace basecross
 
 			// 各マネージャーを初期化
 			JoltManager::StaticInitialize();
-			GameManager::Instance().Initialize(false);
+			GameManager::Instance().Initialize(true);
 			InputManager::Instance().Initialize();
 			StageEditor::Instance().Initialize();
 			EffectManager::Instance().CreateEfkInterface(20000);
