@@ -23,6 +23,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)CollisionObject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectUpdateDrawManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)EnemyAlpacaFixedMove.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Fence.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Foothold.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LoadMedia.h" />
@@ -93,6 +94,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectUpdateDrawManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyAlpaca.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)EnemyAlpacaFixedMove.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyBase.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FallenTree.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Fence.cpp" />

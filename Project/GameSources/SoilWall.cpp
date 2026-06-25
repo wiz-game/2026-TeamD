@@ -24,6 +24,7 @@ namespace basecross
 	void SoilWall::OnCreate()
 	{
 		AddTag(L"SoilWall");
+		AddTag(L"Fade");
 		AddTag(L"Wall");
 		SetIsEditorSave(true);
 		SetAlphaActive(true);
@@ -49,6 +50,11 @@ namespace basecross
 
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetFixed(true);
+	}
+
+	void SoilWall::OnUpdate()
+	{
+		m_stageObjectFade.UpdateFade(GetComponent<PNTStaticDraw>(), App::GetApp()->GetElapsedTime());
 	}
 
 	void SoilWall::UpdateTexture()

@@ -49,6 +49,7 @@ namespace basecross
 		{
 			StageEditor::Instance().AddEditorMenuLog(L"FPS", 1.0f / App::GetApp()->GetElapsedTime());
 		}
+		GameManager::Instance().AddDebugStr(L"FPS", 1.0f / App::GetApp()->GetElapsedTime());
 
 		int dirtNum = 0;
 		auto gameObjectVec = GetGameObjectVec();
@@ -96,6 +97,9 @@ namespace basecross
 		{
 			GameManager::Instance().SetGameMode(ENUM_GameMode::GameClear);
 		}
+
+		// メニュー画面のボタンの切り替え
+		MenuManager::Instance().ChangeUIDiffuse();
 	}
 
 	void GameStage::OnUpdate2()
@@ -129,40 +133,101 @@ namespace basecross
 
 	void GameStage::CreateMenu()
 	{
-		vector<shared_ptr<UIBase>> uipointers;
-		uipointers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+		Col4 blackOutColor = Col4(1.0f, 1.0f, 1.0f, 1.0f);
+		vector<shared_ptr<UIBase>> uiframes;
+		vector<shared_ptr<UIBase>> uidefaults;
+		vector<shared_ptr<UIBase>> uisettings;
+		vector<shared_ptr<UIBase>> uihowtoplays;
+
+		uiframes.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionFade",
 			Vec3(0.0f, 0.0f, 0.0f), 
 			1.0f,
 			Col4(1.0f))));
-		uipointers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+		uiframes.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionFrame",
 			Vec3(0.0f, 0.0f, 0.0f), 
 			0.75f,
 			Col4(1.0f))));
-		uipointers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+
+		MenuManager::Instance().SetUIFrames(uiframes);
+		MenuManager::Instance().UIDrawActive(false, uiframes);
+
+
+		uidefaults.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionButton_1",
 			Vec3(0.0f, 150.0f, 0.0f),
 			0.25f,
-			Col4(1.0f))));
-		uipointers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			blackOutColor)));
+		uidefaults.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionButton_2",
 			Vec3(0.0f, 25.0f, 0.0f),
 			0.25f,
-			Col4(1.0f))));
-		uipointers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			blackOutColor)));
+		uidefaults.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionButton_3",
 			Vec3(0.0f, -100.0f, 0.0f),
 			0.25f,
-			Col4(1.0f))));
-		uipointers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			blackOutColor)));
+		uidefaults.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionButton_4",
 			Vec3(0.0f, -225.0f, 0.0f),
 			0.25f,
+			blackOutColor)));
+
+		MenuManager::Instance().SetUIDefaults(uidefaults);
+		MenuManager::Instance().UIDrawActive(false, uidefaults);
+
+
+		uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			L"UI_OptionSound",
+			Vec3(0.0f, 150.0f, 0.0f),
+			0.1f,
+			Col4(1.0f))));
+		uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			L"UI_OptionBGM",
+			Vec3(0.0f, 25.0f, 0.0f),
+			0.1f,
+			Col4(1.0f))));
+		uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			L"UI_OptionSE",
+			Vec3(0.0f, -100.0f, 0.0f),
+			0.1f,
+			Col4(1.0f))));
+		uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			L"UI_OptionBaymax",
+			Vec3(0.0f, -40.0f, 0.0f),
+			0.25f,
+			Col4(1.0f))));
+		uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			L"UI_OptionBaymax",
+			Vec3(0.0f, -165.0f, 0.0f),
+			0.25f,
+			Col4(1.0f))));
+		uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			L"UI_OptionReturn",
+			Vec3(0.0f, -220.0f, 0.0f),
+			0.1f,
 			Col4(1.0f))));
 
-		MenuManager::Instance().SetUIPointers(uipointers);
-		MenuManager::Instance().UIDrawActive(false);
+		MenuManager::Instance().SetUISettings(uisettings);
+		MenuManager::Instance().UIDrawActive(false, uisettings);
+
+
+		uihowtoplays.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			L"UI_OptionHowtoplay",
+			Vec3(0.0f, 0.0f, 0.0f),
+			0.50f,
+			Col4(1.0f))));
+
+		MenuManager::Instance().SetUIHowtoplays(uihowtoplays);
+		MenuManager::Instance().UIDrawActive(false, uihowtoplays);
+
+
+
+
+
+		MenuManager::Instance().ChangeUIDiffuse();
 	}
 
 	void GameStage::SetCollRange()

@@ -19,6 +19,7 @@ namespace basecross
 	void FallenTree::OnCreate()
 	{
 		AddTag(L"FallenTree");
+		AddTag(L"Fade");
 		SetIsEditorSave(true);
 		m_sPtrTrans = AddComponent<Transform>();
 		m_sPtrTrans->SetScale(m_objectParam.GetScale());
@@ -44,5 +45,12 @@ namespace basecross
 
 		ptrDraw->SetMeshToTransformMatrix(spanMat);
 		ptrShadow->SetMeshToTransformMatrix(spanMat);
+
+		SetAlphaActive(true);
+	}
+
+	void FallenTree::OnUpdate()
+	{
+		m_stageObjectFade.UpdateFade(GetComponent<PNTStaticDraw>(), App::GetApp()->GetElapsedTime());
 	}
 }

@@ -7,6 +7,10 @@ namespace basecross
 	MyCamera::MyCamera()
 	{
 		m_viewPointMoveSpeed = 5.0f;
+		
+		m_fadeTime = 0.2f;
+		m_fadeAlpha = 0.28f;
+		m_fadeLength = 8.9f;
 	}
 
 	MyCamera::~MyCamera()
@@ -26,6 +30,7 @@ namespace basecross
 			break;
 		case ENUM_GameMode::Play:
 			UpdatePlayMode();
+			FadeStageObjectAlpha();
 			break;
 		case ENUM_GameMode::Menu:
 			UpdateMenuMode();
@@ -203,5 +208,35 @@ namespace basecross
 
 	void MyCamera::UpdateEditorMode()
 	{
+	}
+
+	void MyCamera::FadeStageObjectAlpha()
+	{
+		auto& stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		auto& fadeStageObjects = stage->GetGameObjectVec();
+		auto& at = GetAt();
+		auto& eye = GetEye();
+
+		for (auto& fadeStageObject : fadeStageObjects)
+		{
+			if (!fadeStageObject->FindTag(L"Fade")) continue;
+
+			auto vec = at - fadeStageObject->GetComponent<Transform>()->GetPosition();
+			vec.y = 0.0f;
+			if (vec.length() > m_fadeLength) continue;
+
+			auto& sPtrDrawComp = fadeStageObject->GetComponent<PNTStaticDraw>();
+			if (!sPtrDrawComp) continue;
+
+			if (sPtrDrawComp->HitTestStaticMeshSegmentTrianglesToAffine(at, eye))
+			{
+				fadeStageObject->m_stageObjectFade.Fade(sPtrDrawComp->GetDiffuse(), m_fadeAlpha, m_fadeTime);
+			}
+			else
+			{
+				if (sPtrDrawComp->GetDiffuse().w == m_notFadeAlpha) continue;
+				fadeStageObject->m_stageObjectFade.Fade(sPtrDrawComp->GetDiffuse(), m_notFadeAlpha, m_fadeTime);
+			}
+		}
 	}
 }

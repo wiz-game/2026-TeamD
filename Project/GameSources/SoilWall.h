@@ -24,6 +24,8 @@ namespace basecross
 		virtual ~SoilWall();
 
 		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+
 		void UpdateTexture();
 	};
 }

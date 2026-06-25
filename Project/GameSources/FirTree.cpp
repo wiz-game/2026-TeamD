@@ -19,6 +19,7 @@ namespace basecross
 	void FirTree::OnCreate()
 	{
 		AddTag(L"FirTree");
+		AddTag(L"Fade");
 		SetIsEditorSave(true);
 
 		auto ptrDraw = AddComponent<PNTStaticDraw>();
@@ -45,5 +46,12 @@ namespace basecross
 
 		ptrDraw->SetMeshToTransformMatrix(spanMat);
 		ptrShadow->SetMeshToTransformMatrix(spanMat);
+
+		SetAlphaActive(true);
+	}
+
+	void FirTree::OnUpdate()
+	{
+		m_stageObjectFade.UpdateFade(GetComponent<PNTStaticDraw>(), App::GetApp()->GetElapsedTime());
 	}
 }

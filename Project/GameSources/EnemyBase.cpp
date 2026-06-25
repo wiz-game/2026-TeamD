@@ -29,7 +29,19 @@ namespace basecross
 
         // 移動速度
         m_Speed(1.4f),
-        m_rotToHeadLeap(0.1f)
+        m_rotToHeadLeap(0.5f),
+
+        // 座標を格納するための変数
+        m_Point1Position(),
+        m_Point2Position(),
+        m_Point3Position(),
+
+        // 壁を回避中かどうか
+        m_isAvoiding(false),
+        m_avoidTimer(0.0f),
+        m_InitavoidTimer(0.5f),
+
+        m_targetVec()
     {}
 
     void EnemyBase::OnCreate()
@@ -69,7 +81,6 @@ namespace basecross
             auto soap = stage->AddGameObject<PowerUpSoap>();
             auto soapComp = soap->GetComponent<Transform>();
             soap->SetVecPosition(Vec3(objPos.x, objPos.y + 1, objPos.z));
-            //soapComp->SetPosition(objPos.x, objPos.y + 1, objPos.z);
         }
     }
 
@@ -114,40 +125,37 @@ namespace basecross
 
         const float radius = 7.0f, rangeHeight = 0.3f;
 
-        Vec3 startReyPos = Vec3(transPos.x, 0.3f, transPos.z);
+        Vec3 startReyPos = Vec3(transPos.x, rangeHeight, transPos.z);
 
         Vec3 endPSp(playerPos.x, transPos.y + rangeHeight, playerPos.z);
 
-        float dotAngle = XMConvertToRadians(45.0f);
+        float dotAngle = XMConvertToRadians(100.0f);
 
+        // プレイヤーが視界内に入っていたら
         if (distance < radius && dot >= cosf(dotAngle))
         {
-            m_Detection = false;
+            m_Detection = true;
+            // 全てのオブジェクトを探す
             for (auto obj : stage->GetGameObjectVec())
             {
-                if (obj == gameObject)
+                // Wallのタグを持っているオブジェクトのみ判定をする
+                if (!obj->FindTag(L"Wall"))
                 {
                     continue;
                 }
 
-                auto drawComp = obj->GetComponent<PNTBoneModelDraw>(false);
+                // コンポーネントが静的だったら
+                auto drawComp = obj->GetComponent<PNTStaticDraw>(false);
                 if (drawComp)
                 {
-                    Vec3 hitPoint;
-                    TRIANGLE tri;
-                    size_t index;
+                    Vec3 hitPoint;  // レイがメッシュと衝突した座標
+                    TRIANGLE tri;   // メッシュ
+                    size_t index;   //
+                    // 対象のオブジェクトと自分のレイの間に障害物があったら視界に入っていない
                     if (drawComp->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endPSp, hitPoint, tri, index))
                     {
-                        float disX = 0.0f, disZ = 0.0f, len = 0.0f;
-                        disX = hitPoint.x - playerPos.x;
-                        disZ = hitPoint.z - playerPos.z;
-                        Vec3 dir(disX, 0.0f, disZ);
-                        dir.length();
-                        if (len <= m_rayRange)
-                        {
-                            m_Detection = true;
-                            break;
-                        }
+                        m_Detection = false;
+                        break;
                     }
                 }
             }
@@ -156,66 +164,18 @@ namespace basecross
         {
             m_Detection = false;
         }
-        // デバッグ文字
-        GameManager::Instance().AddDebugStr(L"m_Detection", m_Detection);
-        GameManager::Instance().AddDebugStr(L"dot", dot);
     }
 
     // 追跡AI
-    void EnemyBase::Tracking(const shared_ptr<GameObject>& gameObject,float speed)
+    void EnemyBase::Tracking(const shared_ptr<GameObject>& gameObject, float speed)
     {
-        // 引数の情報を取得する
-        auto transComp = gameObject->GetComponent<Transform>();
-        auto transPos = transComp->GetPosition();
-
-        // ステージ情報を取得する
         auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
         if (stage == nullptr)
         {
             return;
         }
 
-        // プレイヤーの情報を取得する
-        auto player = stage->GetSharedGameObject<Player>(L"Player");
-        if (player == nullptr)
-        {
-            return;
-        }
-        auto playerComp = player->GetComponent<Transform>();
-        // プレイヤーの位置を取得する
-        auto playerPos = playerComp->GetPosition();
-
-        // 索敵しているとき
-        if (m_Detection == true)
-        {
-            // プレイヤーと敵の位置を計算する
-            float distanceX = playerPos.x - transPos.x;
-            float distanceY = playerPos.y - transPos.y;
-            float distanceZ = playerPos.z - transPos.z;
-            float distance = sqrt((distanceX * distanceX) + (distanceY * distanceY) + (distanceZ * distanceZ));
-
-            // 向き用
-            float angleX = 0.0f, angleZ = 0.0f;
-            float angleY = atan2f(distanceX, distanceZ);
-            transComp->SetRotation(angleX, angleY, angleZ);
-
-            // 向きを求める
-            float forwardX = distanceX / distance;
-            float forwardY = 0.0f;
-            float forwardZ = distanceZ / distance;
-               
-            // 位置を更新する
-            transPos.x += forwardX * App::GetApp()->GetElapsedTime() * speed;
-            transPos.z += forwardZ * App::GetApp()->GetElapsedTime() * speed;
-            // 位置を設定する
-            transComp->SetPosition(transPos);
-        }
-
-    }
-
-    // ストーカー
-    void EnemyBase::Stalker(const shared_ptr<GameObject>& gameObject, float stalkerSpeed)
-    {
+        // ステージ情報を取得する
         auto player = App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetSharedGameObject<Player>(L"Player");
         if (player == nullptr)
         {
@@ -223,21 +183,172 @@ namespace basecross
         }
 
         auto playerComp = player->GetComponent<Transform>();
+        // プレイヤーの位置を取得する
         auto playerPos = playerComp->GetPosition();
 
-        auto objComp = gameObject->GetComponent<Transform>();
-        auto objPos = objComp->GetPosition();
+        // 引数の情報を取得する
+        auto transComp = gameObject->GetComponent<Transform>();
+        auto transPos = transComp->GetPosition();
 
-        Vec3 targetVec = playerPos - objPos;
+        // プレイヤーの位置から自分の位置を引いて正規化する
+        Vec3 targetVec = playerPos - transPos;
         targetVec.y = 0.0f;
         targetVec.normalize();
 
-        objPos.x += targetVec.x * stalkerSpeed * App::GetApp()->GetElapsedTime();
-        objPos.z += targetVec.z * stalkerSpeed * App::GetApp()->GetElapsedTime();
+        if (m_isAvoiding)
+        {
+            targetVec = transComp->GetForward();
+            targetVec.y = 0.0f;
+            targetVec.normalize();
+        }
+       
+        float distanceRange = m_rayRange; // ここは最終的にメンバ変数にする
+        float distanceRangeFormat = 4.0f;
+        float rangeHeight = 0.3f;
 
-        objComp->SetPosition(objPos);
+        Vec3 startReyPos = Vec3(transPos.x, transPos.y + rangeHeight, transPos.z);
 
+        // 正面
+        float endX = startReyPos.x + (targetVec.x * distanceRange);
+        float endZ = startReyPos.z + (targetVec.z * distanceRange);
+        Vec3 endSp(endX, transPos.y + rangeHeight, endZ);
+
+        float currentAngle = atan2f(targetVec.x, targetVec.z);
+        float angleR = currentAngle + XMConvertToRadians(45.0f);
+        float angleL = currentAngle - XMConvertToRadians(45.0f);
+
+        // targetVecに寄せた計算をする-------------------------------------------------------------
+        // 右
+        Vec3 dirR(sinf(angleR), 0.0f, cosf(angleR));
+        dirR.normalize();
+        float endRX = startReyPos.x + (dirR.x * distanceRange);
+        float endRZ = startReyPos.z + (dirR.z * distanceRange);
+        Vec3 endRSp(endRX, transPos.y + rangeHeight, endRZ);
+
+        // 左
+        Vec3 dirL(sinf(angleL), 0.0f, cosf(angleL));
+        dirL.normalize();
+        float endLX = startReyPos.x + (dirL.x * distanceRange);
+        float endLZ = startReyPos.z + (dirL.z * distanceRange);
+        Vec3 endLSp(endLX, transPos.y + rangeHeight, endLZ);
+        //------------------------------------------------------------------------------------------
+
+        m_canGoForward = true;
+        m_canGoLeft = true;
+        m_canGoRight = true;
+
+        for (auto& obj : stage->GetGameObjectVec())
+        {
+            if (obj == gameObject)
+            {
+                continue;
+            }
+
+            auto modelObj = obj->GetComponent<PNTStaticDraw>(false);
+            if (modelObj)
+            {
+                Vec3 hitPoint;
+                TRIANGLE tri;
+                size_t index;
+                float dirX = 0.0f, dirZ = 0.0f, len = 0.0f;
+
+                if (obj->FindTag(L"Wall"))
+                {
+                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endSp, hitPoint, tri, index))
+                    {
+                        // 正面
+                        dirX = hitPoint.x - transPos.x;
+                        dirZ = hitPoint.z - transPos.z;
+                        Vec3 dir(dirX, 0.0f, dirZ);
+                        len = dir.length();
+
+                        if (len <= m_rayRange)
+                        {
+                            // 壁に触れた
+                            m_canGoForward = false;
+                        }
+                    }
+
+                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endLSp, hitPoint, tri, index))
+                    {
+                        // 左
+                        dirX = hitPoint.x - transPos.x;
+                        dirZ = hitPoint.z - transPos.z;
+                        Vec3 dir(dirX, 0.0f, dirZ);
+                        len = dir.length();
+
+                        if (len <= m_rayRange)
+                        {
+                            // 壁に触れた
+                            m_canGoLeft = false;
+                        }
+                    }
+
+                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endRSp, hitPoint, tri, index))
+                    {
+                        // 右
+                        dirX = hitPoint.x - transPos.x;
+                        dirZ = hitPoint.z - transPos.z;
+                        Vec3 dir(dirX, 0.0f, dirZ);
+                        len = dir.length();
+
+                        if (len <= m_rayRange)
+                        {
+                            // 壁に触れた
+                            m_canGoRight = false;
+                        }
+                    }
+                }
+            }
+        }
+        
+        float timerZero = 0.0f;
+        float delta = App::GetApp()->GetElapsedTime();
+        if (!m_isAvoiding)
+        {
+            if (m_canGoForward == false)
+            {
+                m_isAvoiding = true;
+                m_avoidTimer = m_InitavoidTimer;
+
+            }
+        }
+
+        if (m_isAvoiding)
+        {
+            m_avoidTimer -= delta;
+            if (m_avoidTimer <= timerZero)
+            {
+                m_isAvoiding = false;
+            }
+            else
+            {
+                if (m_canGoForward)
+                {
+                    targetVec = transComp->GetForward();
+                }
+                // 回避方向の決定
+                else if (m_canGoLeft)
+                {
+                    targetVec = dirL;
+                    //targetVec.normalize();
+                }
+                else if (m_canGoRight)
+                {
+                    targetVec = dirR;
+                    //targetVec.normalize();
+                }
+            }
+        }
+
+        transPos.x += targetVec.x * speed * App::GetApp()->GetElapsedTime();
+        transPos.z += targetVec.z * speed * App::GetApp()->GetElapsedTime();
+        transComp->SetPosition(transPos);
         GetBehavior<UtilBehavior>()->RotToHead(targetVec, m_rotToHeadLeap);
+
+        // デバッグ文字
+        GameManager::Instance().AddDebugStr(L"m_isAvoiding", m_isAvoiding);
+        GameManager::Instance().AddDebugStr(L"m_avoidTimer", m_avoidTimer);
     }
 
     void EnemyBase::MazeWandering(const shared_ptr<GameObject>& gameObject)
@@ -251,28 +362,33 @@ namespace basecross
         float forward_X = 0.0f, forward_Z = 0.0f;
         // forward_Xとforward_Zを格納するための変数
         float rot_X = 0.0f, rot_Z = 0.0f;
+        float startReyPos_Y = 0.3f;
 
         m_canGoLeft = true;
         m_canGoRight = true;
         m_canGoForward = true;
 
+        Vec3 startReyPos = Vec3(transPos.x, transPos.y + startReyPos_Y, transPos.z);
+
+        // レイ
+        // 正面
+        float targetAngleFloat = m_rotY;
+        float forward_FX = transPos.x + (sinf(targetAngleFloat) * m_rayRange);
+        float forward_FZ = transPos.z + (cosf(targetAngleFloat) * m_rayRange);
+        Vec3 endFSp(forward_FX, transPos.y, forward_FZ);
+
         // 右
-        float forward_RX = transPos.x + ((sinf(m_rotY) + XMConvertToRadians(90.0f))) * m_rayRange;
-        float forward_RZ = transPos.z + ((cosf(m_rotY) + XMConvertToRadians(90.0f))) * m_rayRange;
+        float targetAngleRight = m_rotY + XMConvertToRadians(90.0f);
+        float forward_RX = transPos.x + ((sinf(targetAngleRight))) * m_rayRange;
+        float forward_RZ = transPos.z + ((cosf(targetAngleRight))) * m_rayRange;
+        Vec3 endRSp(forward_RX, transPos.y, forward_RZ);
 
         // 左
-        float forward_LX = transPos.x + ((sinf(m_rotY)-XMConvertToRadians(90.0f))) * m_rayRange;
-        float forward_LZ = transPos.z + ((cosf(m_rotY)-XMConvertToRadians(90.0f))) * m_rayRange;
-
-        Vec3 endRSp(forward_RX, transPos.y, forward_RZ);
+        float targetAngleLeft = m_rotY - XMConvertToRadians(90.0f);
+        float forward_LX = transPos.x + ((sinf(targetAngleLeft))) * m_rayRange;
+        float forward_LZ = transPos.z + ((cosf(targetAngleLeft))) * m_rayRange;
         Vec3 endLSp(forward_LX, transPos.y, forward_LZ);
-
-        // 正面
-        float forward_FX = transPos.x + (sinf(m_rotY) * m_rayRange);
-        float forward_FZ = transPos.z + (cosf(m_rotY) * m_rayRange);
-
-        Vec3 startReyPos = Vec3(transPos.x, 0.3f, transPos.z);
-        Vec3 endFSp(forward_FX, transPos.y, forward_FZ);
+        //
 
         float minT = 1.0f;
         // 全てのゲームオブジェクトを探す
@@ -292,14 +408,14 @@ namespace basecross
                 size_t index;
                 if (obj->FindTag(L"Wall") && m_isRotated == false)
                 {
-                    float dirX = 0.0f, dirZ = 0.0f, len = 0.0f;
+                    float dirX = 0.0f, dirY = 0.0f, dirZ = 0.0f, len = 0.0f;
 
                     if (objDrawComp->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endLSp, hitPoint, tri, index))
                     {
                         // 左
                         dirX = hitPoint.x - transPos.x;
                         dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, 0.0f, dirZ);
+                        Vec3 dir(dirX, dirY, dirZ);
                         len = dir.length();
 
                         if (len <= m_rayRange)
@@ -314,7 +430,7 @@ namespace basecross
                         // 右
                         dirX = hitPoint.x - transPos.x;
                         dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, 0.0f, dirZ);
+                        Vec3 dir(dirX, dirY, dirZ);
                         len = dir.length();
 
                         if (len <= m_rayRange)
@@ -329,7 +445,7 @@ namespace basecross
                         // 正面
                         dirX = hitPoint.x - transPos.x;
                         dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, 0.0f, dirZ);
+                        Vec3 dir(dirX, dirY, dirZ);
                         len = dir.length();
 
                         if (len <= m_rayRange)
@@ -430,7 +546,7 @@ namespace basecross
                 m_rotY = XMConvertToRadians(ZERO_ANGLE);
             }
 
-            transComp->SetRotation(0.0f, m_rotY, 0.0f);
+            transComp->SetRotation(rot_X, m_rotY, rot_Z);
         }
         else
         {
@@ -439,7 +555,125 @@ namespace basecross
             transComp->SetPosition(transPos);
         }
 
-        transComp->SetRotation(0.0f, m_rotY, 0.0f);
+        transComp->SetRotation(rot_X, m_rotY, rot_Z);
+    }
+
+    // 4つのポイントを置いてランダムに動く
+    void EnemyBase::PointMove
+    (
+        const shared_ptr<GameObject>& gameObject,
+        float speed
+    )
+    {
+        // そのゲームオブジェクトの情報を取得する
+        auto transComp = gameObject->GetComponent<Transform>();
+        auto transPos = transComp->GetPosition();
+        auto transRot = transComp->GetRotation();
+
+        // 時間（乱数）
+        float randTime = (float)(rand() % 3 + 1);
+        float randRotation = (float)(rand() % 361);
+
+        // ゼロ
+        const float ZERO_TIME = 0.0f;
+
+        // タイマースピード
+        float timerSpeed = 1.0f;
+
+        // 移動距離
+        float distance = 3.0f,distanceArrow = 0.05f;
+
+        // 次のポイントに行くための変数
+        int pointNext = 1;
+
+        // 経過時間を取得する
+        auto deltaTime = App::GetApp()->GetElapsedTime();
+
+        // 初期位置を取得したらそれ以降は絶対に位置を更新してはイケない
+        if (m_isFirstTime == true)
+        {
+            m_InitialPosition = transPos;
+            m_isFirstTime = false;
+        }
+
+        // 待機時間
+        if (m_isStand == true)
+        {
+            if (m_InitialStandTime > ZERO_TIME)
+            {
+                m_InitialStandTime -= deltaTime;
+            }
+            else if (m_InitialStandTime <= ZERO_TIME)
+            {
+                m_isStand = false;
+                m_isWandering = true;
+
+                m_InitialWanderingTime = randTime;
+
+                // 
+                m_NumPoint = static_cast<Point>((static_cast<int>(m_NumPoint) + pointNext) % Number);
+
+                // 初期値を格納する
+                m_TargetPosition = m_InitialPosition;
+
+                switch (m_NumPoint)
+                {
+                case Point0: // 原点
+                    m_TargetPosition = m_InitialPosition;
+                    break;
+
+                case Point1:
+                    m_TargetPosition = m_Point1Position;
+                    break;
+
+                case Point2:
+                    m_TargetPosition = m_Point2Position;
+                    break;
+
+                case Point3:
+                    m_TargetPosition = m_Point3Position;
+                    break;
+
+                default:
+                    break;
+                }
+            }
+        }
+        // 徘徊時間
+        else if (m_isWandering == true)
+        {
+            // ターゲット（点）までのベクトルを計算
+            float diffX = m_TargetPosition.x - transPos.x;
+            float diffZ = m_TargetPosition.z - transPos.z;
+
+            // ターゲットまでの距離を計算
+            float distance = sqrtf(diffX * diffX + diffZ * diffZ);
+
+            if (distance > distanceArrow)
+            {
+                float forward = atan2f(diffX, diffZ);
+                transComp->SetRotation(transRot.x, forward, transRot.z);
+
+                transPos.x += (diffX / distance) * speed * deltaTime;
+                transPos.z += (diffZ / distance) * speed * deltaTime;
+            }
+            // どれかの点に到達したとき
+            else
+            {
+                // 強制的に点に重ねる
+                transPos.x = m_TargetPosition.x;
+                transPos.z = m_TargetPosition.z;
+
+                // また待機時間に戻す
+                m_isWandering = false;
+                m_isStand = true;
+
+                m_InitialStandTime = randTime;
+            }
+
+            // 敵の位置を最終的に更新する
+            transComp->SetPosition(transPos);
+        }
     }
 
     void EnemyBase::OnCollisionEnter(shared_ptr<GameObject>& Other)

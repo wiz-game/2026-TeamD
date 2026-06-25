@@ -17,5 +17,6 @@ namespace basecross
 		~FallenTree();
 
 		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
 	};
 }

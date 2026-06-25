@@ -36,6 +36,11 @@ namespace basecross
 
 		float m_rotToHeadLeap;
 
+		// 座標を格納するための変数
+		Vec3 m_Point1Position;
+		Vec3 m_Point2Position;
+		Vec3 m_Point3Position;
+
 		enum Point
 		{
 			Point0,
@@ -46,6 +51,8 @@ namespace basecross
 			Number
 		}
 		m_NumPoint;
+
+		//enum Vec3 
 
 		enum ENUM_RANDOMROT
 		{
@@ -78,7 +85,15 @@ namespace basecross
 
 		float m_targetRotY;
 
+		// レイの大きさ
 		float m_rayRange;
+
+		// 壁を回避中かどうか
+		bool m_isAvoiding;
+		float m_avoidTimer;
+		float m_InitavoidTimer;
+
+		Vec3 m_targetVec;
 	public:
 		EnemyBase(const shared_ptr<Stage>& stage, const STRUCT_ObjectParam& objectParam);
 
@@ -91,13 +106,13 @@ namespace basecross
 
 		//void Move(const shared_ptr<GameObject>& gameObject, float speed);
 		//void CircleMove(const shared_ptr<GameObject>& gameObject, float radius, float moveSpeed);
-		//void PointMove(const shared_ptr<GameObject>& gameObject,float speed);
+		void PointMove(const shared_ptr<GameObject>& gameObject,float speed);
 
 		void DebugString();
 
 		void Died(const shared_ptr<GameObject>& gameObject);
 		void DetectionRange(const shared_ptr<GameObject>& gameObject);
-		void Stalker(const shared_ptr<GameObject>& gameObject, float stalkerSpeed);
+		//void Stalker(const shared_ptr<GameObject>& gameObject, float stalkerSpeed);
 		//void FunctionGravity(const shared_ptr<GameObject>& gameObject);
 		//void DropDirt(const shared_ptr<GameObject>& gameObject);
 		void MazeWandering(const shared_ptr<GameObject>& gameObject);
