@@ -73,14 +73,13 @@ namespace basecross
 		case ENUM_GameMode::Play:
 			// プレイヤーの移動
 			if ((m_pad.fThumbLX > STACK_DEADZONE_L || m_pad.fThumbLX < -STACK_DEADZONE_L ||
-				m_pad.fThumbLY > STACK_DEADZONE_L || m_pad.fThumbLY < -STACK_DEADZONE_L) &&
-				m_moveStopTimer.TimeCount(App::GetApp()->GetElapsedTime(), false))
+				m_pad.fThumbLY > STACK_DEADZONE_L || m_pad.fThumbLY < -STACK_DEADZONE_L))
 			{
 				Moves();
 			}
 			else
 			{
-				SetIdelAnimation();
+				IdelAnimation();
 			}
 
 			// 視点移動
@@ -117,6 +116,10 @@ namespace basecross
 			if (m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE)
 			{
 				PushRTrigger();
+			}
+			else
+			{
+				RTriggerRelse();
 			}
 
 			// ポーズメニュー
@@ -315,17 +318,15 @@ namespace basecross
 		if (!stage) return;
 
 		auto player = stage->GetSharedGameObject<Player>(L"Player");
-		auto modelDraw = player->GetComponent<PNTBoneModelDraw>();
-		if (modelDraw->GetCurrentAnimation() != L"Walk")
-		{
-			modelDraw->ChangeCurrentAnimation(L"Walk");
-		}
-		
+		if (player->GetDeadFlag()) return;
+		if (!player->GetBubbleAnimationEndFlag())return;
+		if (player->GetMoveStopFlag())return;
+		player->OnMoveInput();
+	
 		auto pos = player->GetComponent<Transform>()->GetPosition();
 		auto forward = player->GetComponent<Transform>()->GetForward();
 		auto right = player->GetComponent<Transform>()->GetRight();
 		Vec3 effectPos = pos;
-
 		float side = m_isRight ? 0.3f : -0.3f;
 		effectPos += forward * 0.75f;
 		effectPos += right * side;
@@ -342,6 +343,7 @@ namespace basecross
 
 		player->GetComponent<Move>()
 			->VectorMove(Vec3(m_pad.fThumbLX * m_MoveSpeed, 0.0f, m_pad.fThumbLY * m_MoveSpeed));
+
 
 		if (!m_isEffectDraw)
 		{
@@ -385,14 +387,12 @@ namespace basecross
 		// 泡を吐く
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
 		auto player = stage->GetSharedGameObject<Player>(L"Player");
-		auto modelDraw = player->GetComponent<PNTBoneModelDraw>();
-		auto attack = player->GetAttack();
-		auto playerPowerUp = player->GetPlayerPowerUp();
-		auto bubble = player->GetHaveBubble();
-		auto initCoolDown = 0.6f;
+		if (player->GetDeadFlag()) return;
+		if (player->GetMoveStopFlag())return;
+		player->OnRTriggerInput();
 		auto bresing = player->GetBresing();
-		auto pos = player->GetComponent<Transform>()->GetPosition();
 		// エフェクトの回転
+		auto pos = player->GetComponent<Transform>()->GetPosition();
 		auto forward = player->GetComponent<Transform>()->GetForward();
 		forward.normalize();
 		auto baseforward = Vec3(1.0f, 0.0f, 0.0f);
@@ -405,22 +405,13 @@ namespace basecross
 		Quat rot = Quat(axis, angle);
 		Quat offset(Vec3(0, 1, 0), XMConvertToRadians(13.0f));
 		Quat finalRot = offset * rot;
-		float bubbleRate = 0.25f;
-
-		if (modelDraw->GetCurrentAnimation() != L"Bubble")
-		{
-			modelDraw->ChangeCurrentAnimation(L"Bubble");
-		}
+		float bubbleRate = 0.0f;
 
 		if (!bresing)
 		{
 			if (m_bubbleRateTimer.TimeCount(App::GetApp()->GetElapsedTime(), false))
 			{
-				bubble = stage->AddGameObject<Bubble>(player, Vec3(0.5f), 5.0f, attack, playerPowerUp);
-				bubble->ShootBubble();
-				player->SetBresing(true);
-				player->SetCoolDown(initCoolDown);
-
+				player->CreateBubble();
 				EffectHandle effHandle;
 				effHandle = EffectManager::Instance().PlayEffect(L"Bubble", pos + forward);
 				EffectManager::Instance().SetScale(effHandle, Vec3(0.35f));
@@ -629,28 +620,31 @@ namespace basecross
 	{
 		if (GameManager::Instance().GetGameMode() == ENUM_GameMode::Play)
 		{
-			//GameManager::Instance().SetGameMode(ENUM_GameMode::Movie);
+			GameManager::Instance().SetGameMode(ENUM_GameMode::Movie);
 		}
 		else
 		{
 			GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
 		}
-
 	}
 
-	void basecross::InputManager::SetIdelAnimation()
+	void InputManager::IdelAnimation()
 	{
-		if (m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE)
-		{
-			return;
-		}
-
+		if (m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE)return;
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		if (!stage) return;
 		auto player = stage->GetSharedGameObject<Player>(L"Player");
-		auto modelDraw = player->GetComponent<PNTBoneModelDraw>();
-		if (modelDraw->GetCurrentAnimation() != L"Idle")
-		{
-			modelDraw->ChangeCurrentAnimation(L"Idle");
-		}
+		if (player->GetDeadFlag()) return;
+		if (!player->GetBubbleAnimationEndFlag()) return;
+		player->PlayerChangeAnimation(L"Idle",false);
+	}
+
+	void InputManager::RTriggerRelse()
+	{
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		if (!stage) return;
+		auto player = stage->GetSharedGameObject<Player>(L"Player");
+		if (player->GetDeadFlag()) return;
+		player->OnRTriggerRelese();
 	}
 }
