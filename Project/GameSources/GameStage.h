@@ -16,7 +16,11 @@ namespace basecross
 		Vec3 m_collManagerPos = Vec3(0.0f);
 		Vec3 m_collisionRange = Vec3(100.0f, 1000.0f, 100.0f);
 		string m_stageNum;
-
+		// ƒJƒEƒ“ƒgŠÔ
+		Timer m_timer;
+		bool m_isGameClear;
+		bool m_isStartStop;
+		bool m_isGameStageMovie;
 		void CreateViewLight();
 		void CreatePlayer();
 		void CreateMenu();
