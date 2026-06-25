@@ -85,7 +85,15 @@ namespace basecross
 
 		float m_targetRotY;
 
+		// レイの大きさ
 		float m_rayRange;
+
+		// 壁を回避中かどうか
+		bool m_isAvoiding;
+		float m_avoidTimer;
+		float m_InitavoidTimer;
+
+		Vec3 m_targetVec;
 	public:
 		EnemyBase(const shared_ptr<Stage>& stage, const STRUCT_ObjectParam& objectParam);
 
