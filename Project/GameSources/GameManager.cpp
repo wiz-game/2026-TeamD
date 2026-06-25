@@ -39,6 +39,10 @@ namespace basecross
 			StageEditor::Instance().StartEditor();
 			InputManager::Instance().ResetWheelDelta();
 			break;
+		case ENUM_GameMode::Movie:
+			MovieManager::Instance().Initialize();
+			MovieManager::Instance().PlayMovie(MovieType::Play);
+			break;
 		default:
 			break;
 		}

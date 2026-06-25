@@ -18,6 +18,7 @@ namespace basecross
 		Play,
 		Menu,
 		Editor,
+		Movie,
 		Null
 	};
 
