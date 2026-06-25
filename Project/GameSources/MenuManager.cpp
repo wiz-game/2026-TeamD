@@ -55,25 +55,25 @@ namespace basecross
 
 		switch (GetMenuUI())
 		{
-		case ENUM_MenuUI::Restart:
+		case ENUM_MenuStart::Restart:
 			SetButtonDiffuse(0, defaultCol, defaultEmi);
 			SetButtonDiffuse(1, elseCol, elseEmi);
 			SetButtonDiffuse(2, elseCol, elseEmi);
 			SetButtonDiffuse(3, elseCol, elseEmi);
 			break;
-		case ENUM_MenuUI::Setting:
+		case ENUM_MenuStart::Setting:
 			SetButtonDiffuse(0, elseCol, elseEmi);
 			SetButtonDiffuse(1, defaultCol, defaultEmi);
 			SetButtonDiffuse(2, elseCol, elseEmi);
 			SetButtonDiffuse(3, elseCol, elseEmi);
 			break;
-		case ENUM_MenuUI::Howtoplay:
+		case ENUM_MenuStart::Howtoplay:
 			SetButtonDiffuse(0, elseCol, elseEmi);
 			SetButtonDiffuse(1, elseCol, elseEmi);
 			SetButtonDiffuse(2, defaultCol, defaultEmi);
 			SetButtonDiffuse(3, elseCol, elseEmi);
 			break;
-		case ENUM_MenuUI::Retitle:
+		case ENUM_MenuStart::Retitle:
 			SetButtonDiffuse(0, elseCol, elseEmi);
 			SetButtonDiffuse(1, elseCol, elseEmi);
 			SetButtonDiffuse(2, elseCol, elseEmi);
@@ -156,7 +156,7 @@ namespace basecross
 		}
 	}
 	
-	void basecross::MenuManager::SetMenuUI(ENUM_MenuUI menuui)
+	void basecross::MenuManager::SetMenuUI(ENUM_MenuStart menuui)
 	{
 		m_menuUI = menuui;
 	}
@@ -170,7 +170,7 @@ namespace basecross
 		if (menuAfter == -1) menuAfter = 3;
 		if (menuAfter == 4) menuAfter = 0;
 
-		ENUM_MenuUI setAfter = static_cast<ENUM_MenuUI>(menuAfter); 
+		ENUM_MenuStart setAfter = static_cast<ENUM_MenuStart>(menuAfter); 
 
 		SetMenuUI(setAfter);
 	}
