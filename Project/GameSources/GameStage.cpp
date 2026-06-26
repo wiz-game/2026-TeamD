@@ -9,7 +9,11 @@
 namespace basecross 
 {
 	GameStage::GameStage(const wstring& stageNum)
-		: Stage()
+		: Stage(),
+		m_timer(0.0f),
+		m_isGameClear(false),
+		m_isStartStop(false),
+		m_isGameStageMovie(true)
 	{
 		m_stageNum = to_string(stageNum);
 	}
@@ -19,6 +23,7 @@ namespace basecross
 		try 
 		{
 			m_jphManger.Initialize();
+			m_timer = Timer(2.0f);
 
 			CreateViewLight();
 			CreatePlayer();
@@ -53,8 +58,42 @@ namespace basecross
 			auto dirt = dynamic_pointer_cast<Dirt>(gameObject);
 			if (dirt) dirtNum++;
 		}
+		auto player = GetSharedGameObject<Player>(L"Player");
+
+		if (m_isGameStageMovie && m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
+		{
+			MovieManager::Instance().Initialize();
+			MovieManager::Instance().PlayMovie(MovieType::Title);
+			m_isGameStageMovie = false;
+			m_isStartStop = true;
+			m_timer.SetCounter();
+		}
+
+		if (m_isStartStop)
+		{
+			if (m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
+			{
+				player->SetMoveStopFlag(false);
+				player->PlayGameAnimation();
+				m_isStartStop = false;
+				m_timer.SetCounter();
+			}
+		}
 
 		if (dirtNum <= 0)
+		{	
+			if (!m_isGameClear)
+			{
+				MovieManager::Instance().Initialize();
+				MovieManager::Instance().PlayMovie(MovieType::GameClear);
+				player->SetMoveStopFlag(true);
+				player->PlayerChangeAnimation(L"GameClear",false);
+				m_timer.SetCounter();
+				m_isGameClear = true;
+			}
+		}
+
+		if (m_isGameClear && m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
 		{
 			GameManager::Instance().SetGameMode(ENUM_GameMode::GameClear);
 		}
@@ -89,6 +128,7 @@ namespace basecross
 	{
 		auto player = AddGameObject<Player>(Vec3(0.0f, 0.75f, 0.0f));
 		SetSharedGameObject(L"Player", player);
+		MovieManager::Instance().SetPlayer(player);
 	}
 
 	void GameStage::CreateMenu()

@@ -20,11 +20,10 @@ namespace basecross
 
 			// 各マネージャーを初期化
 			JoltManager::StaticInitialize();
-			GameManager::Instance().Initialize(true);
+			GameManager::Instance().Initialize(false);
 			InputManager::Instance().Initialize();
 			StageEditor::Instance().Initialize();
 			EffectManager::Instance().CreateEfkInterface(20000);
-			MovieManager::Instance().Initialize();
 
 			// 背景色を設定
 			SetClearColor(Col4(0.0f, 0.3f, 0.6f, 1.0f));
@@ -41,7 +40,7 @@ namespace basecross
 
 	void Scene::OnCreate2()
 	{
-		GameManager::Instance().SetGameMode(ENUM_GameMode::Play);// Title);
+		GameManager::Instance().SetGameMode(ENUM_GameMode::Title);
 	}
 
 	void Scene::OnUpdate()
