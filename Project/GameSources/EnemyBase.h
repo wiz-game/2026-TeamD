@@ -110,7 +110,7 @@ namespace basecross
 
 		void DebugString();
 
-		void Died(const shared_ptr<GameObject>& gameObject);
+		//void Died(const shared_ptr<GameObject>& gameObject);
 		void DetectionRange(const shared_ptr<GameObject>& gameObject);
 		//void Stalker(const shared_ptr<GameObject>& gameObject, float stalkerSpeed);
 		//void FunctionGravity(const shared_ptr<GameObject>& gameObject);
@@ -128,6 +128,11 @@ namespace basecross
 		bool GetRotation()
 		{
 			return m_isRotated;
+		}
+
+		bool GetAvoiding()
+		{
+			return m_isAvoiding;
 		}
 
 		// --- 当たり判定 ---

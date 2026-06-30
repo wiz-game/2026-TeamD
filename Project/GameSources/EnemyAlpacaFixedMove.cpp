@@ -61,8 +61,6 @@ namespace basecross
 	{
 		m_draw->UpdateAnimation(App::GetApp()->GetElapsedTime());
 		PointMove(GetThis<EnemyAlpacaFixedMove>(), m_Speed);
-
-		Died(GetThis<EnemyAlpacaFixedMove>());
 	}
 }
 //end basecross
