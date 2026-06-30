@@ -129,7 +129,7 @@ namespace basecross
 
         Vec3 endPSp(playerPos.x, transPos.y + rangeHeight, playerPos.z);
 
-        float dotAngle = XMConvertToRadians(100.0f);
+        float dotAngle = XMConvertToRadians(50.0f);
 
         // プレイヤーが視界内に入っていたら
         if (distance < radius && dot >= cosf(dotAngle))
