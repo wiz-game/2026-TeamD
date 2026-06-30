@@ -168,6 +168,10 @@ namespace basecross
 			{
 				PressedAMenu();
 			}
+			if (m_pad.wReleasedButtons & XINPUT_GAMEPAD_A)
+			{
+				ReleasedAMenu();
+			}
 
 			break;
 		case ENUM_GameMode::Editor:
@@ -434,6 +438,8 @@ namespace basecross
 
 	void InputManager::PressedStart()
 	{
+		SetInputEnabled(true);
+
 		GameManager::Instance().SetGameMode(ENUM_GameMode::Menu);
 	}
 
@@ -468,6 +474,8 @@ namespace basecross
 
 	void InputManager::ReturnGame()
 	{
+		if (!m_isInputEnabled)return;
+
 		switch (MenuManager::Instance().GetMenuMode())
 		{
 		case ENUM_MenuMode::MenuStart:
@@ -505,48 +513,63 @@ namespace basecross
 
 	void InputManager::MoveMenuCursor()
 	{
-		switch (MenuManager::Instance().GetMenuMode())
+		if (!m_isInputEnabled)return;
+
+		if (!(m_pad.wLastButtons & XINPUT_GAMEPAD_A))
 		{
-		case ENUM_MenuMode::Default:
-			break;
-
-		case ENUM_MenuMode::MenuStart:
-			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP)
+			switch (MenuManager::Instance().GetMenuMode())
 			{
-				MenuManager::Instance().ChangeSelectMenuMode(-1);
-			}
-			else if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
-			{
-				MenuManager::Instance().ChangeSelectMenuMode(+1);
-			}
-			break;
-			
-		case ENUM_MenuMode::Setting:
-			break;
+			case ENUM_MenuMode::Default:
+				break;
 
-		case ENUM_MenuMode::Howtoplay:
-			break;
+			case ENUM_MenuMode::MenuStart:
+				if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP)
+				{
+					MenuManager::Instance().ChangeSelectMenuMode(-1);
+				}
+				else if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+				{
+					MenuManager::Instance().ChangeSelectMenuMode(+1);
+				}
+				break;
+
+			case ENUM_MenuMode::Setting:
+				break;
+
+			case ENUM_MenuMode::Howtoplay:
+				break;
+			}
 		}
 
 	}
 
 	void InputManager::PressedAMenu()
 	{
+		MenuManager::Instance().ChangeUISize(0.235f);
+	}
+
+	void InputManager::ReleasedAMenu()
+	{
 		switch (MenuManager::Instance().GetMenuUI())
 		{
 		case ENUM_MenuStart::Restart:
+			MenuManager::Instance().ChangeUISize(0.25f);
 			ReturnGame();
 			break;
 
 		case ENUM_MenuStart::Setting:
+			MenuManager::Instance().ChangeUISize(0.25f);
 			EnterSetting();
 			break;
 
 		case ENUM_MenuStart::Howtoplay:
+			MenuManager::Instance().ChangeUISize(0.25f);
 			EnterHowtoplay();
 			break;
 
 		case ENUM_MenuStart::Retitle:
+			SetInputEnabled(false);
+			MenuManager::Instance().ChangeUISize(0.25f);
 			ReturnTitle();
 			break;
 		}

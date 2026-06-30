@@ -39,6 +39,9 @@ namespace basecross
 		// 左右どちらかの判定
 		bool  m_isRight = false;
 
+		// コントローラーの入力のオンオフ
+		bool m_isInputEnabled = true;
+
 	public:
 		static InputManager& Instance()
 		{
@@ -51,6 +54,9 @@ namespace basecross
 
 		void SetWheelDelta(int wheelDelta) { m_wheelDelta += wheelDelta; }
 		void ResetWheelDelta() { m_wheelDelta = 0; }
+
+		// コントローラーの入力切り替え
+		void SetInputEnabled(bool enabled) { m_isInputEnabled = enabled; }
 
 		// 移動速度のゲッターセッター
 		float GetMoveSpeed()
@@ -112,6 +118,7 @@ namespace basecross
 		void ReturnOneMenu();
 		void MoveMenuCursor();
 		void PressedAMenu();
+		void ReleasedAMenu();
 
 		// GameMode：Editer用の入力関数
 		// ギズモによる操作
@@ -149,5 +156,6 @@ namespace basecross
 
 		void IdelAnimation();
 		void RTriggerRelse();
+
 	};
 }
