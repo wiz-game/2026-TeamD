@@ -17,6 +17,7 @@ namespace basecross
 
 	Dirt::~Dirt()
 	{
+		GameManager::Instance().SubDirt();
 	}
 
 	void Dirt::OnCreate()
@@ -36,9 +37,9 @@ namespace basecross
 		m_draw->SetOwnShadowActive(true);
 
 		auto col = AddComponent<CollisionObb>();
-		// col->SetDrawActive(true);
+		col->SetDrawActive(false);
 		col->SetFixed(true);
-		col->SetAfterCollision(AfterCollision::Auto);
+		
 
 		// モデルとトランスフォーム間の差分行列
 		Mat4x4 spanMat;
@@ -59,12 +60,12 @@ namespace basecross
 		{
 			newCondistion = DirtCondition::DirtHalf;
 		}
-		if(m_HP <= 0.0f)
+		if (m_HP <= 0.0f)
 		{
 			newCondistion = DirtCondition::DirtClean;
 		}
 		 
-		SetDirtState(newCondistion);
+		//SetDirtState(newCondistion);
 	}
 
 	void Dirt::OnUpdate2()
@@ -110,7 +111,6 @@ namespace basecross
 				effHandle = EffectManager::Instance().PlayEffect(L"Clean", GetComponent<Transform>()->GetPosition());
 				m_effectPlyaerd = true;
 			}
-			GameManager::Instance().SubDirt();
 			break;
 		default:
 			break;
