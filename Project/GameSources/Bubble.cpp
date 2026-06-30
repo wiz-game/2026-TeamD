@@ -46,10 +46,10 @@ namespace basecross
 		
 		m_trans = GetComponent<Transform>();
 
-		float randPosX = static_cast<float>((rand() % 100) - 50) * 0.01f;
-		float randPosZ = static_cast<float>((rand() % 100) - 50) * 0.01f;
+		//float randPosX = static_cast<float>((rand() % 100) - 50) * 0.01f;
+		//float randPosZ = static_cast<float>((rand() % 100) - 50) * 0.01f;
 
-		m_pos = Vec3(parentPos.x + randPosX, parentPos.y + 1.0f, parentPos.z + randPosZ) + m_parentForward * 1.25f;
+		m_pos = Vec3(parentPos.x, parentPos.y + 1.0f, parentPos.z) + m_parentForward * 1.25f;
 
 		m_trans->SetPosition(m_pos);
 		m_trans->SetScale(Vec3(m_scale));
