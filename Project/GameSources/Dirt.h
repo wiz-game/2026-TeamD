@@ -8,16 +8,25 @@
 
 namespace basecross
 {
+	enum class DirtCondition
+	{
+		DirtMax,
+		DirtHalf,
+		DirtClean
+	};
+
 	class Dirt : public GameObject
 	{
 	private:
 		shared_ptr<Transform> m_trans;
 		shared_ptr<PNTStaticDraw> m_draw;
+		DirtCondition m_dirtCondition;
 		int m_nowDeleteCount;
 		float m_alphaColor;
 		// 相殺力
 		float m_HP;
-
+		// エフェクトが再生されたか
+		bool m_effectPlyaerd;
 	public:
 		Dirt
 		(
@@ -46,5 +55,9 @@ namespace basecross
 		{
 			return m_HP;
 		}
+
+		void SetDirtState(DirtCondition state);
+		void EnterDirtState(DirtCondition state);
+		void ExitDirtState(DirtCondition state);
 	};
 }
