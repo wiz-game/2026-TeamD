@@ -65,25 +65,6 @@ namespace basecross
         GameManager::Instance().AddDebugStr(L"EnemyRotY", transRot.y);
     }
 
-    void EnemyBase::Died(const shared_ptr<GameObject>& gameObject)
-    {
-        // 自身の位置を取得する
-        auto objComp = gameObject->GetComponent<Transform>();
-        auto objPos = objComp->GetPosition();
-
-        const float DIED_HP = 0.0f;
-        if (m_EnemyHP <= DIED_HP)
-        {
-            auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-            stage->RemoveGameObject<GameObject>(GetThis<GameObject>());
-
-            // 石鹸を出す
-            auto soap = stage->AddGameObject<PowerUpSoap>();
-            auto soapComp = soap->GetComponent<Transform>();
-            soap->SetVecPosition(Vec3(objPos.x, objPos.y + 1, objPos.z));
-        }
-    }
-
     // 索敵範囲
     void EnemyBase::DetectionRange(const shared_ptr<GameObject>& gameObject)
     {

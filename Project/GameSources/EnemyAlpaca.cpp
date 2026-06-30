@@ -66,10 +66,6 @@ namespace basecross
 		m_eStateMachine->Update();
 		m_draw->UpdateAnimation(App::GetApp()->GetElapsedTime());
 
-		Died(GetThis<EnemyAlpaca>());
-		//m_eStateMachine->Update();
-
-		//DropDirt(GetThis<EnemyAlpaca>());
 		DebugString();
 	}
 
