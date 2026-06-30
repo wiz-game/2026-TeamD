@@ -92,7 +92,7 @@ namespace basecross
 		}
 
 		// メニュー画面のボタンの切り替え
-		MenuManager::Instance().ChangeUIDiffuse();
+		MenuManager::Instance().ChangeUIParam();
 	}
 
 	void GameStage::OnUpdate2()
@@ -124,103 +124,95 @@ namespace basecross
 		MovieManager::Instance().SetPlayer(player);
 	}
 
+	// Menuを作成する
 	void GameStage::CreateMenu()
 	{
-		Col4 blackOutColor = Col4(1.0f, 1.0f, 1.0f, 1.0f);
-		vector<shared_ptr<UIBase>> uiframes;
-		vector<shared_ptr<UIBase>> uidefaults;
-		vector<shared_ptr<UIBase>> uisettings;
-		vector<shared_ptr<UIBase>> uihowtoplays;
-
-		uiframes.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+		// メニューのフレーム
+		m_uiframes.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionFade",
 			Vec3(0.0f, 0.0f, 0.0f), 
 			1.0f,
 			Col4(1.0f))));
-		uiframes.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+		m_uiframes.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionFrame",
 			Vec3(0.0f, 0.0f, 0.0f), 
 			0.75f,
 			Col4(1.0f))));
 
-		MenuManager::Instance().SetUIFrames(uiframes);
-		MenuManager::Instance().UIDrawActive(false, uiframes);
+		MenuManager::Instance().SetUIFrames(m_uiframes);
+		MenuManager::Instance().UIDrawActive(false, m_uiframes);
 
 
-		uidefaults.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+		// メニューのUI
+		m_uidefaults.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionButton_1",
 			Vec3(0.0f, 150.0f, 0.0f),
-			0.25f,
-			blackOutColor)));
-		uidefaults.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			m_selectScale,
+			m_uiDiffuse)));
+		m_uidefaults.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionButton_2",
 			Vec3(0.0f, 25.0f, 0.0f),
-			0.25f,
-			blackOutColor)));
-		uidefaults.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			m_selectScale,
+			m_uiDiffuse)));
+		m_uidefaults.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionButton_3",
 			Vec3(0.0f, -100.0f, 0.0f),
-			0.25f,
-			blackOutColor)));
-		uidefaults.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			m_selectScale,
+			m_uiDiffuse)));
+		m_uidefaults.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionButton_4",
 			Vec3(0.0f, -225.0f, 0.0f),
-			0.25f,
-			blackOutColor)));
+			m_selectScale,
+			m_uiDiffuse)));
 
-		MenuManager::Instance().SetUIDefaults(uidefaults);
-		MenuManager::Instance().UIDrawActive(false, uidefaults);
+		MenuManager::Instance().SetUIDefaults(m_uidefaults);
+		MenuManager::Instance().UIDrawActive(false, m_uidefaults);
 
-
-		uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+		// オプション画面のUI
+		m_uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionSound",
 			Vec3(0.0f, 150.0f, 0.0f),
 			0.1f,
 			Col4(1.0f))));
-		uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+		m_uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionBGM",
 			Vec3(0.0f, 25.0f, 0.0f),
 			0.1f,
 			Col4(1.0f))));
-		uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+		m_uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionSE",
 			Vec3(0.0f, -100.0f, 0.0f),
 			0.1f,
 			Col4(1.0f))));
-		uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+		m_uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionBaymax",
 			Vec3(0.0f, -40.0f, 0.0f),
 			0.25f,
 			Col4(1.0f))));
-		uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+		m_uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionBaymax",
 			Vec3(0.0f, -165.0f, 0.0f),
 			0.25f,
 			Col4(1.0f))));
-		uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+		m_uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionReturn",
 			Vec3(0.0f, -220.0f, 0.0f),
 			0.1f,
 			Col4(1.0f))));
 
-		MenuManager::Instance().SetUISettings(uisettings);
-		MenuManager::Instance().UIDrawActive(false, uisettings);
+		MenuManager::Instance().SetUISettings(m_uisettings);
+		MenuManager::Instance().UIDrawActive(false, m_uisettings);
 
 
-		uihowtoplays.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+		// あそびかた画面のUI
+		m_uihowtoplays.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"UI_OptionHowtoplay",
 			Vec3(0.0f, 0.0f, 0.0f),
 			0.50f,
 			Col4(1.0f))));
 
-		MenuManager::Instance().SetUIHowtoplays(uihowtoplays);
-		MenuManager::Instance().UIDrawActive(false, uihowtoplays);
-
-
-
-
-
-		MenuManager::Instance().ChangeUIDiffuse();
+		MenuManager::Instance().SetUIHowtoplays(m_uihowtoplays);
+		MenuManager::Instance().UIDrawActive(false, m_uihowtoplays);
 	}
 
 	void GameStage::SetCollRange()
