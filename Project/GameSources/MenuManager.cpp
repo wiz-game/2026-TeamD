@@ -4,12 +4,14 @@
 
 namespace basecross
 {
+	// インスタンス
 	MenuManager& MenuManager::Instance()
 	{
 		static MenuManager instance;
 		return instance;
 	}
 
+	// ポーズメニューを開く
 	void MenuManager::Pause()
 	{
 		SetAllUpdateActive(false);
@@ -17,6 +19,7 @@ namespace basecross
 		ChangeMenuMode();
 	}
 
+	// ポーズメニューを閉じる
 	void MenuManager::ClosePause()
 	{
 		SetAllUpdateActive(true);
@@ -25,7 +28,7 @@ namespace basecross
 	}
 
 
-	//ステージの全オブジェクトのUpdateを管理する
+	// ステージの全オブジェクトのUpdateを管理する
 	void MenuManager::SetAllUpdateActive(const bool& isUpdateActive)
 	{
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
@@ -37,6 +40,7 @@ namespace basecross
 		}
 	}
 
+	// メニュー画面の表示非表示を切り替える関数
 	void MenuManager::UIDrawActive(bool isActive, vector<shared_ptr<UIBase>> uipointers)
 	{
 		for (auto& uipointer : uipointers)
@@ -45,47 +49,92 @@ namespace basecross
 		}
 	}
 
-	void MenuManager::ChangeUIDiffuse()
+	// 選択肢のパラメータを設定する関数
+	void MenuManager::SetUIDiffuse(int i, const vector<shared_ptr<UIBase>>& uipointers, const Col4& diffuse)
 	{
-		Col4 defaultCol = Col4(1.0f, 1.0f, 1.0f, 1.0f);
-		Col4 elseCol = Col4(0.7f, 0.7f, 0.7f, 1.0f);
+		if (i < 0 || i >= uipointers.size())return;
 
-		Col4 defaultEmi = Col4(0.0f);
-		Col4 elseEmi = Col4(0.0f, 0.0f, 0.0f, 0.0f);
+		auto ui = uipointers[i];
+		if (!ui)return;
 
-		switch (GetMenuUI())
+		auto draw = ui->GetComponent<PCTSpriteDraw>();
+		if (ui)
 		{
-		case ENUM_MenuStart::Restart:
-			SetButtonDiffuse(0, defaultCol, defaultEmi);
-			SetButtonDiffuse(1, elseCol, elseEmi);
-			SetButtonDiffuse(2, elseCol, elseEmi);
-			SetButtonDiffuse(3, elseCol, elseEmi);
-			break;
-		case ENUM_MenuStart::Setting:
-			SetButtonDiffuse(0, elseCol, elseEmi);
-			SetButtonDiffuse(1, defaultCol, defaultEmi);
-			SetButtonDiffuse(2, elseCol, elseEmi);
-			SetButtonDiffuse(3, elseCol, elseEmi);
-			break;
-		case ENUM_MenuStart::Howtoplay:
-			SetButtonDiffuse(0, elseCol, elseEmi);
-			SetButtonDiffuse(1, elseCol, elseEmi);
-			SetButtonDiffuse(2, defaultCol, defaultEmi);
-			SetButtonDiffuse(3, elseCol, elseEmi);
-			break;
-		case ENUM_MenuStart::Retitle:
-			SetButtonDiffuse(0, elseCol, elseEmi);
-			SetButtonDiffuse(1, elseCol, elseEmi);
-			SetButtonDiffuse(2, elseCol, elseEmi);
-			SetButtonDiffuse(3, defaultCol, defaultEmi);
-			break;
+			draw->SetDiffuse(diffuse);
 		}
 	}
 
+	void MenuManager::SetUIScale(int i, const vector<shared_ptr<UIBase>>& uipointers, const float& scale)
+	{
+		
+	}
+
+	// メニュー画面の選択肢のパラメータを変える関数
+	void MenuManager::ChangeUIParam()
+	{
+		// ディフューズ
+		Col4 defaultCol = Col4(1.0f, 1.0f, 1.0f, 1.0f);
+		Col4 elseCol = Col4(0.7f, 0.7f, 0.7f, 1.0f);
+
+		// エミッシブ
+		Col4 defaultEmi = Col4(0.0f);
+		Col4 elseEmi = Col4(0.0f, 0.0f, 0.0f, 0.0f);
+
+		// スケール
+		float defaultScale = 0.25f;
+		float elseScale = 0.20f;
+
+		switch (GetMenuMode())
+		{
+
+			// メニュー画面の時
+		case ENUM_MenuMode::MenuStart:
+			switch (GetMenuUI())
+			{
+			case ENUM_MenuStart::Restart:
+				SetUIDiffuse(0, m_uidefaults, defaultCol);
+				SetUIDiffuse(1, m_uidefaults, elseCol);
+				SetUIDiffuse(2, m_uidefaults, elseCol);
+				SetUIDiffuse(3, m_uidefaults, elseCol);
+				break;
+			case ENUM_MenuStart::Setting:
+				SetUIDiffuse(0, m_uidefaults, elseCol);
+				SetUIDiffuse(1, m_uidefaults, defaultCol);
+				SetUIDiffuse(2, m_uidefaults, elseCol);
+				SetUIDiffuse(3, m_uidefaults, elseCol);
+				break;
+			case ENUM_MenuStart::Howtoplay:
+				SetUIDiffuse(0, m_uidefaults, elseCol);
+				SetUIDiffuse(1, m_uidefaults, elseCol);
+				SetUIDiffuse(2, m_uidefaults, defaultCol);
+				SetUIDiffuse(3, m_uidefaults, elseCol);
+				break;
+			case ENUM_MenuStart::Retitle:
+				SetUIDiffuse(0, m_uidefaults, elseCol);
+				SetUIDiffuse(1, m_uidefaults, elseCol);
+				SetUIDiffuse(2, m_uidefaults, elseCol);
+				SetUIDiffuse(3, m_uidefaults, defaultCol);
+				break;
+			}
+			break;
+
+			// 設定画面の時
+		case ENUM_MenuMode::Setting:
+			break;
+
+			// あそびかた画面の時
+		case ENUM_MenuMode::Howtoplay:
+			break;
+		}
+
+	}
+
+	// メニュー画面の切り替え
 	void MenuManager::ChangeMenuMode()
 	{
-		switch (m_menuMode)
+		switch (GetMenuMode())
 		{
+			// メニューを閉じてるとき
 		case ENUM_MenuMode::Default:
 			UIDrawActive(false, m_uidefaults);
 			UIDrawActive(false, m_uiframes);
@@ -93,6 +142,7 @@ namespace basecross
 			UIDrawActive(false, m_uihowtoplays);
 			break;
 
+			// メニューを開いたとき
 		case ENUM_MenuMode::MenuStart:
 			UIDrawActive(true, m_uiframes);
 			UIDrawActive(true, m_uidefaults);
@@ -100,6 +150,7 @@ namespace basecross
 			UIDrawActive(false, m_uihowtoplays);
 			break;
 
+			// 設定画面
 		case ENUM_MenuMode::Setting:
 			UIDrawActive(true, m_uiframes);
 			UIDrawActive(false, m_uidefaults);
@@ -107,6 +158,7 @@ namespace basecross
 			UIDrawActive(false, m_uihowtoplays);
 			break;
 
+			// あそびかた画面
 		case ENUM_MenuMode::Howtoplay:
 			UIDrawActive(true, m_uiframes);
 			UIDrawActive(false, m_uidefaults);
@@ -116,51 +168,7 @@ namespace basecross
 		}
 	}
 
-	void MenuManager::SetUIFrames(const vector<shared_ptr<UIBase>>& uiframes)
-	{
-		m_uiframes = uiframes;
-	}
-
-	void MenuManager::SetUIDefaults(const vector<shared_ptr<UIBase>>& uidefaults)
-	{
-		m_uidefaults = uidefaults;
-	}
-
-	void MenuManager::SetUISettings(const vector<shared_ptr<UIBase>>& uisettings)
-	{
-		m_uisettings = uisettings;
-	}
-
-	void MenuManager::SetUIHowtoplays(const vector<shared_ptr<UIBase>>& uihowtoplays)
-	{
-		m_uihowtoplays = uihowtoplays;
-	}
-
-	void MenuManager::SetMenuMode(ENUM_MenuMode menumode)
-	{
-		m_menuMode = menumode;
-	}
-
-	void MenuManager::SetButtonDiffuse(int i, const Col4& diffuse, Col4& emissive)
-	{
-		if (i < 0 || i >= m_uidefaults.size())return;
-
-		auto ui = m_uidefaults[i];
-		if (!ui)return;
-
-		auto draw = ui->GetComponent<PCTSpriteDraw>();
-		if (ui)
-		{
-			draw->SetDiffuse(diffuse);
-			draw->SetEmissive(emissive);
-		}
-	}
-	
-	void basecross::MenuManager::SetMenuUI(ENUM_MenuStart menuui)
-	{
-		m_menuUI = menuui;
-	}
-
+	// 上下入力時にメニューを切り替える関数
 	void MenuManager::ChangeSelectMenuMode(const int& num)
 	{
 		auto menuNow = GetMenuUI();
@@ -170,8 +178,44 @@ namespace basecross
 		if (menuAfter == -1) menuAfter = 3;
 		if (menuAfter == 4) menuAfter = 0;
 
-		ENUM_MenuStart setAfter = static_cast<ENUM_MenuStart>(menuAfter); 
+		ENUM_MenuStart setAfter = static_cast<ENUM_MenuStart>(menuAfter);
 
 		SetMenuUI(setAfter);
 	}
+
+//----セッター関数群-------------------------------------------------------------------
+
+	void MenuManager::SetUIFrames(const vector<shared_ptr<UIBase>>& uiframes)
+	{
+		m_uiframes = uiframes;
+	}
+	void MenuManager::SetUIDefaults(const vector<shared_ptr<UIBase>>& uidefaults)
+	{
+		m_uidefaults = uidefaults;
+	}
+	void MenuManager::SetUISettings(const vector<shared_ptr<UIBase>>& uisettings)
+	{
+		m_uisettings = uisettings;
+	}
+	void MenuManager::SetUIHowtoplays(const vector<shared_ptr<UIBase>>& uihowtoplays)
+	{
+		m_uihowtoplays = uihowtoplays;
+	}
+	void MenuManager::SetUIDiffuse(const Col4& uidiffuse)
+	{
+		m_uidiffuse = uidiffuse;
+	}
+	void MenuManager::SetUIScale(const float& uiscale)
+	{
+		m_uiscale = uiscale;
+	}
+	void MenuManager::SetMenuMode(ENUM_MenuMode menumode)
+	{
+		m_menuMode = menumode;
+	}
+	void basecross::MenuManager::SetMenuUI(ENUM_MenuStart menuui)
+	{
+		m_menuUI = menuui;
+	}
+//--------------------------------------------------------------------------------------
 }
