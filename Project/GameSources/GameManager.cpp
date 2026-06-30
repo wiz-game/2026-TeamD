@@ -62,6 +62,7 @@ namespace basecross
 		case ENUM_GameMode::GameOver:
 			break;
 		case ENUM_GameMode::Play:
+			m_dirtNum = 0;
 			break;
 		case ENUM_GameMode::Menu:
 			MenuManager::Instance().ClosePause();
