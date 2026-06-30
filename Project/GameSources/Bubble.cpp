@@ -248,8 +248,6 @@ namespace basecross
 			m_HP = max(0.0f, m_HP);
 		}
 
-		if (!Other->FindTag(L"Ground")) return;
-
 		if (m_isTranpolineBubble)
 		{
 			if (m_isSpawnedTrampoline) return;
