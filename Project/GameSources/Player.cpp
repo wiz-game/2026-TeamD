@@ -107,6 +107,15 @@ namespace basecross
 		{
 			m_isBubbleAnimationEnd = true;
 		}
+
+		auto draw = GetComponent<PNTBoneModelDraw>();
+		auto animTime = draw->GetCurrentAnimationTime();
+		if (!GetBresing() && current == L"Bubble" && animTime >= 0.4f)
+		{
+			CreateBubble();
+		}
+
+		GameManager::Instance().AddDebugStr(L"AnimTime", animTime);
 	}
 
 	void Player::Jump()
@@ -285,12 +294,15 @@ namespace basecross
 
 	void Player::CreateBubble()
 	{
-		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		OnRTriggerInput();
+		BubbleEffect();
+
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage(); 
 		auto player = stage->GetSharedGameObject<Player>(L"Player");
 		auto attack = GetAttack();
 		auto playerPowerUp = GetPlayerPowerUp();
 		auto bubble = GetHaveBubble();
-		auto initCoolDown = 0.6f;
+		auto initCoolDown = 0.3f;
 		bubble = stage->AddGameObject<Bubble>(player, Vec3(0.5f), 5.0f, attack, playerPowerUp);
 		bubble->ShootBubble();
 		SetBresing(true);
@@ -342,6 +354,7 @@ namespace basecross
 			break;
 		}
 	}
+
 	void Player::PlayerAnimation()
 	{
 		m_pntDraw->UpdateAnimation(App::GetApp()->GetElapsedTime());
@@ -350,7 +363,7 @@ namespace basecross
 	void Player::PlayerChangeAnimation(const wstring& newAnim, bool forceRestart)
 	{
 		if (newAnim.empty())return;
-		
+				
 		wstring current = m_pntDraw->GetCurrentAnimation();
 
 		if (!forceRestart && nowAnimation == newAnim) return;
@@ -403,6 +416,29 @@ namespace basecross
 			PlayerChangeAnimation(L"Idle", false);
 			m_isStartStop = false;
 		}
+	}
+
+	void Player::BubbleEffect()
+	{
+		// エフェクトの回転
+		auto pos = GetComponent<Transform>()->GetPosition();
+		auto forward = GetComponent<Transform>()->GetForward();
+		forward.normalize();
+		auto baseforward = Vec3(1.0f, 0.0f, 0.0f);
+		Vec3 axis = baseforward;
+		axis.cross(forward);
+		axis.normalize();
+		float dot = baseforward.dot(forward);
+		dot = clamp(dot, -1.0f, 1.0f);
+		float angle = acos(dot);
+		Quat rot = Quat(axis, angle);
+		Quat offset(Vec3(0, 1, 0), XMConvertToRadians(13.0f));
+		Quat finalRot = offset * rot;
+
+		EffectHandle effHandle;
+		effHandle = EffectManager::Instance().PlayEffect(L"Bubble", pos + forward);
+		EffectManager::Instance().SetScale(effHandle, Vec3(0.35f));
+		EffectManager::Instance().SetRotationFromQuaternion(effHandle, finalRot);
 	}
 }
 //end basecross
