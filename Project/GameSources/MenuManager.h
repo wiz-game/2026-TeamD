@@ -67,11 +67,12 @@ namespace basecross
 		void UIDrawActive(bool isActive, vector<shared_ptr<UIBase>> uipointers);
 
 		void ChangeMenuMode();
+		void ChangeUISize(float size);
 		void ChangeUIParam();
 		void ChangeSelectMenuMode(const int& num);
 
 		void SetUIDiffuse(int i, const vector<shared_ptr<UIBase>>&uipointers, const Col4& diffuse);
-		void SetUIScale(int i, const vector<shared_ptr<UIBase>>& uipointers, const float& scale);
+		void SetUISize(int i, const vector<shared_ptr<UIBase>>& uipointers, const float& scale);
 
 		void SetUIFrames(const vector<shared_ptr<UIBase>>& uiframes);
 		void SetUIDefaults(const vector<shared_ptr<UIBase>>& uidefaults);

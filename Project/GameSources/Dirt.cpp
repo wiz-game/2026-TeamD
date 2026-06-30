@@ -3,7 +3,8 @@
 
 namespace basecross
 {
-	Dirt::Dirt(
+	Dirt::Dirt
+	(
 		const shared_ptr<Stage>& StagePtr,
 		const STRUCT_ObjectParam& objectParam
 	):
@@ -17,6 +18,7 @@ namespace basecross
 
 	Dirt::~Dirt()
 	{
+		GameManager::Instance().SubDirt();
 	}
 
 	void Dirt::OnCreate()
@@ -36,9 +38,9 @@ namespace basecross
 		m_draw->SetOwnShadowActive(true);
 
 		auto col = AddComponent<CollisionObb>();
-		// col->SetDrawActive(true);
+		col->SetDrawActive(false);
 		col->SetFixed(true);
-		col->SetAfterCollision(AfterCollision::Auto);
+		
 
 		// モデルとトランスフォーム間の差分行列
 		Mat4x4 spanMat;
@@ -52,28 +54,17 @@ namespace basecross
 		m_draw->SetMeshToTransformMatrix(spanMat);
 	}
 
-	void Dirt::OnUpdate()
+	void Dirt::SetDirtHP(const float HP)
 	{
-		DirtCondition newCondistion = DirtCondition::DirtMax;
-		if (m_HP <= 10.0f)
+		m_HP = HP;
+		if (m_HP <= 10.0f && m_HP > 0.0f)
 		{
-			newCondistion = DirtCondition::DirtHalf;
+			SetDirtState(DirtCondition::DirtHalf);
 		}
-		if(m_HP <= 0.0f)
+		if (m_HP <= 0.0f)
 		{
-			newCondistion = DirtCondition::DirtClean;
+			SetDirtState(DirtCondition::DirtClean);
 		}
-		 
-		SetDirtState(newCondistion);
-	}
-
-	void Dirt::OnUpdate2()
-	{
-
-	}
-
-	void Dirt::OnCollisionEnter(shared_ptr<GameObject>& Other)
-	{
 	}
 
 	void Dirt::SetDirtState(DirtCondition state)
@@ -86,52 +77,41 @@ namespace basecross
 
 	void Dirt::EnterDirtState(DirtCondition state)
 	{
+		EffectHandle handle;
 		switch (state)
 		{
-		case basecross::DirtCondition::DirtMax:
+		case DirtCondition::DirtMax:
 			m_draw->SetMeshResource(L"AwaPaka_dorodoro");
 			m_draw->SetTextureResource(L"T_AwaPaka_Gold_DoroDoro");
 			break;
-		case basecross::DirtCondition::DirtHalf:
+		case DirtCondition::DirtHalf:
 			m_draw->SetMeshResource(L"AwaPaka_doro");
 			m_draw->SetTextureResource(L"T_AwaPaka_Gold_Doro");
-			if (!m_effectPlyaerd)
-			{
-				EffectManager::Instance().PlayEffect(L"Clean", GetComponent<Transform>()->GetPosition());
-				m_effectPlyaerd = true;
-			}
+			handle = EffectManager::Instance().PlayEffect(L"Clean", GetComponent<Transform>()->GetPosition());
+			EffectManager::Instance().SetScale(handle, Vec3(0.4f));
 			break;
-		case basecross::DirtCondition::DirtClean:
+		case DirtCondition::DirtClean:
 			m_draw->SetMeshResource(L"AwaPaka_gold");
 			m_draw->SetTextureResource(L"T_AwaPaka_Gold");
-			if (!m_effectPlyaerd)
-			{
-				EffectHandle effHandle;
-				effHandle = EffectManager::Instance().PlayEffect(L"Clean", GetComponent<Transform>()->GetPosition());
-				m_effectPlyaerd = true;
-			}
-			GameManager::Instance().SubDirt();
+			EffectManager::Instance().PlayEffect(L"Clean", GetComponent<Transform>()->GetPosition());
 			break;
 		default:
 			break;
 		}
-
 	}
 
 	void Dirt::ExitDirtState(DirtCondition state)
 	{
 		switch (state)
 		{
-		case basecross::DirtCondition::DirtMax:
+		case DirtCondition::DirtMax:
 			break;
-		case basecross::DirtCondition::DirtHalf:
-			m_effectPlyaerd = false;
+		case DirtCondition::DirtHalf:
 			break;
-		case basecross::DirtCondition::DirtClean:
+		case DirtCondition::DirtClean:
 			break;
 		default:
 			break;
 		}
-
 	}
 }

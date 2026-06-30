@@ -7,7 +7,7 @@ namespace basecross
 	MyCamera::MyCamera()
 	{
 		m_viewPointMoveSpeed = 5.0f;
-		
+
 		m_fadeTime = 0.2f;
 		m_fadeAlpha = 0.28f;
 		m_fadeLength = 8.9f;
@@ -21,7 +21,7 @@ namespace basecross
 	{
 		Camera::OnCreate();
 	}
-	
+
 	void MyCamera::OnUpdate()
 	{
 		switch (GameManager::Instance().GetGameMode())
@@ -39,7 +39,7 @@ namespace basecross
 			UpdateEditorMode();
 			break;
 		}
-		
+
 		// CameraクラスのUpdateを最後に呼ぶ
 		Camera::OnUpdate();
 	}
@@ -94,7 +94,7 @@ namespace basecross
 		float vectorx = 0.0f, vectorz = 0.0f;
 
 		Vec3 forwardMove = Vec3(forward.z, 0.0f, -forward.x);
-	
+
 		Vec3 originEye = eye;
 		float minT = 1.0f;
 
@@ -139,8 +139,9 @@ namespace basecross
 		}
 
 		// カメラに設定を反映
+		float lerpEndTime = 10.0f;
 		this->SetAt(at);
-		this->SetEye(eye);
+		this->SetEye(Lerp::CalculateLerp(this->GetEye(), eye, 0, lerpEndTime, 1.0f, Lerp::Linear));
 	}
 
 	void MyCamera::FocusFixedViewPointMove(const Point2D<int> mousePoint)
@@ -148,7 +149,7 @@ namespace basecross
 		auto elapsedTime = App::GetApp()->GetElapsedTime();
 		m_yaw -= mousePoint.x * elapsedTime;
 		m_pitch += mousePoint.y * elapsedTime;
-		
+
 		float curDist = (GetEye() - GetAt()).length();
 		if (curDist < 1e-6f) return;
 
@@ -190,18 +191,18 @@ namespace basecross
 		Vec3 dirN = dir / curDist;
 
 		m_distance = curDist - wheelDelta * 1.0f;
-		
+
 		Vec3 newEye = at - dirN * m_distance;
 
 		SetEye(newEye);
 	}
-	
+
 	void MyCamera::UpdatePlayMode()
 	{
 		// プレイヤーに追従する処理
 		PlayModeMove(0.0f, 0.0f, 0.0f, 0.0f);
 	}
-	
+
 	void MyCamera::UpdateMenuMode()
 	{
 	}

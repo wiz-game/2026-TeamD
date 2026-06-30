@@ -64,9 +64,51 @@ namespace basecross
 		}
 	}
 
-	void MenuManager::SetUIScale(int i, const vector<shared_ptr<UIBase>>& uipointers, const float& scale)
+	void MenuManager::SetUISize(int i, const vector<shared_ptr<UIBase>>& uipointers, const float& scale)
 	{
-		
+		if (i < 0 || i >= uipointers.size()) return;
+
+		auto ui = uipointers[i];
+		if (!ui) return;
+
+		ui->SetImageSizeRatio(scale);
+	}
+
+	void MenuManager::ChangeUISize(float size)
+	{
+		switch (GetMenuMode())
+		{
+
+			// メニュー画面の時
+		case ENUM_MenuMode::MenuStart:
+			switch (GetMenuUI())
+			{
+			case ENUM_MenuStart::Restart:
+				SetUISize(0, m_uidefaults, size);
+				break;
+
+			case ENUM_MenuStart::Setting:
+				SetUISize(1, m_uidefaults, size);
+				break;
+
+			case ENUM_MenuStart::Howtoplay:
+				SetUISize(2, m_uidefaults, size);
+				break;
+
+			case ENUM_MenuStart::Retitle:
+				SetUISize(3, m_uidefaults, size);
+				break;
+			}
+			break;
+
+			// 設定画面の時
+		case ENUM_MenuMode::Setting:
+			break;
+
+			// あそびかた画面の時
+		case ENUM_MenuMode::Howtoplay:
+			break;
+		}
 	}
 
 	// メニュー画面の選択肢のパラメータを変える関数

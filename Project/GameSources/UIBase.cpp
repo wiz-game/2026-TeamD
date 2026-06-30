@@ -42,4 +42,27 @@ namespace basecross
 	void UIBase::OnUpdate()
 	{
 	}
+
+	void UIBase::SetImageSizeRatio(float ratio)
+	{
+		m_uiParam.ImageSizeRatio = ratio;
+
+		m_width = 1920.0f * ratio;
+		m_height = 1080.0f * ratio;
+
+		m_vertices =
+		{
+			{ Vec3(-m_width * 0.5f,  m_height * 0.5f, 0), m_uiParam.Color, Vec2(0.0f, 0.0f) },
+			{ Vec3(m_width * 0.5f,  m_height * 0.5f, 0), m_uiParam.Color, Vec2(1.0f, 0.0f) },
+			{ Vec3(-m_width * 0.5f, -m_height * 0.5f, 0), m_uiParam.Color, Vec2(0.0f, 1.0f) },
+			{ Vec3(m_width * 0.5f, -m_height * 0.5f, 0), m_uiParam.Color, Vec2(1.0f, 1.0f) }
+		};
+
+		RemoveComponent<PCTSpriteDraw>();
+		m_sPtrDraw = AddComponent<PCTSpriteDraw>(m_vertices, m_indices);
+		m_sPtrDraw->SetTextureResource(m_uiParam.MeshName);
+		m_sPtrDraw->SetSamplerState(SamplerState::LinearWrap);
+		m_sPtrDraw->SetDiffuse(m_uiParam.Color);
+
+	}
 }
