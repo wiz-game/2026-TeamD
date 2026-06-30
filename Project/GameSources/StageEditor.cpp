@@ -62,6 +62,7 @@ namespace basecross
 				break;
 			case ENUM_ObjectID::Dirt:
 				stage->AddGameObject<Dirt>(objParam);
+				GameManager::Instance().AddDirt();
 				break;
 			case ENUM_ObjectID::Stone:
 				stage->AddGameObject<Stone>(objParam);

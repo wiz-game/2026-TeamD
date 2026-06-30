@@ -32,7 +32,7 @@ namespace basecross
 
 			// ステージの作成
 			StageEditor::Instance().ReadStageData(m_stageNum + ".bin", GetThis<GameStage>());
-
+			
 			AddGameObject<EffectUpdateDrawManager>();
 		}
 		catch (...)
@@ -50,14 +50,7 @@ namespace basecross
 			StageEditor::Instance().AddEditorMenuLog(L"FPS", 1.0f / App::GetApp()->GetElapsedTime());
 		}
 		GameManager::Instance().AddDebugStr(L"FPS", 1.0f / App::GetApp()->GetElapsedTime());
-
-		int dirtNum = 0;
-		auto gameObjectVec = GetGameObjectVec();
-		for (auto& gameObject : gameObjectVec)
-		{
-			auto dirt = dynamic_pointer_cast<Dirt>(gameObject);
-			if (dirt) dirtNum++;
-		}
+		
 		auto player = GetSharedGameObject<Player>(L"Player");
 
 		if (m_isGameStageMovie && m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
@@ -80,7 +73,7 @@ namespace basecross
 			}
 		}
 
-		if (dirtNum <= 0)
+		if (GameManager::Instance().GetDirtNum() <= 0)
 		{	
 			if (!m_isGameClear)
 			{
