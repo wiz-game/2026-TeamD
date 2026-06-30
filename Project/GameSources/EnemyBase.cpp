@@ -148,6 +148,7 @@ namespace basecross
     }
 
     // 追跡AI
+    // ガチでもうどうすればええんや
     void EnemyBase::Tracking(const shared_ptr<GameObject>& gameObject, float speed)
     {
         auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
@@ -175,19 +176,15 @@ namespace basecross
         Vec3 targetVec = playerPos - transPos;
         targetVec.y = 0.0f;
         targetVec.normalize();
-
-        if (m_isAvoiding)
-        {
-            targetVec = transComp->GetForward();
-            targetVec.y = 0.0f;
-            targetVec.normalize();
-        }
        
         float distanceRange = m_rayRange; // ここは最終的にメンバ変数にする
         float distanceRangeFormat = 4.0f;
         float rangeHeight = 0.3f;
 
         Vec3 startReyPos = Vec3(transPos.x, transPos.y + rangeHeight, transPos.z);
+
+        // 多分ここでレイを飛ばす準備はできたと思いたい
+        Vec3 endPSp(playerPos.x, transPos.y + rangeHeight, transPos.z);
 
         // 正面
         float endX = startReyPos.x + (targetVec.x * distanceRange);
@@ -283,42 +280,21 @@ namespace basecross
             }
         }
         
-        float timerZero = 0.0f;
-        float delta = App::GetApp()->GetElapsedTime();
-        if (!m_isAvoiding)
-        {
-            if (m_canGoForward == false)
-            {
-                m_isAvoiding = true;
-                m_avoidTimer = m_InitavoidTimer;
 
+        if (!m_canGoForward)
+        {
+            // 回避方向の決定
+            if (m_canGoLeft)
+            {
+                targetVec = dirL;
             }
-        }
-
-        if (m_isAvoiding)
-        {
-            m_avoidTimer -= delta;
-            if (m_avoidTimer <= timerZero)
+            else if (m_canGoRight)
             {
-                m_isAvoiding = false;
+                targetVec = dirR;
             }
             else
             {
-                if (m_canGoForward)
-                {
-                    targetVec = transComp->GetForward();
-                }
-                // 回避方向の決定
-                else if (m_canGoLeft)
-                {
-                    targetVec = dirL;
-                    //targetVec.normalize();
-                }
-                else if (m_canGoRight)
-                {
-                    targetVec = dirR;
-                    //targetVec.normalize();
-                }
+                m_Detection = false;
             }
         }
 
@@ -331,6 +307,8 @@ namespace basecross
         GameManager::Instance().AddDebugStr(L"m_isAvoiding", m_isAvoiding);
         GameManager::Instance().AddDebugStr(L"m_avoidTimer", m_avoidTimer);
     }
+
+
 
     void EnemyBase::MazeWandering(const shared_ptr<GameObject>& gameObject)
     {

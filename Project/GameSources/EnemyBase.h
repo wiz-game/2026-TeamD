@@ -130,6 +130,11 @@ namespace basecross
 			return m_isRotated;
 		}
 
+		bool GetAvoiding()
+		{
+			return m_isAvoiding;
+		}
+
 		// --- 当たり判定 ---
 		void OnCollisionEnter(shared_ptr<GameObject>& Other);	//	当たり判定
 		void OnCollisionExecute(shared_ptr<GameObject>& Other);
