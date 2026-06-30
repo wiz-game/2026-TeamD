@@ -5,6 +5,7 @@
 
 #include "stdafx.h"
 #include "Project.h"
+#include <cmath>
 
 namespace basecross 
 {
@@ -66,7 +67,6 @@ namespace basecross
 		m_draw->UpdateAnimation(App::GetApp()->GetElapsedTime());
 
 		Died(GetThis<EnemyAlpaca>());
-		DetectionRange(GetThis<EnemyAlpaca>());
 		//m_eStateMachine->Update();
 
 		//DropDirt(GetThis<EnemyAlpaca>());
@@ -88,6 +88,7 @@ namespace basecross
 	void IdleState::Execute(const shared_ptr<EnemyAlpaca>& Obj)
 	{
 		Obj->MazeWandering(Obj);
+		Obj->DetectionRange(Obj);
 
 		if (Obj->GetDetection() == true)
 		{
@@ -115,8 +116,28 @@ namespace basecross
 	void AngryState::Execute(const shared_ptr<EnemyAlpaca>& Obj)
 	{
 		Obj->Tracking(Obj,3.0f);
+		// Playerの情報を取得する
+		auto player = App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetSharedGameObject<Player>(L"Player");
+		if (!player)
+		{
+			return;
+		}
+		auto playerComp = player->GetComponent<Transform>();
+		auto playerPos = playerComp->GetPosition();
+		// 自身の位置を取得する
+		auto myComp = Obj->GetComponent<Transform>();
+		auto myPos = myComp->GetPosition();
+		// プレイヤーと自身の距離を計算する
+		float distancePosX = playerPos.x - myPos.x;
+		float distancePosY = playerPos.y - myPos.y;
+		float distancePosZ = playerPos.z - myPos.z;
+		float distance = sqrt((distancePosX * distancePosX) + (distancePosY * distancePosY) + (distancePosZ * distancePosZ));
+
+		float distanceRange = 7.0f;
+
 		// 索敵外から出たら徘徊に戻る
-		if (Obj->GetDetection() == false)
+		if (distance >= distanceRange)
+		//if(!Obj->GetDetection())
 		{
 			Obj->m_eStateMachine->ChangeState(IdleState::Instance());
 		}

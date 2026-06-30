@@ -19,6 +19,7 @@ namespace basecross
 	void Shrub::OnCreate()
 	{
 		AddTag(L"Shrub");
+		AddTag(L"Fade");
 		SetIsEditorSave(true);
 
 		auto ptrDraw = AddComponent<PNTStaticDraw>();
@@ -44,5 +45,12 @@ namespace basecross
 
 		ptrDraw->SetMeshToTransformMatrix(spanMat);
 		ptrShadow->SetMeshToTransformMatrix(spanMat);
+
+		SetAlphaActive(true);
+	}
+
+	void Shrub::OnUpdate()
+	{
+		m_stageObjectFade.UpdateFade(GetComponent<PNTStaticDraw>(), App::GetApp()->GetElapsedTime());
 	}
 }

@@ -1,6 +1,6 @@
 /*!
 @file GameStage.h
-@brief ƒQ[ƒ€ƒXƒe[ƒW
+@brief ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸
 */
 
 #pragma once
@@ -16,14 +16,20 @@ namespace basecross
 		Vec3 m_collManagerPos = Vec3(0.0f);
 		Vec3 m_collisionRange = Vec3(100.0f, 1000.0f, 100.0f);
 		string m_stageNum;
+    
+		// ã‚«ã‚¦ãƒ³ãƒˆæ™‚é–“
+		Timer m_timer;
+		bool m_isGameClear;
+		bool m_isStartStop;
+		bool m_isGameStageMovie;
 
-		// ƒƒjƒ…[‰æ–Ê‚ÌUI
+		// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ç”»é¢ã®UI
 		vector<shared_ptr<UIBase>> m_uiframes;
 		vector<shared_ptr<UIBase>> m_uidefaults;
 		vector<shared_ptr<UIBase>> m_uisettings;
 		vector<shared_ptr<UIBase>> m_uihowtoplays;
 
-		// ƒƒjƒ…[‰æ–Ê‚Ìƒpƒ‰ƒ[ƒ^
+		// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ç”»é¢ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 		Col4 m_uiDiffuse = Col4(1.0f, 1.0f, 1.0f, 1.0f);
 		float m_selectScale = 0.25f;
 

@@ -63,16 +63,11 @@ float4 main(PSPNTInputShadow input) : SV_TARGET
 			);
 		if (lighting == 0.f)
 		{
-			//‰e‚Ì’†
-			return float4(RetColor.xyz * ambient, RetColor.w);
-		}
-		else if (lighting < 1.0f)
-		{
-			//‰e‚Æ‰eˆÈŠO‚Ì‹«ŠEü
-			float3 light = lighting * (ambient + DplusS(N, L, NdotL, input.lightView));
-			float3 shadow = (1.0f - lighting) * ambient;
-			return float4(RetColor.xyz * (light + shadow), RetColor.w);
-		}
+			// ‰e‚Ì’†
+            float shadowDarkness = 0.0f; // ‰e‚Ì”Z‚³ŒW”
+			float3 shadowColor = lerp(RetColor.xyz, RetColor.xyz * ambient, shadowDarkness);
+            return float4(shadowColor, RetColor.w);
+        }
 	}
 	return float4(RetColor.xyz * (ambient + DplusS(N, L, NdotL, input.lightView)), RetColor.w);
 }

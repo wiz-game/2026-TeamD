@@ -1878,6 +1878,27 @@ namespace basecross {
 		return false;
 	}
 
+	bool SmBaseDraw::HitTestStaticMeshSegmentTrianglesToAffine(const bsm::Vec3& StartPos, const bsm::Vec3& EndPos)
+	{
+		GetStaticMeshWorldPositionsToAffine(pImpl->m_SmDrawObject.m_TempPositions);
+		for (size_t i = 0; i < pImpl->m_SmDrawObject.m_TempPositions.size(); i += 3) {
+			TRIANGLE tri;
+			tri.m_A = pImpl->m_SmDrawObject.m_TempPositions[i];
+			tri.m_B = pImpl->m_SmDrawObject.m_TempPositions[i + 1];
+			tri.m_C = pImpl->m_SmDrawObject.m_TempPositions[i + 2];
+			if (!tri.IsValid()) {
+				//ŽOŠpŒ`‚ª–³Œø‚È‚çŽŸ‚É‚¤‚Â‚é
+				continue;
+			}
+			bsm::Vec3 ret;
+			float t;
+			if (HitTest::SEGMENT_TRIANGLE(StartPos, EndPos, tri, ret, t)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	bool SmBaseDraw::HitTestStaticMeshSphereTriangles(const SPHERE& StartSp, const SPHERE& EndSp, bsm::Vec3& HitPoint, TRIANGLE& RetTri, size_t& RetIndex) {
 		GetStaticMeshWorldPositions(pImpl->m_SmDrawObject.m_TempPositions);
 		for (size_t i = 0; i < pImpl->m_SmDrawObject.m_TempPositions.size(); i += 3) {

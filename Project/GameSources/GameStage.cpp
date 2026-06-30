@@ -9,7 +9,11 @@
 namespace basecross 
 {
 	GameStage::GameStage(const wstring& stageNum)
-		: Stage()
+		: Stage(),
+		m_timer(0.0f),
+		m_isGameClear(false),
+		m_isStartStop(false),
+		m_isGameStageMovie(true)
 	{
 		m_stageNum = to_string(stageNum);
 	}
@@ -19,6 +23,7 @@ namespace basecross
 		try 
 		{
 			m_jphManger.Initialize();
+			m_timer = Timer(2.0f);
 
 			CreateViewLight();
 			CreatePlayer();
@@ -27,7 +32,7 @@ namespace basecross
 
 			// ステージの作成
 			StageEditor::Instance().ReadStageData(m_stageNum + ".bin", GetThis<GameStage>());
-
+			
 			AddGameObject<EffectUpdateDrawManager>();
 		}
 		catch (...)
@@ -44,16 +49,44 @@ namespace basecross
 		{
 			StageEditor::Instance().AddEditorMenuLog(L"FPS", 1.0f / App::GetApp()->GetElapsedTime());
 		}
+		GameManager::Instance().AddDebugStr(L"FPS", 1.0f / App::GetApp()->GetElapsedTime());
+		
+		auto player = GetSharedGameObject<Player>(L"Player");
 
-		int dirtNum = 0;
-		auto gameObjectVec = GetGameObjectVec();
-		for (auto& gameObject : gameObjectVec)
+		if (m_isGameStageMovie && m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
 		{
-			auto dirt = dynamic_pointer_cast<Dirt>(gameObject);
-			if (dirt) dirtNum++;
+			MovieManager::Instance().Initialize();
+			MovieManager::Instance().PlayMovie(MovieType::Title);
+			m_isGameStageMovie = false;
+			m_isStartStop = true;
+			m_timer.SetCounter();
 		}
 
-		if (dirtNum <= 0)
+		if (m_isStartStop)
+		{
+			if (m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
+			{
+				player->SetMoveStopFlag(false);
+				player->PlayGameAnimation();
+				m_isStartStop = false;
+				m_timer.SetCounter();
+			}
+		}
+
+		if (GameManager::Instance().GetDirtNum() <= 0)
+		{	
+			if (!m_isGameClear)
+			{
+				MovieManager::Instance().Initialize();
+				MovieManager::Instance().PlayMovie(MovieType::GameClear);
+				player->SetMoveStopFlag(true);
+				player->PlayerChangeAnimation(L"GameClear",false);
+				m_timer.SetCounter();
+				m_isGameClear = true;
+			}
+		}
+
+		if (m_isGameClear && m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
 		{
 			GameManager::Instance().SetGameMode(ENUM_GameMode::GameClear);
 		}
@@ -88,6 +121,7 @@ namespace basecross
 	{
 		auto player = AddGameObject<Player>(Vec3(0.0f, 0.75f, 0.0f));
 		SetSharedGameObject(L"Player", player);
+		MovieManager::Instance().SetPlayer(player);
 	}
 
 	// Menuを作成する
