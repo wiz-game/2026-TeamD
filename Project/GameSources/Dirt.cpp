@@ -55,17 +55,14 @@ namespace basecross
 
 	void Dirt::OnUpdate()
 	{
-		DirtCondition newCondistion = DirtCondition::DirtMax;
-		if (m_HP <= 10.0f)
+		if (m_HP <= 10.0f && m_HP > 0.0f)
 		{
-			newCondistion = DirtCondition::DirtHalf;
+			SetDirtState(DirtCondition::DirtHalf);
 		}
 		if (m_HP <= 0.0f)
 		{
-			newCondistion = DirtCondition::DirtClean;
+			SetDirtState(DirtCondition::DirtClean);
 		}
-		 
-		//SetDirtState(newCondistion);
 	}
 
 	void Dirt::OnUpdate2()
