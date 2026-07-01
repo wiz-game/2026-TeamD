@@ -26,15 +26,16 @@ namespace basecross
         m_canGoForward(true),
         m_targetRotY(0.0f),
         m_rayRange(1.6f),
+        m_rayDistanceRange(10.0f),
 
         // 移動速度
         m_Speed(1.4f),
         m_rotToHeadLeap(0.5f),
 
         // 座標を格納するための変数
-        m_Point1Position(),
-        m_Point2Position(),
-        m_Point3Position(),
+        m_Point1Position(objectParam.GetPosition()),
+        m_Point2Position(objectParam.GetPosition()),
+        m_Point3Position(objectParam.GetPosition()),
 
         // 壁を回避中かどうか
         m_isAvoiding(false),
@@ -148,7 +149,6 @@ namespace basecross
     }
 
     // 追跡AI
-    // ガチでもうどうすればええんや
     void EnemyBase::Tracking(const shared_ptr<GameObject>& gameObject, float speed)
     {
         auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
@@ -177,7 +177,6 @@ namespace basecross
         targetVec.y = 0.0f;
         targetVec.normalize();
        
-        float distanceRange = m_rayRange; // ここは最終的にメンバ変数にする
         float distanceRangeFormat = 4.0f;
         float rangeHeight = 0.3f;
 
@@ -187,29 +186,29 @@ namespace basecross
         Vec3 endPSp(playerPos.x, transPos.y + rangeHeight, transPos.z);
 
         // 正面
-        float endX = startReyPos.x + (targetVec.x * distanceRange);
-        float endZ = startReyPos.z + (targetVec.z * distanceRange);
+        float endX = startReyPos.x + (targetVec.x * m_rayDistanceRange);
+        float endZ = startReyPos.z + (targetVec.z * m_rayDistanceRange);
         Vec3 endSp(endX, transPos.y + rangeHeight, endZ);
 
         float currentAngle = atan2f(targetVec.x, targetVec.z);
-        float angleR = currentAngle + XMConvertToRadians(45.0f);
-        float angleL = currentAngle - XMConvertToRadians(45.0f);
 
-        // targetVecに寄せた計算をする-------------------------------------------------------------
-        // 右
-        Vec3 dirR(sinf(angleR), 0.0f, cosf(angleR));
-        dirR.normalize();
-        float endRX = startReyPos.x + (dirR.x * distanceRange);
-        float endRZ = startReyPos.z + (dirR.z * distanceRange);
-        Vec3 endRSp(endRX, transPos.y + rangeHeight, endRZ);
+        // 8つのレイを用意する------
+        // 45°
+        auto a = CalculateEndPointRayAngle(startReyPos, currentAngle, 45.0f);
+        auto b = CalculateEndPointRayAngle(startReyPos, currentAngle, -45.0f);
 
-        // 左
-        Vec3 dirL(sinf(angleL), 0.0f, cosf(angleL));
-        dirL.normalize();
-        float endLX = startReyPos.x + (dirL.x * distanceRange);
-        float endLZ = startReyPos.z + (dirL.z * distanceRange);
-        Vec3 endLSp(endLX, transPos.y + rangeHeight, endLZ);
-        //------------------------------------------------------------------------------------------
+        // 90°
+        auto c = CalculateEndPointRayAngle(startReyPos, currentAngle, 90.0f);
+        auto d = CalculateEndPointRayAngle(startReyPos, currentAngle, -90.0f);
+
+        // 67.5°
+        auto e = CalculateEndPointRayAngle(startReyPos, currentAngle, 67.5f);
+        auto f = CalculateEndPointRayAngle(startReyPos, currentAngle, -67.5f);
+
+        // 22.5°
+        auto g = CalculateEndPointRayAngle(startReyPos, currentAngle, 22.5f);
+        auto h = CalculateEndPointRayAngle(startReyPos, currentAngle, -22.5f);
+        //--------------------------
 
         m_canGoForward = true;
         m_canGoLeft = true;
@@ -217,7 +216,8 @@ namespace basecross
 
         for (auto& obj : stage->GetGameObjectVec())
         {
-            if (obj == gameObject)
+            // Wallのタグを持っているオブジェクトのみ判定をする
+            if (!obj->FindTag(L"Wall"))
             {
                 continue;
             }
@@ -230,11 +230,20 @@ namespace basecross
                 size_t index;
                 float dirX = 0.0f, dirZ = 0.0f, len = 0.0f;
 
-                if (obj->FindTag(L"Wall"))
-                {
                     if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endSp, hitPoint, tri, index))
                     {
-                        // 正面
+                        if (len <= m_rayRange)
+                        {
+                            // 壁に触れた
+                            m_canGoForward = false;
+                        }
+                    }
+
+
+
+                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, a, hitPoint, tri, index))
+                    {
+                        // 左
                         dirX = hitPoint.x - transPos.x;
                         dirZ = hitPoint.z - transPos.z;
                         Vec3 dir(dirX, 0.0f, dirZ);
@@ -247,22 +256,7 @@ namespace basecross
                         }
                     }
 
-                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endLSp, hitPoint, tri, index))
-                    {
-                        // 左
-                        dirX = hitPoint.x - transPos.x;
-                        dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, 0.0f, dirZ);
-                        len = dir.length();
-
-                        if (len <= m_rayRange)
-                        {
-                            // 壁に触れた
-                            m_canGoLeft = false;
-                        }
-                    }
-
-                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endRSp, hitPoint, tri, index))
+                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, b, hitPoint, tri, index))
                     {
                         // 右
                         dirX = hitPoint.x - transPos.x;
@@ -273,31 +267,101 @@ namespace basecross
                         if (len <= m_rayRange)
                         {
                             // 壁に触れた
-                            m_canGoRight = false;
+                            m_canGoForward = false;
                         }
                     }
-                }
+                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, c, hitPoint, tri, index))
+                    {
+                        // 右
+                        dirX = hitPoint.x - transPos.x;
+                        dirZ = hitPoint.z - transPos.z;
+                        Vec3 dir(dirX, 0.0f, dirZ);
+                        len = dir.length();
+
+                        if (len <= m_rayRange)
+                        {
+                            // 壁に触れた
+                            m_canGoForward = false;
+                        }
+                    }
+                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, d, hitPoint, tri, index))
+                    {
+                        // 右
+                        dirX = hitPoint.x - transPos.x;
+                        dirZ = hitPoint.z - transPos.z;
+                        Vec3 dir(dirX, 0.0f, dirZ);
+                        len = dir.length();
+
+                        if (len <= m_rayRange)
+                        {
+                            // 壁に触れた
+                            m_canGoForward = false;
+                        }
+                    }
+                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, e, hitPoint, tri, index))
+                    {
+                        // 右
+                        dirX = hitPoint.x - transPos.x;
+                        dirZ = hitPoint.z - transPos.z;
+                        Vec3 dir(dirX, 0.0f, dirZ);
+                        len = dir.length();
+
+                        if (len <= m_rayRange)
+                        {
+                            // 壁に触れた
+                            m_canGoForward = false;
+                        }
+                    }
+                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, f, hitPoint, tri, index))
+                    {
+                        // 右
+                        dirX = hitPoint.x - transPos.x;
+                        dirZ = hitPoint.z - transPos.z;
+                        Vec3 dir(dirX, 0.0f, dirZ);
+                        len = dir.length();
+
+                        if (len <= m_rayRange)
+                        {
+                            // 壁に触れた
+                            m_canGoForward = false;
+                        }
+                    }
+                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, g, hitPoint, tri, index))
+                    {
+                        // 右
+                        dirX = hitPoint.x - transPos.x;
+                        dirZ = hitPoint.z - transPos.z;
+                        Vec3 dir(dirX, 0.0f, dirZ);
+                        len = dir.length();
+
+                        if (len <= m_rayRange)
+                        {
+                            // 壁に触れた
+                            m_canGoForward = false;
+                        }
+                    }
+                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, h, hitPoint, tri, index))
+                    {
+                        // 右
+                        dirX = hitPoint.x - transPos.x;
+                        dirZ = hitPoint.z - transPos.z;
+                        Vec3 dir(dirX, 0.0f, dirZ);
+                        len = dir.length();
+
+                        if (len <= m_rayRange)
+                        {
+                            // 壁に触れた
+                            m_canGoForward = false;
+                        }
+                    }
             }
+        }
+
+        if (!m_canGoRight)
+        {
+
         }
         
-
-        if (!m_canGoForward)
-        {
-            // 回避方向の決定
-            if (m_canGoLeft)
-            {
-                targetVec = dirL;
-            }
-            else if (m_canGoRight)
-            {
-                targetVec = dirR;
-            }
-            else
-            {
-                m_Detection = false;
-            }
-        }
-
         transPos.x += targetVec.x * speed * App::GetApp()->GetElapsedTime();
         transPos.z += targetVec.z * speed * App::GetApp()->GetElapsedTime();
         transComp->SetPosition(transPos);
@@ -307,8 +371,6 @@ namespace basecross
         GameManager::Instance().AddDebugStr(L"m_isAvoiding", m_isAvoiding);
         GameManager::Instance().AddDebugStr(L"m_avoidTimer", m_avoidTimer);
     }
-
-
 
     void EnemyBase::MazeWandering(const shared_ptr<GameObject>& gameObject)
     {
@@ -633,6 +695,19 @@ namespace basecross
             // 敵の位置を最終的に更新する
             transComp->SetPosition(transPos);
         }
+    }
+
+    Vec3 EnemyBase::CalculateEndPointRayAngle(const Vec3& startPos, const float& forwardAngle, const float& angle)
+    {
+        float targetAngle = forwardAngle + XMConvertToRadians(angle);
+
+        Vec3 dir(sinf(targetAngle), 0.0f, cosf(targetAngle));
+        dir.normalize();
+
+        float endPosX = startPos.x + (dir.x * m_rayDistanceRange);
+        float endPosZ = startPos.z + (dir.z * m_rayDistanceRange);
+
+        return Vec3(endPosX, startPos.y, endPosZ);
     }
 
     void EnemyBase::OnCollisionEnter(shared_ptr<GameObject>& Other)

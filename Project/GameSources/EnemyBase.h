@@ -87,6 +87,7 @@ namespace basecross
 
 		// レイの大きさ
 		float m_rayRange;
+		float m_rayDistanceRange;
 
 		// 壁を回避中かどうか
 		bool m_isAvoiding;
@@ -106,18 +107,20 @@ namespace basecross
 
 		//void Move(const shared_ptr<GameObject>& gameObject, float speed);
 		//void CircleMove(const shared_ptr<GameObject>& gameObject, float radius, float moveSpeed);
-		void PointMove(const shared_ptr<GameObject>& gameObject,float speed);
+		void PointMove
+		(
+			const shared_ptr<GameObject>& gameObject,
+			float speed
+		);
 
 		void DebugString();
 
-		//void Died(const shared_ptr<GameObject>& gameObject);
-		void DetectionRange(const shared_ptr<GameObject>& gameObject);
-		//void Stalker(const shared_ptr<GameObject>& gameObject, float stalkerSpeed);
-		//void FunctionGravity(const shared_ptr<GameObject>& gameObject);
-		//void DropDirt(const shared_ptr<GameObject>& gameObject);
-		void MazeWandering(const shared_ptr<GameObject>& gameObject);
-		//void aStar(const shared_ptr<GameObject>& gameObject);
-		void Tracking(const shared_ptr<GameObject>& gameObject,float speed);
+		void DetectionRange(const shared_ptr<GameObject>& gameObject); // 索敵範囲
+		void MazeWandering(const shared_ptr<GameObject>& gameObject); // 徘徊AI
+		void Tracking(const shared_ptr<GameObject>& gameObject,float speed); // 追跡AI
+
+		// angleは度数法で書いてください
+		Vec3 CalculateEndPointRayAngle(const Vec3& startPos,const float& forwardAngle,const float& angle);
 
 		// ゲッターセッター関数
 		bool GetDetection()
