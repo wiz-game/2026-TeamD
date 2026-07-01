@@ -151,225 +151,128 @@ namespace basecross
     // 追跡AI
     void EnemyBase::Tracking(const shared_ptr<GameObject>& gameObject, float speed)
     {
-        auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-        if (stage == nullptr)
-        {
-            return;
-        }
-
-        // ステージ情報を取得する
-        auto player = App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetSharedGameObject<Player>(L"Player");
-        if (player == nullptr)
-        {
-            return;
-        }
-
-        auto playerComp = player->GetComponent<Transform>();
         // プレイヤーの位置を取得する
-        auto playerPos = playerComp->GetPosition();
+        auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
+        auto playerPos = player->GetComponent<Transform>()->GetPosition();
 
-        // 引数の情報を取得する
+        // 自分の情報を取得する
         auto transComp = gameObject->GetComponent<Transform>();
         auto transPos = transComp->GetPosition();
-
-        // プレイヤーの位置から自分の位置を引いて正規化する
+          
+        // プレイヤーに向かって移動する
         Vec3 targetVec = playerPos - transPos;
         targetVec.y = 0.0f;
         targetVec.normalize();
-       
-        float distanceRangeFormat = 4.0f;
-        float rangeHeight = 0.3f;
+		auto elapsedTime = App::GetApp()->GetElapsedTime();
 
-        Vec3 startReyPos = Vec3(transPos.x, transPos.y + rangeHeight, transPos.z);
-
-        // 多分ここでレイを飛ばす準備はできたと思いたい
-        Vec3 endPSp(playerPos.x, transPos.y + rangeHeight, transPos.z);
-
-        // 正面
-        float endX = startReyPos.x + (targetVec.x * m_rayDistanceRange);
-        float endZ = startReyPos.z + (targetVec.z * m_rayDistanceRange);
-        Vec3 endSp(endX, transPos.y + rangeHeight, endZ);
-
-        float currentAngle = atan2f(targetVec.x, targetVec.z);
-
-        // 8つのレイを用意する------
-        // 45°
-        auto a = CalculateEndPointRayAngle(startReyPos, currentAngle, 45.0f);
-        auto b = CalculateEndPointRayAngle(startReyPos, currentAngle, -45.0f);
-
-        // 90°
-        auto c = CalculateEndPointRayAngle(startReyPos, currentAngle, 90.0f);
-        auto d = CalculateEndPointRayAngle(startReyPos, currentAngle, -90.0f);
-
-        // 67.5°
-        auto e = CalculateEndPointRayAngle(startReyPos, currentAngle, 67.5f);
-        auto f = CalculateEndPointRayAngle(startReyPos, currentAngle, -67.5f);
-
-        // 22.5°
-        auto g = CalculateEndPointRayAngle(startReyPos, currentAngle, 22.5f);
-        auto h = CalculateEndPointRayAngle(startReyPos, currentAngle, -22.5f);
-        //--------------------------
-
-        m_canGoForward = true;
-        m_canGoLeft = true;
-        m_canGoRight = true;
-
-        for (auto& obj : stage->GetGameObjectVec())
-        {
-            // Wallのタグを持っているオブジェクトのみ判定をする
-            if (!obj->FindTag(L"Wall"))
-            {
-                continue;
-            }
-
-            auto modelObj = obj->GetComponent<PNTStaticDraw>(false);
-            if (modelObj)
-            {
-                Vec3 hitPoint;
-                TRIANGLE tri;
-                size_t index;
-                float dirX = 0.0f, dirZ = 0.0f, len = 0.0f;
-
-                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endSp, hitPoint, tri, index))
-                    {
-                        if (len <= m_rayRange)
-                        {
-                            // 壁に触れた
-                            m_canGoForward = false;
-                        }
-                    }
-
-
-
-                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, a, hitPoint, tri, index))
-                    {
-                        // 左
-                        dirX = hitPoint.x - transPos.x;
-                        dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, 0.0f, dirZ);
-                        len = dir.length();
-
-                        if (len <= m_rayRange)
-                        {
-                            // 壁に触れた
-                            m_canGoForward = false;
-                        }
-                    }
-
-                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, b, hitPoint, tri, index))
-                    {
-                        // 右
-                        dirX = hitPoint.x - transPos.x;
-                        dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, 0.0f, dirZ);
-                        len = dir.length();
-
-                        if (len <= m_rayRange)
-                        {
-                            // 壁に触れた
-                            m_canGoForward = false;
-                        }
-                    }
-                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, c, hitPoint, tri, index))
-                    {
-                        // 右
-                        dirX = hitPoint.x - transPos.x;
-                        dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, 0.0f, dirZ);
-                        len = dir.length();
-
-                        if (len <= m_rayRange)
-                        {
-                            // 壁に触れた
-                            m_canGoForward = false;
-                        }
-                    }
-                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, d, hitPoint, tri, index))
-                    {
-                        // 右
-                        dirX = hitPoint.x - transPos.x;
-                        dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, 0.0f, dirZ);
-                        len = dir.length();
-
-                        if (len <= m_rayRange)
-                        {
-                            // 壁に触れた
-                            m_canGoForward = false;
-                        }
-                    }
-                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, e, hitPoint, tri, index))
-                    {
-                        // 右
-                        dirX = hitPoint.x - transPos.x;
-                        dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, 0.0f, dirZ);
-                        len = dir.length();
-
-                        if (len <= m_rayRange)
-                        {
-                            // 壁に触れた
-                            m_canGoForward = false;
-                        }
-                    }
-                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, f, hitPoint, tri, index))
-                    {
-                        // 右
-                        dirX = hitPoint.x - transPos.x;
-                        dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, 0.0f, dirZ);
-                        len = dir.length();
-
-                        if (len <= m_rayRange)
-                        {
-                            // 壁に触れた
-                            m_canGoForward = false;
-                        }
-                    }
-                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, g, hitPoint, tri, index))
-                    {
-                        // 右
-                        dirX = hitPoint.x - transPos.x;
-                        dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, 0.0f, dirZ);
-                        len = dir.length();
-
-                        if (len <= m_rayRange)
-                        {
-                            // 壁に触れた
-                            m_canGoForward = false;
-                        }
-                    }
-                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, h, hitPoint, tri, index))
-                    {
-                        // 右
-                        dirX = hitPoint.x - transPos.x;
-                        dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, 0.0f, dirZ);
-                        len = dir.length();
-
-                        if (len <= m_rayRange)
-                        {
-                            // 壁に触れた
-                            m_canGoForward = false;
-                        }
-                    }
-            }
-        }
-
-        if (!m_canGoRight)
-        {
-
-        }
-        
-        transPos.x += targetVec.x * speed * App::GetApp()->GetElapsedTime();
-        transPos.z += targetVec.z * speed * App::GetApp()->GetElapsedTime();
+        transPos.x += targetVec.x * speed * elapsedTime;
+        transPos.z += targetVec.z * speed * elapsedTime;
         transComp->SetPosition(transPos);
         GetBehavior<UtilBehavior>()->RotToHead(targetVec, m_rotToHeadLeap);
 
-        // デバッグ文字
-        GameManager::Instance().AddDebugStr(L"m_isAvoiding", m_isAvoiding);
-        GameManager::Instance().AddDebugStr(L"m_avoidTimer", m_avoidTimer);
+		// プレイヤーと自分のレイを計算
+        float reyYOffSet = 0.3f;
+        Vec3 startPos = Vec3(transPos.x, transPos.y + reyYOffSet, transPos.z);
+        Vec3 playerEndPos = Vec3(playerPos.x, transPos.y + reyYOffSet, playerPos.z);
+        
+		// プレイヤーとの間に壁があるかどうかを判定する
+		bool isHitWall = false;
+        for (const auto& obj : GetStage()->GetGameObjectVec())
+        {
+            if (!obj->FindTag(L"Wall")) continue;
+
+			auto drawComp = obj->GetComponent<PNTStaticDraw>(false);
+			if (!drawComp) continue;
+
+			if (drawComp->HitTestStaticMeshSegmentTrianglesToAffine(startPos, playerEndPos))
+			{
+				isHitWall = true;
+				break;
+			}
+        }
+
+		// プレイヤーとの間に壁がある場合、推定プレイヤー位置に近い位置を計算する
+        if (!isHitWall) return;
+
+        float currentAngle = atan2f(targetVec.x, targetVec.z);
+
+        vector<float> angles = { 22.5f, 45.0f, 67.5f, 90.0f, -22.5f, -45.0f, -67.5f, -90.0f };
+        vector<Vec3> hitWallPositions = {};
+
+        for (int i = 0; i < angles.size(); i++)
+        {
+            auto angleEndPos = CalculateEndPointRayAngle(startPos, currentAngle, angles[i]);
+
+            Vec3 hitPos = Vec3();
+            Vec3 hitWallPos = Vec3();
+
+            for (const auto& obj : GetStage()->GetGameObjectVec())
+            {
+                // Wallのタグを持っているオブジェクトのみ判定をする
+                if (!obj->FindTag(L"Wall")) continue;
+
+                auto drawComp = obj->GetComponent<PNTStaticDraw>();
+                if (!drawComp) continue;
+
+                if (hitWallPos != Vec3())
+                {
+                    auto nowWallPos = obj->GetComponent<Transform>()->GetPosition();
+                    auto nowWallVec = nowWallPos - transPos;
+                    nowWallVec.y = 0.0f;
+                    nowWallVec.normalize();
+
+                    auto hitWallVec = hitWallPos - transPos;
+                    hitWallVec.y = 0.0f;
+                    hitWallVec.normalize();
+
+                    if (nowWallVec.length() > hitWallVec.length()) continue;
+                }
+
+                if (drawComp->HitTestStaticMeshSegmentTrianglesToAffine(startPos, angleEndPos, hitPos))
+                {
+                    hitWallPos = obj->GetComponent<Transform>()->GetPosition();
+                }
+            }
+
+			hitWallPositions.push_back(hitWallPos);
+        }
+
+        // プレイヤーに最も近い位置を計算する
+		Vec3 risultClosePlayerPos = Vec3();
+		for (const auto& hitWallPosition : hitWallPositions)
+        {
+            // rayRange以内の壁の位置を除外する
+			auto hitWallVec = hitWallPosition - transPos;
+			hitWallVec.y = 0.0f;
+            hitWallVec.normalize();
+
+			if (hitWallVec.length() <= m_rayRange) continue;
+
+			// 一つ目はすぐに代入する
+			if (risultClosePlayerPos == Vec3())
+			{
+                risultClosePlayerPos = hitWallPosition;
+				continue;
+			}
+
+			// 二つの壁の位置とプレイヤーを結ぶベクトルの長さを比較して、よりプレイヤーに近い位置を選択する
+			auto risultClosePlayerVec = risultClosePlayerPos - playerPos;
+            risultClosePlayerVec.y = 0.0f;
+            risultClosePlayerVec.normalize();
+
+			auto nowClosePlayerVec = hitWallPosition - playerPos;
+			nowClosePlayerVec.y = 0.0f;
+			nowClosePlayerVec.normalize();
+
+			if (nowClosePlayerVec.length() < risultClosePlayerVec.length())
+			{
+				risultClosePlayerPos = hitWallPosition;
+			}
+        }
+
+		m_closePlayerPos = risultClosePlayerPos;
+        // 上の座標に移動するStateに遷移する（ために多分フラグを立てるとおもう）
+
     }
 
     void EnemyBase::MazeWandering(const shared_ptr<GameObject>& gameObject)

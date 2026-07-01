@@ -95,6 +95,8 @@ namespace basecross
 		float m_InitavoidTimer;
 
 		Vec3 m_targetVec;
+
+		Vec3 m_closePlayerPos = Vec3();
 	public:
 		EnemyBase(const shared_ptr<Stage>& stage, const STRUCT_ObjectParam& objectParam);
 
