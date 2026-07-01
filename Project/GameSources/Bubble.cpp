@@ -235,6 +235,7 @@ namespace basecross
 	{
 		if (Other->FindTag(L"Dirt"))
 		{
+			DirtHitEffect(GetComponent<Transform>()->GetPosition());
 			auto dirt = dynamic_pointer_cast<Dirt>(Other);
 			ResolveCounteract(*this, *dirt);
 		}
@@ -328,6 +329,13 @@ namespace basecross
 		}
 
 		m_activeDraw->SetDrawActive(true);
+	}
+
+	void Bubble::DirtHitEffect(const Vec3& pos)
+	{
+		EffectHandle handle;
+		handle = EffectManager::Instance().PlayEffect(L"Bubble_Pop", pos);
+		EffectManager::Instance().SetScale(handle, Vec3(0.4f));
 	}
 
 	ViewBubble::ViewBubble(const shared_ptr<Stage>& stage, const vector<Vec3> *vertices) :
