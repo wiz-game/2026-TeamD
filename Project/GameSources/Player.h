@@ -228,6 +228,7 @@ namespace basecross
 		void OnRTriggerInput();
 		void OnRTriggerRelese();
 		void PlayGameAnimation();
+		void BubbleEffect();
 	};
 }
 //end basecross

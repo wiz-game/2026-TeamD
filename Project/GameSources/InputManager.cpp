@@ -392,39 +392,10 @@ namespace basecross
 		auto player = stage->GetSharedGameObject<Player>(L"Player");
 		if (player->GetDeadFlag()) return;
 		if (player->GetMoveStopFlag())return;
+		// Rトリガーが押されたら、アニメーションを変更させる
 		player->OnRTriggerInput();
-		auto bresing = player->GetBresing();
-		// エフェクトの回転
-		auto pos = player->GetComponent<Transform>()->GetPosition();
-		auto forward = player->GetComponent<Transform>()->GetForward();
-		forward.normalize();
-		auto baseforward = Vec3(1.0f, 0.0f, 0.0f);
-		Vec3 axis = baseforward;
-		axis.cross(forward);
-		axis.normalize();
-		float dot = baseforward.dot(forward);
-		dot = clamp(dot, -1.0f, 1.0f);
-		float angle = acos(dot);
-		Quat rot = Quat(axis, angle);
-		Quat offset(Vec3(0, 1, 0), XMConvertToRadians(13.0f));
-		Quat finalRot = offset * rot;
-		float bubbleRate = 0.0f;
-
-		if (!bresing)
-		{
-			if (m_bubbleRateTimer.TimeCount(App::GetApp()->GetElapsedTime(), false))
-			{
-				player->CreateBubble();
-				EffectHandle effHandle;
-				effHandle = EffectManager::Instance().PlayEffect(L"Bubble", pos + forward);
-				EffectManager::Instance().SetScale(effHandle, Vec3(0.35f));
-				EffectManager::Instance().SetRotationFromQuaternion(effHandle, finalRot);
-				m_bubbleRateTimer = Timer(bubbleRate);
-				m_bubbleRateTimer.SetCounter();
-			}
-		}
-
-		m_moveStopTimer = Timer(0.1f);
+		// 泡を生成する
+		// player->CreateBubble();
 	}
 
 	void InputManager::PressedA()
@@ -694,13 +665,20 @@ namespace basecross
 
 	void InputManager::IdelAnimation()
 	{
+		// 押していたらだめ
 		if (m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE)return;
+
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
 		if (!stage) return;
 		auto player = stage->GetSharedGameObject<Player>(L"Player");
 		if (player->GetDeadFlag()) return;
 		if (!player->GetBubbleAnimationEndFlag()) return;
-		player->PlayerChangeAnimation(L"Idle",false);
+		wstring current = player->GetComponent<PNTBoneModelDraw>()->GetCurrentAnimation();
+		auto currentAnimTime = player->GetComponent<PNTBoneModelDraw>()->GetCurrentAnimationTime();
+		if (current == L"Bubble" && currentAnimTime >= 0.4f)
+		{
+			player->PlayerChangeAnimation(L"Idle", false);
+		}
 	}
 
 	void InputManager::RTriggerRelse()
