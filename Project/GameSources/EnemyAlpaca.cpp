@@ -66,10 +66,6 @@ namespace basecross
 		m_eStateMachine->Update();
 		m_draw->UpdateAnimation(App::GetApp()->GetElapsedTime());
 
-		Died(GetThis<EnemyAlpaca>());
-		//m_eStateMachine->Update();
-
-		//DropDirt(GetThis<EnemyAlpaca>());
 		DebugString();
 	}
 
@@ -136,8 +132,8 @@ namespace basecross
 		float distanceRange = 7.0f;
 
 		// 索敵外から出たら徘徊に戻る
-		if (distance >= distanceRange)
-		//if(!Obj->GetDetection())
+		//if (distance >= distanceRange)
+		if(!Obj->GetDetection())
 		{
 			Obj->m_eStateMachine->ChangeState(IdleState::Instance());
 		}
