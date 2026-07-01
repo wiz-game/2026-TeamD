@@ -1,6 +1,6 @@
 /*!
 @file GameStage.h
-@brief �Q�[���X�e�[�W
+@brief ゲームステージ
 */
 
 #pragma once
@@ -16,6 +16,22 @@ namespace basecross
 		Vec3 m_collManagerPos = Vec3(0.0f);
 		Vec3 m_collisionRange = Vec3(100.0f, 1000.0f, 100.0f);
 		string m_stageNum;
+    
+		// カウント時間
+		Timer m_timer;
+		bool m_isGameClear;
+		bool m_isStartStop;
+		bool m_isGameStageMovie;
+
+		// メニュー画面のUI
+		vector<shared_ptr<UIBase>> m_uiframes;
+		vector<shared_ptr<UIBase>> m_uidefaults;
+		vector<shared_ptr<UIBase>> m_uisettings;
+		vector<shared_ptr<UIBase>> m_uihowtoplays;
+
+		// メニュー画面のパラメータ
+		Col4 m_uiDiffuse = Col4(1.0f, 1.0f, 1.0f, 1.0f);
+		float m_selectScale = 0.25f;
 
 		void CreateViewLight();
 		void CreatePlayer();

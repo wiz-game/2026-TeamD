@@ -85,7 +85,15 @@ namespace basecross
 
 		float m_targetRotY;
 
+		// レイの大きさ
 		float m_rayRange;
+
+		// 壁を回避中かどうか
+		bool m_isAvoiding;
+		float m_avoidTimer;
+		float m_InitavoidTimer;
+
+		Vec3 m_targetVec;
 	public:
 		EnemyBase(const shared_ptr<Stage>& stage, const STRUCT_ObjectParam& objectParam);
 
@@ -102,7 +110,7 @@ namespace basecross
 
 		void DebugString();
 
-		void Died(const shared_ptr<GameObject>& gameObject);
+		//void Died(const shared_ptr<GameObject>& gameObject);
 		void DetectionRange(const shared_ptr<GameObject>& gameObject);
 		//void Stalker(const shared_ptr<GameObject>& gameObject, float stalkerSpeed);
 		//void FunctionGravity(const shared_ptr<GameObject>& gameObject);
@@ -120,6 +128,11 @@ namespace basecross
 		bool GetRotation()
 		{
 			return m_isRotated;
+		}
+
+		bool GetAvoiding()
+		{
+			return m_isAvoiding;
 		}
 
 		// --- 当たり判定 ---

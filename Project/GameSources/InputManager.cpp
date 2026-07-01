@@ -73,14 +73,13 @@ namespace basecross
 		case ENUM_GameMode::Play:
 			// プレイヤーの移動
 			if ((m_pad.fThumbLX > STACK_DEADZONE_L || m_pad.fThumbLX < -STACK_DEADZONE_L ||
-				m_pad.fThumbLY > STACK_DEADZONE_L || m_pad.fThumbLY < -STACK_DEADZONE_L) &&
-				m_moveStopTimer.TimeCount(App::GetApp()->GetElapsedTime(), false))
+				m_pad.fThumbLY > STACK_DEADZONE_L || m_pad.fThumbLY < -STACK_DEADZONE_L))
 			{
 				Moves();
 			}
 			else
 			{
-				SetIdelAnimation();
+				IdelAnimation();
 			}
 
 			// 視点移動
@@ -117,6 +116,10 @@ namespace basecross
 			if (m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE)
 			{
 				PushRTrigger();
+			}
+			else
+			{
+				RTriggerRelse();
 			}
 
 			// ポーズメニュー
@@ -164,6 +167,10 @@ namespace basecross
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
 			{
 				PressedAMenu();
+			}
+			if (m_pad.wReleasedButtons & XINPUT_GAMEPAD_A)
+			{
+				ReleasedAMenu();
 			}
 
 			break;
@@ -314,17 +321,15 @@ namespace basecross
 		if (!stage) return;
 
 		auto player = stage->GetSharedGameObject<Player>(L"Player");
-		auto modelDraw = player->GetComponent<PNTBoneModelDraw>();
-		if (modelDraw->GetCurrentAnimation() != L"Walk")
-		{
-			modelDraw->ChangeCurrentAnimation(L"Walk");
-		}
-		
+		if (player->GetDeadFlag()) return;
+		if (!player->GetBubbleAnimationEndFlag())return;
+		if (player->GetMoveStopFlag())return;
+		player->OnMoveInput();
+	
 		auto pos = player->GetComponent<Transform>()->GetPosition();
 		auto forward = player->GetComponent<Transform>()->GetForward();
 		auto right = player->GetComponent<Transform>()->GetRight();
 		Vec3 effectPos = pos;
-
 		float side = m_isRight ? 0.3f : -0.3f;
 		effectPos += forward * 0.75f;
 		effectPos += right * side;
@@ -341,6 +346,7 @@ namespace basecross
 
 		player->GetComponent<Move>()
 			->VectorMove(Vec3(m_pad.fThumbLX * m_MoveSpeed, 0.0f, m_pad.fThumbLY * m_MoveSpeed));
+
 
 		if (!m_isEffectDraw)
 		{
@@ -384,52 +390,12 @@ namespace basecross
 		// 泡を吐く
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
 		auto player = stage->GetSharedGameObject<Player>(L"Player");
-		auto modelDraw = player->GetComponent<PNTBoneModelDraw>();
-		auto attack = player->GetAttack();
-		auto playerPowerUp = player->GetPlayerPowerUp();
-		auto bubble = player->GetHaveBubble();
-		auto initCoolDown = 0.6f;
-		auto bresing = player->GetBresing();
-		auto pos = player->GetComponent<Transform>()->GetPosition();
-		// エフェクトの回転
-		auto forward = player->GetComponent<Transform>()->GetForward();
-		forward.normalize();
-		auto baseforward = Vec3(1.0f, 0.0f, 0.0f);
-		Vec3 axis = baseforward;
-		axis.cross(forward);
-		axis.normalize();
-		float dot = baseforward.dot(forward);
-		dot = clamp(dot, -1.0f, 1.0f);
-		float angle = acos(dot);
-		Quat rot = Quat(axis, angle);
-		Quat offset(Vec3(0, 1, 0), XMConvertToRadians(13.0f));
-		Quat finalRot = offset * rot;
-		float bubbleRate = 0.25f;
-
-		if (modelDraw->GetCurrentAnimation() != L"Bubble")
-		{
-			modelDraw->ChangeCurrentAnimation(L"Bubble");
-		}
-
-		if (!bresing)
-		{
-			if (m_bubbleRateTimer.TimeCount(App::GetApp()->GetElapsedTime(), false))
-			{
-				bubble = stage->AddGameObject<Bubble>(player, Vec3(0.5f), 5.0f, attack, playerPowerUp);
-				bubble->ShootBubble();
-				player->SetBresing(true);
-				player->SetCoolDown(initCoolDown);
-
-				EffectHandle effHandle;
-				effHandle = EffectManager::Instance().PlayEffect(L"Bubble", pos + forward);
-				EffectManager::Instance().SetScale(effHandle, Vec3(0.35f));
-				EffectManager::Instance().SetRotationFromQuaternion(effHandle, finalRot);
-				m_bubbleRateTimer = Timer(bubbleRate);
-				m_bubbleRateTimer.SetCounter();
-			}
-		}
-
-		m_moveStopTimer = Timer(0.1f);
+		if (player->GetDeadFlag()) return;
+		if (player->GetMoveStopFlag())return;
+		// Rトリガーが押されたら、アニメーションを変更させる
+		player->OnRTriggerInput();
+		// 泡を生成する
+		// player->CreateBubble();
 	}
 
 	void InputManager::PressedA()
@@ -443,6 +409,8 @@ namespace basecross
 
 	void InputManager::PressedStart()
 	{
+		SetInputEnabled(true);
+
 		GameManager::Instance().SetGameMode(ENUM_GameMode::Menu);
 	}
 
@@ -477,6 +445,8 @@ namespace basecross
 
 	void InputManager::ReturnGame()
 	{
+		if (!m_isInputEnabled)return;
+
 		switch (MenuManager::Instance().GetMenuMode())
 		{
 		case ENUM_MenuMode::MenuStart:
@@ -514,48 +484,63 @@ namespace basecross
 
 	void InputManager::MoveMenuCursor()
 	{
-		switch (MenuManager::Instance().GetMenuMode())
+		if (!m_isInputEnabled)return;
+
+		if (!(m_pad.wLastButtons & XINPUT_GAMEPAD_A))
 		{
-		case ENUM_MenuMode::Default:
-			break;
-
-		case ENUM_MenuMode::MenuStart:
-			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP)
+			switch (MenuManager::Instance().GetMenuMode())
 			{
-				MenuManager::Instance().ChangeSelectMenuMode(-1);
-			}
-			else if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
-			{
-				MenuManager::Instance().ChangeSelectMenuMode(+1);
-			}
-			break;
-			
-		case ENUM_MenuMode::Setting:
-			break;
+			case ENUM_MenuMode::Default:
+				break;
 
-		case ENUM_MenuMode::Howtoplay:
-			break;
+			case ENUM_MenuMode::MenuStart:
+				if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP)
+				{
+					MenuManager::Instance().ChangeSelectMenuMode(-1);
+				}
+				else if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+				{
+					MenuManager::Instance().ChangeSelectMenuMode(+1);
+				}
+				break;
+
+			case ENUM_MenuMode::Setting:
+				break;
+
+			case ENUM_MenuMode::Howtoplay:
+				break;
+			}
 		}
 
 	}
 
 	void InputManager::PressedAMenu()
 	{
+		MenuManager::Instance().ChangeUISize(0.235f);
+	}
+
+	void InputManager::ReleasedAMenu()
+	{
 		switch (MenuManager::Instance().GetMenuUI())
 		{
 		case ENUM_MenuStart::Restart:
+			MenuManager::Instance().ChangeUISize(0.25f);
 			ReturnGame();
 			break;
 
 		case ENUM_MenuStart::Setting:
+			MenuManager::Instance().ChangeUISize(0.25f);
 			EnterSetting();
 			break;
 
 		case ENUM_MenuStart::Howtoplay:
+			MenuManager::Instance().ChangeUISize(0.25f);
 			EnterHowtoplay();
 			break;
 
 		case ENUM_MenuStart::Retitle:
+			SetInputEnabled(false);
+			MenuManager::Instance().ChangeUISize(0.25f);
 			ReturnTitle();
 			break;
 		}
@@ -670,28 +655,38 @@ namespace basecross
 	{
 		if (GameManager::Instance().GetGameMode() == ENUM_GameMode::Play)
 		{
-			//GameManager::Instance().SetGameMode(ENUM_GameMode::Movie);
+			GameManager::Instance().SetGameMode(ENUM_GameMode::Movie);
 		}
 		else
 		{
 			GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
 		}
-
 	}
 
-	void basecross::InputManager::SetIdelAnimation()
+	void InputManager::IdelAnimation()
 	{
-		if (m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE)
-		{
-			return;
-		}
+		// 押していたらだめ
+		if (m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE)return;
 
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		if (!stage) return;
 		auto player = stage->GetSharedGameObject<Player>(L"Player");
-		auto modelDraw = player->GetComponent<PNTBoneModelDraw>();
-		if (modelDraw->GetCurrentAnimation() != L"Idle")
+		if (player->GetDeadFlag()) return;
+		if (!player->GetBubbleAnimationEndFlag()) return;
+		wstring current = player->GetComponent<PNTBoneModelDraw>()->GetCurrentAnimation();
+		auto currentAnimTime = player->GetComponent<PNTBoneModelDraw>()->GetCurrentAnimationTime();
+		if (current == L"Bubble" && currentAnimTime >= 0.4f)
 		{
-			modelDraw->ChangeCurrentAnimation(L"Idle");
+			player->PlayerChangeAnimation(L"Idle", false);
 		}
+	}
+
+	void InputManager::RTriggerRelse()
+	{
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
+		if (!stage) return;
+		auto player = stage->GetSharedGameObject<Player>(L"Player");
+		if (player->GetDeadFlag()) return;
+		player->OnRTriggerRelese();
 	}
 }

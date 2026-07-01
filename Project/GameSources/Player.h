@@ -70,6 +70,12 @@ namespace basecross
 		bool m_isPlayerPowerUp;
 		// カウント時間
 		Timer m_timer;
+
+		wstring nowAnimation;
+
+		bool m_isBubbleAnimationEnd;
+		bool m_isMoveStop;
+		bool m_isStartStop;
 	public :
 		// ステージを引数にしたコンストラクタ【必須】
 		Player(const std::shared_ptr<Stage>& stage, const Vec3& position) :
@@ -78,7 +84,7 @@ namespace basecross
 			m_Position(position),
 			m_Rotation(0.0f, 1.5f, 0.0f),
 			m_Scale(1.0f, 1.5f, 1.5f),
-			m_VecJumpPower(0.0f,9.8f,0.0f),
+			m_VecJumpPower(0.0f, 9.8f, 0.0f),
 			m_isJumping(false),
 			m_JumpPower(6.0f),
 			m_Gravity(9.8f),
@@ -100,7 +106,11 @@ namespace basecross
 			m_isDead(false),
 			m_isPlayerPowerUp(false),
 			m_playerState(PlayerState::Default),
-			m_timer(0.0f)
+			m_timer(0.0f),
+			nowAnimation(L"Idel"),
+			m_isBubbleAnimationEnd(true),
+			m_isMoveStop(true),
+			m_isStartStop(true)
 		{
 		}
 
@@ -186,6 +196,26 @@ namespace basecross
 			m_cooldown = cd;
 		}
 
+		bool GetDeadFlag()
+		{
+			return m_isDead;
+		}
+
+		bool GetBubbleAnimationEndFlag()
+		{
+			return m_isBubbleAnimationEnd;
+		}
+
+		void SetMoveStopFlag(bool flag)
+		{
+			m_isMoveStop = flag;
+		}
+
+		bool GetMoveStopFlag()
+		{
+			return m_isMoveStop;
+		}
+
 		void CreateBubble();
 
 		void SetPlayerState(PlayerState state);
@@ -193,7 +223,12 @@ namespace basecross
 		void ExitPlayerState(PlayerState state);
 
 		void PlayerAnimation();
-		
+		void PlayerChangeAnimation(const wstring& newAnim,bool forceRestart);
+		void OnMoveInput();
+		void OnRTriggerInput();
+		void OnRTriggerRelese();
+		void PlayGameAnimation();
+		void BubbleEffect();
 	};
 }
 //end basecross

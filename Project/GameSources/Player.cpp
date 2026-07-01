@@ -34,7 +34,7 @@ namespace basecross
 		//obb->SetAfterCollision(AfterCollision::Auto);
 
 		// 重力のコンポーネント
-		m_gravity = AddComponent<Gravity>();
+		// m_gravity = AddComponent<Gravity>();
 
 		auto shadowComp = AddComponent<Shadowmap>();
 		shadowComp->SetMeshResource(L"AwaPaka");
@@ -56,7 +56,10 @@ namespace basecross
 		m_pntDraw->AddAnimation(L"Idle",  0,  65, loopFlag, 60.0f);
 		m_pntDraw->AddAnimation(L"Walk", 70, 80, loopFlag, 60.0f);
 		m_pntDraw->AddAnimation(L"Bubble", 155, 30, loopFlag, 60.0f);
-		m_pntDraw->AddAnimation(L"ALL", 0, 999, loopFlag, 60.0f);
+		m_pntDraw->AddAnimation(L"GameOver", 190, 60, !loopFlag, 60.0f);
+		m_pntDraw->AddAnimation(L"GameClear", 255, 45, loopFlag, 60.0f);
+		m_pntDraw->AddAnimation(L"Eat", 305, 50, !loopFlag, 30.0f);
+		m_pntDraw->AddAnimation(L"ALL", 0, 355, loopFlag, 60.0f);
 
 		m_pntDraw->ChangeCurrentAnimation(L"Idle");
 
@@ -88,11 +91,31 @@ namespace basecross
 			if (m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
 			{
 				GameManager::Instance().SetGameMode(ENUM_GameMode::GameOver);
+				MovieManager::Instance().StopMovie();
 			}
 			break;
 		default:
 			break;
 		}
+
+		// 現在のアニメと終了判定を毎フレーム取得
+		wstring current = m_pntDraw->GetCurrentAnimation();
+		bool isEnd = m_pntDraw->IsTargetAnimeEnd();
+
+		// Bubble の終了検出
+		if (current == L"Bubble" && isEnd)
+		{
+			m_isBubbleAnimationEnd = true;
+		}
+
+		auto draw = GetComponent<PNTBoneModelDraw>();
+		auto animTime = draw->GetCurrentAnimationTime();
+		if (!GetBresing() && current == L"Bubble" && animTime >= 0.4f)
+		{
+			CreateBubble();
+		}
+
+		GameManager::Instance().AddDebugStr(L"AnimTime", animTime);
 	}
 
 	void Player::Jump()
@@ -192,6 +215,7 @@ namespace basecross
 		//GameManager::Instance().AddDebugStr(L"PlayerPowerUp", m_isPlayerPowerUp);
 		//GameManager::Instance().AddDebugStr(L"PowerUpTimer", m_timer.GetCounter());
 		//GameManager::Instance().AddDebugStr(L"PlayerPowerUp", m_isPlayerPowerUp);
+		// GameManager::Instance().AddDebugStr(L"CurrentAnimation", m_draw->GetCurrentAnimation());
 	}
 
 	void Player::ReSpawn()
@@ -270,9 +294,19 @@ namespace basecross
 
 	void Player::CreateBubble()
 	{
-		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-		m_pBubble = stage->AddGameObject<Bubble>(GetThis<Player>(), Vec3(0.5f), 5.0f, m_Attack,m_isPlayerPowerUp);
-		m_pBubble->ShootBubble();
+		OnRTriggerInput();
+		BubbleEffect();
+
+		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage(); 
+		auto player = stage->GetSharedGameObject<Player>(L"Player");
+		auto attack = GetAttack();
+		auto playerPowerUp = GetPlayerPowerUp();
+		auto bubble = GetHaveBubble();
+		auto initCoolDown = 0.3f;
+		bubble = stage->AddGameObject<Bubble>(player, Vec3(0.5f), 5.0f, attack, playerPowerUp);
+		bubble->ShootBubble();
+		SetBresing(true);
+		SetCoolDown(initCoolDown);
 	}
 
 	void Player::SetPlayerState(PlayerState state)
@@ -295,8 +329,11 @@ namespace basecross
 			m_isPlayerPowerUp = true;
 			break;
 		case PlayerState::Dead:
-			m_timer = Timer(0.0f);
+			m_timer = Timer(2.0f);
 			m_timer.SetCounter();
+			m_pntDraw->ChangeCurrentAnimation(L"GameOver");
+			MovieManager::Instance().Initialize();
+			MovieManager::Instance().PlayMovie(MovieType::GameOver);
 			break;
 		default:
 			break;
@@ -317,11 +354,91 @@ namespace basecross
 			break;
 		}
 	}
+
 	void Player::PlayerAnimation()
 	{
 		m_pntDraw->UpdateAnimation(App::GetApp()->GetElapsedTime());
-		//GameManager::Instance().AddDebugStr(L"NowAnimation", m_pntDraw->GetCurrentAnimation());
-		//GameManager::Instance().AddDebugStr(L"AnimationTime", m_pntDraw->GetCurrentAnimationTime());
+	}
+	
+	void Player::PlayerChangeAnimation(const wstring& newAnim, bool forceRestart)
+	{
+		if (newAnim.empty())return;
+				
+		wstring current = m_pntDraw->GetCurrentAnimation();
+
+		if (!forceRestart && nowAnimation == newAnim) return;
+
+		m_pntDraw->ChangeCurrentAnimation(newAnim.c_str());
+
+		nowAnimation = newAnim;
+	}
+
+	void Player::OnMoveInput()
+	{
+		if (GetDeadFlag()) return;
+		if (GetMoveStopFlag()) return;
+
+		wstring current = m_pntDraw->GetCurrentAnimation();
+		bool isEnd = m_pntDraw->IsTargetAnimeEnd();
+
+		if (m_isBubbleAnimationEnd)
+		{
+			if (current != L"Walk")
+			{
+				PlayerChangeAnimation(L"Walk", false);
+			}
+		}
+	}
+
+	void Player::OnRTriggerInput()
+	{
+		if (GetDeadFlag()) return;
+		if (GetMoveStopFlag()) return;
+	
+		 m_isBubbleAnimationEnd = false;
+		 PlayerChangeAnimation(L"Bubble", false);
+	}
+
+	void Player::OnRTriggerRelese()
+	{
+		wstring current = m_pntDraw->GetCurrentAnimation();
+
+		if (current == L"Bubble")
+		{
+			m_isBubbleAnimationEnd = true;
+		}
+	}
+
+	void Player::PlayGameAnimation()
+	{
+		if (m_isStartStop)
+		{
+			PlayerChangeAnimation(L"Idle", false);
+			m_isStartStop = false;
+		}
+	}
+
+	void Player::BubbleEffect()
+	{
+		// エフェクトの回転
+		auto pos = GetComponent<Transform>()->GetPosition();
+		auto forward = GetComponent<Transform>()->GetForward();
+		forward.normalize();
+		auto baseforward = Vec3(1.0f, 0.0f, 0.0f);
+		Vec3 axis = baseforward;
+		axis.cross(forward);
+		axis.normalize();
+		float dot = baseforward.dot(forward);
+		dot = clamp(dot, -1.0f, 1.0f);
+		float angle = acos(dot);
+		Quat rot = Quat(axis, angle);
+		Quat offset(Vec3(0, 1, 0), XMConvertToRadians(13.0f));
+		Quat finalRot = offset * rot;
+
+		EffectHandle effHandle;
+		effHandle = EffectManager::Instance().PlayEffect(L"Bubble", pos + forward);
+		EffectManager::Instance().SetScale(effHandle, Vec3(0.35f));
+		EffectManager::Instance().SetRotationFromQuaternion(effHandle, finalRot);
 	}
 }
 //end basecross

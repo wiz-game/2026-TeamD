@@ -30,13 +30,17 @@ namespace basecross
 
 		// 時間
 		Timer m_timer = 0.0f;
+		// アニメーション再生で止まる時間
 		Timer m_moveStopTimer = 0.0f;
+		// 泡の発射レート
 		Timer m_bubbleRateTimer = 0.0f;
 		// エフェクトを表示するか
 		bool  m_isEffectDraw = false;
 		// 左右どちらかの判定
 		bool  m_isRight = false;
-		// 
+
+		// コントローラーの入力のオンオフ
+		bool m_isInputEnabled = true;
 
 	public:
 		static InputManager& Instance()
@@ -50,6 +54,9 @@ namespace basecross
 
 		void SetWheelDelta(int wheelDelta) { m_wheelDelta += wheelDelta; }
 		void ResetWheelDelta() { m_wheelDelta = 0; }
+
+		// コントローラーの入力切り替え
+		void SetInputEnabled(bool enabled) { m_isInputEnabled = enabled; }
 
 		// 移動速度のゲッターセッター
 		float GetMoveSpeed()
@@ -111,6 +118,7 @@ namespace basecross
 		void ReturnOneMenu();
 		void MoveMenuCursor();
 		void PressedAMenu();
+		void ReleasedAMenu();
 
 		// GameMode：Editer用の入力関数
 		// ギズモによる操作
@@ -146,6 +154,8 @@ namespace basecross
 		void PressedCKey();
 		void PressedVKey();
 
-		void SetIdelAnimation();
+		void IdelAnimation();
+		void RTriggerRelse();
+
 	};
 }

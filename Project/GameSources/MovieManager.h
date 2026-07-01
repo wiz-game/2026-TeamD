@@ -3,6 +3,7 @@
 
 namespace basecross
 {
+	class Player;
 	struct CameraKeyframe
 	{
 		float time;
@@ -11,6 +12,16 @@ namespace basecross
 		float armLength;
 		float fov;
 		enum Easing { Linear = 0, EaseInOut = 1 } easing = Linear;
+	};
+
+	struct LocalCamKey
+	{
+		float time;
+		float distance;
+		float height;
+		float lookAtHeight;
+		float fov;
+		CameraKeyframe::Easing easing;
 	};
 
 	struct CameraTrack
@@ -49,8 +60,10 @@ namespace basecross
 		vector<char> keyCalled;
 
 		bool onCompleteCalled = false;
+		bool keysAreLocal = false;
+		bool keysConverted = false;
 	};
-
+	
 	class MovieManager
 	{
 	private:
@@ -62,6 +75,18 @@ namespace basecross
 	
 		size_t m_currentEventIndex;
 		float m_currentEventTime;
+
+		shared_ptr<Player> m_player;
+		Vec3 m_cachedPlayerPos;
+		Vec3 m_cachedPlayerForward;
+
+		// カメラ当たり判定パラメータ
+		// カメラ球の半径
+		float m_cameraRadius;
+		// 壁から離す余裕
+		float m_safetyMargin;
+		// プレイヤーに最小限寄せる距離
+		float m_minCamDistance;
 	
 		MovieManager();
 		~MovieManager();
@@ -93,7 +118,10 @@ namespace basecross
 
 		// 全てのゲームオブジェクトの更新フラグを変更する
 		void SetAllGameObjectsUpdateActive(bool isActive);
-
+		static Vec3 GetForwardXZ(const Vec3& fwd);
 		pair<Vec3, Vec3> MoveCameraInFrontPlayer(float distance, float height, float lookAtHeight);
+		Vec3 Lerp(const Vec3& a, const Vec3& b, float t);
+		void SetPlayer(shared_ptr<Player>& obj);
+		shared_ptr<Player> GetPlayer();
 	};
 }
