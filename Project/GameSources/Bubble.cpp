@@ -46,10 +46,10 @@ namespace basecross
 		
 		m_trans = GetComponent<Transform>();
 
-		float randPosX = static_cast<float>((rand() % 100) - 50) * 0.01f;
-		float randPosZ = static_cast<float>((rand() % 100) - 50) * 0.01f;
+		//float randPosX = static_cast<float>((rand() % 100) - 50) * 0.01f;
+		//float randPosZ = static_cast<float>((rand() % 100) - 50) * 0.01f;
 
-		m_pos = Vec3(parentPos.x + randPosX, parentPos.y + 1.0f, parentPos.z + randPosZ) + m_parentForward * 1.25f;
+		m_pos = Vec3(parentPos.x, parentPos.y + 1.0f, parentPos.z) + m_parentForward * 1.25f;
 
 		m_trans->SetPosition(m_pos);
 		m_trans->SetScale(Vec3(m_scale));
@@ -235,6 +235,7 @@ namespace basecross
 	{
 		if (Other->FindTag(L"Dirt"))
 		{
+			DirtHitEffect(GetComponent<Transform>()->GetPosition());
 			auto dirt = dynamic_pointer_cast<Dirt>(Other);
 			ResolveCounteract(*this, *dirt);
 		}
@@ -247,8 +248,6 @@ namespace basecross
 			m_HP -= decreasehp;
 			m_HP = max(0.0f, m_HP);
 		}
-
-		if (!Other->FindTag(L"Ground")) return;
 
 		if (m_isTranpolineBubble)
 		{
@@ -330,6 +329,13 @@ namespace basecross
 		}
 
 		m_activeDraw->SetDrawActive(true);
+	}
+
+	void Bubble::DirtHitEffect(const Vec3& pos)
+	{
+		EffectHandle handle;
+		handle = EffectManager::Instance().PlayEffect(L"Bubble_Pop", pos);
+		EffectManager::Instance().SetScale(handle, Vec3(0.4f));
 	}
 
 	ViewBubble::ViewBubble(const shared_ptr<Stage>& stage, const vector<Vec3> *vertices) :
