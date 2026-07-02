@@ -49,7 +49,7 @@ namespace basecross
 		auto pos = m_sPtrTrans->GetPosition();
 		EffectHandle effHandle;
 		effHandle = EffectManager::Instance().PlayEffect(L"Leaf", Vec3(pos.x, pos.y - 0.76f, pos.z));
-		EffectManager::Instance().SetScale(effHandle, Vec3(0.5f));
+		EffectManager::Instance().SetScale(effHandle, Vec3(0.35f));
 
 		SetAlphaActive(true);
 	}
