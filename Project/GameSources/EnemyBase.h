@@ -36,6 +36,9 @@ namespace basecross
 
 		float m_rotToHeadLeap;
 
+		// 壁に触れたかどうか
+		bool m_isHitWall;
+
 		// 座標を格納するための変数
 		Vec3 m_Point1Position;
 		Vec3 m_Point2Position;
@@ -52,8 +55,6 @@ namespace basecross
 		}
 		m_NumPoint;
 
-		//enum Vec3 
-
 		enum ENUM_RANDOMROT
 		{
 			RandomRotL,
@@ -63,6 +64,7 @@ namespace basecross
 		}m_NumRandRot;
 
 	protected:
+
 		float m_EnemyHP;
 		bool m_Detection;
 
@@ -103,6 +105,7 @@ namespace basecross
 		~EnemyBase()
 		{
 		}
+		unique_ptr<StateMachine<EnemyBase>> m_eStateMachine;
 
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
@@ -120,6 +123,7 @@ namespace basecross
 		void DetectionRange(const shared_ptr<GameObject>& gameObject); // 索敵範囲
 		void MazeWandering(const shared_ptr<GameObject>& gameObject); // 徘徊AI
 		void Tracking(const shared_ptr<GameObject>& gameObject,float speed); // 追跡AI
+		void EstimatedPlayerLocation(const shared_ptr<GameObject>& gameObject, float speed);
 
 		// angleは度数法で書いてください
 		Vec3 CalculateEndPointRayAngle(const Vec3& startPos,const float& forwardAngle,const float& angle);
@@ -138,6 +142,11 @@ namespace basecross
 		bool GetAvoiding()
 		{
 			return m_isAvoiding;
+		}
+
+		bool GetIsHitWall()
+		{
+			return m_isHitWall;
 		}
 
 		// --- 当たり判定 ---

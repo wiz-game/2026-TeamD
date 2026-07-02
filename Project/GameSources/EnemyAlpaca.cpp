@@ -50,7 +50,7 @@ namespace basecross
 		m_draw->SetMeshToTransformMatrix(spanMat);
 		shadowComp->SetMeshToTransformMatrix(spanMat);
 		
-		m_eStateMachine.reset(new StateMachine<EnemyAlpaca>(GetThis<EnemyAlpaca>()));
+		m_eStateMachine.reset(new StateMachine<EnemyBase>(GetThis<EnemyBase>()));
 		m_eStateMachine->ChangeState(IdleState::Instance());
 
 		auto loopFlag = true;
@@ -76,12 +76,12 @@ namespace basecross
 		return instance;
 	}
 
-	void IdleState::Enter(const shared_ptr<EnemyAlpaca>& Obj)
+	void IdleState::Enter(const shared_ptr<EnemyBase>& Obj)
 	{
 		
 	}
 
-	void IdleState::Execute(const shared_ptr<EnemyAlpaca>& Obj)
+	void IdleState::Execute(const shared_ptr<EnemyBase>& Obj)
 	{
 		Obj->MazeWandering(Obj);
 		Obj->DetectionRange(Obj);
@@ -92,7 +92,7 @@ namespace basecross
 		}
 	}
 
-	void IdleState::Exit(const shared_ptr<EnemyAlpaca>& Obj)
+	void IdleState::Exit(const shared_ptr<EnemyBase>& Obj)
 	{
 
 	}
@@ -104,42 +104,45 @@ namespace basecross
 		return instance;
 	}
 
-	void AngryState::Enter(const shared_ptr<EnemyAlpaca>& Obj)
+	void AngryState::Enter(const shared_ptr<EnemyBase>& Obj)
 	{
 
 	}
 
-	void AngryState::Execute(const shared_ptr<EnemyAlpaca>& Obj)
+	void AngryState::Execute(const shared_ptr<EnemyBase>& Obj)
 	{
 		Obj->Tracking(Obj,3.0f);
-		// Playerの情報を取得する
-		auto player = App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetSharedGameObject<Player>(L"Player");
-		if (!player)
-		{
-			return;
-		}
-		auto playerComp = player->GetComponent<Transform>();
-		auto playerPos = playerComp->GetPosition();
-		// 自身の位置を取得する
-		auto myComp = Obj->GetComponent<Transform>();
-		auto myPos = myComp->GetPosition();
-		// プレイヤーと自身の距離を計算する
-		float distancePosX = playerPos.x - myPos.x;
-		float distancePosY = playerPos.y - myPos.y;
-		float distancePosZ = playerPos.z - myPos.z;
-		float distance = sqrt((distancePosX * distancePosX) + (distancePosY * distancePosY) + (distancePosZ * distancePosZ));
+		Obj->DetectionRange(Obj);
 
-		float distanceRange = 7.0f;
-
-		// 索敵外から出たら徘徊に戻る
-		//if (distance >= distanceRange)
 		if(!Obj->GetDetection())
 		{
-			Obj->m_eStateMachine->ChangeState(IdleState::Instance());
+			Obj->m_eStateMachine->ChangeState(ArrivalState::Instance());
 		}
 	}
 
-	void AngryState::Exit(const shared_ptr<EnemyAlpaca>& Obj)
+	void AngryState::Exit(const shared_ptr<EnemyBase>& Obj)
+	{
+
+	}
+
+	// ステートマシンの処理
+	shared_ptr<ArrivalState> ArrivalState::Instance()
+	{
+		static shared_ptr<ArrivalState> instance(new ArrivalState);
+		return instance;
+	}
+
+	void ArrivalState::Enter(const shared_ptr<EnemyBase>& Obj)
+	{
+
+	}
+
+	void ArrivalState::Execute(const shared_ptr<EnemyBase>& Obj)
+	{
+		Obj->EstimatedPlayerLocation(Obj, 3.0f);
+	}
+
+	void ArrivalState::Exit(const shared_ptr<EnemyBase>& Obj)
 	{
 
 	}

@@ -42,7 +42,9 @@ namespace basecross
         m_avoidTimer(0.0f),
         m_InitavoidTimer(0.5f),
 
-        m_targetVec()
+        m_targetVec(),
+
+        m_isHitWall(false)
     {}
 
     void EnemyBase::OnCreate()
@@ -230,7 +232,8 @@ namespace basecross
 
                 if (drawComp->HitTestStaticMeshSegmentTrianglesToAffine(startPos, angleEndPos, hitPos))
                 {
-                    hitWallPos = obj->GetComponent<Transform>()->GetPosition();
+                    //hitWallPos = obj->GetComponent<Transform>()->GetPosition();
+                    hitWallPos = hitPos;
                 }
             }
 
@@ -244,7 +247,7 @@ namespace basecross
             // rayRange以内の壁の位置を除外する
 			auto hitWallVec = hitWallPosition - transPos;
 			hitWallVec.y = 0.0f;
-            hitWallVec.normalize();
+            //hitWallVec.normalize();
 
 			if (hitWallVec.length() <= m_rayRange) continue;
 
@@ -258,11 +261,11 @@ namespace basecross
 			// 二つの壁の位置とプレイヤーを結ぶベクトルの長さを比較して、よりプレイヤーに近い位置を選択する
 			auto risultClosePlayerVec = risultClosePlayerPos - playerPos;
             risultClosePlayerVec.y = 0.0f;
-            risultClosePlayerVec.normalize();
+            //risultClosePlayerVec.normalize();
 
 			auto nowClosePlayerVec = hitWallPosition - playerPos;
 			nowClosePlayerVec.y = 0.0f;
-			nowClosePlayerVec.normalize();
+			//nowClosePlayerVec.normalize();
 
 			if (nowClosePlayerVec.length() < risultClosePlayerVec.length())
 			{
@@ -272,7 +275,59 @@ namespace basecross
 
 		m_closePlayerPos = risultClosePlayerPos;
         // 上の座標に移動するStateに遷移する（ために多分フラグを立てるとおもう）
+    }
 
+    void EnemyBase::EstimatedPlayerLocation(const shared_ptr<GameObject>& gameObject, float speed)
+    {
+        auto transComp = gameObject->GetComponent<Transform>();
+        auto transPos = transComp->GetPosition();
+
+        auto playerComp = GetStage()->GetSharedGameObject<Player>(L"Player")->GetComponent<Transform>();
+        auto playerPos = playerComp->GetPosition();
+
+        auto elpasedTime = App::GetApp()->GetElapsedTime();
+
+        // m_closePlayerに向かって移動する
+        Vec3 toTargetVec = m_closePlayerPos - transPos;
+        toTargetVec.y = 0.0f;
+        Vec3 distance = toTargetVec;
+        toTargetVec.normalize();
+
+        m_isHitWall = false;
+        float reyYOffSet = 0.3f;
+        Vec3 startPos = Vec3(transPos.x, transPos.y + reyYOffSet, transPos.z);
+        Vec3 playerEndPos = Vec3(playerPos.x, transPos.y + reyYOffSet, playerPos.z);
+        for (auto& obj : GetStage()->GetGameObjectVec())
+        {
+            if (!obj->FindTag(L"Wall")) continue;
+
+            auto drawComp = obj->GetComponent<PNTStaticDraw>(false);
+            if (!drawComp) continue;
+
+            if (drawComp->HitTestStaticMeshSegmentTrianglesToAffine(startPos, playerEndPos))
+            {
+                m_isHitWall = true;
+                break;
+            }
+        }
+
+        if (!m_isHitWall)
+        {
+            m_eStateMachine->ChangeState(AngryState::Instance());
+            return;
+        }
+
+        // m_closePlayerが一定値以下になったか
+        float arrivalDistance = 0.5f;
+        if (distance.length() <= arrivalDistance)
+        {
+            m_eStateMachine->ChangeState(IdleState::Instance());
+            return;
+        }
+        transPos += toTargetVec * speed * elpasedTime;
+        transPos.y = 0.0f;
+        transComp->SetPosition(transPos);
+        GetBehavior<UtilBehavior>()->RotToHead(toTargetVec, m_rotToHeadLeap);
     }
 
     void EnemyBase::MazeWandering(const shared_ptr<GameObject>& gameObject)
