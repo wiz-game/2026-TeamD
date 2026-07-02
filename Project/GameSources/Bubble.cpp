@@ -290,7 +290,7 @@ namespace basecross
 		}
 		else
 		{
-			DirtHitEffect(GetComponent<Transform>()->GetPosition());
+			ObjectHitEffect(GetComponent<Transform>()->GetPosition());
 			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
 		}
 	}
@@ -332,10 +332,17 @@ namespace basecross
 		m_activeDraw->SetDrawActive(true);
 	}
 
-	void Bubble::DirtHitEffect(const Vec3& pos)
+	void Bubble::ObjectHitEffect(const Vec3& pos)
 	{
 		EffectHandle handle;
 		handle = EffectManager::Instance().PlayEffect(L"Bubble_Pop", pos);
+		EffectManager::Instance().SetScale(handle, Vec3(0.4f));
+	}
+
+	void Bubble::DirtHitEffect(const Vec3& pos)
+	{
+		EffectHandle handle;
+		handle = EffectManager::Instance().PlayEffect(L"Bubble_Pop_Ver2", pos);
 		EffectManager::Instance().SetScale(handle, Vec3(0.4f));
 	}
 
