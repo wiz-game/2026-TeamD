@@ -2382,6 +2382,16 @@ namespace basecross {
 		bool HitTestStaticMeshSegmentTrianglesToAffine(const bsm::Vec3& StartPos, const bsm::Vec3& EndPos);
 		//--------------------------------------------------------------------------------------
 		/*!
+		@brief	線分とメッシュのワールド頂点の衝突判定(Affine変換と判定のみ行う)
+		@param[in]	StartPos	線分の開始点
+		@param[in]	EndPos	線分の終了点
+		@param[out]	HitPoint	衝突していた場合の衝突点
+		@return	衝突していたらtrue
+		*/
+		//--------------------------------------------------------------------------------------
+		bool HitTestStaticMeshSegmentTrianglesToAffine(const bsm::Vec3& StartPos, const bsm::Vec3& EndPos, bsm::Vec3& HitPoint);
+		//--------------------------------------------------------------------------------------
+		/*!
 		@brief	球体とメッシュのワールド頂点の衝突判定
 		@param[in]	StartSp	球体の開始点
 		@param[in]	EndSp	球体の終了点

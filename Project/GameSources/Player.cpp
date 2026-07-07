@@ -437,7 +437,7 @@ namespace basecross
 
 		EffectHandle effHandle;
 		effHandle = EffectManager::Instance().PlayEffect(L"Bubble", pos + forward);
-		EffectManager::Instance().SetScale(effHandle, Vec3(0.35f));
+		EffectManager::Instance().SetScale(effHandle, Vec3(0.2f));
 		EffectManager::Instance().SetRotationFromQuaternion(effHandle, finalRot);
 	}
 }
