@@ -50,6 +50,8 @@
 #include "Apple.h"
 #include "Shrub.h"
 #include "SoilWall.h"
+#include "SoilWallLong.h"
+#include "SoilWallShort.h"
 
 // エネミー
 #include "EnemyBase.h"
@@ -69,6 +71,7 @@
 #include "UISlide.h"
 #include "UITransitionSlide.h"
 #include "UIMenu.h"
+#include "UIStatueNum.h"
 
 // 判定のみオブジェクト
 #include "CollisionObject.h"

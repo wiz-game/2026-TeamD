@@ -26,7 +26,7 @@ namespace basecross
 	{
 	private:
 		shared_ptr<DebugLog> m_sPtrDebugLog = nullptr;
-		int m_dirtNum;
+		int m_dirtNum = 0;
 
 		ENUM_GameMode m_gameMode = ENUM_GameMode::Title;
 		ENUM_GameMode m_transitionAfterGameMode = ENUM_GameMode::Null;
