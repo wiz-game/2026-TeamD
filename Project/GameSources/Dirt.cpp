@@ -94,6 +94,7 @@ namespace basecross
 			m_draw->SetMeshResource(L"AwaPaka_gold");
 			m_draw->SetTextureResource(L"T_AwaPaka_Gold");
 			EffectManager::Instance().PlayEffect(L"Clean", GetComponent<Transform>()->GetPosition());
+			GameManager::Instance().SubDirt();
 			break;
 		default:
 			break;
