@@ -39,6 +39,8 @@ namespace basecross
 		// 壁に触れたかどうか
 		bool m_isHitWall;
 
+		float m_ExpectRange;
+
 		// 座標を格納するための変数
 		Vec3 m_Point1Position;
 		Vec3 m_Point2Position;
@@ -99,6 +101,8 @@ namespace basecross
 		Vec3 m_targetVec;
 
 		Vec3 m_closePlayerPos = Vec3();
+
+		vector<Vec3> m_PointPositions;
 	public:
 		EnemyBase(const shared_ptr<Stage>& stage, const STRUCT_ObjectParam& objectParam);
 
@@ -127,6 +131,9 @@ namespace basecross
 
 		// angleは度数法で書いてください
 		Vec3 CalculateEndPointRayAngle(const Vec3& startPos,const float& forwardAngle,const float& angle);
+
+		// 設定を格納するための関数
+		void PointPosition(int number,const Vec3& pos);
 
 		// ゲッターセッター関数
 		bool GetDetection()
