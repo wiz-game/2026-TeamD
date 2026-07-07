@@ -28,6 +28,8 @@ namespace basecross
 		Shrub,
 		CollisionObject,
 		SoilWall,
+		SoilWallLong,
+		SoilWallShort,
 		Max
 	} ;
 

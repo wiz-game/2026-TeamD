@@ -103,6 +103,12 @@ namespace basecross
 			case ENUM_ObjectID::SoilWall:
 				stage->AddGameObject<SoilWall>(objParam);
 				break;
+			case ENUM_ObjectID::SoilWallLong:
+				stage->AddGameObject<SoilWallLong>(objParam);
+				break;
+			case ENUM_ObjectID::SoilWallShort:
+				stage->AddGameObject<SoilWallShort>(objParam);
+				break;
 			default:
 				break;
 			}
@@ -471,6 +477,12 @@ namespace basecross
 		case ENUM_ObjectID::SoilWall:
 			stage->AddGameObject<SoilWall>(originalObjParam);
 			break;
+		case ENUM_ObjectID::SoilWallLong:
+			stage->AddGameObject<SoilWallLong>(originalObjParam);
+			break;
+		case ENUM_ObjectID::SoilWallShort:
+			stage->AddGameObject<SoilWallShort>(originalObjParam);
+			break;
 		default:
 			break;
 		}
@@ -626,6 +638,12 @@ namespace basecross
 			break;
 		case ENUM_ObjectID::SoilWall:
 			newObj = stage->AddGameObject<SoilWall>(objParam);
+			break;
+		case ENUM_ObjectID::SoilWallLong:
+			newObj = stage->AddGameObject<SoilWallLong>(objParam);
+			break;
+		case ENUM_ObjectID::SoilWallShort:
+			newObj = stage->AddGameObject<SoilWallShort>(objParam);
 			break;
 		default:
 			break;
