@@ -190,6 +190,9 @@
     <Filter Include="Enemys\EnemyAlpacaFixedMove">
       <UniqueIdentifier>{b783f4da-5f29-4934-a161-33d16710ce51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UIs\UIStatueNum">
+      <UniqueIdentifier>{9fa748ce-bfe3-4a70-bb01-3bdac6c7c09b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -378,6 +381,15 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyAlpacaFixedMove.h">
       <Filter>Enemys\EnemyAlpacaFixedMove</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SoilWallShort.h">
+      <Filter>StageObjs\SoilWall</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SoilWallLong.h">
+      <Filter>StageObjs\SoilWall</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIStatueNum.h">
+      <Filter>UIs\UIStatueNum</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -553,6 +565,15 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyAlpacaFixedMove.cpp">
       <Filter>Enemys\EnemyAlpacaFixedMove</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SoilWallLong.cpp">
+      <Filter>StageObjs\SoilWall</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SoilWallShort.cpp">
+      <Filter>StageObjs\SoilWall</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIStatueNum.cpp">
+      <Filter>UIs\UIStatueNum</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
