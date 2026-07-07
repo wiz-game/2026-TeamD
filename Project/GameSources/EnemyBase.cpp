@@ -27,20 +27,22 @@ namespace basecross
         m_targetRotY(0.0f),
         m_rayRange(1.6f),
         m_rayDistanceRange(10.0f),
+        m_ExpectRange(3.0f),
 
         // 移動速度
         m_Speed(1.4f),
         m_rotToHeadLeap(0.5f),
 
-        // 座標を格納するための変数
-        m_Point1Position(objectParam.GetPosition()),
-        m_Point2Position(objectParam.GetPosition()),
-        m_Point3Position(objectParam.GetPosition()),
-
         // 壁を回避中かどうか
         m_isAvoiding(false),
         m_avoidTimer(0.0f),
         m_InitavoidTimer(0.5f),
+
+        // 座標を格納するための変数
+        m_Point1Position(),
+        m_Point2Position(),
+        m_Point3Position(),
+
 
         m_targetVec(),
 
@@ -225,7 +227,7 @@ namespace basecross
 
                     auto hitWallVec = hitWallPos - transPos;
                     hitWallVec.y = 0.0f;
-                    hitWallVec.normalize();
+                    //hitWallVec.normalize();
 
                     if (nowWallVec.length() > hitWallVec.length()) continue;
                 }
@@ -247,7 +249,7 @@ namespace basecross
             // rayRange以内の壁の位置を除外する
 			auto hitWallVec = hitWallPosition - transPos;
 			hitWallVec.y = 0.0f;
-            //hitWallVec.normalize();
+            hitWallVec.normalize();
 
 			if (hitWallVec.length() <= m_rayRange) continue;
 
@@ -261,11 +263,11 @@ namespace basecross
 			// 二つの壁の位置とプレイヤーを結ぶベクトルの長さを比較して、よりプレイヤーに近い位置を選択する
 			auto risultClosePlayerVec = risultClosePlayerPos - playerPos;
             risultClosePlayerVec.y = 0.0f;
-            //risultClosePlayerVec.normalize();
+            risultClosePlayerVec.normalize();
 
 			auto nowClosePlayerVec = hitWallPosition - playerPos;
 			nowClosePlayerVec.y = 0.0f;
-			//nowClosePlayerVec.normalize();
+			nowClosePlayerVec.normalize();
 
 			if (nowClosePlayerVec.length() < risultClosePlayerVec.length())
 			{
@@ -537,12 +539,8 @@ namespace basecross
         transComp->SetRotation(rot_X, m_rotY, rot_Z);
     }
 
-    // 4つのポイントを置いてランダムに動く
-    void EnemyBase::PointMove
-    (
-        const shared_ptr<GameObject>& gameObject,
-        float speed
-    )
+    // 順番に動く
+    void EnemyBase::PointMove(const shared_ptr<GameObject>& gameObject,float speed)
     {
         // そのゲームオブジェクトの情報を取得する
         auto transComp = gameObject->GetComponent<Transform>();
@@ -567,11 +565,15 @@ namespace basecross
 
         // 経過時間を取得する
         auto deltaTime = App::GetApp()->GetElapsedTime();
-
+        
         // 初期位置を取得したらそれ以降は絶対に位置を更新してはイケない
         if (m_isFirstTime == true)
         {
+            // 位置を初期化する
             m_InitialPosition = transPos;
+            PointPosition(1, m_Point1Position);
+            PointPosition(2, m_Point2Position);
+            PointPosition(3, m_Point3Position);
             m_isFirstTime = false;
         }
 
@@ -590,7 +592,7 @@ namespace basecross
                 m_InitialWanderingTime = randTime;
 
                 // 
-                m_NumPoint = static_cast<Point>((static_cast<int>(m_NumPoint) + pointNext) % Number);
+                m_NumPoint = static_cast<Point>((static_cast<int>(m_NumPoint) + pointNext) % m_PointPositions.size());
 
                 // 初期値を格納する
                 m_TargetPosition = m_InitialPosition;
@@ -602,15 +604,15 @@ namespace basecross
                     break;
 
                 case Point1:
-                    m_TargetPosition = m_Point1Position;
+                    m_TargetPosition = m_PointPositions[1];
                     break;
 
                 case Point2:
-                    m_TargetPosition = m_Point2Position;
+                    m_TargetPosition = m_PointPositions[2];
                     break;
 
                 case Point3:
-                    m_TargetPosition = m_Point3Position;
+                    m_TargetPosition = m_PointPositions[3];
                     break;
 
                 default:
@@ -666,6 +668,15 @@ namespace basecross
         float endPosZ = startPos.z + (dir.z * m_rayDistanceRange);
 
         return Vec3(endPosX, startPos.y, endPosZ);
+    }
+
+    void EnemyBase::PointPosition(int number, const Vec3& pos)
+    {
+        if (number >= m_PointPositions.size())
+        {
+            m_PointPositions.resize(number + 1);
+        }
+        m_PointPositions[number] = pos;
     }
 
     void EnemyBase::OnCollisionEnter(shared_ptr<GameObject>& Other)
