@@ -655,7 +655,7 @@ namespace basecross
 	{
 		if (GameManager::Instance().GetGameMode() == ENUM_GameMode::Play)
 		{
-			GameManager::Instance().SetGameMode(ENUM_GameMode::Movie);
+			GameManager::Instance().SetGameMode(ENUM_GameMode::PlayMovie);
 		}
 		else
 		{
@@ -676,6 +676,10 @@ namespace basecross
 		wstring current = player->GetComponent<PNTBoneModelDraw>()->GetCurrentAnimation();
 		auto currentAnimTime = player->GetComponent<PNTBoneModelDraw>()->GetCurrentAnimationTime();
 		if (current == L"Bubble" && currentAnimTime >= 0.4f)
+		{
+			player->PlayerChangeAnimation(L"Idle", false);
+		}
+		if (current == L"Walk")
 		{
 			player->PlayerChangeAnimation(L"Idle", false);
 		}
