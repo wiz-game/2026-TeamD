@@ -81,5 +81,6 @@ namespace basecross
 		void AddDirt() { m_dirtNum++; }
 		void SubDirt() { m_dirtNum--; }
 		int GetDirtNum() const { return m_dirtNum; }
+		void ResetDirtNum() { m_dirtNum = 0; }
 	};
 }
