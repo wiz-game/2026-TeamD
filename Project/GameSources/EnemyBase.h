@@ -41,11 +41,6 @@ namespace basecross
 
 		float m_ExpectRange;
 
-		// 座標を格納するための変数
-		Vec3 m_Point1Position;
-		Vec3 m_Point2Position;
-		Vec3 m_Point3Position;
-
 		enum Point
 		{
 			Point0,
@@ -148,11 +143,11 @@ namespace basecross
 			return m_isHitWall;
 		}
 
-		void SetPointPosition(Vec3 pos1,Vec3 pos2,Vec3 pos3)
+		void SetPointPosition(const Vec3& pos1,const Vec3& pos2,const Vec3& pos3)
 		{
-			m_Point1Position = pos1;
-			m_Point2Position = pos2;
-			m_Point3Position = pos3;
+			PointPosition(1, pos1);
+			PointPosition(2, pos2);
+			PointPosition(3, pos3);
 		}
 
 		// --- 当たり判定 ---
