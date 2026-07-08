@@ -10,7 +10,7 @@ namespace basecross
 {
 	GameStage::GameStage(const wstring& stageNum)
 		: Stage(),
-		m_timer(0.0f),
+		m_timer(2.0f),
 		m_isGameClear(false),
 		m_isStartStop(false),
 		m_isGameStageMovie(true)
@@ -23,7 +23,6 @@ namespace basecross
 		try 
 		{
 			m_jphManger.Initialize();
-			m_timer = Timer(2.0f);
 
 			CreateViewLight();
 			CreatePlayer();
@@ -34,6 +33,8 @@ namespace basecross
 			StageEditor::Instance().ReadStageData(m_stageNum + ".bin", GetThis<GameStage>());
 			
 			AddGameObject<EffectUpdateDrawManager>();
+			MovieManager::Instance().SetStage(GetThis<GameStage>());
+
 		}
 		catch (...)
 		{
@@ -56,7 +57,7 @@ namespace basecross
 		if (m_isGameStageMovie && m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
 		{
 			MovieManager::Instance().Initialize();
-			MovieManager::Instance().PlayMovie(MovieType::Title);
+			MovieManager::Instance().PlayMovie(MovieType::Play);
 			m_isGameStageMovie = false;
 			m_isStartStop = true;
 			m_timer.SetCounter();
@@ -67,7 +68,7 @@ namespace basecross
 			if (m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
 			{
 				player->SetMoveStopFlag(false);
-				player->PlayGameAnimation();
+				player->PlayGameAnimation();  
 				m_isStartStop = false;
 				m_timer.SetCounter();
 			}
@@ -114,6 +115,8 @@ namespace basecross
 		// マルチライトの作成
 		auto light = CreateLight<MultiLight>();
 		light->SetDefaultLighting(); // デフォルトのライティングを指定
+
+		MovieManager::Instance().SetCamera(camera);
 	}
 
 	// Playerを作成する

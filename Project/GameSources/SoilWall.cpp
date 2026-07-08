@@ -39,14 +39,27 @@ namespace basecross
 		SetVertices();
 
 		auto ptrDraw = AddComponent<PNTStaticDraw>();
-		ptrDraw->CreateOriginalMesh(m_vertices, indices);
-		ptrDraw->SetOriginalMeshUse(true);
+		//ptrDraw->CreateOriginalMesh(m_vertices, indices);
+		//ptrDraw->SetOriginalMeshUse(true);
 		ptrDraw->SetOwnShadowActive(true);
-		ptrDraw->SetTextureResource(L"T_Soil");
+		ptrDraw->SetMeshResource(L"M_SoilWall");
+		ptrDraw->SetTextureResource(L"T_SoilWall");
 		ptrDraw->SetSamplerState(SamplerState::LinearWrap);
 
 		auto ptrShadow = AddComponent<Shadowmap>();
-		ptrShadow->SetMeshResource(L"DEFAULT_CUBE");
+		ptrShadow->SetMeshResource(L"M_SoilWall");
+
+		// モデルとトランスフォーム間の差分行列
+		Mat4x4 spanMat;
+		spanMat.affineTransformation(
+			Vec3(0.47f, 0.47f, 0.47f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, -0.5f, 0.0f)
+		);
+
+		ptrDraw->SetMeshToTransformMatrix(spanMat);
+
 
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetFixed(true);
@@ -59,9 +72,9 @@ namespace basecross
 
 	void SoilWall::UpdateTexture()
 	{
-		SetVertices();
-		auto ptrDraw = GetComponent<PNTStaticDraw>();
-		ptrDraw->UpdateVertices(m_vertices);
+		//SetVertices();
+		//auto ptrDraw = GetComponent<PNTStaticDraw>();
+		//ptrDraw->UpdateVertices(m_vertices);
 	}
 
 	void SoilWall::SetVertices()

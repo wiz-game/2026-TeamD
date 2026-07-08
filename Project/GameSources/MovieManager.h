@@ -40,6 +40,9 @@ namespace basecross
 		Cleaned,
 		GameClear,
 		GameOver,
+		PlayMovieEnd,
+		GameClearMovieEnd,
+		GameOverMovieEnd,
 		Max
 	};
 
@@ -77,6 +80,8 @@ namespace basecross
 		float m_currentEventTime;
 
 		shared_ptr<Player> m_player;
+		shared_ptr<MyCamera> m_camera;
+		shared_ptr<Stage> m_stage;
 		Vec3 m_cachedPlayerPos;
 		Vec3 m_cachedPlayerForward;
 
@@ -87,7 +92,7 @@ namespace basecross
 		float m_safetyMargin;
 		// プレイヤーに最小限寄せる距離
 		float m_minCamDistance;
-	
+
 		MovieManager();
 		~MovieManager();
 	public:
@@ -106,9 +111,6 @@ namespace basecross
 
 		void SetMovieEvents(MovieType movie,const vector<MovieEvent>& events);
 		
-		// カメラ関連
-		shared_ptr<MyCamera> GetStageCamera();
-
 		// 共通部分、MovieTypeごとの初期化
 		void InitializeMovie(const MovieType& movie);
 		// 共通部分、MovieTypeごとの後始末
@@ -121,7 +123,22 @@ namespace basecross
 		static Vec3 GetForwardXZ(const Vec3& fwd);
 		pair<Vec3, Vec3> MoveCameraInFrontPlayer(float distance, float height, float lookAtHeight);
 		Vec3 Lerp(const Vec3& a, const Vec3& b, float t);
-		void SetPlayer(shared_ptr<Player>& obj);
-		shared_ptr<Player> GetPlayer();
+		
+		// カメラ関連
+		void SetCamera(shared_ptr<MyCamera>& camera) { m_camera = camera; }
+		shared_ptr<MyCamera> GetStageCamera() { return m_camera; }
+
+		// プレイヤー関連
+		void SetPlayer(shared_ptr<Player>& obj) { m_player = obj; }
+		shared_ptr<Player> GetPlayer() { return m_player; }
+
+		// ステージ関連
+		void SetStage(const shared_ptr<Stage>& stage) { m_stage = stage; }
+		shared_ptr<Stage> GetStage() { return m_stage; }
+
+		void SetMovieType(MovieType gameMode);
+		void EnterMovieType(MovieType gameMode);
+		void ExitMovieType(MovieType gameMode);
+
 	};
 }

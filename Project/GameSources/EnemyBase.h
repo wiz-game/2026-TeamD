@@ -39,10 +39,7 @@ namespace basecross
 		// 壁に触れたかどうか
 		bool m_isHitWall;
 
-		// 座標を格納するための変数
-		Vec3 m_Point1Position;
-		Vec3 m_Point2Position;
-		Vec3 m_Point3Position;
+		float m_ExpectRange;
 
 		enum Point
 		{
@@ -99,6 +96,8 @@ namespace basecross
 		Vec3 m_targetVec;
 
 		Vec3 m_closePlayerPos = Vec3();
+
+		vector<Vec3> m_PointPositions;
 	public:
 		EnemyBase(const shared_ptr<Stage>& stage, const STRUCT_ObjectParam& objectParam);
 
@@ -110,13 +109,8 @@ namespace basecross
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 
-		//void Move(const shared_ptr<GameObject>& gameObject, float speed);
-		//void CircleMove(const shared_ptr<GameObject>& gameObject, float radius, float moveSpeed);
-		void PointMove
-		(
-			const shared_ptr<GameObject>& gameObject,
-			float speed
-		);
+		void PointMove(const shared_ptr<GameObject>& gameObject, float speed);
+		void PointPosition(int number, const Vec3& pos);
 
 		void DebugString();
 
@@ -147,6 +141,13 @@ namespace basecross
 		bool GetIsHitWall()
 		{
 			return m_isHitWall;
+		}
+
+		void SetPointPosition(const Vec3& pos1,const Vec3& pos2,const Vec3& pos3)
+		{
+			PointPosition(1, pos1);
+			PointPosition(2, pos2);
+			PointPosition(3, pos3);
 		}
 
 		// --- 当たり判定 ---
