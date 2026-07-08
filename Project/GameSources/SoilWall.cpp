@@ -63,7 +63,6 @@ namespace basecross
 
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetFixed(true);
-		ptrColl->SetDrawActive(true);
 	}
 
 	void SoilWall::OnUpdate()
