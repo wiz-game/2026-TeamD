@@ -18,7 +18,9 @@ namespace basecross
 		Play,
 		Menu,
 		Editor,
-		Movie,
+		PlayMovie,
+		GameClearMovie,
+		GameOverMovie,
 		Null
 	};
 
