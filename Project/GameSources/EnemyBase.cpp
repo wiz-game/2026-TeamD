@@ -38,14 +38,9 @@ namespace basecross
         m_avoidTimer(0.0f),
         m_InitavoidTimer(0.5f),
 
-        // 座標を格納するための変数
-        m_Point1Position(),
-        m_Point2Position(),
-        m_Point3Position(),
-
-
         m_targetVec(),
 
+        // 壁に触れたかどうか
         m_isHitWall(false)
     {}
 
@@ -571,9 +566,6 @@ namespace basecross
         {
             // 位置を初期化する
             m_InitialPosition = transPos;
-            PointPosition(1, m_Point1Position);
-            PointPosition(2, m_Point2Position);
-            PointPosition(3, m_Point3Position);
             m_isFirstTime = false;
         }
 

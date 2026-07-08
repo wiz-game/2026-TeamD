@@ -41,11 +41,6 @@ namespace basecross
 
 		float m_ExpectRange;
 
-		// 座標を格納するための変数
-		Vec3 m_Point1Position;
-		Vec3 m_Point2Position;
-		Vec3 m_Point3Position;
-
 		enum Point
 		{
 			Point0,
@@ -114,13 +109,8 @@ namespace basecross
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 
-		//void Move(const shared_ptr<GameObject>& gameObject, float speed);
-		//void CircleMove(const shared_ptr<GameObject>& gameObject, float radius, float moveSpeed);
-		void PointMove
-		(
-			const shared_ptr<GameObject>& gameObject,
-			float speed
-		);
+		void PointMove(const shared_ptr<GameObject>& gameObject, float speed);
+		void PointPosition(int number, const Vec3& pos);
 
 		void DebugString();
 
@@ -131,9 +121,6 @@ namespace basecross
 
 		// angleは度数法で書いてください
 		Vec3 CalculateEndPointRayAngle(const Vec3& startPos,const float& forwardAngle,const float& angle);
-
-		// 設定を格納するための関数
-		void PointPosition(int number,const Vec3& pos);
 
 		// ゲッターセッター関数
 		bool GetDetection()
@@ -154,6 +141,13 @@ namespace basecross
 		bool GetIsHitWall()
 		{
 			return m_isHitWall;
+		}
+
+		void SetPointPosition(const Vec3& pos1,const Vec3& pos2,const Vec3& pos3)
+		{
+			PointPosition(1, pos1);
+			PointPosition(2, pos2);
+			PointPosition(3, pos3);
 		}
 
 		// --- 当たり判定 ---
