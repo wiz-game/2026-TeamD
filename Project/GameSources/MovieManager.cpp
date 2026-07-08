@@ -159,7 +159,7 @@ namespace basecross
 
 			// 次のキーが無かったらする処理 
 			ev.onComplete = []() {
-				//MovieManager::Instance().SetMovieType(MovieType::GameClearMovieEnd);
+				MovieManager::Instance().SetMovieType(MovieType::GameClearMovieEnd);
 				};
 			m_eventsPerMovie[static_cast<size_t>(MovieType::GameClear)] = { ev };
 		}
@@ -510,9 +510,12 @@ namespace basecross
 		case MovieType::Select:
 			break;
 		case MovieType::GameClear:
+			GetPlayer()->SetMoveStopFlag(true);
+			GetPlayer()->PlayerChangeAnimation(L"GameClear", false);
 			PlayMovie(MovieType::GameClear);
 			break;
 		case MovieType::GameOver:
+			GetPlayer()->GetComponent<PNTBoneModelDraw>()->ChangeCurrentAnimation(L"GameOver");
 			PlayMovie(MovieType::GameOver);
 			break;
 		case MovieType::Play:
@@ -527,6 +530,8 @@ namespace basecross
 			GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
 			break;
 		case MovieType::GameClearMovieEnd:
+			GetPlayer()->SetMoveStopFlag(false);
+			GetPlayer()->PlayGameAnimation();
 			GameManager::Instance().SetGameMode(ENUM_GameMode::GameClear);
 			break;
 		case MovieType::GameOverMovieEnd:
