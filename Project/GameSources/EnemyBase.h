@@ -114,13 +114,8 @@ namespace basecross
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 
-		//void Move(const shared_ptr<GameObject>& gameObject, float speed);
-		//void CircleMove(const shared_ptr<GameObject>& gameObject, float radius, float moveSpeed);
-		void PointMove
-		(
-			const shared_ptr<GameObject>& gameObject,
-			float speed
-		);
+		void PointMove(const shared_ptr<GameObject>& gameObject, float speed);
+		void PointPosition(int number, const Vec3& pos);
 
 		void DebugString();
 
@@ -131,9 +126,6 @@ namespace basecross
 
 		// angleは度数法で書いてください
 		Vec3 CalculateEndPointRayAngle(const Vec3& startPos,const float& forwardAngle,const float& angle);
-
-		// 設定を格納するための関数
-		void PointPosition(int number,const Vec3& pos);
 
 		// ゲッターセッター関数
 		bool GetDetection()
@@ -154,6 +146,13 @@ namespace basecross
 		bool GetIsHitWall()
 		{
 			return m_isHitWall;
+		}
+
+		void SetPointPosition(Vec3 pos1,Vec3 pos2,Vec3 pos3)
+		{
+			m_Point1Position = pos1;
+			m_Point2Position = pos2;
+			m_Point3Position = pos3;
 		}
 
 		// --- 当たり判定 ---
