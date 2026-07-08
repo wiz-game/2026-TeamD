@@ -47,14 +47,14 @@ namespace basecross
 	MovieManager::MovieManager():
 		m_currentMovie(MovieType::None),
 		m_isPlayMove(false),
-		m_timer(0.0f),
+		m_timer(1.0f),
 		m_currentEventIndex(0),
 		m_currentEventTime(0.0f),
 		m_cachedPlayerPos(Vec3(0.0f)),
 		m_cachedPlayerForward(Vec3(0.0f, 0.0f, 1.0f)),
 		m_cameraRadius(0.3f),
 		m_safetyMargin(0.05f),
-		m_minCamDistance(0.5f)
+		m_minCamDistance(0.5f)		
 	{
 	}
 
@@ -110,10 +110,10 @@ namespace basecross
 			};
 
 			// 次のキーが無かったらする処理 
-			//ev.onComplete = []() {
-			//	GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
-			//	};
-			m_eventsPerMovie[static_cast<size_t>(MovieType::Title)] = { ev };
+			ev.onComplete = []() {
+				MovieManager::Instance().SetMovieType(MovieType::PlayMovieEnd);
+			};
+			m_eventsPerMovie[static_cast<size_t>(MovieType::Play)] = { ev };
 		}
 
 		// GameClear
@@ -158,9 +158,9 @@ namespace basecross
 			};
 
 			// 次のキーが無かったらする処理 
-			//ev.onComplete = []() {
-			//	GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
-			//	};
+			ev.onComplete = []() {
+				//MovieManager::Instance().SetMovieType(MovieType::GameClearMovieEnd);
+				};
 			m_eventsPerMovie[static_cast<size_t>(MovieType::GameClear)] = { ev };
 		}
 
@@ -206,9 +206,9 @@ namespace basecross
 			};
 
 			// 次のキーが無かったらする処理 
-			//ev.onComplete = []() {
-			//	GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
-			//	};
+			ev.onComplete = []() {
+				MovieManager::Instance().SetMovieType(MovieType::GameOverMovieEnd);
+				};
 			m_eventsPerMovie[static_cast<size_t>(MovieType::GameOver)] = { ev };
 		}
 	}
@@ -384,7 +384,8 @@ namespace basecross
 
 	void MovieManager::SetAllGameObjectsUpdateActive(bool isActive)
 	{
-		for (auto& gameObject : App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetGameObjectVec())
+		auto objVec = GetStage()->GetGameObjectVec();
+		for (auto& gameObject : objVec)
 		{
 			if (!gameObject->FindTag(L"Player"))
 			{
@@ -404,7 +405,7 @@ namespace basecross
 		return f / len;
 	}
 
-	pair<Vec3,Vec3> MovieManager::MoveCameraInFrontPlayer(float distance, float height, float lookAtHeight)
+	pair<Vec3, Vec3> MovieManager::MoveCameraInFrontPlayer(float distance, float height, float lookAtHeight)
 	{
 		// 必要な前提チェック
 		if (!m_player) {
@@ -432,7 +433,7 @@ namespace basecross
 		bool anyHit = false;
 
 		shared_ptr<Stage> stage;
-	
+
 		if (!stage && m_player) {
 		}
 
@@ -490,24 +491,74 @@ namespace basecross
 		return a + (b - a) * t;
 	}
 
-	void MovieManager::SetPlayer(shared_ptr<Player>& player)
+	void MovieManager::SetMovieType(MovieType gameMode)
 	{
-		if (player == nullptr) return;
-		m_player = player;
+		ExitMovieType(m_currentMovie);
+		m_currentMovie = gameMode;
+		EnterMovieType(m_currentMovie);
 	}
 
-	shared_ptr<Player> MovieManager::GetPlayer()
+	void MovieManager::EnterMovieType(MovieType gameMode)
 	{
-		return m_player;
+		Initialize();
+		switch (gameMode)
+		{
+		case MovieType::None:
+			break;
+		case MovieType::Title:
+			break;
+		case MovieType::Select:
+			break;
+		case MovieType::GameClear:
+			PlayMovie(MovieType::GameClear);
+			break;
+		case MovieType::GameOver:
+			PlayMovie(MovieType::GameOver);
+			break;
+		case MovieType::Play:
+			PlayMovie(MovieType::Play);
+			break;
+		case MovieType::EnemySpotted:
+			break;
+		case MovieType::Cleaned:
+			break;
+		case MovieType::PlayMovieEnd:
+			GetPlayer()->SetMoveStopFlag(false);
+			GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
+			break;
+		case MovieType::GameClearMovieEnd:
+			GameManager::Instance().SetGameMode(ENUM_GameMode::GameClear);
+			break;
+		case MovieType::GameOverMovieEnd:
+			GameManager::Instance().SetGameMode(ENUM_GameMode::GameOver);
+			break;
+		default:
+			break;
+		}
 	}
 
-	shared_ptr<MyCamera> MovieManager::GetStageCamera()
+	void MovieManager::ExitMovieType(MovieType gameMode)
 	{
-		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-		if (!stage) return nullptr;
-		auto camera = stage->GetView()->GetTargetCamera();
-		auto myCamara = dynamic_pointer_cast<MyCamera>(camera);
-
-		return myCamara;
+		switch (gameMode)
+		{
+		case MovieType::None:
+			break;
+		case MovieType::Title:
+			break;
+		case MovieType::Select:
+			break;
+		case MovieType::GameClear:
+			break;
+		case MovieType::GameOver:
+			break;
+		case MovieType::Play:
+			break;
+		case MovieType::EnemySpotted:
+			break;
+		case MovieType::Cleaned:
+			break;
+		default:
+			break;
+		}
 	}
 }
