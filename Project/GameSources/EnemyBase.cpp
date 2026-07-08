@@ -43,9 +43,9 @@ namespace basecross
         m_Point2Position(),
         m_Point3Position(),
 
-
         m_targetVec(),
 
+        // 壁に触れたかどうか
         m_isHitWall(false)
     {}
 
