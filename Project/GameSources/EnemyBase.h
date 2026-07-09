@@ -109,36 +109,38 @@ namespace basecross
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 
+		// 敵のAI
+		// 指定した場所に移動する
 		void PointMove(const shared_ptr<GameObject>& gameObject, float speed);
 		void PointPosition(int number, const Vec3& pos);
-
-		void DebugString();
 
 		void DetectionRange(const shared_ptr<GameObject>& gameObject); // 索敵範囲
 		void MazeWandering(const shared_ptr<GameObject>& gameObject); // 徘徊AI
 		void Tracking(const shared_ptr<GameObject>& gameObject,float speed); // 追跡AI
-		void EstimatedPlayerLocation(const shared_ptr<GameObject>& gameObject, float speed);
+		void EstimatedPlayerLocation(const shared_ptr<GameObject>& gameObject, float speed); // 推定プレイヤー位置に移動する
 
+		// ヘルパー関数
 		// angleは度数法で書いてください
 		Vec3 CalculateEndPointRayAngle(const Vec3& startPos,const float& forwardAngle,const float& angle);
+		bool IsWallHit(const shared_ptr<PNTStaticDraw>& staticDraw, const Vec3& startPos, const Vec3& endPos, const Vec3& basePos);
 
 		// ゲッターセッター関数
-		bool GetDetection()
+		const bool GetDetection()
 		{
 			return m_Detection;
 		}
 
-		bool GetRotation()
+		const bool GetRotation()
 		{
 			return m_isRotated;
 		}
 
-		bool GetAvoiding()
+		const bool GetAvoiding()
 		{
 			return m_isAvoiding;
 		}
 
-		bool GetIsHitWall()
+		const bool GetIsHitWall()
 		{
 			return m_isHitWall;
 		}
