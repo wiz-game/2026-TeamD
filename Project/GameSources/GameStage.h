@@ -29,9 +29,13 @@ namespace basecross
 		Col4 m_uiDiffuse = Col4(1.0f, 1.0f, 1.0f, 1.0f);
 		float m_selectScale = 0.25f;
 
+		// ゲーム画面のUI
+		vector<shared_ptr<UIStatueNum>> m_uistatues;
+
 		void CreateViewLight();
 		void CreatePlayer();
 		void CreateMenu();
+		void CreateGameUI();
 
 		void SetCollRange();
 	public:
