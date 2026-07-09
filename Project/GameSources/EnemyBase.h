@@ -17,14 +17,12 @@ namespace basecross
 		// 代入するためのメンバ変数
 		// 徘徊時間
 		float m_InitialWanderingTime;
-		float m_WanderSpeed;
 		bool m_isWandering;
 		// 待機時間
 		float m_InitialStandTime;
 		bool m_isStand;
 		// ランダムに徘徊させる変数
 		float m_RandRotation;
-		float m_angle;
 		// 初期値のポジションを格納するための変数
 		Vec3 m_InitialPosition;
 		Vec3 m_TargetPosition;
