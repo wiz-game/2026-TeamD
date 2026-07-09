@@ -10,7 +10,7 @@ namespace basecross
 {
 	GameStage::GameStage(const wstring& stageNum)
 		: Stage(),
-		m_timer(0.0f),
+		m_timer(2.0f),
 		m_isGameClear(false),
 		m_isStartStop(false),
 		m_isGameStageMovie(true)
@@ -23,17 +23,22 @@ namespace basecross
 		try 
 		{
 			m_jphManger.Initialize();
-			m_timer = Timer(2.0f);
 
 			CreateViewLight();
 			CreatePlayer();
 			CreateMenu();
-			AddGameObject<UITransitionSlide>(STRUCT_UIParam(L"Awas", Vec3(0.0f, 0.0f, 0.0f), 1.3f), 600.0f);
 
+			// カウントをリセット
+			GameManager::Instance().ResetDirtNum();
 			// ステージの作成
 			StageEditor::Instance().ReadStageData(m_stageNum + ".bin", GetThis<GameStage>());
 			
 			AddGameObject<EffectUpdateDrawManager>();
+
+			MovieManager::Instance().SetStage(GetThis<GameStage>());
+			GameManager::Instance().SetGameMode(ENUM_GameMode::PlayMovie);
+
+			AddGameObject<UITransitionSlide>(STRUCT_UIParam(L"Awas", Vec3(0.0f, 0.0f, 0.0f), 1.3f), 600.0f);
 		}
 		catch (...)
 		{
@@ -53,42 +58,13 @@ namespace basecross
 		
 		auto player = GetSharedGameObject<Player>(L"Player");
 
-		if (m_isGameStageMovie && m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
-		{
-			MovieManager::Instance().Initialize();
-			MovieManager::Instance().PlayMovie(MovieType::Title);
-			m_isGameStageMovie = false;
-			m_isStartStop = true;
-			m_timer.SetCounter();
-		}
-
-		if (m_isStartStop)
-		{
-			if (m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
-			{
-				player->SetMoveStopFlag(false);
-				player->PlayGameAnimation();
-				m_isStartStop = false;
-				m_timer.SetCounter();
-			}
-		}
-
 		if (GameManager::Instance().GetDirtNum() <= 0)
 		{	
 			if (!m_isGameClear)
 			{
-				MovieManager::Instance().Initialize();
-				MovieManager::Instance().PlayMovie(MovieType::GameClear);
-				player->SetMoveStopFlag(true);
-				player->PlayerChangeAnimation(L"GameClear",false);
-				m_timer.SetCounter();
+				GameManager::Instance().SetGameMode(ENUM_GameMode::GameClearMovie);
 				m_isGameClear = true;
 			}
-		}
-
-		if (m_isGameClear && m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
-		{
-			GameManager::Instance().SetGameMode(ENUM_GameMode::GameClear);
 		}
 
 		// メニュー画面のボタンの切り替え
@@ -114,6 +90,8 @@ namespace basecross
 		// マルチライトの作成
 		auto light = CreateLight<MultiLight>();
 		light->SetDefaultLighting(); // デフォルトのライティングを指定
+
+		MovieManager::Instance().SetCamera(camera);
 	}
 
 	// Playerを作成する

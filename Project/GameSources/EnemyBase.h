@@ -36,10 +36,10 @@ namespace basecross
 
 		float m_rotToHeadLeap;
 
-		// 座標を格納するための変数
-		Vec3 m_Point1Position;
-		Vec3 m_Point2Position;
-		Vec3 m_Point3Position;
+		// 壁に触れたかどうか
+		bool m_isHitWall;
+
+		float m_ExpectRange;
 
 		enum Point
 		{
@@ -52,8 +52,6 @@ namespace basecross
 		}
 		m_NumPoint;
 
-		//enum Vec3 
-
 		enum ENUM_RANDOMROT
 		{
 			RandomRotL,
@@ -63,6 +61,7 @@ namespace basecross
 		}m_NumRandRot;
 
 	protected:
+
 		float m_EnemyHP;
 		bool m_Detection;
 
@@ -87,6 +86,7 @@ namespace basecross
 
 		// レイの大きさ
 		float m_rayRange;
+		float m_rayDistanceRange;
 
 		// 壁を回避中かどうか
 		bool m_isAvoiding;
@@ -94,30 +94,33 @@ namespace basecross
 		float m_InitavoidTimer;
 
 		Vec3 m_targetVec;
+
+		Vec3 m_closePlayerPos = Vec3();
+
+		vector<Vec3> m_PointPositions;
 	public:
 		EnemyBase(const shared_ptr<Stage>& stage, const STRUCT_ObjectParam& objectParam);
 
 		~EnemyBase()
 		{
 		}
+		unique_ptr<StateMachine<EnemyBase>> m_eStateMachine;
 
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 
-		//void Move(const shared_ptr<GameObject>& gameObject, float speed);
-		//void CircleMove(const shared_ptr<GameObject>& gameObject, float radius, float moveSpeed);
-		void PointMove(const shared_ptr<GameObject>& gameObject,float speed);
+		void PointMove(const shared_ptr<GameObject>& gameObject, float speed);
+		void PointPosition(int number, const Vec3& pos);
 
 		void DebugString();
 
-		//void Died(const shared_ptr<GameObject>& gameObject);
-		void DetectionRange(const shared_ptr<GameObject>& gameObject);
-		//void Stalker(const shared_ptr<GameObject>& gameObject, float stalkerSpeed);
-		//void FunctionGravity(const shared_ptr<GameObject>& gameObject);
-		//void DropDirt(const shared_ptr<GameObject>& gameObject);
-		void MazeWandering(const shared_ptr<GameObject>& gameObject);
-		//void aStar(const shared_ptr<GameObject>& gameObject);
-		void Tracking(const shared_ptr<GameObject>& gameObject,float speed);
+		void DetectionRange(const shared_ptr<GameObject>& gameObject); // 索敵範囲
+		void MazeWandering(const shared_ptr<GameObject>& gameObject); // 徘徊AI
+		void Tracking(const shared_ptr<GameObject>& gameObject,float speed); // 追跡AI
+		void EstimatedPlayerLocation(const shared_ptr<GameObject>& gameObject, float speed);
+
+		// angleは度数法で書いてください
+		Vec3 CalculateEndPointRayAngle(const Vec3& startPos,const float& forwardAngle,const float& angle);
 
 		// ゲッターセッター関数
 		bool GetDetection()
@@ -133,6 +136,18 @@ namespace basecross
 		bool GetAvoiding()
 		{
 			return m_isAvoiding;
+		}
+
+		bool GetIsHitWall()
+		{
+			return m_isHitWall;
+		}
+
+		void SetPointPosition(const Vec3& pos1,const Vec3& pos2,const Vec3& pos3)
+		{
+			PointPosition(1, pos1);
+			PointPosition(2, pos2);
+			PointPosition(3, pos3);
 		}
 
 		// --- 当たり判定 ---

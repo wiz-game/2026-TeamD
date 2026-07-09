@@ -123,6 +123,9 @@ namespace basecross
 		{
 			return m_isPowerUp;
 		}
+
+		void ObjectHitEffect(const Vec3& pos);
+		void DirtHitEffect(const Vec3& pos);
 	};
 
 	class ViewBubble : public GameObject

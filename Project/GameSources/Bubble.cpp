@@ -49,7 +49,7 @@ namespace basecross
 		//float randPosX = static_cast<float>((rand() % 100) - 50) * 0.01f;
 		//float randPosZ = static_cast<float>((rand() % 100) - 50) * 0.01f;
 
-		m_pos = Vec3(parentPos.x, parentPos.y + 1.0f, parentPos.z) + m_parentForward * 1.25f;
+		m_pos = Vec3(parentPos.x, parentPos.y + 0.45f, parentPos.z) + m_parentForward * 0.95f;
 
 		m_trans->SetPosition(m_pos);
 		m_trans->SetScale(Vec3(m_scale));
@@ -235,6 +235,7 @@ namespace basecross
 	{
 		if (Other->FindTag(L"Dirt"))
 		{
+			DirtHitEffect(GetComponent<Transform>()->GetPosition());
 			auto dirt = dynamic_pointer_cast<Dirt>(Other);
 			ResolveCounteract(*this, *dirt);
 		}
@@ -289,6 +290,7 @@ namespace basecross
 		}
 		else
 		{
+			ObjectHitEffect(GetComponent<Transform>()->GetPosition());
 			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
 		}
 	}
@@ -328,6 +330,20 @@ namespace basecross
 		}
 
 		m_activeDraw->SetDrawActive(true);
+	}
+
+	void Bubble::ObjectHitEffect(const Vec3& pos)
+	{
+		EffectHandle handle;
+		handle = EffectManager::Instance().PlayEffect(L"Bubble_Pop", pos);
+		EffectManager::Instance().SetScale(handle, Vec3(0.4f));
+	}
+
+	void Bubble::DirtHitEffect(const Vec3& pos)
+	{
+		EffectHandle handle;
+		handle = EffectManager::Instance().PlayEffect(L"Bubble_Pop_Ver2", pos);
+		EffectManager::Instance().SetScale(handle, Vec3(0.4f));
 	}
 
 	ViewBubble::ViewBubble(const shared_ptr<Stage>& stage, const vector<Vec3> *vertices) :

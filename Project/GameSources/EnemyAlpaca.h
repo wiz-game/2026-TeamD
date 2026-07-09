@@ -38,7 +38,7 @@ namespace basecross
 		}
 
 		// ステートマシン
-		unique_ptr<StateMachine<EnemyAlpaca>> m_eStateMachine;
+		//unique_ptr<StateMachine<EnemyAlpaca>> m_eStateMachine;
 
 		virtual void OnCreate() override; // 初期化
 		virtual void OnUpdate() override; // 更新
@@ -51,24 +51,34 @@ namespace basecross
 		}
 	};
 
-	class IdleState : public ObjState<EnemyAlpaca>
+	class IdleState : public ObjState<EnemyBase>
 	{
 		IdleState() {};
 	public:
 		static shared_ptr<IdleState> Instance();
-		virtual void Enter(const shared_ptr<EnemyAlpaca>& obj) override;
-		virtual void Execute(const shared_ptr<EnemyAlpaca>& obj) override;
-		virtual void Exit(const shared_ptr<EnemyAlpaca>& obj) override;
+		virtual void Enter(const shared_ptr<EnemyBase>& obj) override;
+		virtual void Execute(const shared_ptr<EnemyBase>& obj) override;
+		virtual void Exit(const shared_ptr<EnemyBase>& obj) override;
 	};
 
-	class AngryState : public ObjState<EnemyAlpaca>
+	class AngryState : public ObjState<EnemyBase>
 	{
 		AngryState() {};
 	public:
 		static shared_ptr<AngryState> Instance();
-		virtual void Enter(const shared_ptr<EnemyAlpaca>& obj) override;
-		virtual void Execute(const shared_ptr<EnemyAlpaca>& obj) override;
-		virtual void Exit(const shared_ptr<EnemyAlpaca>& obj) override;
+		virtual void Enter(const shared_ptr<EnemyBase>& obj) override;
+		virtual void Execute(const shared_ptr<EnemyBase>& obj) override;
+		virtual void Exit(const shared_ptr<EnemyBase>& obj) override;
+	};
+
+	class ArrivalState : public ObjState<EnemyBase>
+	{
+		ArrivalState() {};
+	public:
+		static shared_ptr<ArrivalState> Instance();
+		virtual void Enter(const shared_ptr<EnemyBase>& obj) override;
+		virtual void Execute(const shared_ptr<EnemyBase>& obj) override;
+		virtual void Exit(const shared_ptr<EnemyBase>& obj) override;
 	};
 }
 //end basecross

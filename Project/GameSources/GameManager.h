@@ -18,7 +18,9 @@ namespace basecross
 		Play,
 		Menu,
 		Editor,
-		Movie,
+		PlayMovie,
+		GameClearMovie,
+		GameOverMovie,
 		Null
 	};
 
@@ -26,7 +28,7 @@ namespace basecross
 	{
 	private:
 		shared_ptr<DebugLog> m_sPtrDebugLog = nullptr;
-		int m_dirtNum;
+		int m_dirtNum = 0;
 
 		ENUM_GameMode m_gameMode = ENUM_GameMode::Title;
 		ENUM_GameMode m_transitionAfterGameMode = ENUM_GameMode::Null;
@@ -80,5 +82,6 @@ namespace basecross
 		void SubDirt() { m_dirtNum--; }
 		void SetDirtNum(const int& dirtNum) { m_dirtNum = dirtNum; }
 		int GetDirtNum() const { return m_dirtNum; }
+		void ResetDirtNum() { m_dirtNum = 0; }
 	};
 }

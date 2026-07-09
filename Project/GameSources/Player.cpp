@@ -88,11 +88,6 @@ namespace basecross
 			}
 			break;
 		case PlayerState::Dead:
-			if (m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
-			{
-				GameManager::Instance().SetGameMode(ENUM_GameMode::GameOver);
-				MovieManager::Instance().StopMovie();
-			}
 			break;
 		default:
 			break;
@@ -329,11 +324,7 @@ namespace basecross
 			m_isPlayerPowerUp = true;
 			break;
 		case PlayerState::Dead:
-			m_timer = Timer(2.0f);
-			m_timer.SetCounter();
-			m_pntDraw->ChangeCurrentAnimation(L"GameOver");
-			MovieManager::Instance().Initialize();
-			MovieManager::Instance().PlayMovie(MovieType::GameOver);
+			GameManager::Instance().SetGameMode(ENUM_GameMode::GameOverMovie);
 			break;
 		default:
 			break;
@@ -437,7 +428,7 @@ namespace basecross
 
 		EffectHandle effHandle;
 		effHandle = EffectManager::Instance().PlayEffect(L"Bubble", pos + forward);
-		EffectManager::Instance().SetScale(effHandle, Vec3(0.35f));
+		EffectManager::Instance().SetScale(effHandle, Vec3(0.3f));
 		EffectManager::Instance().SetRotationFromQuaternion(effHandle, finalRot);
 	}
 }
