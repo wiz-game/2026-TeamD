@@ -109,7 +109,7 @@ namespace basecross
 
 	void AngryState::Execute(const shared_ptr<EnemyBase>& Obj)
 	{
-		Obj->Tracking(Obj,10.0f);
+		Obj->Tracking(Obj,3.0f);
 		Obj->DetectionRange(Obj);
 
 		if(!Obj->GetDetection())
