@@ -18,6 +18,7 @@ namespace basecross
 
 	Dirt::~Dirt()
 	{
+		GameManager::Instance().SetDirtNum(0);
 	}
 
 	void Dirt::OnCreate()
