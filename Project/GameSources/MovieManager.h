@@ -4,6 +4,7 @@
 namespace basecross
 {
 	class Player;
+	class Dirt;
 	struct CameraKeyframe
 	{
 		float time;
@@ -82,9 +83,11 @@ namespace basecross
 		shared_ptr<Player> m_player;
 		shared_ptr<MyCamera> m_camera;
 		shared_ptr<Stage> m_stage;
+		vector<shared_ptr<Dirt>> m_dirts;
 		Vec3 m_cachedPlayerPos;
 		Vec3 m_cachedPlayerForward;
-
+		bool m_initialized = false;
+		vector<bool> m_createdPerType;
 		// カメラ当たり判定パラメータ
 		// カメラ球の半径
 		float m_cameraRadius;
@@ -107,22 +110,16 @@ namespace basecross
 
 		// 制御
 		void PlayMovie(const MovieType& movie);
-		void StopMovie();
-
-		void SetMovieEvents(MovieType movie,const vector<MovieEvent>& events);
-		
-		// 共通部分、MovieTypeごとの初期化
+		void StopMovie();	
+		// Movieのキー定義
+		void DefineEventTiming(MovieType type);
+		// Movieを最初から再生させる
 		void InitializeMovie(const MovieType& movie);
-		// 共通部分、MovieTypeごとの後始末
-		void FinalizeMovie();
-		// Playが呼ばれたときのカメラ挙動
-		void PlayMovieCamera();
 
 		// 全てのゲームオブジェクトの更新フラグを変更する
-		void SetAllGameObjectsUpdateActive(bool isActive);
+		void SetAllExceptPlayerUpdateActive(bool isActive);
 		static Vec3 GetForwardXZ(const Vec3& fwd);
 		pair<Vec3, Vec3> MoveCameraInFrontPlayer(float distance, float height, float lookAtHeight);
-		Vec3 Lerp(const Vec3& a, const Vec3& b, float t);
 		
 		// カメラ関連
 		void SetCamera(shared_ptr<MyCamera>& camera) { m_camera = camera; }
@@ -135,10 +132,13 @@ namespace basecross
 		// ステージ関連
 		void SetStage(const shared_ptr<Stage>& stage) { m_stage = stage; }
 		shared_ptr<Stage> GetStage() { return m_stage; }
+		
+		// 汚れの関連
+		void SetDirt(const vector<shared_ptr<Dirt>>& dirts) { m_dirts = dirts; }
+		vector<shared_ptr<Dirt>> GetDirt();
 
 		void SetMovieType(MovieType gameMode);
 		void EnterMovieType(MovieType gameMode);
 		void ExitMovieType(MovieType gameMode);
-
 	};
 }
