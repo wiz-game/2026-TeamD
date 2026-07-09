@@ -30,10 +30,6 @@ namespace basecross
 		auto obb = AddComponent<CollisionObb>();
 		obb->AddExcludeCollisionTag(L"Enemy");
 
-		//m_gravity = AddComponent<Gravity>();
-
-		m_EnemyHP = 10;
-
 		auto shadowComp = AddComponent<Shadowmap>();
 		shadowComp->SetMeshResource(L"DoroPaka");
 		shadowComp->SetDrawActive(true);

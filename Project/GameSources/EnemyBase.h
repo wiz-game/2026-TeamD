@@ -61,8 +61,6 @@ namespace basecross
 		}m_NumRandRot;
 
 	protected:
-
-		float m_EnemyHP;
 		bool m_Detection;
 
 		float m_LaunchofDirtCoolDown;
@@ -122,7 +120,7 @@ namespace basecross
 		// ヘルパー関数
 		// angleは度数法で書いてください
 		Vec3 CalculateEndPointRayAngle(const Vec3& startPos,const float& forwardAngle,const float& angle);
-		bool IsWallHit(const shared_ptr<PNTStaticDraw>& staticDraw, const Vec3& startPos, const Vec3& endPos, const Vec3& basePos);
+		const bool IsWallHit(const shared_ptr<PNTStaticDraw>& staticDraw, const Vec3& startPos, const Vec3& endPos, const Vec3& basePos);
 
 		// ゲッターセッター関数
 		const bool GetDetection()
