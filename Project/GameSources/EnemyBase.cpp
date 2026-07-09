@@ -30,7 +30,7 @@ namespace basecross
         m_ExpectRange(3.0f),
 
         // 移動速度
-        m_Speed(10.0f),
+        m_Speed(1.4f),
         m_rotToHeadLeap(0.5f),
 
         // 壁を回避中かどうか
