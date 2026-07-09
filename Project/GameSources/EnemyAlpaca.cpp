@@ -20,7 +20,6 @@ namespace basecross
 		m_transform->SetPosition(m_objectParam.GetPosition());
 		m_transform->SetScale(m_objectParam.GetScale());
 		m_transform->SetQuaternion(m_objectParam.GetQuaternion());
-		m_transform->SetRotation(0.0f, 0.0f, 0.0f);
 
 		m_draw = AddComponent<PNTBoneModelDraw>();
 		m_draw->SetMeshResource(L"DoroPaka");
@@ -80,9 +79,9 @@ namespace basecross
 		Obj->MazeWandering(Obj);
 		Obj->DetectionRange(Obj);
 
-		if (Obj->GetDetection() == true)
+		//if (Obj->GetDetection() == true)
 		{
-			Obj->m_eStateMachine->ChangeState(AngryState::Instance());
+		//	Obj->m_eStateMachine->ChangeState(AngryState::Instance());
 		}
 	}
 
