@@ -27,6 +27,7 @@ namespace basecross
 			CreateViewLight();
 			CreatePlayer();
 			CreateMenu();
+			CreateGameUI();
 
 			// カウントをリセット
 			GameManager::Instance().ResetDirtNum();
@@ -191,6 +192,16 @@ namespace basecross
 
 		MenuManager::Instance().SetUIHowtoplays(m_uihowtoplays);
 		MenuManager::Instance().UIDrawActive(false, m_uihowtoplays);
+	}
+
+	void GameStage::CreateGameUI()
+	{
+		//m_uistatues.push_back(AddGameObject<UIStatueNum>(STRUCT_UIParam(
+		//	L"UI_AwaPaka1",
+		//	Vec3(0.0f, 0.0f, 0.0f),
+		//	0.50f,
+		//	Col4(1.0f))));
+
 	}
 
 	void GameStage::SetCollRange()
