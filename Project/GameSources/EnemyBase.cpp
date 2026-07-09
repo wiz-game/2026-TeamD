@@ -58,18 +58,7 @@ namespace basecross
     void EnemyBase::DetectionRange(const shared_ptr<GameObject>& gameObject)
     {
         // 現在のステージの情報を取得する
-        auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-        if (stage == nullptr)
-        {
-            return;
-        }
-
-        // プレイヤーの情報を取得する
-        auto player = stage->GetSharedGameObject<Player>(L"Player");
-        if (player == nullptr)
-        {
-            return;
-        }
+        auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
         auto playerPos = player->GetComponent<Transform>()->GetPosition();
 
         // 引数の情報を取得する
@@ -78,15 +67,13 @@ namespace basecross
         auto transRot = transComp->GetRotation();
 
         // プレイヤーと自身の位置を計算する
-        auto distancePos_X = playerPos.x - transPos.x;
-        auto distancePos_Y = playerPos.y - transPos.y;
-        auto distancePos_Z = playerPos.z - transPos.z;
+        auto distancePos = playerPos - transPos;
 
-        float distance = sqrt((distancePos_X * distancePos_X) + (distancePos_Y * distancePos_Y) + (distancePos_Z * distancePos_Z));
+        float distance = sqrt((distancePos.x * distancePos.x) + (distancePos.y * distancePos.y) + (distancePos.z * distancePos.z));
 
-        float angleX = distancePos_X / distance;
-        float angleY = distancePos_Y / distance;
-        float angleZ = distancePos_Z / distance;
+        float angleX = distancePos.x / distance;
+        float angleY = distancePos.y / distance;
+        float angleZ = distancePos.z / distance;
 
         auto forward = transComp->GetForward();
         forward.normalize();
@@ -106,7 +93,7 @@ namespace basecross
         {
             m_Detection = true;
             // 全てのオブジェクトを探す
-            for (auto obj : stage->GetGameObjectVec())
+            for (auto& obj : GetStage()->GetGameObjectVec())
             {
                 // Wallのタグを持っているオブジェクトのみ判定をする
                 if (!obj->FindTag(L"Wall"))
@@ -613,7 +600,7 @@ namespace basecross
         m_PointPositions[number] = pos;
     }
 
-    bool EnemyBase::IsWallHit(const shared_ptr<PNTStaticDraw>& staticDraw, const Vec3& startPos, const Vec3& endPos, const Vec3& basePos)
+    const bool EnemyBase::IsWallHit(const shared_ptr<PNTStaticDraw>& staticDraw, const Vec3& startPos, const Vec3& endPos, const Vec3& basePos)
     {
         Vec3 hitPoint;
         TRIANGLE tri;
@@ -629,18 +616,6 @@ namespace basecross
 
     void EnemyBase::OnCollisionEnter(shared_ptr<GameObject>& Other)
     {
-        auto bubble = dynamic_pointer_cast<Bubble>(Other);
-        if (bubble == nullptr)
-        {
-            return;
-        }
-
-        auto force = bubble->GetBubbleHP();
-        bool soup = bubble->GetBubblePowerUp();
-        if (Other->FindTag(L"Bubble") && soup == true)
-        {
-            m_EnemyHP -= force;
-        }
     }
 
     void EnemyBase::OnCollisionExecute(shared_ptr<GameObject>& Other)
