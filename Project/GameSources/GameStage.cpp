@@ -10,10 +10,7 @@ namespace basecross
 {
 	GameStage::GameStage(const wstring& stageNum)
 		: Stage(),
-		m_timer(2.0f),
-		m_isGameClear(false),
-		m_isStartStop(false),
-		m_isGameStageMovie(true)
+		m_isGameClear(false)
 	{
 		m_stageNum = to_string(stageNum);
 	}
