@@ -38,7 +38,7 @@ namespace basecross
 		Select,
 		Play,
 		EnemySpotted,
-		Cleaned,
+		DirtClean,
 		GameClear,
 		GameOver,
 		PlayMovieEnd,
@@ -117,7 +117,7 @@ namespace basecross
 		void InitializeMovie(const MovieType& movie);
 
 		// 全てのゲームオブジェクトの更新フラグを変更する
-		void SetAllExceptPlayerUpdateActive(bool isActive);
+		void SetAllExceptPlayerAndFadeUpdateActive(bool isActive);
 		static Vec3 GetForwardXZ(const Vec3& fwd);
 		pair<Vec3, Vec3> MoveCameraInFrontPlayer(float distance, float height, float lookAtHeight);
 		

@@ -261,25 +261,25 @@ namespace basecross
 
 	void MovieManager::PlayMovie(const MovieType& movie)
 	{
-		SetAllExceptPlayerUpdateActive(false);
+		SetAllExceptPlayerAndFadeUpdateActive(false);
 		if (movie == MovieType::None) return;
 		InitializeMovie(movie);
 	}
 
 	void MovieManager::StopMovie()
 	{
-		SetAllExceptPlayerUpdateActive(true);
+		SetAllExceptPlayerAndFadeUpdateActive(true);
 		m_isPlayMove = false;
 		m_currentEventIndex = 0;
 		m_currentEventTime = 0.0f;
 	}
 
-	void MovieManager::SetAllExceptPlayerUpdateActive(bool isActive)
+	void MovieManager::SetAllExceptPlayerAndFadeUpdateActive(bool isActive)
 	{
 		auto objVec = GetStage()->GetGameObjectVec();
 		for (auto& gameObject : objVec)
 		{
-			if (!gameObject->FindTag(L"Player"))
+			if (!gameObject->FindTag(L"Player") && !gameObject->FindTag(L"Fade"))
 			{
 				gameObject->SetUpdateActive(isActive);
 			}
@@ -430,7 +430,9 @@ namespace basecross
 			break;
 		case MovieType::EnemySpotted:
 			break;
-		case MovieType::Cleaned:
+		case MovieType::DirtClean:
+			GetPlayer()->SetMoveStopFlag(true);
+			PlayMovie(MovieType::DirtClean);
 			break;
 		case MovieType::PlayMovieEnd:
 			GetPlayer()->SetMoveStopFlag(false);
@@ -468,7 +470,7 @@ namespace basecross
 			break;
 		case MovieType::EnemySpotted:
 			break;
-		case MovieType::Cleaned:
+		case MovieType::DirtClean:
 			break;
 		default:
 			break;
