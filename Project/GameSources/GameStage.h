@@ -14,7 +14,7 @@ namespace basecross
 	private:
 		JoltManager m_jphManger;
 		Vec3 m_collManagerPos = Vec3(0.0f);
-		Vec3 m_collisionRange = Vec3(100.0f, 1000.0f, 100.0f);
+		Vec3 m_collisionRange = Vec3(10.0f, 1.0f, 10.0f);
 		string m_stageNum;
     
 		// カウント時間
