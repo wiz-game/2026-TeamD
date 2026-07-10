@@ -17,11 +17,7 @@ namespace basecross
 		Vec3 m_collisionRange = Vec3(10.0f, 1.0f, 10.0f);
 		string m_stageNum;
     
-		// カウント時間
-		Timer m_timer;
 		bool m_isGameClear;
-		bool m_isStartStop;
-		bool m_isGameStageMovie;
 
 		// メニュー画面のUI
 		vector<shared_ptr<UIBase>> m_uiframes;

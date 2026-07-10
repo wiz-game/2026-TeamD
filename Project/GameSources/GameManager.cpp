@@ -49,6 +49,9 @@ namespace basecross
 		case ENUM_GameMode::GameClearMovie:
 			MovieManager::Instance().SetMovieType(MovieType::GameClear);
 			break;
+		case ENUM_GameMode::DirtCleanMovie:
+			MovieManager::Instance().SetMovieType(MovieType::DirtClean);
+			break;
 		default:
 			break;
 		}
@@ -75,6 +78,14 @@ namespace basecross
 			SetAllGameObjectsUpdateActive(true);
 			StageEditor::Instance().EndEditor();
 			InputManager::Instance().ResetWheelDelta();
+			break;
+		case ENUM_GameMode::PlayMovie:
+			break;
+		case ENUM_GameMode::GameOverMovie:
+			break;
+		case ENUM_GameMode::GameClearMovie:
+			break;
+		case ENUM_GameMode::DirtCleanMovie:
 			break;
 		default:
 			break;

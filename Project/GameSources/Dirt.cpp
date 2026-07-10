@@ -24,6 +24,7 @@ namespace basecross
 	void Dirt::OnCreate()
 	{
 		AddTag(L"Dirt");
+		AddTag(L"Fade");
 		AddTag(L"Wall");
 		SetIsEditorSave(true);
 
@@ -52,6 +53,12 @@ namespace basecross
 		);
 
 		m_draw->SetMeshToTransformMatrix(spanMat);
+		SetAlphaActive(true);
+	}
+
+	void Dirt::OnUpdate()
+	{
+		m_stageObjectFade.UpdateFade(GetComponent<PNTStaticDraw>(), App::GetApp()->GetElapsedTime());
 	}
 
 	void Dirt::SetDirtHP(const float HP)
