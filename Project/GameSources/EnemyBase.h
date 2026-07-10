@@ -17,14 +17,12 @@ namespace basecross
 		// 代入するためのメンバ変数
 		// 徘徊時間
 		float m_InitialWanderingTime;
-		float m_WanderSpeed;
 		bool m_isWandering;
 		// 待機時間
 		float m_InitialStandTime;
 		bool m_isStand;
 		// ランダムに徘徊させる変数
 		float m_RandRotation;
-		float m_angle;
 		// 初期値のポジションを格納するための変数
 		Vec3 m_InitialPosition;
 		Vec3 m_TargetPosition;
@@ -61,8 +59,6 @@ namespace basecross
 		}m_NumRandRot;
 
 	protected:
-
-		float m_EnemyHP;
 		bool m_Detection;
 
 		float m_LaunchofDirtCoolDown;
@@ -122,7 +118,7 @@ namespace basecross
 		// ヘルパー関数
 		// angleは度数法で書いてください
 		Vec3 CalculateEndPointRayAngle(const Vec3& startPos,const float& forwardAngle,const float& angle);
-		bool IsWallHit(const shared_ptr<PNTStaticDraw>& staticDraw, const Vec3& startPos, const Vec3& endPos, const Vec3& basePos);
+		const bool IsWallHit(const shared_ptr<PNTStaticDraw>& staticDraw, const Vec3& startPos, const Vec3& endPos, const Vec3& basePos);
 
 		// ゲッターセッター関数
 		const bool GetDetection()

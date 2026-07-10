@@ -8,15 +8,12 @@ namespace basecross
         GameObject(stage, objectParam),
         m_InitialWanderingTime(0.0f),
         m_RandRotation(0.0f),
-        m_WanderSpeed(1.0f),
         m_isWandering(false),
         m_InitialStandTime(0.0f),
         m_isStand(true),
-        m_angle(0.0f),
         m_TargetPosition(),
         m_isFirstTime(true),
         m_Detection(true),
-        m_LaunchofDirtCoolDown(0.0f),
         m_InitCoolDown(3.0f),
         m_isRotated(false),
         m_rotationSpeed(2.0f),
@@ -30,7 +27,7 @@ namespace basecross
         m_ExpectRange(3.0f),
 
         // 移動速度
-        m_Speed(1.4f),
+        m_Speed(1.0f),
         m_rotToHeadLeap(0.5f),
 
         // 壁を回避中かどうか
@@ -58,18 +55,7 @@ namespace basecross
     void EnemyBase::DetectionRange(const shared_ptr<GameObject>& gameObject)
     {
         // 現在のステージの情報を取得する
-        auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-        if (stage == nullptr)
-        {
-            return;
-        }
-
-        // プレイヤーの情報を取得する
-        auto player = stage->GetSharedGameObject<Player>(L"Player");
-        if (player == nullptr)
-        {
-            return;
-        }
+        auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
         auto playerPos = player->GetComponent<Transform>()->GetPosition();
 
         // 引数の情報を取得する
@@ -78,15 +64,13 @@ namespace basecross
         auto transRot = transComp->GetRotation();
 
         // プレイヤーと自身の位置を計算する
-        auto distancePos_X = playerPos.x - transPos.x;
-        auto distancePos_Y = playerPos.y - transPos.y;
-        auto distancePos_Z = playerPos.z - transPos.z;
+        auto distancePos = playerPos - transPos;
 
-        float distance = sqrt((distancePos_X * distancePos_X) + (distancePos_Y * distancePos_Y) + (distancePos_Z * distancePos_Z));
+        float distance = sqrt((distancePos.x * distancePos.x) + (distancePos.y * distancePos.y) + (distancePos.z * distancePos.z));
 
-        float angleX = distancePos_X / distance;
-        float angleY = distancePos_Y / distance;
-        float angleZ = distancePos_Z / distance;
+        float angleX = distancePos.x / distance;
+        float angleY = distancePos.y / distance;
+        float angleZ = distancePos.z / distance;
 
         auto forward = transComp->GetForward();
         forward.normalize();
@@ -106,7 +90,7 @@ namespace basecross
         {
             m_Detection = true;
             // 全てのオブジェクトを探す
-            for (auto obj : stage->GetGameObjectVec())
+            for (auto& obj : GetStage()->GetGameObjectVec())
             {
                 // Wallのタグを持っているオブジェクトのみ判定をする
                 if (!obj->FindTag(L"Wall"))
@@ -326,55 +310,52 @@ namespace basecross
         float rot_X = 0.0f, rot_Z = 0.0f;
         float startReyPos_Y = 0.3f;
 
-        m_canGoLeft = true;
-        m_canGoRight = true;
-        m_canGoForward = true;
+        //m_canGoLeft = true;
+        //m_canGoRight = true;
+        //m_canGoForward = true;
 
-        Vec3 startReyPos = Vec3(transPos.x, transPos.y + startReyPos_Y, transPos.z);
+        //Vec3 startReyPos = Vec3(transPos.x, transPos.y + startReyPos_Y, transPos.z);
 
-        // レイ
-        Vec3 endFSp = CalculateEndPointRayAngle(transPos, m_rotY, 0);       // 正面
-        Vec3 endRSp = CalculateEndPointRayAngle(transPos, m_rotY, 90.0f);   // 右
-        Vec3 endLSp = CalculateEndPointRayAngle(transPos, m_rotY, -90.0f);  // 左
+        //// レイ
+        //Vec3 endFSp = CalculateEndPointRayAngle(transPos, m_rotY, 0);       // 正面
+        //Vec3 endRSp = CalculateEndPointRayAngle(transPos, m_rotY, 90.0f);   // 右
+        //Vec3 endLSp = CalculateEndPointRayAngle(transPos, m_rotY, -90.0f);  // 左
 
-        float minT = 1.0f;
+        //float minT = 1.0f;
         // 全てのゲームオブジェクトを探す
-        for (auto& obj : stage->GetGameObjectVec())
-        {
-            // 自身が引数のgameObjectと等しければ次にいく
-            if (!obj->FindTag(L"Wall"))
-            {
-                continue;
-            }
+        //for (auto& obj : stage->GetGameObjectVec())
+        //{
+        //    // 自身が引数のgameObjectと等しければ次にいく
+        //    if (!obj->FindTag(L"Wall"))
+        //    {
+        //        continue;
+        //    }
 
-            auto objDrawComp = obj->GetComponent<PNTStaticDraw>(false);
-            if (objDrawComp)
-            {
-                Vec3 hitPoint;
-                TRIANGLE tri;
-                size_t index;
-                if (m_isRotated == false)
-                {
-                    // 左
-                    if (IsWallHit(objDrawComp, startReyPos, endLSp, transPos))
-                    {
-                        m_canGoLeft = false;
-                    }
+        //    auto objDrawComp = obj->GetComponent<PNTStaticDraw>(false);
+        //    if (objDrawComp)
+        //    {
+        //        if (m_isRotated == false)
+        //        {
+        //            // 左
+        //            if (IsWallHit(objDrawComp, startReyPos, endLSp, transPos))
+        //            {
+        //                m_canGoLeft = false;
+        //            }
 
-                    // 右
-                    if (IsWallHit(objDrawComp, startReyPos, endRSp, transPos))
-                    {
-                        m_canGoRight = false;
-                    }
+        //            // 右
+        //            if (IsWallHit(objDrawComp, startReyPos, endRSp, transPos))
+        //            {
+        //                m_canGoRight = false;
+        //            }
 
-                    // 正面
-                    if (IsWallHit(objDrawComp, startReyPos, endFSp, transPos))
-                    {
-                        m_canGoForward = false;
-                    }
-                }
-            }
-        }
+        //            // 正面
+        //            if (IsWallHit(objDrawComp, startReyPos, endFSp, transPos))
+        //            {
+        //                m_canGoForward = false;
+        //            }
+        //        }
+        //    }
+        //}
 
         if (m_isRotated == false && m_canGoForward == false)
         {
@@ -613,7 +594,7 @@ namespace basecross
         m_PointPositions[number] = pos;
     }
 
-    bool EnemyBase::IsWallHit(const shared_ptr<PNTStaticDraw>& staticDraw, const Vec3& startPos, const Vec3& endPos, const Vec3& basePos)
+    const bool EnemyBase::IsWallHit(const shared_ptr<PNTStaticDraw>& staticDraw, const Vec3& startPos, const Vec3& endPos, const Vec3& basePos)
     {
         Vec3 hitPoint;
         TRIANGLE tri;
@@ -629,17 +610,53 @@ namespace basecross
 
     void EnemyBase::OnCollisionEnter(shared_ptr<GameObject>& Other)
     {
-        auto bubble = dynamic_pointer_cast<Bubble>(Other);
-        if (bubble == nullptr)
+        // 引数の情報を取得する
+        auto transComp = Other->GetComponent<Transform>();
+        auto transPos = transComp->GetPosition();
+
+        float startReyPos_Y = 0.3f;
+        Vec3 startReyPos = Vec3(transPos.x, transPos.y + startReyPos_Y, transPos.z);
+
+        // レイ
+        Vec3 endFSp = CalculateEndPointRayAngle(transPos, m_rotY, 0);       // 正面
+        Vec3 endRSp = CalculateEndPointRayAngle(transPos, m_rotY, 90.0f);   // 右
+        Vec3 endLSp = CalculateEndPointRayAngle(transPos, m_rotY, -90.0f);  // 左
+
+        float minT = 1.0f;
+
+        // 壁に触れているので、正面は行けなくなった
+        if (Other->FindTag(L"Wall"))
         {
-            return;
+            m_canGoForward = false;
         }
 
-        auto force = bubble->GetBubbleHP();
-        bool soup = bubble->GetBubblePowerUp();
-        if (Other->FindTag(L"Bubble") && soup == true)
+        // 全てのゲームオブジェクトを探す
+        for (auto& obj : GetStage()->GetGameObjectVec())
         {
-            m_EnemyHP -= force;
+            // 自身が引数のgameObjectと等しければ次にいく
+            if (!obj->FindTag(L"Wall"))
+            {
+                continue;
+            }
+
+            auto objDrawComp = obj->GetComponent<PNTStaticDraw>(false);
+            if (objDrawComp)
+            {
+                if (!m_isRotated && !m_canGoForward)
+                {
+                    // 左
+                    if (IsWallHit(objDrawComp, startReyPos, endLSp, transPos))
+                    {
+                        m_canGoLeft = false;
+                    }
+
+                    // 右
+                    if (IsWallHit(objDrawComp, startReyPos, endRSp, transPos))
+                    {
+                        m_canGoRight = false;
+                    }
+                }
+            }
         }
     }
 
@@ -650,6 +667,6 @@ namespace basecross
 
     void EnemyBase::OnCollisionExit(shared_ptr<GameObject>& Other)
     {
-
+        m_canGoForward = true;
     }
 }
