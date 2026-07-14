@@ -35,7 +35,7 @@ namespace basecross
 		~Dirt();
 
 		virtual void OnCreate()override;
-		virtual void OnDestroy()override;
+		virtual void OnUpdate()override;
 
 		void SetDirtHP(const float HP);
 		float GetDirtHP() const { return m_HP; }
