@@ -18,7 +18,6 @@ namespace basecross
 
 	Dirt::~Dirt()
 	{
-		GameManager::Instance().SetDirtNum(0);
 	}
 
 	void Dirt::OnCreate()
@@ -59,6 +58,11 @@ namespace basecross
 	void Dirt::OnUpdate()
 	{
 		m_stageObjectFade.UpdateFade(GetComponent<PNTStaticDraw>(), App::GetApp()->GetElapsedTime());
+	}
+
+	void Dirt::OnDestroy()
+	{
+		GameManager::Instance().ResetDirtNum();
 	}
 
 	void Dirt::SetDirtHP(const float HP)

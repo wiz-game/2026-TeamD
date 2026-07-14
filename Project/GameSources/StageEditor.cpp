@@ -214,8 +214,8 @@ namespace basecross
 			if (dynamic_pointer_cast<Gizmo>(obj)) continue;
 
 			// メッシュとレイの衝突をテスト
+			// PNTStaticDrawのテスト
 			auto staticDrawComp = obj->GetComponent<PNTStaticDraw>(false);
-			// PNTStaticDrawのみテスト
 			if (staticDrawComp)
 			{
 				auto isHit = staticDrawComp
@@ -235,6 +235,31 @@ namespace basecross
 						risultObj = obj;
 					}
 				}
+				continue;
+			}
+
+			// PNTBoneModelDrawのテスト
+			auto boneDrawComp = obj->GetComponent<PNTBoneModelDraw>(false);
+			if (boneDrawComp)
+			{
+				auto isHit = boneDrawComp
+					->HitTestSkinedMeshSegmentTrianglesToAffine(startPos, endPos, hitPoint, retTri, retIndex);
+				// 衝突していたら選択
+				if (isHit)
+				{
+					auto hitTargetVec = hitPoint - startPos;
+					if (hitTargetVec.length() < targetVec.length())
+					{
+						targetVec = hitTargetVec;
+						risultObj = obj;
+					}
+					else if (targetVec == Vec3())
+					{
+						targetVec = hitTargetVec;
+						risultObj = obj;
+					}
+				}
+				continue;
 			}
 		}
 
@@ -243,8 +268,8 @@ namespace basecross
 		DeselectObj();
 		m_selectedObj = risultObj;
 		m_isSelectedObj = true;
-		m_defaultObjColor = risultObj->GetComponent<PNTStaticDraw>(false)->GetDiffuse();
-		risultObj->GetComponent<PNTStaticDraw>(false)->SetDiffuse(m_selectedObjColor);
+		m_defaultObjColor = risultObj->GetComponent<SmBaseDraw>(false)->GetDiffuse();
+		risultObj->GetComponent<SmBaseDraw>(false)->SetDiffuse(m_selectedObjColor);
 
 		// ギズモを生成
 		if (!m_gizmos[0])
