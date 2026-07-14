@@ -30,6 +30,7 @@ namespace basecross
 		case ENUM_GameMode::Play:
 			if (scene->GetNowStageName() != m_selectGameStage)
 				scene->ChangeStage(m_selectGameStage);
+			SoundManager::Instance().PlayBGM(L"GameStage_BGM");
 			break;
 		case ENUM_GameMode::Menu:
 			MenuManager::Instance().Pause();
