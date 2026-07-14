@@ -13,9 +13,9 @@ namespace basecross
 	{
 	private:
 		Vec3 m_collManagerPos = Vec3(0.0f);
-		Vec3 m_collisionRange = Vec3(10.0f, 1.0f, 10.0f);
+		Vec3 m_collisionRange = Vec3(3000.0f, 1.0f, 3000.0f);
 		string m_stageNum;
-    
+		
 		bool m_isGameClear;
 		shared_ptr<UITransitionSlide> uiAwasSlide;
 

@@ -267,6 +267,12 @@ namespace basecross
 			{
 				PressedFKey();
 			}
+
+			// 90度ずつ回転
+			if (m_key.m_bPressedKeyTbl['V'])
+			{
+				PressedVKey();
+			}
 			break;
 		}
 
@@ -274,11 +280,6 @@ namespace basecross
 		if (m_key.m_bPressedKeyTbl['C'] && GameManager::Instance().GetIsDebug())
 		{
 			PressedCKey();
-		}
-
-		if (m_key.m_bPressedKeyTbl['V'])
-		{
-			PressedVKey();
 		}
 
 		// マウスポイントの更新
@@ -653,14 +654,7 @@ namespace basecross
 
 	void InputManager::PressedVKey()
 	{
-		if (GameManager::Instance().GetGameMode() == ENUM_GameMode::Play)
-		{
-			GameManager::Instance().SetGameMode(ENUM_GameMode::PlayMovie);
-		}
-		else
-		{
-			GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
-		}
+		StageEditor::Instance().RightAngleRotationY();
 	}
 
 	void InputManager::IdelAnimation()
