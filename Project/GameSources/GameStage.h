@@ -12,7 +12,6 @@ namespace basecross
 	class GameStage : public Stage
 	{
 	private:
-		JoltManager m_jphManger;
 		Vec3 m_collManagerPos = Vec3(0.0f);
 		Vec3 m_collisionRange = Vec3(10.0f, 1.0f, 10.0f);
 		string m_stageNum;
@@ -46,6 +45,5 @@ namespace basecross
 		
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
-		virtual void OnUpdate2() override;
 	};
 }

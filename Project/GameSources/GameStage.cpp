@@ -20,8 +20,6 @@ namespace basecross
 	{
 		try 
 		{
-			m_jphManger.Initialize();
-
 			CreateViewLight();
 			CreatePlayer();
 			CreateMenu();
@@ -74,11 +72,6 @@ namespace basecross
 
 		// メニュー画面のボタンの切り替え
 		MenuManager::Instance().ChangeUIParam();
-	}
-
-	void GameStage::OnUpdate2()
-	{
-		m_jphManger.Update(1.0f / 60.0f);
 	}
 
 	void GameStage::CreateViewLight() 
