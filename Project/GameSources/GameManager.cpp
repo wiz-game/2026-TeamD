@@ -5,32 +5,32 @@ namespace basecross
 {
 	void GameManager::EnterGameMode(ENUM_GameMode gameMode)
 	{
-		SoundManager::Instance().StopBGM();
-		SoundManager::Instance().AllStopSE();
-
 		auto scene = App::GetApp()->GetScene<Scene>();
 		switch (gameMode)
 		{
 		case ENUM_GameMode::Title:
 			scene->ChangeStage(L"TitleStage");
+			SoundManager::Instance().StopBGM();
 			SoundManager::Instance().PlayBGM(L"Title_BGM");
 			break;
 		case ENUM_GameMode::Select:
 			scene->ChangeStage(L"SelectStage");
+			SoundManager::Instance().StopBGM();
 			SoundManager::Instance().PlayBGM(L"Title_BGM");
 			break;
 		case ENUM_GameMode::GameClear:
 			scene->ChangeStage(L"GameClearStage");
+			SoundManager::Instance().StopBGM();
 			SoundManager::Instance().PlaySE(L"GameClear_BGM");
 			break;
 		case ENUM_GameMode::GameOver:
 			scene->ChangeStage(L"GameOverStage");
+			SoundManager::Instance().StopBGM();
 			SoundManager::Instance().PlaySE(L"GameOver_BGM");
 			break;
 		case ENUM_GameMode::Play:
 			if (scene->GetNowStageName() != m_selectGameStage)
 				scene->ChangeStage(m_selectGameStage);
-			SoundManager::Instance().PlayBGM(L"GameStage_BGM");
 			break;
 		case ENUM_GameMode::Menu:
 			MenuManager::Instance().Pause();
@@ -42,12 +42,15 @@ namespace basecross
 			InputManager::Instance().ResetWheelDelta();
 			break;
 		case ENUM_GameMode::PlayMovie:
+			SoundManager::Instance().StopBGM();
 			MovieManager::Instance().SetMovieType(MovieType::Play);
 			break;
 		case ENUM_GameMode::GameOverMovie:
+			SoundManager::Instance().StopBGM();
 			MovieManager::Instance().SetMovieType(MovieType::GameOver);
 			break;
 		case ENUM_GameMode::GameClearMovie:
+			SoundManager::Instance().StopBGM();
 			MovieManager::Instance().SetMovieType(MovieType::GameClear);
 			break;
 		case ENUM_GameMode::DirtCleanMovie:
@@ -81,6 +84,8 @@ namespace basecross
 			InputManager::Instance().ResetWheelDelta();
 			break;
 		case ENUM_GameMode::PlayMovie:
+			SoundManager::Instance().StopBGM();
+			SoundManager::Instance().PlayBGM(L"GameStage_BGM");
 			break;
 		case ENUM_GameMode::GameOverMovie:
 			break;
