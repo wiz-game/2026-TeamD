@@ -43,7 +43,13 @@ namespace basecross
 		virtual void OnCreate() override; // 初期化
 		virtual void OnUpdate() override; // 更新
 		//virtual void OnDraw() override; // 描画
-			};
+
+		// --- 当たり判定 ---
+		void OnCollisionEnter(shared_ptr<GameObject>& Other);	//	当たり判定
+		void OnCollisionExecute(shared_ptr<GameObject>& Other);
+		void OnCollisionExit(shared_ptr<GameObject>& Other);
+		// ------------------
+	};
 
 	class IdleState : public ObjState<EnemyBase>
 	{
@@ -74,5 +80,6 @@ namespace basecross
 		virtual void Execute(const shared_ptr<EnemyBase>& obj) override;
 		virtual void Exit(const shared_ptr<EnemyBase>& obj) override;
 	};
+
 }
 //end basecross
