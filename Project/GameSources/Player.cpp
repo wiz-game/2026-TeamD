@@ -268,6 +268,7 @@ namespace basecross
 			m_iseatSoap = true;
 			m_pBubble->BubbleAddAblity(BubbleAbility::RideBubble);
 			m_pBubble->BubbleAddAblity(BubbleAbility::TranpolineBubble);
+			SoundManager::Instance().PlaySE(L"GetItem_SE");
 			SetPlayerState(PlayerState::PowerUp);
 		}
 
@@ -302,6 +303,7 @@ namespace basecross
 		bubble->ShootBubble();
 		SetBresing(true);
 		SetCoolDown(initCoolDown);
+		SoundManager::Instance().PlaySE(L"Bubble_SE");
 	}
 
 	void Player::SetPlayerState(PlayerState state)

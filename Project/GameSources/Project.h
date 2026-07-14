@@ -60,6 +60,7 @@
 #include "Bubble.h"
 #include "TrampolineBubbles.h"
 #include "Player.h"
+#include "Awapaka.h"
 
 // ƒAƒCƒeƒ€
 #include "ItemBase.h"
