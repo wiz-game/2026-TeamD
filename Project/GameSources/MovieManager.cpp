@@ -424,10 +424,8 @@ namespace basecross
 			{
 				dirts.push_back(d);
 			}
-		}
 
-		// 内部キャッシュも更新
-		SetDirt(dirts);
+		}
 		return dirts;
 	}
 
