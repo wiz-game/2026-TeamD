@@ -62,6 +62,11 @@ namespace basecross
 		m_draw->UpdateAnimation(App::GetApp()->GetElapsedTime());
 	}
 
+	void EnemyAlpaca::DebugString()
+	{
+		//GameManager::AddDebugLog(L"", m_Num);
+	}
+
 	// ステートマシンの処理
 	shared_ptr<IdleState> IdleState::Instance()
 	{
@@ -139,5 +144,67 @@ namespace basecross
 	{
 
 	}
+
+	void EnemyAlpaca::OnCollisionEnter(shared_ptr<GameObject>& Other)
+	{
+		// 引数の情報を取得する
+		auto transComp = GetThis<EnemyAlpaca>()->GetComponent<Transform>();
+		auto transPos = transComp->GetPosition();
+
+		float startReyPos_Y = 0.3f;
+		Vec3 startReyPos = Vec3(transPos.x, transPos.y + startReyPos_Y, transPos.z);
+
+		// レイ
+		Vec3 endFSp = CalculateEndPointRayAngle(transPos, m_rotY, 0);       // 正面
+		Vec3 endRSp = CalculateEndPointRayAngle(transPos, m_rotY, 90.0f);   // 右
+		Vec3 endLSp = CalculateEndPointRayAngle(transPos, m_rotY, -90.0f);  // 左
+
+		float minT = 1.0f;
+
+		// 壁に触れているので、正面は行けなくなった
+		if (Other->FindTag(L"Wall"))
+		{
+			m_canGoForward = false;
+		}
+
+		// 全てのゲームオブジェクトを探す
+		for (auto& obj : GetStage()->GetGameObjectVec())
+		{
+			// 自身が引数のgameObjectと等しければ次にいく
+			if (!obj->FindTag(L"Wall"))
+			{
+				continue;
+			}
+
+			auto objDrawComp = obj->GetComponent<PNTStaticDraw>(false);
+			if (objDrawComp)
+			{
+				if (!m_isRotated && !m_canGoForward)
+				{
+					// 左
+					if (IsWallHit(objDrawComp, startReyPos, endLSp, transPos))
+					{
+						m_canGoLeft = false;
+					}
+
+					// 右
+					if (IsWallHit(objDrawComp, startReyPos, endRSp, transPos))
+					{
+						m_canGoRight = false;
+					}
+				}
+			}
+		}
+	}
+
+	void EnemyAlpaca::OnCollisionExecute(shared_ptr<GameObject>& Other)
+	{
+
+	}
+
+	void EnemyAlpaca::OnCollisionExit(shared_ptr<GameObject>& Other)
+	{
+	}
+
 }
 //end basecross

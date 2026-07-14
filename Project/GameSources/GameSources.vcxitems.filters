@@ -193,6 +193,9 @@
     <Filter Include="UIs\UIStatueNum">
       <UniqueIdentifier>{9fa748ce-bfe3-4a70-bb01-3bdac6c7c09b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Player\Awapaka">
+      <UniqueIdentifier>{3f9e39f1-a7af-4924-8107-19596e903120}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -390,6 +393,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)UIStatueNum.h">
       <Filter>UIs\UIStatueNum</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Awapaka.h">
+      <Filter>Player\Awapaka</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -574,6 +580,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)UIStatueNum.cpp">
       <Filter>UIs\UIStatueNum</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Awapaka.cpp">
+      <Filter>Player\Awapaka</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
