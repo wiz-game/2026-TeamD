@@ -487,7 +487,6 @@ namespace basecross
 			GetPlayer()->SetMoveStopFlag(false);
 			GetPlayer()->PlayerChangeAnimation(L"Idle");
 			GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
-			SoundManager::Instance().PlayBGM(L"GameStage_BGM");
 			break;
 		case MovieType::GameClearMovieEnd:
 			GetPlayer()->SetMoveStopFlag(false);
