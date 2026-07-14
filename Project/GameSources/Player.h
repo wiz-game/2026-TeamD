@@ -223,7 +223,7 @@ namespace basecross
 		void ExitPlayerState(PlayerState state);
 
 		void PlayerAnimation();
-		void PlayerChangeAnimation(const wstring& newAnim,bool forceRestart);
+		void PlayerChangeAnimation(const wstring& newAnim,bool forceRestart = false);
 		void OnMoveInput();
 		void OnRTriggerInput();
 		void OnRTriggerRelese();

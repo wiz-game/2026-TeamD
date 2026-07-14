@@ -30,6 +30,7 @@ namespace basecross
 		case ENUM_GameMode::Play:
 			if (scene->GetNowStageName() != m_selectGameStage)
 				scene->ChangeStage(m_selectGameStage);
+			SoundManager::Instance().PlayBGM(L"GameStage_BGM");
 			break;
 		case ENUM_GameMode::Menu:
 			MenuManager::Instance().Pause();
@@ -48,6 +49,9 @@ namespace basecross
 			break;
 		case ENUM_GameMode::GameClearMovie:
 			MovieManager::Instance().SetMovieType(MovieType::GameClear);
+			break;
+		case ENUM_GameMode::DirtCleanMovie:
+			MovieManager::Instance().SetMovieType(MovieType::DirtClean);
 			break;
 		default:
 			break;
@@ -75,6 +79,14 @@ namespace basecross
 			SetAllGameObjectsUpdateActive(true);
 			StageEditor::Instance().EndEditor();
 			InputManager::Instance().ResetWheelDelta();
+			break;
+		case ENUM_GameMode::PlayMovie:
+			break;
+		case ENUM_GameMode::GameOverMovie:
+			break;
+		case ENUM_GameMode::GameClearMovie:
+			break;
+		case ENUM_GameMode::DirtCleanMovie:
 			break;
 		default:
 			break;

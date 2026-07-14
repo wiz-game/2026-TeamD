@@ -21,6 +21,7 @@ namespace basecross
 		PlayMovie,
 		GameClearMovie,
 		GameOverMovie,
+		DirtCleanMovie,
 		Null
 	};
 

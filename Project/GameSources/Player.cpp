@@ -268,6 +268,7 @@ namespace basecross
 			m_iseatSoap = true;
 			m_pBubble->BubbleAddAblity(BubbleAbility::RideBubble);
 			m_pBubble->BubbleAddAblity(BubbleAbility::TranpolineBubble);
+			SoundManager::Instance().PlaySE(L"GetItem_SE");
 			SetPlayerState(PlayerState::PowerUp);
 		}
 
@@ -302,6 +303,7 @@ namespace basecross
 		bubble->ShootBubble();
 		SetBresing(true);
 		SetCoolDown(initCoolDown);
+		SoundManager::Instance().PlaySE(L"Bubble_SE");
 	}
 
 	void Player::SetPlayerState(PlayerState state)
@@ -376,7 +378,7 @@ namespace basecross
 		{
 			if (current != L"Walk")
 			{
-				PlayerChangeAnimation(L"Walk", false);
+				PlayerChangeAnimation(L"Walk");
 			}
 		}
 	}
@@ -387,7 +389,7 @@ namespace basecross
 		if (GetMoveStopFlag()) return;
 	
 		 m_isBubbleAnimationEnd = false;
-		 PlayerChangeAnimation(L"Bubble", false);
+		 PlayerChangeAnimation(L"Bubble");
 	}
 
 	void Player::OnRTriggerRelese()
@@ -404,7 +406,7 @@ namespace basecross
 	{
 		if (m_isStartStop)
 		{
-			PlayerChangeAnimation(L"Idle", false);
+			PlayerChangeAnimation(L"Idle");
 			m_isStartStop = false;
 		}
 	}

@@ -18,12 +18,12 @@ namespace basecross
 
 	Dirt::~Dirt()
 	{
-		GameManager::Instance().SetDirtNum(0);
 	}
 
 	void Dirt::OnCreate()
 	{
 		AddTag(L"Dirt");
+		AddTag(L"Fade");
 		AddTag(L"Wall");
 		SetIsEditorSave(true);
 
@@ -52,6 +52,17 @@ namespace basecross
 		);
 
 		m_draw->SetMeshToTransformMatrix(spanMat);
+		SetAlphaActive(true);
+	}
+
+	void Dirt::OnUpdate()
+	{
+		m_stageObjectFade.UpdateFade(GetComponent<PNTStaticDraw>(), App::GetApp()->GetElapsedTime());
+	}
+
+	void Dirt::OnDestroy()
+	{
+		GameManager::Instance().ResetDirtNum();
 	}
 
 	void Dirt::SetDirtHP(const float HP)
@@ -94,6 +105,7 @@ namespace basecross
 			m_draw->SetMeshResource(L"AwaPaka_gold");
 			m_draw->SetTextureResource(L"T_AwaPaka_Gold");
 			EffectManager::Instance().PlayEffect(L"Clean", GetComponent<Transform>()->GetPosition());
+			SoundManager::Instance().PlaySE(L"Cleaned_SE");
 			GameManager::Instance().SubDirt();
 			break;
 		default:

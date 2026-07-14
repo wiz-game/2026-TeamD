@@ -38,6 +38,12 @@ namespace basecross
 		case ENUM_GameMode::Editor:
 			UpdateEditorMode();
 			break;
+		case ENUM_GameMode::GameClearMovie:
+			FadeStageObjectAlpha();
+			break;
+		case ENUM_GameMode::GameOverMovie:
+			FadeStageObjectAlpha();
+			break;
 		}
 
 		// CameraクラスのUpdateを最後に呼ぶ
