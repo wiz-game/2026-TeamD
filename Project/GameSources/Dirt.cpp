@@ -74,6 +74,8 @@ namespace basecross
 		}
 		if (m_HP <= 0.0f)
 		{
+			//soap->SetVecPosition(m_trans->GetPosition() + m_trans->GetForward());
+
 			SetDirtState(DirtCondition::DirtClean);
 		}
 	}
@@ -88,6 +90,10 @@ namespace basecross
 
 	void Dirt::EnterDirtState(DirtCondition state)
 	{
+		auto pos = m_trans->GetPosition();
+		auto forward = m_trans->GetForward();
+		forward.normalize();
+
 		EffectHandle handle;
 		switch (state)
 		{
@@ -106,6 +112,7 @@ namespace basecross
 			m_draw->SetTextureResource(L"T_AwaPaka_Gold");
 			EffectManager::Instance().PlayEffect(L"Clean", GetComponent<Transform>()->GetPosition());
 			SoundManager::Instance().PlaySE(L"Cleaned_SE");
+			GetStage()->AddGameObject<PowerUpSoap>(Vec3(pos.x,pos.y,pos.z + 2.5f));
 			GameManager::Instance().SubDirt();
 			break;
 		default:

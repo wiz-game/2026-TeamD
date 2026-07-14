@@ -10,8 +10,7 @@ namespace basecross
 {
 	GameStage::GameStage(const wstring& stageNum)
 		: Stage(),
-		m_isGameClear(false),
-		m_isPlayMovie(false)
+		m_isGameClear(false)
 	{
 		m_stageNum = to_string(stageNum);
 	}
@@ -51,11 +50,6 @@ namespace basecross
 		}
 		GameManager::Instance().AddDebugStr(L"FPS", 1.0f / App::GetApp()->GetElapsedTime());
 		
-		auto player = GetSharedGameObject<Player>(L"Player");
-		auto uiAwasPos = uiAwasSlide->GetComponent<Transform>()->GetPosition();
-
-		GameManager::Instance().AddDebugStr(L"UIPos",uiAwasPos.y);
-
 		if (GameManager::Instance().GetDirtNum() <= 0)
 		{	
 			if (!m_isGameClear)
