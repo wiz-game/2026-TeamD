@@ -17,6 +17,8 @@ namespace basecross
 		string m_stageNum;
     
 		bool m_isGameClear;
+		bool m_isPlayMovie;
+		shared_ptr<UITransitionSlide> uiAwasSlide;
 
 		// メニュー画面のUI
 		vector<shared_ptr<UIBase>> m_uiframes;
