@@ -79,12 +79,15 @@ namespace basecross
 		light->SetDefaultLighting(); // デフォルトのライティングを指定
 
 		MovieManager::Instance().SetCamera(camera);
+
+		// スカイボックスの作成
+		AddGameObject<SkyBox>();
 	}
 
 	// Playerを作成する
 	void GameStage::CreatePlayer()
 	{
-		auto player = AddGameObject<Player>(Vec3(0.0f, 0.75f, 0.0f));
+		auto player = AddGameObject<Player>(Vec3(0.0f, 0.6f, 0.0f));
 		SetSharedGameObject(L"Player", player);
 		MovieManager::Instance().SetPlayer(player);
 	}

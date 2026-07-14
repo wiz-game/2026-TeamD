@@ -28,10 +28,10 @@ namespace basecross
 		auto ptrDraw = AddComponent<PNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"M_Stone");
 		ptrDraw->SetTextureResource(L"T_Stone");
-
+		
 		auto ptrShadow = AddComponent<Shadowmap>();
-		ptrDraw->SetOwnShadowActive(true);
 		ptrShadow->SetMeshResource(L"M_Stone");
+		ptrShadow->SetDrawActive(true);
 
 		Mat4x4 spanMat;
 		spanMat.affineTransformation
