@@ -80,6 +80,7 @@ namespace basecross
 		void GizmoDrawActive(const bool& isDraw);
 		void DeselectObj();
 		void DeselectGizmo();
+		void RightAngleRotationY();
 		
 		void AddGameObject();
 		void ChangeObject(bool yKeyPressed, bool uKeyPressed);

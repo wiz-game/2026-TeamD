@@ -39,12 +39,9 @@ namespace basecross
 		SetVertices();
 
 		auto ptrDraw = AddComponent<PNTStaticDraw>();
-		//ptrDraw->CreateOriginalMesh(m_vertices, indices);
-		//ptrDraw->SetOriginalMeshUse(true);
 		ptrDraw->SetOwnShadowActive(true);
 		ptrDraw->SetMeshResource(L"M_SoilWall");
 		ptrDraw->SetTextureResource(L"T_SoilWall");
-		ptrDraw->SetSamplerState(SamplerState::LinearWrap);
 
 		auto ptrShadow = AddComponent<Shadowmap>();
 		ptrShadow->SetMeshResource(L"M_SoilWall");
@@ -59,7 +56,7 @@ namespace basecross
 		);
 
 		ptrDraw->SetMeshToTransformMatrix(spanMat);
-
+		ptrShadow->SetMeshToTransformMatrix(spanMat);
 
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetFixed(true);

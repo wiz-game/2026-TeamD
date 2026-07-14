@@ -30,9 +30,9 @@ namespace basecross
 		bool m_isUp;
 	public:
 		// 構築と破棄
-		PowerUpSoap(const shared_ptr<Stage>& stage) :
+		PowerUpSoap(const shared_ptr<Stage>& stage, const Vec3& pos) :
 			ItemBase(stage),
-			//m_Position(1.0f,1.0f,1.0f),
+			m_Position(pos),
 			m_Scale(1.1f, 0.5f, 1.1f),
 			m_Rotation(0.0f,0.0f,XMConvertToRadians(45.0f)),
 			m_RotationSpeed(1.0f),

@@ -13,11 +13,10 @@ namespace basecross
 	{
 	private:
 		Vec3 m_collManagerPos = Vec3(0.0f);
-		Vec3 m_collisionRange = Vec3(10.0f, 1.0f, 10.0f);
+		Vec3 m_collisionRange = Vec3(3000.0f, 1.0f, 3000.0f);
 		string m_stageNum;
-    
+		
 		bool m_isGameClear;
-		bool m_isPlayMovie;
 		shared_ptr<UITransitionSlide> uiAwasSlide;
 
 		// メニュー画面のUI
