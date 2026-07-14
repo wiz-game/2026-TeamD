@@ -15,11 +15,22 @@ namespace basecross
 		m_pntDraw->SetMeshResource(L"AwaPaka");
 		m_pntDraw->SetTextureResource(L"T_AwaPaka_Body");
 		m_pntDraw->SetDrawActive(true);
-		m_pntDraw->SetOwnShadowActive(true);
 
 		auto shadowComp = AddComponent<Shadowmap>();
 		shadowComp->SetMeshResource(L"AwaPaka");
 		shadowComp->SetDrawActive(true);
+
+		Mat4x4 spanMat;
+		spanMat.affineTransformation
+		(
+			Vec3(0.1f, 0.075f, 0.075f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, XM_PI, 0.0f),
+			Vec3(0.0f, -0.5f, 0.0f)
+		);
+
+		m_pntDraw->SetMeshToTransformMatrix(spanMat);
+		shadowComp->SetMeshToTransformMatrix(spanMat);
 
 		auto loopFlag = true;
 		m_pntDraw->AddAnimation(L"Idle", 0, 65, loopFlag, 60.0f);
