@@ -23,6 +23,7 @@ namespace basecross
 			// Aを押してゲームスタート
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
 			{
+				SoundManager::Instance().PlaySE(L"Decide_SE");
 				GameStart();
 			}
 			break;
@@ -451,15 +452,18 @@ namespace basecross
 		switch (MenuManager::Instance().GetMenuMode())
 		{
 		case ENUM_MenuMode::MenuStart:
+			SoundManager::Instance().PlaySE(L"Back_SE");
 			GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
 			break;
 
 		case ENUM_MenuMode::Setting:
+			SoundManager::Instance().PlaySE(L"Back_SE");
 			MenuManager::Instance().SetMenuMode(ENUM_MenuMode::MenuStart);
 			MenuManager::Instance().ChangeMenuMode();
 			break;
 
 		case ENUM_MenuMode::Howtoplay:
+			SoundManager::Instance().PlaySE(L"Back_SE");
 			MenuManager::Instance().SetMenuMode(ENUM_MenuMode::MenuStart);
 			MenuManager::Instance().ChangeMenuMode();
 			break;
@@ -497,10 +501,12 @@ namespace basecross
 			case ENUM_MenuMode::MenuStart:
 				if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP)
 				{
+					SoundManager::Instance().PlaySE(L"Select_SE");
 					MenuManager::Instance().ChangeSelectMenuMode(-1);
 				}
 				else if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
 				{
+					SoundManager::Instance().PlaySE(L"Select_SE");
 					MenuManager::Instance().ChangeSelectMenuMode(+1);
 				}
 				break;
@@ -531,11 +537,13 @@ namespace basecross
 
 		case ENUM_MenuStart::Setting:
 			MenuManager::Instance().ChangeUISize(0.25f);
+			SoundManager::Instance().PlaySE(L"Decide_SE");
 			EnterSetting();
 			break;
 
 		case ENUM_MenuStart::Howtoplay:
 			MenuManager::Instance().ChangeUISize(0.25f);
+			SoundManager::Instance().PlaySE(L"Decide_SE");
 			EnterHowtoplay();
 			break;
 
