@@ -152,8 +152,7 @@ namespace basecross
 		void PressedRKey();
 		void PressedFKey();
 		void PressedCKey();
-		void PressedVKey();
-
+		
 		void IdelAnimation();
 		void RTriggerRelse();
 

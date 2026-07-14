@@ -276,11 +276,6 @@ namespace basecross
 			PressedCKey();
 		}
 
-		if (m_key.m_bPressedKeyTbl['V'])
-		{
-			PressedVKey();
-		}
-
 		// マウスポイントの更新
 		m_beforeMouseClientPoint = m_key.m_MouseClientPoint;
 		m_beforeWheelDelta = m_wheelDelta;
@@ -644,18 +639,6 @@ namespace basecross
 		if (GameManager::Instance().GetGameMode() == ENUM_GameMode::Play)
 		{
 			GameManager::Instance().SetGameMode(ENUM_GameMode::Editor);
-		}
-		else
-		{
-			GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
-		}
-	}
-
-	void InputManager::PressedVKey()
-	{
-		if (GameManager::Instance().GetGameMode() == ENUM_GameMode::Play)
-		{
-			GameManager::Instance().SetGameMode(ENUM_GameMode::PlayMovie);
 		}
 		else
 		{
