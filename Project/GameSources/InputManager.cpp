@@ -51,11 +51,13 @@ namespace basecross
 			// Aを押してリトライ
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
 			{
+				SoundManager::Instance().PlaySE(L"Decide_SE");
 				StageStart();
 			}
 			// Bを押してタイトルへ
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_B)
 			{
+				SoundManager::Instance().PlaySE(L"Decide_SE");
 				ReturnTitle();
 			}
 			break;
@@ -63,11 +65,13 @@ namespace basecross
 			// Aを押してリトライ
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
 			{
+				SoundManager::Instance().PlaySE(L"Decide_SE");
 				StageStart();
 			}
 			// Bを押してタイトルへ
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_B)
 			{
+				SoundManager::Instance().PlaySE(L"Decide_SE");
 				ReturnTitle();
 			}
 			break;
