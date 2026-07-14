@@ -62,6 +62,11 @@ namespace basecross
 		m_draw->UpdateAnimation(App::GetApp()->GetElapsedTime());
 	}
 
+	void EnemyAlpaca::DebugString()
+	{
+		//GameManager::AddDebugLog(L"", m_Num);
+	}
+
 	// ステートマシンの処理
 	shared_ptr<IdleState> IdleState::Instance()
 	{
@@ -143,7 +148,7 @@ namespace basecross
 	void EnemyAlpaca::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
 		// 引数の情報を取得する
-		auto transComp = Other->GetComponent<Transform>();
+		auto transComp = GetThis<EnemyAlpaca>()->GetComponent<Transform>();
 		auto transPos = transComp->GetPosition();
 
 		float startReyPos_Y = 0.3f;
@@ -199,7 +204,6 @@ namespace basecross
 
 	void EnemyAlpaca::OnCollisionExit(shared_ptr<GameObject>& Other)
 	{
-		m_canGoForward = true;
 	}
 
 }

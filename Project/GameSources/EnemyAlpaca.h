@@ -26,6 +26,8 @@ namespace basecross
 		std::shared_ptr<PNTBoneModelDraw> m_draw;
 
 		float m_Speed;
+
+		int m_Num;
 	public:
 		// 構築と破棄
 		EnemyAlpaca(const shared_ptr<Stage>& stage,const STRUCT_ObjectParam& objectParam) :
@@ -43,6 +45,8 @@ namespace basecross
 		virtual void OnCreate() override; // 初期化
 		virtual void OnUpdate() override; // 更新
 		//virtual void OnDraw() override; // 描画
+
+		void DebugString();
 
 		// --- 当たり判定 ---
 		void OnCollisionEnter(shared_ptr<GameObject>& Other);	//	当たり判定
