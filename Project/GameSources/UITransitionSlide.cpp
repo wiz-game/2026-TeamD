@@ -12,6 +12,7 @@ namespace basecross
 	
 	void UITransitionSlide::OnCreate()
 	{
+		AddTag(L"UITransitionSlide");
 		UISlide::OnCreate();
 	}
 

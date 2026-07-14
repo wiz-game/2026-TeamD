@@ -5,6 +5,7 @@ namespace basecross
 {
 	class Player;
 	class Dirt;
+	class UITransitionSlide;
 	struct CameraKeyframe
 	{
 		float time;
@@ -83,11 +84,19 @@ namespace basecross
 		shared_ptr<Player> m_player;
 		shared_ptr<MyCamera> m_camera;
 		shared_ptr<Stage> m_stage;
+		shared_ptr<UITransitionSlide> m_uiAwasSlide;
 		vector<shared_ptr<Dirt>> m_dirts;
 		Vec3 m_cachedPlayerPos;
 		Vec3 m_cachedPlayerForward;
 		bool m_initialized = false;
-		vector<bool> m_createdPerType;
+		bool m_isNotUISlideUp = false;
+		bool m_isSlidUpMax = false;
+		MovieType m_pendingMovie = MovieType::None;
+		float m_pendingPlayTimer = 0.0f;
+		float m_pendingPlayDelay = 1.0f;
+		int m_pendingPlayRetries = 0;
+		int m_pendingPlayMaxRetries = 3;
+ 		vector<bool> m_createdPerType;
 		// カメラ当たり判定パラメータ
 		// カメラ球の半径
 		float m_cameraRadius;
@@ -116,8 +125,8 @@ namespace basecross
 		// Movieを最初から再生させる
 		void InitializeMovie(const MovieType& movie);
 
-		// 全てのゲームオブジェクトの更新フラグを変更する
-		void SetAllExceptPlayerAndFadeUpdateActive(bool isActive);
+		// Tagで場外した奴以外の更新を変更させる
+		void SetUpdateActiveExceptTags(bool isActive);
 		static Vec3 GetForwardXZ(const Vec3& fwd);
 		pair<Vec3, Vec3> MoveCameraInFrontPlayer(float distance, float height, float lookAtHeight);
 		
@@ -137,6 +146,10 @@ namespace basecross
 		void SetDirt(const vector<shared_ptr<Dirt>>& dirts) { m_dirts = dirts; }
 		vector<shared_ptr<Dirt>> GetDirt();
 
+		// UISlider関連
+		void SetUISlide(const shared_ptr<UITransitionSlide>& uiSlide) { m_uiAwasSlide = uiSlide; }
+		shared_ptr<UITransitionSlide> GetUISlide() { return m_uiAwasSlide; }
+		
 		void SetMovieType(MovieType gameMode);
 		void EnterMovieType(MovieType gameMode);
 		void ExitMovieType(MovieType gameMode);
