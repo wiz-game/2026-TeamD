@@ -10,8 +10,7 @@ namespace basecross
 {
 	GameStage::GameStage(const wstring& stageNum)
 		: Stage(),
-		m_isGameClear(false),
-		m_isPlayMovie(false)
+		m_isGameClear(false)
 	{
 		m_stageNum = to_string(stageNum);
 	}
@@ -29,10 +28,11 @@ namespace basecross
 			GameManager::Instance().ResetDirtNum();
 			// ステージの作成
 			StageEditor::Instance().ReadStageData(m_stageNum + ".bin", GetThis<GameStage>());
-			
-			AddGameObject<EffectUpdateDrawManager>();
 			uiAwasSlide = AddGameObject<UITransitionSlide>(STRUCT_UIParam(L"Awas", Vec3(0.0f, 0.0f, 0.0f), 1.3f), 600.0f);
+			AddGameObject<EffectUpdateDrawManager>();
+			MovieManager::Instance().SetUISlide(uiAwasSlide);
 			MovieManager::Instance().SetStage(GetThis<GameStage>());
+			GameManager::Instance().SetGameMode(ENUM_GameMode::PlayMovie);
 		}
 		catch (...)
 		{
@@ -50,17 +50,6 @@ namespace basecross
 		}
 		GameManager::Instance().AddDebugStr(L"FPS", 1.0f / App::GetApp()->GetElapsedTime());
 		
-		auto player = GetSharedGameObject<Player>(L"Player");
-		auto uiAwasPos = uiAwasSlide->GetComponent<Transform>()->GetPosition();
-
-		if (uiAwasPos.y >= 1350.0f && !m_isPlayMovie)
-		{
-			GameManager::Instance().SetGameMode(ENUM_GameMode::PlayMovie);
-			m_isPlayMovie = true;
-		}
-
-		GameManager::Instance().AddDebugStr(L"UIPos",uiAwasPos.y);
-
 		if (GameManager::Instance().GetDirtNum() <= 0)
 		{	
 			if (!m_isGameClear)

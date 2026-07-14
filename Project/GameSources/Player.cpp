@@ -109,8 +109,6 @@ namespace basecross
 		{
 			CreateBubble();
 		}
-
-		GameManager::Instance().AddDebugStr(L"AnimTime", animTime);
 	}
 
 	void Player::Jump()
@@ -266,9 +264,10 @@ namespace basecross
 		if (Other->FindTag(L"Soap"))
 		{
 			m_iseatSoap = true;
-			m_pBubble->BubbleAddAblity(BubbleAbility::RideBubble);
-			m_pBubble->BubbleAddAblity(BubbleAbility::TranpolineBubble);
+			//m_pBubble->BubbleAddAblity(BubbleAbility::RideBubble);
+			//m_pBubble->BubbleAddAblity(BubbleAbility::TranpolineBubble);
 			SoundManager::Instance().PlaySE(L"GetItem_SE");
+
 			SetPlayerState(PlayerState::PowerUp);
 		}
 
@@ -318,11 +317,11 @@ namespace basecross
 		switch (state)
 		{
 		case PlayerState::Default:
-			m_timer = Timer(6.0f);
-			m_timer.SetCounter();
 			m_isPlayerPowerUp = false;
 			break;
 		case PlayerState::PowerUp:
+			m_timer = Timer(6.0f);
+			m_timer.SetCounter();
 			m_isPlayerPowerUp = true;
 			break;
 		case PlayerState::Dead:
@@ -429,9 +428,18 @@ namespace basecross
 		Quat finalRot = offset * rot;
 
 		EffectHandle effHandle;
-		effHandle = EffectManager::Instance().PlayEffect(L"Bubble", pos + forward);
-		EffectManager::Instance().SetScale(effHandle, Vec3(0.3f));
-		EffectManager::Instance().SetRotationFromQuaternion(effHandle, finalRot);
+		if (m_isPlayerPowerUp)
+		{
+			effHandle = EffectManager::Instance().PlayEffect(L"MightBubble_2", pos + forward);
+			EffectManager::Instance().SetScale(effHandle, Vec3(0.4f));
+			EffectManager::Instance().SetRotationFromQuaternion(effHandle, finalRot);
+		}
+		else
+		{
+			effHandle = EffectManager::Instance().PlayEffect(L"Bubble", pos + forward);
+			EffectManager::Instance().SetScale(effHandle, Vec3(0.3f));
+			EffectManager::Instance().SetRotationFromQuaternion(effHandle, finalRot);
+		}
 	}
 }
 //end basecross

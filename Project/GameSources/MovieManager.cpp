@@ -64,6 +64,22 @@ namespace basecross
 
 	void MovieManager::Initialize()
 	{
+		auto playerPos = GetPlayer()->GetComponent<Transform>()->GetPosition();
+		auto playerForward = GetPlayer()->GetComponent<Transform>()->GetForward();
+
+		Vec3 eyeStart, atStart;
+		Vec3 fwdXZ = GetForwardXZ(playerForward);
+
+		float startDist = 8.0f;
+		float startHeight = 3.0f;
+		float lookAtHeightStart = 1.5f;
+
+		eyeStart = playerPos + fwdXZ * startDist + Vec3(0.0f, startHeight, 0.0f);
+		atStart = playerPos + Vec3(0.0f, lookAtHeightStart, 0.0f);
+
+		GetStageCamera()->SetEye(eyeStart);
+		GetStageCamera()->SetAt(atStart);
+
 		if (m_initialized) return;
 		size_t movieCount = static_cast<size_t>(MovieType::Max);
 		m_eventsPerMovie.resize(movieCount);
@@ -72,9 +88,38 @@ namespace basecross
 	}
 
 	void MovieManager::OnUpdate()
-	{
-		if (!m_isPlayMove) return;
+	{    
 		float dt = App::GetApp()->GetElapsedTime();
+
+		if (m_isNotUISlideUp && m_pendingMovie != MovieType::None)
+		{
+			m_pendingPlayTimer += dt;
+
+			// 指定時間経過したら再試行
+			if (m_pendingPlayTimer >= m_pendingPlayDelay)
+			{
+				m_pendingPlayTimer = 0.0f;
+				++m_pendingPlayRetries;
+
+				float y = GetUISlide()->GetComponent<Transform>()->GetPosition().y;
+				if (y >= 1050.0f)
+				{
+					m_isSlidUpMax = true;
+					InitializeMovie(m_pendingMovie);
+					EnterMovieType(m_pendingMovie);
+
+	        		m_isNotUISlideUp = false;
+					m_pendingMovie = MovieType::None;
+				}
+				else if (m_pendingPlayRetries >= m_pendingPlayMaxRetries)
+				{
+					m_isNotUISlideUp = false;
+					m_pendingMovie = MovieType::None;
+				}
+			}
+		}
+
+		if (!m_isPlayMove) return;
 		size_t movieIdx = static_cast<size_t>(m_currentMovie);
 		if (movieIdx >= m_eventsPerMovie.size())
 		{
@@ -90,26 +135,13 @@ namespace basecross
 		}
 
 		// 毎フレームプレイヤーの位置・前方をキャッシュ更新（存在すれば）
-		if (m_player)
+		if (GetPlayer())
 		{
 			if (auto tr = m_player->GetComponent<Transform>())
 			{
 				m_cachedPlayerPos = tr->GetPosition();
 				m_cachedPlayerForward = tr->GetForward();
-				if (m_cachedPlayerForward.lengthSqr() > 0.0001f) m_cachedPlayerForward.normalize();
-			}
-		}
-		else
-		{
-			// もし m_player が未設定なら GetPlayer() を試す（外部で SetPlayer が呼ばれていないケース）
-			if (auto p = GetPlayer())
-			{
-				if (auto tr = p->GetComponent<Transform>())
-				{
-					m_cachedPlayerPos = tr->GetPosition();
-					m_cachedPlayerForward = tr->GetForward();
-					if (m_cachedPlayerForward.lengthSqr() > 0.0001f) m_cachedPlayerForward.normalize();
-				}
+				m_cachedPlayerForward.normalize();
 			}
 		}
 
@@ -261,27 +293,31 @@ namespace basecross
 
 	void MovieManager::PlayMovie(const MovieType& movie)
 	{
-		SetAllExceptPlayerAndFadeUpdateActive(false);
+		SetUpdateActiveExceptTags(false);
 		if (movie == MovieType::None) return;
 		InitializeMovie(movie);
 	}
 
 	void MovieManager::StopMovie()
 	{
-		SetAllExceptPlayerAndFadeUpdateActive(true);
+		SetUpdateActiveExceptTags(true);
 		m_isPlayMove = false;
 		m_currentEventIndex = 0;
 		m_currentEventTime = 0.0f;
 	}
 
-	void MovieManager::SetAllExceptPlayerAndFadeUpdateActive(bool isActive)
+	void MovieManager::SetUpdateActiveExceptTags(bool isActive)
 	{
 		auto objVec = GetStage()->GetGameObjectVec();
 		for (auto& gameObject : objVec)
 		{
-			if (!gameObject->FindTag(L"Player") && !gameObject->FindTag(L"Fade"))
+			if (MovieType::Play)
 			{
-				gameObject->SetUpdateActive(isActive);
+				if (!gameObject->FindTag(L"Player") && !gameObject->FindTag(L"Fade") &&
+					!gameObject->FindTag(L"UITransitionSlide"))
+				{
+					gameObject->SetUpdateActive(isActive);
+				}
 			}
 		}
 	}
@@ -406,11 +442,11 @@ namespace basecross
 	{
 		Initialize();
 		DefineEventTiming(gameMode);
-		InitializeMovie(gameMode); 
-
+	   
 		switch (gameMode)
 		{
 		case MovieType::None:
+
 			break;
 		case MovieType::Title:
 			break;
@@ -426,16 +462,24 @@ namespace basecross
 			PlayMovie(MovieType::GameOver);
 			break;
 		case MovieType::Play:
-			//if (GetAwasSlide()->GetComponent<Transform>()->GetPosition().y >= 1350.0f)
-			//{
-
-			//}
-			GetPlayer()->PlayerChangeAnimation(L"Eat");
-			PlayMovie(MovieType::Play);
+			if (m_isSlidUpMax)
+			{
+				GetPlayer()->PlayerChangeAnimation(L"Eat");
+				PlayMovie(MovieType::Play);
+				m_isSlidUpMax = false;
+			}
+			else
+			{
+				m_isNotUISlideUp = true;
+				m_pendingPlayTimer = 0.0f;
+				m_pendingPlayRetries = 0;
+				m_pendingMovie = MovieType::Play;
+			}
 			break;
 		case MovieType::EnemySpotted:
 			break;
 		case MovieType::DirtClean:
+			InitializeMovie(gameMode);
 			GetPlayer()->SetMoveStopFlag(true);
 			PlayMovie(MovieType::DirtClean);
 			break;

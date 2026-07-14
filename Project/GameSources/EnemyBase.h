@@ -147,11 +147,5 @@ namespace basecross
 			PointPosition(2, pos2);
 			PointPosition(3, pos3);
 		}
-
-		// --- 当たり判定 ---
-		void OnCollisionEnter(shared_ptr<GameObject>& Other);	//	当たり判定
-		void OnCollisionExecute(shared_ptr<GameObject>& Other);
-		void OnCollisionExit(shared_ptr<GameObject>& Other);
-		// ------------------
 	};
 }

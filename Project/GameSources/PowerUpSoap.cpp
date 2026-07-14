@@ -35,7 +35,7 @@ namespace basecross
 	{
 		Rotation();
 		UpDown();
-		DebugStr();
+		// DebugStr();
 	}
 
 	void PowerUpSoap::Rotation()
