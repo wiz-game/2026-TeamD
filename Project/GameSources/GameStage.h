@@ -16,11 +16,7 @@ namespace basecross
 		Vec3 m_collisionRange = Vec3(10.0f, 1.0f, 10.0f);
 		string m_stageNum;
     
-		// カウント時間
-		Timer m_timer;
 		bool m_isGameClear;
-		bool m_isStartStop;
-		bool m_isGameStageMovie;
 
 		// メニュー画面のUI
 		vector<shared_ptr<UIBase>> m_uiframes;
@@ -32,9 +28,13 @@ namespace basecross
 		Col4 m_uiDiffuse = Col4(1.0f, 1.0f, 1.0f, 1.0f);
 		float m_selectScale = 0.25f;
 
+		// ゲーム画面のUI
+		vector<shared_ptr<UIStatueNum>> m_uistatues;
+
 		void CreateViewLight();
 		void CreatePlayer();
 		void CreateMenu();
+		void CreateGameUI();
 
 		void SetCollRange();
 	public:

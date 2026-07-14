@@ -240,15 +240,6 @@ namespace basecross
 			ResolveCounteract(*this, *dirt);
 		}
 
-		if (Other->FindTag(L"Enemy"))
-		{
-			auto enemy = dynamic_pointer_cast<EnemyAlpaca>(Other);
-			auto decreasehp = enemy->GetEnemyAlpacaHP();
-			GameManager::Instance().AddDebugStr(L"EnemyHP",decreasehp);
-			m_HP -= decreasehp;
-			m_HP = max(0.0f, m_HP);
-		}
-
 		if (m_isTranpolineBubble)
 		{
 			if (m_isSpawnedTrampoline) return;

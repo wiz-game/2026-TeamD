@@ -20,7 +20,6 @@ namespace basecross
 		m_transform->SetPosition(m_objectParam.GetPosition());
 		m_transform->SetScale(m_objectParam.GetScale());
 		m_transform->SetQuaternion(m_objectParam.GetQuaternion());
-		m_transform->SetRotation(0.0f, 0.0f, 0.0f);
 
 		m_draw = AddComponent<PNTBoneModelDraw>();
 		m_draw->SetMeshResource(L"DoroPaka");
@@ -30,10 +29,6 @@ namespace basecross
 		auto obb = AddComponent<CollisionObb>();
 		obb->AddExcludeCollisionTag(L"Enemy");
 
-		//m_gravity = AddComponent<Gravity>();
-
-		m_EnemyHP = 10;
-
 		auto shadowComp = AddComponent<Shadowmap>();
 		shadowComp->SetMeshResource(L"DoroPaka");
 		shadowComp->SetDrawActive(true);
@@ -41,7 +36,7 @@ namespace basecross
 		Mat4x4 spanMat;
 		spanMat.affineTransformation
 		(
-			Vec3(0.5f, 0.5f, 0.5f),
+			Vec3(0.1f, 0.1f, 0.1f),
 			Vec3(0.0f, 0.0f, 0.0f),
 			Vec3(0.0f, XM_PI, 0.0f),
 			Vec3(0.0f, -0.5f, 0.0f)
@@ -65,8 +60,6 @@ namespace basecross
 	{
 		m_eStateMachine->Update();
 		m_draw->UpdateAnimation(App::GetApp()->GetElapsedTime());
-
-		DebugString();
 	}
 
 	// ステートマシンの処理
@@ -86,9 +79,9 @@ namespace basecross
 		Obj->MazeWandering(Obj);
 		Obj->DetectionRange(Obj);
 
-		if (Obj->GetDetection() == true)
+		//if (Obj->GetDetection() == true)
 		{
-			Obj->m_eStateMachine->ChangeState(AngryState::Instance());
+		//	Obj->m_eStateMachine->ChangeState(AngryState::Instance());
 		}
 	}
 
