@@ -117,7 +117,7 @@ namespace basecross
 
 		// ヘルパー関数
 		// angleは度数法で書いてください
-		Vec3 CalculateEndPointRayAngle(const Vec3& startPos,const float& forwardAngle,const float& angle);
+		Vec3 CalculateEndPointRayAngle(const Vec3& startPos,const float& forwardAngle,const float& angle,float rayRange);
 		const bool IsWallHit(const shared_ptr<PNTStaticDraw>& staticDraw, const Vec3& startPos, const Vec3& endPos, const Vec3& basePos);
 
 		// ゲッターセッター関数
