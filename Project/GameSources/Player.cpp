@@ -109,8 +109,6 @@ namespace basecross
 		{
 			CreateBubble();
 		}
-
-		GameManager::Instance().AddDebugStr(L"AnimTime", animTime);
 	}
 
 	void Player::Jump()
