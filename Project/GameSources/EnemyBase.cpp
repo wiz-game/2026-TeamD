@@ -27,7 +27,7 @@ namespace basecross
         m_ExpectRange(3.0f),
 
         // 移動速度
-        m_Speed(1.0f),
+        m_Speed(10.0f),
         m_rotToHeadLeap(0.5f),
 
         // 壁を回避中かどうか
@@ -173,7 +173,7 @@ namespace basecross
 
         for (int i = 0; i < angles.size(); i++)
         {
-            auto angleEndPos = CalculateEndPointRayAngle(startPos, currentAngle, angles[i]);
+            auto angleEndPos = CalculateEndPointRayAngle(startPos, currentAngle, angles[i],m_rayDistanceRange);
 
             Vec3 hitPos = Vec3();
             Vec3 hitWallPos = Vec3();
@@ -578,15 +578,15 @@ namespace basecross
         }
     }
 
-    Vec3 EnemyBase::CalculateEndPointRayAngle(const Vec3& startPos, const float& forwardAngle, const float& angle)
+    Vec3 EnemyBase::CalculateEndPointRayAngle(const Vec3& startPos, const float& forwardAngle, const float& angle,float rayRange)
     {
         float targetAngle = forwardAngle + XMConvertToRadians(angle);
 
         Vec3 dir(sinf(targetAngle), 0.0f, cosf(targetAngle));
         dir.normalize();
 
-        float endPosX = startPos.x + (dir.x * m_rayDistanceRange);
-        float endPosZ = startPos.z + (dir.z * m_rayDistanceRange);
+        float endPosX = startPos.x + (dir.x * rayRange);
+        float endPosZ = startPos.z + (dir.z * rayRange);
 
         return Vec3(endPosX, startPos.y, endPosZ);
     }
@@ -609,7 +609,7 @@ namespace basecross
         if (staticDraw->HitTestStaticMeshSegmentTrianglesToAffine(startPos, endPos, hitPoint,tri, index))
         {
             Vec3 dir(hitPoint.x - basePos.x, 0.0f, hitPoint.z - basePos.z);
-            return dir.length() <= m_rayRange;
+            return true;
         }
         return false;
     }
