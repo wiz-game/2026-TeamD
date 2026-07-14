@@ -105,6 +105,7 @@ namespace basecross
 			m_draw->SetMeshResource(L"AwaPaka_doro");
 			m_draw->SetTextureResource(L"T_AwaPaka_Gold_Doro");
 			handle = EffectManager::Instance().PlayEffect(L"Clean", GetComponent<Transform>()->GetPosition());
+			SoundManager::Instance().PlaySE(L"Cleaned_SE");
 			EffectManager::Instance().SetScale(handle, Vec3(0.4f));
 			break;
 		case DirtCondition::DirtClean:
@@ -112,7 +113,7 @@ namespace basecross
 			m_draw->SetTextureResource(L"T_AwaPaka_Gold");
 			EffectManager::Instance().PlayEffect(L"Clean", GetComponent<Transform>()->GetPosition());
 			SoundManager::Instance().PlaySE(L"Cleaned_SE");
-			GetStage()->AddGameObject<PowerUpSoap>(Vec3(pos.x,pos.y,pos.z + 2.5f));
+			GetStage()->AddGameObject<PowerUpSoap>(Vec3(pos.x,pos.y,pos.z) + forward * -2.5f);
 			GameManager::Instance().SubDirt();
 			break;
 		default:
