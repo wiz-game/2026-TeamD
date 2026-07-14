@@ -267,6 +267,12 @@ namespace basecross
 			{
 				PressedFKey();
 			}
+
+			// 90度ずつ回転
+			if (m_key.m_bPressedKeyTbl['V'])
+			{
+				PressedVKey();
+			}
 			break;
 		}
 
@@ -644,6 +650,11 @@ namespace basecross
 		{
 			GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
 		}
+	}
+
+	void InputManager::PressedVKey()
+	{
+		StageEditor::Instance().RightAngleRotationY();
 	}
 
 	void InputManager::IdelAnimation()

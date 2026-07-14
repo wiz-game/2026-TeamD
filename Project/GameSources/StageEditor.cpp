@@ -382,6 +382,21 @@ namespace basecross
 		if (m_selectedGizmo) m_selectedGizmo = nullptr;
 	}
 
+	void StageEditor::RightAngleRotationY()
+	{
+		if (m_isSelectedObj)
+		{
+			if (!m_selectedObj) return;
+			if (m_editorMode == ENUM_EditorMode::Quaternion)
+			{
+				float rightAngle = 0.7071;
+				auto trans = m_selectedObj->GetComponent<Transform>();
+				auto nowQuat = trans->GetQuaternion();
+				trans->SetQuaternion(Quat(nowQuat.x, nowQuat.y + rightAngle, nowQuat.z, nowQuat.w + rightAngle));
+			}
+		}
+	}
+
 	bool StageEditor::GizmoSelect(const Point2D<int>& mousePoint)
 	{
 		if (!m_isSelectedObj) return false;
