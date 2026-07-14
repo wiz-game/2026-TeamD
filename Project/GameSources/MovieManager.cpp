@@ -407,6 +407,7 @@ namespace basecross
 		Initialize();
 		DefineEventTiming(gameMode);
 		InitializeMovie(gameMode); 
+
 		switch (gameMode)
 		{
 		case MovieType::None:
@@ -425,6 +426,10 @@ namespace basecross
 			PlayMovie(MovieType::GameOver);
 			break;
 		case MovieType::Play:
+			//if (GetAwasSlide()->GetComponent<Transform>()->GetPosition().y >= 1350.0f)
+			//{
+
+			//}
 			GetPlayer()->PlayerChangeAnimation(L"Eat");
 			PlayMovie(MovieType::Play);
 			break;

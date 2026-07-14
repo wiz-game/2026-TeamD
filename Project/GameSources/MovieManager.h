@@ -5,6 +5,7 @@ namespace basecross
 {
 	class Player;
 	class Dirt;
+	class UITransitionSlide;
 	struct CameraKeyframe
 	{
 		float time;
@@ -84,6 +85,7 @@ namespace basecross
 		shared_ptr<MyCamera> m_camera;
 		shared_ptr<Stage> m_stage;
 		vector<shared_ptr<Dirt>> m_dirts;
+		shared_ptr<UITransitionSlide> m_awasSlide;
 		Vec3 m_cachedPlayerPos;
 		Vec3 m_cachedPlayerForward;
 		bool m_initialized = false;
@@ -136,6 +138,10 @@ namespace basecross
 		// 汚れの関連
 		void SetDirt(const vector<shared_ptr<Dirt>>& dirts) { m_dirts = dirts; }
 		vector<shared_ptr<Dirt>> GetDirt();
+
+		// AwasSlideの関連
+		 void SetAwasSlide(const shared_ptr<UITransitionSlide>& awasSlide) { m_awasSlide = awasSlide; }
+		 shared_ptr<UITransitionSlide> GetAwasSlide() { return m_awasSlide; }
 
 		void SetMovieType(MovieType gameMode);
 		void EnterMovieType(MovieType gameMode);
