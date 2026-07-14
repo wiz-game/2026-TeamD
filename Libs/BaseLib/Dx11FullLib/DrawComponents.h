@@ -2420,6 +2420,14 @@ namespace basecross {
 		void GetSkinedMeshWorldPositions(vector<bsm::Vec3>& vertices);
 		//--------------------------------------------------------------------------------------
 		/*!
+		@brief	スキン処理済みのメッシュのワールド頂点配列を得る
+		@param[out]	vertices	受け取る頂点の配列
+		@return	なし（ボーンがなければ例外）
+		*/
+		//--------------------------------------------------------------------------------------
+		void GetSkinedMeshWorldPositionsToAffine(vector<bsm::Vec3>& vertices);
+		//--------------------------------------------------------------------------------------
+		/*!
 		@brief	線分とスキンメッシュのワールド頂点の衝突判定
 		@param[in]	StartPos	線分の開始点
 		@param[in]	EndPos	線分の終了点
@@ -2430,6 +2438,18 @@ namespace basecross {
 		*/
 		//--------------------------------------------------------------------------------------
 		bool HitTestSkinedMeshSegmentTriangles(const bsm::Vec3& StartPos, const bsm::Vec3& EndPos, bsm::Vec3& HitPoint, TRIANGLE& RetTri, size_t& RetIndex);
+		//--------------------------------------------------------------------------------------
+		/*!
+		@brief	線分とスキンメッシュのワールド頂点の衝突判定
+		@param[in]	StartPos	線分の開始点
+		@param[in]	EndPos	線分の終了点
+		@param[out]	HitPoint	衝突していた場合の衝突点
+		@param[out]	RetTri	衝突していた場合の三角形
+		@param[out]	RetIndex	衝突していた場合の三角形の位置
+		@return	衝突していたらtrue
+		*/
+		//--------------------------------------------------------------------------------------
+		bool HitTestSkinedMeshSegmentTrianglesToAffine(const bsm::Vec3& StartPos, const bsm::Vec3& EndPos, bsm::Vec3& HitPoint, TRIANGLE& RetTri, size_t& RetIndex);
 		//--------------------------------------------------------------------------------------
 		/*!
 		@brief	球体とスキンメッシュのワールド頂点の衝突判定

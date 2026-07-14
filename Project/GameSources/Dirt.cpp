@@ -18,7 +18,6 @@ namespace basecross
 
 	Dirt::~Dirt()
 	{
-		GameManager::Instance().SetDirtNum(0);
 	}
 
 	void Dirt::OnCreate()
@@ -52,6 +51,11 @@ namespace basecross
 		);
 
 		m_draw->SetMeshToTransformMatrix(spanMat);
+	}
+
+	void Dirt::OnDestroy()
+	{
+		GameManager::Instance().ResetDirtNum();
 	}
 
 	void Dirt::SetDirtHP(const float HP)
