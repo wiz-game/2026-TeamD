@@ -21,17 +21,24 @@ namespace basecross
 		UIBase::OnUpdate();
 	}
 
-	void UIStatueNum::ChangeStatueActive(bool isActive)
+	void UIStatueNum::ChangeStatueActive(int uinum, const vector<shared_ptr<UIStatueNum>>& uipointers, bool isActive)
 	{
+		if (uinum < 0 || uinum >= uipointers.size()) return;
+
+		auto ui = uipointers[uinum];
+		if (!ui) return;
+
+		auto draw = ui->GetComponent<PCTSpriteDraw>();
+
 		if (isActive)
 		{
-
+			draw->SetDrawActive(isActive);
 		}
 		else
 		{
 
 		}
-	}
 
+	}
 
 }

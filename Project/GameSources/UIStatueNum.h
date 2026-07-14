@@ -18,7 +18,7 @@ namespace basecross
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 
-		void ChangeStatueActive(bool isActive);
+		void ChangeStatueActive(int uinum, const vector<shared_ptr<UIStatueNum>>& uipointers, bool isActive);
 	};
 
 }
