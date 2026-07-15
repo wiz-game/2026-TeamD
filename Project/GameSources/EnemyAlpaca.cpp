@@ -14,6 +14,7 @@ namespace basecross
 	void EnemyAlpaca::OnCreate()
 	{
 		AddTag(L"Enemy");
+		AddTag(L"Fade");
 		SetIsEditorSave(true);
 
 		m_transform = AddComponent<Transform>();
