@@ -19,17 +19,21 @@ namespace basecross
 	void UIStatueNum::OnUpdate()
 	{
 		UIBase::OnUpdate();
-	}
 
-	void UIStatueNum::ChangeStatueActive(bool isActive)
-	{
-		if (isActive)
+		int statuenum = GameManager::Instance().GetDirtNum();
+
+		auto draw = GetComponent<PCTSpriteDraw>(false);
+
+		if (m_statuenum < statuenum)
 		{
-
+			//SetActive(true);
+			draw->SetTextureResource(L"UI_AwaPaka3");
+			draw->SetDiffuse(Col4(0.6f, 0.6f, 0.6f, 1.0f));
 		}
 		else
 		{
-
+			draw->SetTextureResource(L"UI_AwaPaka1");
+			draw->SetDiffuse(Col4(1.0f));
 		}
 	}
 
