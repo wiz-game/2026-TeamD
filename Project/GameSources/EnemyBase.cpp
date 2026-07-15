@@ -27,7 +27,7 @@ namespace basecross
         m_ExpectRange(3.0f),
 
         // 移動速度
-        m_Speed(1.0f),
+        m_Speed(0.0f),
         m_rotToHeadLeap(0.5f),
 
         // 壁を回避中かどうか
@@ -72,14 +72,14 @@ namespace basecross
 
             if (m_StunTime <= TIMER_ZERO)
             {
-                m_Speed = 1.0f;
+                m_Speed = 10.0f;
                 m_isContactofBubble = false;
                 m_StunTime = TIMER_ZERO;
             }
         }
         else
         {
-            m_Speed = 1.0f;
+            m_Speed = 10.0f;
         }
 
     }
@@ -642,7 +642,7 @@ namespace basecross
         if (staticDraw->HitTestStaticMeshSegmentTrianglesToAffine(startPos, endPos, hitPoint,tri, index))
         {
             Vec3 dir(hitPoint.x - basePos.x, 0.0f, hitPoint.z - basePos.z);
-            return true;
+            return dir.length() >= 0.5f && dir.length() <= m_rayRange;
         }
         return false;
     }
