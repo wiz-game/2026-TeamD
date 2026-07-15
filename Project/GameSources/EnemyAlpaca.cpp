@@ -173,9 +173,13 @@ namespace basecross
 			}
 		}
 
-		if (Other->FindTag(L"Bubble"))
+		auto bubble = dynamic_pointer_cast<Bubble>(Other);
+		if (bubble)
 		{
-			SetIsContactOfBubbleetStun(true);
+			if (bubble->GetBubblePowerUp())
+			{
+				SetIsContactOfBubbleetStun(true);
+			}
 		}
 	}
 
