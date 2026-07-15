@@ -23,11 +23,11 @@ namespace basecross
         m_canGoForward(true),
         m_targetRotY(0.0f),
         m_rayRange(1.6f),
-        m_rayDistanceRange(1.0f),
+        m_rayDistanceRange(2.4f),
         m_ExpectRange(3.0f),
 
         // 移動速度
-        m_Speed(10.0f),
+        m_Speed(1.0f),
         m_rotToHeadLeap(0.5f),
 
         // 壁を回避中かどうか
