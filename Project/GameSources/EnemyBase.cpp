@@ -23,7 +23,7 @@ namespace basecross
         m_canGoForward(true),
         m_targetRotY(0.0f),
         m_rayRange(1.6f),
-        m_rayDistanceRange(10.0f),
+        m_rayDistanceRange(1.0f),
         m_ExpectRange(3.0f),
 
         // 移動速度
