@@ -320,7 +320,7 @@ namespace basecross
 			m_isPlayerPowerUp = false;
 			break;
 		case PlayerState::PowerUp:
-			m_timer = Timer(6.0f);
+			m_timer = Timer(12.0f);
 			m_timer.SetCounter();
 			m_isPlayerPowerUp = true;
 			break;
