@@ -248,32 +248,35 @@ namespace basecross
 	// 上下入力時にメニューを切り替える関数
 	void MenuManager::ChangeSelectMenuMode(const int& num)
 	{
-			auto menustartNow = GetMenuUI();
+		auto menustartNow = GetMenuUI();
+
+		auto settingNow = GetSettingUI();
+
+		if (GetMenuMode() == ENUM_MenuMode::MenuStart)
+		{
 			int menustartAfter = static_cast<int>(menustartNow);
 			menustartAfter += num;
-			if (menustartAfter == -1) menustartAfter = 3;
-			if (menustartAfter == 4) menustartAfter = 0;
-
-			auto settingNow = GetSettingUI();
-			int settingAfter = static_cast<int>(settingNow);
-			settingAfter += num;
-			if (settingAfter == -1) settingAfter = 3;
-			if (settingAfter == 4) settingAfter = 0;
-
-		switch (GetMenuMode())
-		{
-		case ENUM_MenuMode::MenuStart:
+			if (menustartAfter <= -1) menustartAfter = 3;
+			if (menustartAfter >= 4) menustartAfter = 0;
 			ENUM_MenuStart setmenustartAfter = static_cast<ENUM_MenuStart>(menustartAfter);
 			SetMenuUI(setmenustartAfter);
-			break;
-
-		case ENUM_MenuMode::Setting:
+		}
+		else if (GetMenuMode() == ENUM_MenuMode::Setting)
+		{
+			int settingAfter = static_cast<int>(settingNow);
+			settingAfter += num;
+			if (settingAfter <= -1) settingAfter = 3;
+			if (settingAfter >= 4) settingAfter = 0;
 			ENUM_Setting setsettingAfter = static_cast<ENUM_Setting>(settingAfter);
 			SetSettingUI(setsettingAfter);
-			break;
-
-		case ENUM_MenuMode::Howtoplay:
-			break;
+		}
+		else if (GetMenuMode() == ENUM_MenuMode::Howtoplay)
+		{
+			return;
+		}
+		else
+		{
+			return;
 		}
 
 	}
