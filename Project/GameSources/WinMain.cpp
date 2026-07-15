@@ -15,7 +15,7 @@ const wchar_t* pWndTitle = L"‚ ‚íƒpƒJ";
 int g_ClientWidth = 1280;
 int g_ClientHeight = 800;
 
-bool isMouseCursor = true;
+bool isMouseCursor = false;
 
 //--------------------------------------------------------------------------------------
 //
