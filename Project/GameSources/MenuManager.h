@@ -29,7 +29,8 @@ namespace basecross
 	{
 		BGM,
 		SE,
-		Return
+		Return,
+		Reset
 	};
 
 	enum class ENUM_Howtoplay
@@ -49,12 +50,12 @@ namespace basecross
 		Col4 m_uidiffuse;
 		float m_uiscale;
 
-		ENUM_MenuStart m_menuUI = ENUM_MenuStart::Restart;
 		ENUM_MenuMode m_menuMode = ENUM_MenuMode::Default;
+		ENUM_MenuStart m_menuUI = ENUM_MenuStart::Restart;
+		ENUM_Setting m_settingUI = ENUM_Setting::BGM;
 
 		MenuManager()
-		{
-		}
+		{}
 		virtual ~MenuManager() {}
 		void SetAllUpdateActive(const bool& isUpdateActive);
 
@@ -71,7 +72,7 @@ namespace basecross
 		void ChangeUIParam();
 		void ChangeSelectMenuMode(const int& num);
 
-		void SetUIDiffuse(int i, const vector<shared_ptr<UIBase>>&uipointers, const Col4& diffuse);
+		void SetUIDiffuse(int i, const vector<shared_ptr<UIBase>>& uipointers, const Col4& diffuse);
 		void SetUISize(int i, const vector<shared_ptr<UIBase>>& uipointers, const float& scale);
 
 		void SetUIFrames(const vector<shared_ptr<UIBase>>& uiframes);
@@ -82,10 +83,10 @@ namespace basecross
 		void SetUIScale(const float& uiscale);
 		void SetMenuMode(ENUM_MenuMode menumode);
 		void SetMenuUI(ENUM_MenuStart menuui);
+		void SetSettingUI(ENUM_Setting settingui);
 
-		ENUM_MenuStart GetMenuUI() const { return m_menuUI; }
 		ENUM_MenuMode GetMenuMode() const { return m_menuMode; }
-
-
+		ENUM_MenuStart GetMenuUI() const { return m_menuUI; }
+		ENUM_Setting GetSettingUI() const { return m_settingUI; }
 	};
 }
