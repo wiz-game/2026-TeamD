@@ -154,7 +154,7 @@ namespace basecross
     }
 
     // 追跡AI
-    void EnemyBase::Tracking(const shared_ptr<GameObject>& gameObject, float speed)
+    void EnemyBase::Tracking(const shared_ptr<GameObject>& gameObject)
     {
         // プレイヤーの位置を取得する
         auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
@@ -170,8 +170,8 @@ namespace basecross
         targetVec.normalize();
 		auto elapsedTime = App::GetApp()->GetElapsedTime();
 
-        transPos.x += targetVec.x * speed * elapsedTime;
-        transPos.z += targetVec.z * speed * elapsedTime;
+        transPos.x += targetVec.x * m_Speed * elapsedTime;
+        transPos.z += targetVec.z * m_Speed * elapsedTime;
         transComp->SetPosition(transPos);
         GetBehavior<UtilBehavior>()->RotToHead(targetVec, m_rotToHeadLeap);
 
@@ -280,7 +280,7 @@ namespace basecross
         // 上の座標に移動するStateに遷移する（ために多分フラグを立てるとおもう）
     }
 
-    void EnemyBase::EstimatedPlayerLocation(const shared_ptr<GameObject>& gameObject, float speed)
+    void EnemyBase::EstimatedPlayerLocation(const shared_ptr<GameObject>& gameObject)
     {
         auto transComp = gameObject->GetComponent<Transform>();
         auto transPos = transComp->GetPosition();
@@ -327,7 +327,7 @@ namespace basecross
             m_eStateMachine->ChangeState(IdleState::Instance());
             return;
         }
-        transPos += toTargetVec * speed * elpasedTime;
+        transPos += toTargetVec * m_Speed * elpasedTime;
         transPos.y = 0.0f;
         transComp->SetPosition(transPos);
         GetBehavior<UtilBehavior>()->RotToHead(toTargetVec, m_rotToHeadLeap);

@@ -116,8 +116,8 @@ namespace basecross
 
 		void DetectionRange(const shared_ptr<GameObject>& gameObject); // 索敵範囲
 		void MazeWandering(const shared_ptr<GameObject>& gameObject); // 徘徊AI
-		void Tracking(const shared_ptr<GameObject>& gameObject,float speed); // 追跡AI
-		void EstimatedPlayerLocation(const shared_ptr<GameObject>& gameObject, float speed); // 推定プレイヤー位置に移動する
+		void Tracking(const shared_ptr<GameObject>& gameObject); // 追跡AI
+		void EstimatedPlayerLocation(const shared_ptr<GameObject>& gameObject); // 推定プレイヤー位置に移動する
 
 		// ヘルパー関数
 		// angleは度数法で書いてください
