@@ -195,7 +195,7 @@ namespace basecross
 		float startRange = 0.5f;
 
 		// レイ（スタート）
-		Vec3 startFSp = CalculateEndPointRayAngle(startReyPos, m_rotY, 0, startRange);       // 正面
+		Vec3 startFSp = CalculateEndPointRayAngle(startReyPos, m_rotY, 0.0f, startRange);       // 正面
 		Vec3 startRSp = CalculateEndPointRayAngle(startReyPos, m_rotY, 90.0f, startRange);   // 右
 		Vec3 startLSp = CalculateEndPointRayAngle(startReyPos, m_rotY, -90.0f, startRange);  // 左
 
@@ -204,30 +204,21 @@ namespace basecross
 		Vec3 endRSp = CalculateEndPointRayAngle(startReyPos, m_rotY, 90.0f, m_rayRange);   // 右
 		Vec3 endLSp = CalculateEndPointRayAngle(startReyPos, m_rotY, -90.0f, m_rayRange);  // 左
 
-
-
 		// 全てのゲームオブジェクトを探す
 		for (auto& obj : GetStage()->GetGameObjectVec())
 		{
-			// 自身が引数のgameObjectと等しければ次にいく
-			if (!obj->FindTag(L"Wall"))
-			{
-				continue;
-			}
-
-
 			auto objDrawComp = obj->GetComponent<PNTStaticDraw>(false);
 			if (objDrawComp)
 			{
-				if (obj == Other)
+				// 自身が引数のgameObjectと等しければ次にいく
+				if (!obj->FindTag(L"Wall"))
 				{
 					continue;
 				}
 
-				// 正面
-				if (IsWallHit(objDrawComp, startFSp, endFSp, transPos))
+				if (obj == Other)
 				{
-					m_canGoForward = false;
+					continue;
 				}
 
 				if (!m_isRotated)
@@ -244,6 +235,12 @@ namespace basecross
 					{
 						m_canGoRight = false;
 					}
+
+					// 正面
+					if (IsWallHit(objDrawComp, startFSp, endFSp, transPos))
+					{
+						m_canGoForward = false;
+					}
 				}
 			}
 		}
@@ -251,6 +248,9 @@ namespace basecross
 
 	void EnemyAlpaca::OnCollisionExit(shared_ptr<GameObject>& Other)
 	{
+		m_canGoForward = true;
+		m_canGoLeft = true;
+		m_canGoRight = true;
 	}
 
 }
