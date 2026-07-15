@@ -22,12 +22,12 @@ namespace basecross
 		SetIsEditorSave(true);
 
 		auto ptrDraw = AddComponent<PNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"M_Tree");
-		ptrDraw->SetTextureResource(L"T_Tree");
+		ptrDraw->SetMeshResource(L"M_Tree_v1");
+		ptrDraw->SetTextureResource(L"T_Tree_v1");
 		
 		auto ptrShadow = AddComponent<Shadowmap>();
 		ptrDraw->SetOwnShadowActive(true);
-		ptrShadow->SetMeshResource(L"M_Tree");
+		ptrShadow->SetMeshResource(L"M_Tree_v1");
 
 		m_sPtrTrans = AddComponent<Transform>();
 		m_sPtrTrans->SetScale(m_objectParam.GetScale());

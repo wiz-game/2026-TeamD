@@ -18,12 +18,12 @@ namespace basecross
 
 	Dirt::~Dirt()
 	{
-		GameManager::Instance().SetDirtNum(0);
 	}
 
 	void Dirt::OnCreate()
 	{
 		AddTag(L"Dirt");
+		AddTag(L"Fade");
 		AddTag(L"Wall");
 		SetIsEditorSave(true);
 
@@ -52,6 +52,17 @@ namespace basecross
 		);
 
 		m_draw->SetMeshToTransformMatrix(spanMat);
+		SetAlphaActive(true);
+	}
+
+	void Dirt::OnUpdate()
+	{
+		m_stageObjectFade.UpdateFade(GetComponent<PNTStaticDraw>(), App::GetApp()->GetElapsedTime());
+	}
+
+	void Dirt::OnDestroy()
+	{
+		GameManager::Instance().ResetDirtNum();
 	}
 
 	void Dirt::SetDirtHP(const float HP)
@@ -63,6 +74,8 @@ namespace basecross
 		}
 		if (m_HP <= 0.0f)
 		{
+			//soap->SetVecPosition(m_trans->GetPosition() + m_trans->GetForward());
+
 			SetDirtState(DirtCondition::DirtClean);
 		}
 	}
@@ -77,6 +90,10 @@ namespace basecross
 
 	void Dirt::EnterDirtState(DirtCondition state)
 	{
+		auto pos = m_trans->GetPosition();
+		auto forward = m_trans->GetForward();
+		forward.normalize();
+
 		EffectHandle handle;
 		switch (state)
 		{
@@ -88,12 +105,15 @@ namespace basecross
 			m_draw->SetMeshResource(L"AwaPaka_doro");
 			m_draw->SetTextureResource(L"T_AwaPaka_Gold_Doro");
 			handle = EffectManager::Instance().PlayEffect(L"Clean", GetComponent<Transform>()->GetPosition());
+			SoundManager::Instance().PlaySE(L"Cleaned_SE");
 			EffectManager::Instance().SetScale(handle, Vec3(0.4f));
 			break;
 		case DirtCondition::DirtClean:
 			m_draw->SetMeshResource(L"AwaPaka_gold");
 			m_draw->SetTextureResource(L"T_AwaPaka_Gold");
 			EffectManager::Instance().PlayEffect(L"Clean", GetComponent<Transform>()->GetPosition());
+			SoundManager::Instance().PlaySE(L"Cleaned_SE");
+			GetStage()->AddGameObject<PowerUpSoap>(Vec3(pos.x,pos.y,pos.z) + forward * -2.5f);
 			GameManager::Instance().SubDirt();
 			break;
 		default:

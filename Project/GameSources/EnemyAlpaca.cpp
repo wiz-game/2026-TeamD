@@ -20,7 +20,6 @@ namespace basecross
 		m_transform->SetPosition(m_objectParam.GetPosition());
 		m_transform->SetScale(m_objectParam.GetScale());
 		m_transform->SetQuaternion(m_objectParam.GetQuaternion());
-		m_transform->SetRotation(0.0f, 0.0f, 0.0f);
 
 		m_draw = AddComponent<PNTBoneModelDraw>();
 		m_draw->SetMeshResource(L"DoroPaka");
@@ -30,10 +29,6 @@ namespace basecross
 		auto obb = AddComponent<CollisionObb>();
 		obb->AddExcludeCollisionTag(L"Enemy");
 
-		//m_gravity = AddComponent<Gravity>();
-
-		m_EnemyHP = 10;
-
 		auto shadowComp = AddComponent<Shadowmap>();
 		shadowComp->SetMeshResource(L"DoroPaka");
 		shadowComp->SetDrawActive(true);
@@ -41,7 +36,7 @@ namespace basecross
 		Mat4x4 spanMat;
 		spanMat.affineTransformation
 		(
-			Vec3(0.5f, 0.5f, 0.5f),
+			Vec3(0.1f, 0.1f, 0.1f),
 			Vec3(0.0f, 0.0f, 0.0f),
 			Vec3(0.0f, XM_PI, 0.0f),
 			Vec3(0.0f, -0.5f, 0.0f)
@@ -65,8 +60,11 @@ namespace basecross
 	{
 		m_eStateMachine->Update();
 		m_draw->UpdateAnimation(App::GetApp()->GetElapsedTime());
+	}
 
-		DebugString();
+	void EnemyAlpaca::DebugString()
+	{
+		//GameManager::AddDebugLog(L"", m_Num);
 	}
 
 	// ステートマシンの処理
@@ -146,5 +144,101 @@ namespace basecross
 	{
 
 	}
+
+	void EnemyAlpaca::OnCollisionEnter(shared_ptr<GameObject>& Other)
+	{
+		auto objDrawComp = Other->GetComponent<PNTStaticDraw>(false);
+
+		if (objDrawComp)
+		{
+
+			// 引数の情報を取得する
+			auto transComp = GetThis<EnemyAlpaca>()->GetComponent<Transform>();
+			auto transPos = transComp->GetPosition();
+
+			float startReyPos_Y = 0.3f;
+			Vec3 startReyPos = Vec3(transPos.x, transPos.y + startReyPos_Y, transPos.z);
+
+			// レイ（エンド）
+			Vec3 endFSp = CalculateEndPointRayAngle(startReyPos, m_rotY, 0, m_rayRange);       // 正面
+
+			// 正面
+			if (IsWallHit(objDrawComp, startReyPos, endFSp, transPos))
+			{
+				m_canGoForward = false;
+			}
+		}
+	}
+
+	void EnemyAlpaca::OnCollisionExecute(shared_ptr<GameObject>& Other)
+	{
+		// 引数の情報を取得する
+		auto transComp = GetThis<EnemyAlpaca>()->GetComponent<Transform>();
+		auto transPos = transComp->GetPosition();
+
+		float startReyPos_Y = 0.3f;
+		Vec3 startReyPos = Vec3(transPos.x, transPos.y + startReyPos_Y, transPos.z);
+
+		float startRange = 0.5f;
+
+		// レイ（スタート）
+		Vec3 startFSp = CalculateEndPointRayAngle(startReyPos, m_rotY, 0, startRange);       // 正面
+		Vec3 startRSp = CalculateEndPointRayAngle(startReyPos, m_rotY, 90.0f, startRange);   // 右
+		Vec3 startLSp = CalculateEndPointRayAngle(startReyPos, m_rotY, -90.0f, startRange);  // 左
+
+		// レイ（エンド）
+		Vec3 endFSp = CalculateEndPointRayAngle(startReyPos, m_rotY, 0, m_rayRange);       // 正面
+		Vec3 endRSp = CalculateEndPointRayAngle(startReyPos, m_rotY, 90.0f, m_rayRange);   // 右
+		Vec3 endLSp = CalculateEndPointRayAngle(startReyPos, m_rotY, -90.0f, m_rayRange);  // 左
+
+
+
+		// 全てのゲームオブジェクトを探す
+		for (auto& obj : GetStage()->GetGameObjectVec())
+		{
+			// 自身が引数のgameObjectと等しければ次にいく
+			if (!obj->FindTag(L"Wall"))
+			{
+				continue;
+			}
+
+
+			auto objDrawComp = obj->GetComponent<PNTStaticDraw>(false);
+			if (objDrawComp)
+			{
+				if (obj == Other)
+				{
+					continue;
+				}
+
+				// 正面
+				if (IsWallHit(objDrawComp, startFSp, endFSp, transPos))
+				{
+					m_canGoForward = false;
+				}
+
+				if (!m_isRotated)
+				{
+
+					// 左
+					if (IsWallHit(objDrawComp, startLSp, endLSp, transPos))
+					{
+						m_canGoLeft = false;
+					}
+
+					// 右
+					if (IsWallHit(objDrawComp, startRSp, endRSp, transPos))
+					{
+						m_canGoRight = false;
+					}
+				}
+			}
+		}
+	}
+
+	void EnemyAlpaca::OnCollisionExit(shared_ptr<GameObject>& Other)
+	{
+	}
+
 }
 //end basecross

@@ -12,16 +12,12 @@ namespace basecross
 	class GameStage : public Stage
 	{
 	private:
-		JoltManager m_jphManger;
 		Vec3 m_collManagerPos = Vec3(0.0f);
-		Vec3 m_collisionRange = Vec3(10.0f, 1.0f, 10.0f);
+		Vec3 m_collisionRange = Vec3(3000.0f, 1.0f, 3000.0f);
 		string m_stageNum;
-    
-		// カウント時間
-		Timer m_timer;
+		
 		bool m_isGameClear;
-		bool m_isStartStop;
-		bool m_isGameStageMovie;
+		shared_ptr<UITransitionSlide> uiAwasSlide;
 
 		// メニュー画面のUI
 		vector<shared_ptr<UIBase>> m_uiframes;
@@ -50,6 +46,5 @@ namespace basecross
 		
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
-		virtual void OnUpdate2() override;
 	};
 }

@@ -10,10 +10,7 @@ namespace basecross
 {
 	GameStage::GameStage(const wstring& stageNum)
 		: Stage(),
-		m_timer(2.0f),
-		m_isGameClear(false),
-		m_isStartStop(false),
-		m_isGameStageMovie(true)
+		m_isGameClear(false)
 	{
 		m_stageNum = to_string(stageNum);
 	}
@@ -23,8 +20,6 @@ namespace basecross
 	{
 		try 
 		{
-			m_jphManger.Initialize();
-
 			CreateViewLight();
 			CreatePlayer();
 			CreateMenu();
@@ -34,13 +29,11 @@ namespace basecross
 			GameManager::Instance().ResetDirtNum();
 			// ステージの作成
 			StageEditor::Instance().ReadStageData(m_stageNum + ".bin", GetThis<GameStage>());
-			
+			uiAwasSlide = AddGameObject<UITransitionSlide>(STRUCT_UIParam(L"Awas", Vec3(0.0f, 0.0f, 0.0f), 1.3f), 600.0f);
 			AddGameObject<EffectUpdateDrawManager>();
-
+			MovieManager::Instance().SetUISlide(uiAwasSlide);
 			MovieManager::Instance().SetStage(GetThis<GameStage>());
 			GameManager::Instance().SetGameMode(ENUM_GameMode::PlayMovie);
-
-			AddGameObject<UITransitionSlide>(STRUCT_UIParam(L"Awas", Vec3(0.0f, 0.0f, 0.0f), 1.3f), 600.0f);
 		}
 		catch (...)
 		{
@@ -58,8 +51,6 @@ namespace basecross
 		}
 		GameManager::Instance().AddDebugStr(L"FPS", 1.0f / App::GetApp()->GetElapsedTime());
 		
-		auto player = GetSharedGameObject<Player>(L"Player");
-
 		if (GameManager::Instance().GetDirtNum() <= 0)
 		{	
 			if (!m_isGameClear)
@@ -71,11 +62,6 @@ namespace basecross
 
 		// メニュー画面のボタンの切り替え
 		MenuManager::Instance().ChangeUIParam();
-	}
-
-	void GameStage::OnUpdate2()
-	{
-		m_jphManger.Update(1.0f / 60.0f);
 	}
 
 	void GameStage::CreateViewLight() 
@@ -94,12 +80,15 @@ namespace basecross
 		light->SetDefaultLighting(); // デフォルトのライティングを指定
 
 		MovieManager::Instance().SetCamera(camera);
+
+		// スカイボックスの作成
+		AddGameObject<SkyBox>();
 	}
 
 	// Playerを作成する
 	void GameStage::CreatePlayer()
 	{
-		auto player = AddGameObject<Player>(Vec3(0.0f, 0.75f, 0.0f));
+		auto player = AddGameObject<Player>(Vec3(0.0f, 0.6f, 0.0f));
 		SetSharedGameObject(L"Player", player);
 		MovieManager::Instance().SetPlayer(player);
 	}

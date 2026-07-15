@@ -64,159 +64,62 @@ namespace basecross
 
 	void MovieManager::Initialize()
 	{
-		// イベント登録
+		auto playerPos = GetPlayer()->GetComponent<Transform>()->GetPosition();
+		auto playerForward = GetPlayer()->GetComponent<Transform>()->GetForward();
+
+		Vec3 eyeStart, atStart;
+		Vec3 fwdXZ = GetForwardXZ(playerForward);
+
+		float startDist = 8.0f;
+		float startHeight = 3.0f;
+		float lookAtHeightStart = 1.5f;
+
+		eyeStart = playerPos + fwdXZ * startDist + Vec3(0.0f, startHeight, 0.0f);
+		atStart = playerPos + Vec3(0.0f, lookAtHeightStart, 0.0f);
+
+		GetStageCamera()->SetEye(eyeStart);
+		GetStageCamera()->SetAt(atStart);
+
+		if (m_initialized) return;
 		size_t movieCount = static_cast<size_t>(MovieType::Max);
 		m_eventsPerMovie.resize(movieCount);
-
-		// Sample
-		{
-			MovieEvent ev;
-			ev.duration = 2.0f;
-			CameraTrack t;
-
-			// GetPlayer() を使って直接カメラ位置を計算
-			Vec3 eyeStart, atStart, eyeEnd, atEnd;
-			if (auto player = GetPlayer())
-			{
-				auto playerPos = player->GetComponent<Transform>()->GetPosition();
-				auto playerForward = player->GetComponent<Transform>()->GetForward();
-				if (playerForward.lengthSqr() > 0.0001f) playerForward.normalize();
-				Vec3 fwdXZ = GetForwardXZ(playerForward);
-
-				eyeStart = playerPos + fwdXZ * 8.0f + Vec3(0.0f, 3.0f, 0.0f);
-				atStart = playerPos + Vec3(0.0f, 1.5f, 0.0f);
-
-				eyeEnd = playerPos + fwdXZ * 5.0f + Vec3(0.0f, 1.0f, 0.0f);
-				atEnd = playerPos + Vec3(0.0f, 0.0f, 0.0f);
-			}
-			else
-			{
-				// フォールバック
-				eyeStart = Vec3(15.0f, 10.0f, 0.0f);
-				atStart = Vec3(0.0f, 4.0f, 0.0f);
-				eyeEnd = Vec3(5.0f, 4.0f, 0.0f);
-				atEnd = Vec3(0.0f, 2.0f, 0.0f);
-			}
-
-			t.keys = {
-				{0.0f, eyeStart, atStart, 20.0f, 60.0f, CameraKeyframe::EaseInOut},
-				{2.0f, eyeEnd,   atEnd,   15.0f, 60.0f, CameraKeyframe::Linear}
-			};
-			ev.cameraTrack = t;
-
-			// 特定のキーの時にイベントを起こす
-			ev.keyCallbacks = {
-				//{0.5f, []() {SoundManager::Instance().PlaySE(L"GameClear_BGM"); }}
-			};
-
-			// 次のキーが無かったらする処理 
-			ev.onComplete = []() {
-				MovieManager::Instance().SetMovieType(MovieType::PlayMovieEnd);
-			};
-			m_eventsPerMovie[static_cast<size_t>(MovieType::Play)] = { ev };
-		}
-
-		// GameClear
-		{
-			MovieEvent ev;
-			ev.duration = 2.0f;
-			CameraTrack t;
-
-			// GetPlayer() を使って直接カメラ位置を計算
-			Vec3 eyeStart, atStart, eyeEnd, atEnd;
-			if (auto player = GetPlayer())
-			{
-				auto playerPos = player->GetComponent<Transform>()->GetPosition();
-				auto playerForward = player->GetComponent<Transform>()->GetForward();
-				if (playerForward.lengthSqr() > 0.0001f) playerForward.normalize();
-				Vec3 fwdXZ = GetForwardXZ(playerForward);
-
-				eyeStart = playerPos + fwdXZ * 8.0f + Vec3(0.0f, 3.0f, 0.0f);
-				atStart = playerPos + Vec3(0.0f, 1.5f, 0.0f);
-
-				eyeEnd = playerPos + fwdXZ * 5.0f + Vec3(0.0f, 1.0f, 0.0f);
-				atEnd = playerPos + Vec3(0.0f, 0.0f, 0.0f);
-			}
-			else
-			{
-				// フォールバック
-				eyeStart = Vec3(15.0f, 10.0f, 0.0f);
-				atStart = Vec3(0.0f, 4.0f, 0.0f);
-				eyeEnd = Vec3(5.0f, 4.0f, 0.0f);
-				atEnd = Vec3(0.0f, 2.0f, 0.0f);
-			}
-
-			t.keys = {
-				{0.0f, eyeStart, atStart, 20.0f, 60.0f, CameraKeyframe::EaseInOut},
-				{2.0f, eyeEnd,   atEnd,   15.0f, 60.0f, CameraKeyframe::Linear}
-			};
-			ev.cameraTrack = t;
-
-			// 特定のキーの時にイベントを起こす
-			ev.keyCallbacks = {
-				//{0.5f, []() {SoundManager::Instance().PlaySE(L"GameClear_BGM"); }}
-			};
-
-			// 次のキーが無かったらする処理 
-			ev.onComplete = []() {
-				MovieManager::Instance().SetMovieType(MovieType::GameClearMovieEnd);
-				};
-			m_eventsPerMovie[static_cast<size_t>(MovieType::GameClear)] = { ev };
-		}
-
-		// GameOver
-		{
-			MovieEvent ev;
-			ev.duration = 2.0f;
-			CameraTrack t;
-
-			// GetPlayer() を使って直接カメラ位置を計算
-			Vec3 eyeStart, atStart, eyeEnd, atEnd;
-			if (auto player = GetPlayer())
-			{
-				auto playerPos = player->GetComponent<Transform>()->GetPosition();
-				auto playerForward = player->GetComponent<Transform>()->GetForward();
-				if (playerForward.lengthSqr() > 0.0001f) playerForward.normalize();
-				Vec3 fwdXZ = GetForwardXZ(playerForward);
-
-				eyeStart = playerPos + fwdXZ * 8.0f + Vec3(0.0f, 3.0f, 0.0f);
-				atStart = playerPos + Vec3(0.0f, 1.5f, 0.0f);
-
-				eyeEnd = playerPos + fwdXZ * 5.0f + Vec3(0.0f, 1.0f, 0.0f);
-				atEnd = playerPos + Vec3(0.0f, 0.0f, 0.0f);
-			}
-			else
-			{
-				// フォールバック
-				eyeStart = Vec3(15.0f, 10.0f, 0.0f);
-				atStart = Vec3(0.0f, 4.0f, 0.0f);
-				eyeEnd = Vec3(5.0f, 4.0f, 0.0f);
-				atEnd = Vec3(0.0f, 2.0f, 0.0f);
-			}
-
-			t.keys = {
-				{0.0f, eyeStart, atStart, 20.0f, 60.0f, CameraKeyframe::EaseInOut},
-				{2.0f, eyeEnd,   atEnd,   15.0f, 60.0f, CameraKeyframe::Linear}
-			};
-			ev.cameraTrack = t;
-
-			// 特定のキーの時にイベントを起こす
-			ev.keyCallbacks = {
-				//{0.5f, []() {SoundManager::Instance().PlaySE(L"GameClear_BGM"); }}
-			};
-
-			// 次のキーが無かったらする処理 
-			ev.onComplete = []() {
-				MovieManager::Instance().SetMovieType(MovieType::GameOverMovieEnd);
-				};
-			m_eventsPerMovie[static_cast<size_t>(MovieType::GameOver)] = { ev };
-		}
+		m_createdPerType.assign(movieCount, false);
+		m_initialized = true;
 	}
 
 	void MovieManager::OnUpdate()
-	{
-		if (!m_isPlayMove) return;
+	{    
 		float dt = App::GetApp()->GetElapsedTime();
+
+		if (m_isNotUISlideUp && m_pendingMovie != MovieType::None)
+		{
+			m_pendingPlayTimer += dt;
+
+			// 指定時間経過したら再試行
+			if (m_pendingPlayTimer >= m_pendingPlayDelay)
+			{
+				m_pendingPlayTimer = 0.0f;
+				++m_pendingPlayRetries;
+
+				float y = GetUISlide()->GetComponent<Transform>()->GetPosition().y;
+				if (y >= 1050.0f)
+				{
+					m_isSlidUpMax = true;
+					InitializeMovie(m_pendingMovie);
+					EnterMovieType(m_pendingMovie);
+
+	        		m_isNotUISlideUp = false;
+					m_pendingMovie = MovieType::None;
+				}
+				else if (m_pendingPlayRetries >= m_pendingPlayMaxRetries)
+				{
+					m_isNotUISlideUp = false;
+					m_pendingMovie = MovieType::None;
+				}
+			}
+		}
+
+		if (!m_isPlayMove) return;
 		size_t movieIdx = static_cast<size_t>(m_currentMovie);
 		if (movieIdx >= m_eventsPerMovie.size())
 		{
@@ -232,26 +135,13 @@ namespace basecross
 		}
 
 		// 毎フレームプレイヤーの位置・前方をキャッシュ更新（存在すれば）
-		if (m_player)
+		if (GetPlayer())
 		{
 			if (auto tr = m_player->GetComponent<Transform>())
 			{
 				m_cachedPlayerPos = tr->GetPosition();
 				m_cachedPlayerForward = tr->GetForward();
-				if (m_cachedPlayerForward.lengthSqr() > 0.0001f) m_cachedPlayerForward.normalize();
-			}
-		}
-		else
-		{
-			// もし m_player が未設定なら GetPlayer() を試す（外部で SetPlayer が呼ばれていないケース）
-			if (auto p = GetPlayer())
-			{
-				if (auto tr = p->GetComponent<Transform>())
-				{
-					m_cachedPlayerPos = tr->GetPosition();
-					m_cachedPlayerForward = tr->GetForward();
-					if (m_cachedPlayerForward.lengthSqr() > 0.0001f) m_cachedPlayerForward.normalize();
-				}
+				m_cachedPlayerForward.normalize();
 			}
 		}
 
@@ -326,6 +216,66 @@ namespace basecross
 		}
 	}
 
+	void MovieManager::DefineEventTiming(MovieType type)
+	{
+		size_t idx = static_cast<size_t>(type);
+		if (idx >= m_eventsPerMovie.size()) return;
+
+		MovieEvent ev;
+		ev.duration = 2.0f;
+		CameraTrack t;
+
+		Vec3 eyeStart, atStart, eyeEnd, atEnd;
+		if (auto player = GetPlayer())
+		{
+			auto playerPos = player->GetComponent<Transform>()->GetPosition();
+			auto playerForward = player->GetComponent<Transform>()->GetForward();
+			if (playerForward.lengthSqr() > 0.0001f) playerForward = playerForward.normalize();
+			Vec3 fwdXZ = GetForwardXZ(playerForward);
+
+			float startDist = 8.0f, endDist = 5.0f;
+			float startHeight = 3.0f, endHeight = 1.0f;
+			float lookAtHeightStart = 1.5f, lookAtHeightEnd = 0.0f;
+
+			// type による微調整（必要なら追加）
+			if (type == MovieType::GameClear) { startDist = 10.0f; startHeight = 4.0f; }
+			else if (type == MovieType::GameOver) { startDist = 6.0f; startHeight = 2.5f; }
+
+			eyeStart = playerPos + fwdXZ * startDist + Vec3(0.0f, startHeight, 0.0f);
+			atStart = playerPos + Vec3(0.0f, lookAtHeightStart, 0.0f);
+			eyeEnd = playerPos + fwdXZ * endDist + Vec3(0.0f, endHeight, 0.0f);
+			atEnd = playerPos + Vec3(0.0f, lookAtHeightEnd, 0.0f);
+		}
+		else
+		{
+			// フォールバック
+			eyeStart = Vec3(15.0f, 10.0f, 0.0f);
+			atStart = Vec3(0.0f, 4.0f, 0.0f);
+			eyeEnd = Vec3(5.0f, 4.0f, 0.0f);
+			atEnd = Vec3(0.0f, 2.0f, 0.0f);
+		}
+
+		t.keys = {
+			{0.0f, eyeStart, atStart, 20.0f, 60.0f, CameraKeyframe::EaseInOut},
+			{ev.duration, eyeEnd, atEnd, 15.0f, 60.0f, CameraKeyframe::Linear}
+		};
+		ev.cameraTrack = t;
+
+		// onComplete を type ごとに設定
+		if (type == MovieType::Play) {
+			ev.onComplete = []() { MovieManager::Instance().SetMovieType(MovieType::PlayMovieEnd); };
+		}
+		else if (type == MovieType::GameClear) {
+			ev.onComplete = []() { MovieManager::Instance().SetMovieType(MovieType::GameClearMovieEnd); };
+		}
+		else if (type == MovieType::GameOver) {
+			ev.onComplete = []() { MovieManager::Instance().SetMovieType(MovieType::GameOverMovieEnd); };
+		}
+
+		m_eventsPerMovie[idx] = { ev };
+		m_createdPerType[idx] = true;
+	}
+
 	void MovieManager::InitializeMovie(const MovieType& movie)
 	{
 		m_currentMovie = movie;
@@ -341,55 +291,33 @@ namespace basecross
 		}
 	}
 
-	void MovieManager::FinalizeMovie()
-	{
-		m_isPlayMove = false;
-		m_currentMovie = MovieType::None;
-		m_timer.SetCounter();
-	}
-
 	void MovieManager::PlayMovie(const MovieType& movie)
 	{
-		SetAllGameObjectsUpdateActive(false);
+		SetUpdateActiveExceptTags(false);
 		if (movie == MovieType::None) return;
 		InitializeMovie(movie);
 	}
 
 	void MovieManager::StopMovie()
 	{
-		SetAllGameObjectsUpdateActive(true);
+		SetUpdateActiveExceptTags(true);
 		m_isPlayMove = false;
 		m_currentEventIndex = 0;
 		m_currentEventTime = 0.0f;
 	}
 
-	void MovieManager::SetMovieEvents(MovieType movie, const vector<MovieEvent>& events)
-	{
-		size_t idx = static_cast<size_t>(movie);
-		if (idx >= m_eventsPerMovie.size()) return;
-		m_eventsPerMovie[idx] = events;
-	}
-
-	void MovieManager::PlayMovieCamera()
-	{
-		auto myCamera = GetStageCamera();
-		if (!myCamera) return;
-		auto& events = m_eventsPerMovie[static_cast<size_t>(m_currentMovie)];
-		if (!events.empty() && events[0].cameraTrack.has_value() && !events[0].cameraTrack->keys.empty())
-		{
-			const CameraKeyframe& k = events[0].cameraTrack->keys.front();
-			myCamera->SetEye(k.eye.x, k.eye.y, k.eye.z);
-		}
-	}
-
-	void MovieManager::SetAllGameObjectsUpdateActive(bool isActive)
+	void MovieManager::SetUpdateActiveExceptTags(bool isActive)
 	{
 		auto objVec = GetStage()->GetGameObjectVec();
 		for (auto& gameObject : objVec)
 		{
-			if (!gameObject->FindTag(L"Player"))
+			if (MovieType::Play)
 			{
-				gameObject->SetUpdateActive(isActive);
+				if (!gameObject->FindTag(L"Player") && !gameObject->FindTag(L"Fade") &&
+					!gameObject->FindTag(L"UITransitionSlide"))
+				{
+					gameObject->SetUpdateActive(isActive);
+				}
 			}
 		}
 	}
@@ -486,9 +414,19 @@ namespace basecross
 		return { safeEye, lookAt };
 	}
 
-	Vec3 MovieManager::Lerp(const Vec3& a, const Vec3& b, float t)
+	vector<shared_ptr<Dirt>> MovieManager::GetDirt()
 	{
-		return a + (b - a) * t;
+		vector<shared_ptr<Dirt>> dirts;
+		auto objVec = GetStage()->GetGameObjectVec();
+		for (auto& go : objVec)
+		{
+			if (auto d = dynamic_pointer_cast<Dirt>(go))
+			{
+				dirts.push_back(d);
+			}
+
+		}
+		return dirts;
 	}
 
 	void MovieManager::SetMovieType(MovieType gameMode)
@@ -501,9 +439,12 @@ namespace basecross
 	void MovieManager::EnterMovieType(MovieType gameMode)
 	{
 		Initialize();
+		DefineEventTiming(gameMode);
+	   
 		switch (gameMode)
 		{
 		case MovieType::None:
+
 			break;
 		case MovieType::Title:
 			break;
@@ -511,22 +452,38 @@ namespace basecross
 			break;
 		case MovieType::GameClear:
 			GetPlayer()->SetMoveStopFlag(true);
-			GetPlayer()->PlayerChangeAnimation(L"GameClear", false);
+			GetPlayer()->PlayerChangeAnimation(L"GameClear");
 			PlayMovie(MovieType::GameClear);
 			break;
 		case MovieType::GameOver:
-			GetPlayer()->GetComponent<PNTBoneModelDraw>()->ChangeCurrentAnimation(L"GameOver");
+			GetPlayer()->PlayerChangeAnimation(L"GameOver");
 			PlayMovie(MovieType::GameOver);
 			break;
 		case MovieType::Play:
-			PlayMovie(MovieType::Play);
+			if (m_isSlidUpMax)
+			{
+				GetPlayer()->PlayerChangeAnimation(L"Eat");
+				PlayMovie(MovieType::Play);
+				m_isSlidUpMax = false;
+			}
+			else
+			{
+				m_isNotUISlideUp = true;
+				m_pendingPlayTimer = 0.0f;
+				m_pendingPlayRetries = 0;
+				m_pendingMovie = MovieType::Play;
+			}
 			break;
 		case MovieType::EnemySpotted:
 			break;
-		case MovieType::Cleaned:
+		case MovieType::DirtClean:
+			InitializeMovie(gameMode);
+			GetPlayer()->SetMoveStopFlag(true);
+			PlayMovie(MovieType::DirtClean);
 			break;
 		case MovieType::PlayMovieEnd:
 			GetPlayer()->SetMoveStopFlag(false);
+			GetPlayer()->PlayerChangeAnimation(L"Idle");
 			GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
 			break;
 		case MovieType::GameClearMovieEnd:
@@ -560,7 +517,7 @@ namespace basecross
 			break;
 		case MovieType::EnemySpotted:
 			break;
-		case MovieType::Cleaned:
+		case MovieType::DirtClean:
 			break;
 		default:
 			break;
