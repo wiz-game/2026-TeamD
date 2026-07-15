@@ -162,6 +162,41 @@ namespace basecross
 
 			// 設定画面の時
 		case ENUM_MenuMode::Setting:
+			switch (GetSettingUI())
+			{
+			case ENUM_Setting::BGM:
+				SetUIDiffuse(0, m_uisettings, defaultCol);
+				SetUIDiffuse(1, m_uisettings, defaultCol);
+				SetUIDiffuse(2, m_uisettings, elseCol);
+				SetUIDiffuse(3, m_uisettings, elseCol);
+				SetUIDiffuse(4, m_uisettings, elseCol);
+				SetUIDiffuse(5, m_uisettings, elseCol);
+				break;
+			case ENUM_Setting::SE:
+				SetUIDiffuse(0, m_uisettings, elseCol);
+				SetUIDiffuse(1, m_uisettings, elseCol);
+				SetUIDiffuse(2, m_uisettings, defaultCol);
+				SetUIDiffuse(3, m_uisettings, defaultCol);
+				SetUIDiffuse(4, m_uisettings, elseCol);
+				SetUIDiffuse(5, m_uisettings, elseCol);
+				break;
+			case ENUM_Setting::Return:
+				SetUIDiffuse(0, m_uisettings, elseCol);
+				SetUIDiffuse(1, m_uisettings, elseCol);
+				SetUIDiffuse(2, m_uisettings, elseCol);
+				SetUIDiffuse(3, m_uisettings, elseCol);
+				SetUIDiffuse(4, m_uisettings, defaultCol);
+				SetUIDiffuse(5, m_uisettings, elseCol);
+				break;
+			case ENUM_Setting::Reset:
+				SetUIDiffuse(0, m_uisettings, elseCol);
+				SetUIDiffuse(1, m_uisettings, elseCol);
+				SetUIDiffuse(2, m_uisettings, elseCol);
+				SetUIDiffuse(3, m_uisettings, elseCol);
+				SetUIDiffuse(4, m_uisettings, elseCol);
+				SetUIDiffuse(5, m_uisettings, defaultCol);
+				break;
+			}
 			break;
 
 			// あそびかた画面の時
@@ -213,16 +248,34 @@ namespace basecross
 	// 上下入力時にメニューを切り替える関数
 	void MenuManager::ChangeSelectMenuMode(const int& num)
 	{
-		auto menuNow = GetMenuUI();
-		int menuAfter = static_cast<int>(menuNow);
-		menuAfter += num;
+			auto menustartNow = GetMenuUI();
+			int menustartAfter = static_cast<int>(menustartNow);
+			menustartAfter += num;
+			if (menustartAfter == -1) menustartAfter = 3;
+			if (menustartAfter == 4) menustartAfter = 0;
 
-		if (menuAfter == -1) menuAfter = 3;
-		if (menuAfter == 4) menuAfter = 0;
+			auto settingNow = GetSettingUI();
+			int settingAfter = static_cast<int>(settingNow);
+			settingAfter += num;
+			if (settingAfter == -1) settingAfter = 3;
+			if (settingAfter == 4) settingAfter = 0;
 
-		ENUM_MenuStart setAfter = static_cast<ENUM_MenuStart>(menuAfter);
+		switch (GetMenuMode())
+		{
+		case ENUM_MenuMode::MenuStart:
+			ENUM_MenuStart setmenustartAfter = static_cast<ENUM_MenuStart>(menustartAfter);
+			SetMenuUI(setmenustartAfter);
+			break;
 
-		SetMenuUI(setAfter);
+		case ENUM_MenuMode::Setting:
+			ENUM_Setting setsettingAfter = static_cast<ENUM_Setting>(settingAfter);
+			SetSettingUI(setsettingAfter);
+			break;
+
+		case ENUM_MenuMode::Howtoplay:
+			break;
+		}
+
 	}
 
 //----セッター関数群-------------------------------------------------------------------
@@ -255,9 +308,13 @@ namespace basecross
 	{
 		m_menuMode = menumode;
 	}
-	void basecross::MenuManager::SetMenuUI(ENUM_MenuStart menuui)
+	void MenuManager::SetMenuUI(ENUM_MenuStart menuui)
 	{
 		m_menuUI = menuui;
+	}
+	void MenuManager::SetSettingUI(ENUM_Setting settingui)
+	{
+		m_settingUI = settingui;
 	}
 //--------------------------------------------------------------------------------------
 }

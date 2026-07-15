@@ -11,6 +11,7 @@ namespace basecross
 	class UIStatueNum : public UIBase
 	{
 	private:
+		int m_statuenum = 0;
 
 	public:
 		UIStatueNum(const shared_ptr<Stage>& stage, const STRUCT_UIParam& uiParam);
@@ -18,7 +19,7 @@ namespace basecross
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 
-		void ChangeStatueActive(int uinum, const vector<shared_ptr<UIStatueNum>>& uipointers, bool isActive);
+		void SetStatueNum(int num) { m_statuenum = num; }
 	};
 
 }

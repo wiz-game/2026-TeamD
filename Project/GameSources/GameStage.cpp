@@ -18,6 +18,7 @@ namespace basecross
 		m_stageNum = to_string(stageNum);
 	}
 
+
 	void GameStage::OnCreate()
 	{
 		try 
@@ -113,7 +114,7 @@ namespace basecross
 			1.0f,
 			Col4(1.0f))));
 		m_uiframes.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
-			L"UI_OptionFrame",
+			L"UI_OptionFrame",//OptionFrame",
 			Vec3(0.0f, 0.0f, 0.0f), 
 			0.75f,
 			Col4(1.0f))));
@@ -149,34 +150,34 @@ namespace basecross
 
 		// ƒIƒvƒVƒ‡ƒ“‰æ–Ê‚ÌUI
 		m_uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
-			L"UI_OptionSound",
-			Vec3(0.0f, 150.0f, 0.0f),
-			0.1f,
+			L"UI_BGMLogo",
+			Vec3(0.0f, 100.0f, 0.0f),
+			0.3f,
 			Col4(1.0f))));
 		m_uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
-			L"UI_OptionBGM",
-			Vec3(0.0f, 25.0f, 0.0f),
-			0.1f,
+			L"Awa",
+			Vec3(0.0f, 100.0f, 0.0f),
+			0.05f,
 			Col4(1.0f))));
 		m_uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
-			L"UI_OptionSE",
-			Vec3(0.0f, -100.0f, 0.0f),
-			0.1f,
+			L"UI_SELogo",
+			Vec3(0.0f, -50.0f, 0.0f),
+			0.3f,
 			Col4(1.0f))));
 		m_uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
-			L"UI_OptionBaymax",
-			Vec3(0.0f, -40.0f, 0.0f),
+			L"Awa",
+			Vec3(0.0f, -50.0f, 0.0f),
+			0.05f,
+			Col4(1.0f))));
+		m_uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+			L"UI_SoundButton_1",
+			Vec3(-150.0f, -220.0f, 0.0f),
 			0.25f,
 			Col4(1.0f))));
 		m_uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
-			L"UI_OptionBaymax",
-			Vec3(0.0f, -165.0f, 0.0f),
+			L"UI_SoundButton_2",
+			Vec3(150.0f, -220.0f, 0.0f),
 			0.25f,
-			Col4(1.0f))));
-		m_uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
-			L"UI_OptionReturn",
-			Vec3(0.0f, -220.0f, 0.0f),
-			0.1f,
 			Col4(1.0f))));
 
 		MenuManager::Instance().SetUISettings(m_uisettings);
@@ -196,22 +197,29 @@ namespace basecross
 
 	void GameStage::CreateGameUI()
 	{
-		m_uistatues.push_back(AddGameObject<UIStatueNum>(STRUCT_UIParam(
+		auto uistatue0 = AddGameObject<UIStatueNum>(STRUCT_UIParam(
 			L"UI_AwaPaka3",
-			Vec3(550.0f, -250.0f, 0.0f),
-			0.20f,
-			Col4(1.0f))));
-		m_uistatues.push_back(AddGameObject<UIStatueNum>(STRUCT_UIParam(
-			L"UI_AwaPaka3",
-			Vec3(450.0f, -250.0f, 0.0f),
-			0.20f,
-			Col4(1.0f))));
-		m_uistatues.push_back(AddGameObject<UIStatueNum>(STRUCT_UIParam(
-			L"UI_AwaPaka3",
-			Vec3(350.0f, -250.0f, 0.0f),
-			0.20f,
-			Col4(1.0f))));
+			Vec3(600.0f, 320.0f, 0.0f),
+			0.12f,
+			Col4(1.0f)));
+		uistatue0->SetStatueNum(0);
+		m_uistatues.push_back(uistatue0);
 
+		auto uistatue1 = AddGameObject<UIStatueNum>(STRUCT_UIParam(
+			L"UI_AwaPaka3",
+			Vec3(550.0f, 320.0f, 0.0f),
+			0.12f,
+			Col4(1.0f)));
+		uistatue1->SetStatueNum(1);
+		m_uistatues.push_back(uistatue1);
+
+		auto uistatue2 = AddGameObject<UIStatueNum>(STRUCT_UIParam(
+			L"UI_AwaPaka3",
+			Vec3(500.0f, 320.0f, 0.0f),
+			0.12f,
+			Col4(1.0f)));
+		uistatue2->SetStatueNum(2);
+		m_uistatues.push_back(uistatue2);
 
 	}
 

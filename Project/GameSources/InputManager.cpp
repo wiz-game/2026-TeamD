@@ -505,6 +505,7 @@ namespace basecross
 				break;
 
 			case ENUM_MenuMode::Setting:
+
 				break;
 
 			case ENUM_MenuMode::Howtoplay:

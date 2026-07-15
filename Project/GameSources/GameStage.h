@@ -44,6 +44,8 @@ namespace basecross
 		void SetCollRange();
 	public:
 		GameStage(const wstring& stageNum);
+
+
 		virtual ~GameStage() {}
 		
 		virtual void OnCreate() override;
