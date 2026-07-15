@@ -59,27 +59,31 @@ namespace basecross
     void EnemyBase::Stun()
     {
         const float TIMER_ZERO = 0.0f, TIMER_SPEED = 1.0f;
+
+        // バブルに触れたとき
         if (m_isContactofBubble)
         {
+            // スタンのタイマーが0.0秒以下のとき
             if (m_StunTime <= TIMER_ZERO)
             {
                 m_StunTime = m_InitStunTime;
             }
 
+            // 移動できなくする
             m_Speed = 0.0f;
             auto elapsedTime = App::GetApp()->GetElapsedTime();
             m_StunTime -= elapsedTime * TIMER_SPEED;
 
             if (m_StunTime <= TIMER_ZERO)
             {
-                m_Speed = 10.0f;
+                m_Speed = 5.0f;
                 m_isContactofBubble = false;
                 m_StunTime = TIMER_ZERO;
             }
         }
         else
         {
-            m_Speed = 10.0f;
+            m_Speed = 5.0f;
         }
 
     }
@@ -642,7 +646,7 @@ namespace basecross
         if (staticDraw->HitTestStaticMeshSegmentTrianglesToAffine(startPos, endPos, hitPoint,tri, index))
         {
             Vec3 dir(hitPoint.x - basePos.x, 0.0f, hitPoint.z - basePos.z);
-            return dir.length() >= 0.5f && dir.length() <= m_rayRange;
+            return dir.length() >= 0.1f && dir.length() <= m_rayRange;
         }
         return false;
     }
