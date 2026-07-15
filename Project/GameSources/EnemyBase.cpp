@@ -38,7 +38,12 @@ namespace basecross
         m_targetVec(),
 
         // 壁に触れたかどうか
-        m_isHitWall(false)
+        m_isHitWall(false),
+
+        m_isContactofBubble(false),
+        m_StunTime(0.0f),
+        m_InitStunTime(3.0f)
+
     {}
 
     void EnemyBase::OnCreate()
@@ -48,6 +53,34 @@ namespace basecross
 
     void EnemyBase::OnUpdate()
     {
+
+    }
+
+    void EnemyBase::Stun()
+    {
+        const float TIMER_ZERO = 0.0f, TIMER_SPEED = 1.0f;
+        if (m_isContactofBubble)
+        {
+            if (m_StunTime <= TIMER_ZERO)
+            {
+                m_StunTime = m_InitStunTime;
+            }
+
+            m_Speed = 0.0f;
+            auto elapsedTime = App::GetApp()->GetElapsedTime();
+            m_StunTime -= elapsedTime * TIMER_SPEED;
+
+            if (m_StunTime <= TIMER_ZERO)
+            {
+                m_Speed = 1.0f;
+                m_isContactofBubble = false;
+                m_StunTime = TIMER_ZERO;
+            }
+        }
+        else
+        {
+            m_Speed = 1.0f;
+        }
 
     }
 

@@ -60,10 +60,13 @@ namespace basecross
 	{
 		m_eStateMachine->Update();
 		m_draw->UpdateAnimation(App::GetApp()->GetElapsedTime());
+		DebugString();
+		Stun();
 	}
 
 	void EnemyAlpaca::DebugString()
 	{
+		GameManager::Instance().AddDebugStr(L"StunTimer", GetStunTime());
 		//GameManager::AddDebugLog(L"", m_Num);
 	}
 
@@ -167,6 +170,11 @@ namespace basecross
 			{
 				m_canGoForward = false;
 			}
+		}
+
+		if (Other->FindTag(L"Bubble"))
+		{
+			SetIsContactOfBubbleetStun(true);
 		}
 	}
 
