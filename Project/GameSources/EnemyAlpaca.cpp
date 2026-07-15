@@ -151,27 +151,8 @@ namespace basecross
 
 	void EnemyAlpaca::OnCollisionEnter(shared_ptr<GameObject>& Other)
 	{
-		auto objDrawComp = Other->GetComponent<PNTStaticDraw>(false);
-
-		if (objDrawComp)
-		{
-
-			// 引数の情報を取得する
-			auto transComp = GetThis<EnemyAlpaca>()->GetComponent<Transform>();
-			auto transPos = transComp->GetPosition();
-
-			float startReyPos_Y = 0.3f;
-			Vec3 startReyPos = Vec3(transPos.x, transPos.y + startReyPos_Y, transPos.z);
-
-			// レイ（エンド）
-			Vec3 endFSp = CalculateEndPointRayAngle(startReyPos, m_rotY, 0, m_rayRange);       // 正面
-
-			// 正面
-			if (IsWallHit(objDrawComp, startReyPos, endFSp, transPos))
-			{
-				m_canGoForward = false;
-			}
-		}
+		// 共通の当たり判定・フラグ更新を走らせる
+		OnCollisionExecute(Other);
 
 		auto bubble = dynamic_pointer_cast<Bubble>(Other);
 		if (bubble)
@@ -185,6 +166,20 @@ namespace basecross
 
 	void EnemyAlpaca::OnCollisionExecute(shared_ptr<GameObject>& Other)
 	{
+		if (!Other->FindTag(L"Wall"))
+		{
+			return;
+		}
+
+		if (m_isRotated)
+		{
+			return;
+		}
+
+		m_canGoForward = true;
+		m_canGoLeft = true;
+		m_canGoRight = true;
+
 		// 引数の情報を取得する
 		auto transComp = GetThis<EnemyAlpaca>()->GetComponent<Transform>();
 		auto transPos = transComp->GetPosition();
@@ -192,7 +187,7 @@ namespace basecross
 		float startReyPos_Y = 0.3f;
 		Vec3 startReyPos = Vec3(transPos.x, transPos.y + startReyPos_Y, transPos.z);
 
-		float startRange = 0.5f;
+		float startRange = 0.15f;
 
 		// レイ（スタート）
 		Vec3 startFSp = CalculateEndPointRayAngle(startReyPos, m_rotY, 0.0f, startRange);       // 正面
@@ -207,40 +202,30 @@ namespace basecross
 		// 全てのゲームオブジェクトを探す
 		for (auto& obj : GetStage()->GetGameObjectVec())
 		{
+			if (!obj->FindTag(L"Wall"))
+			{
+				continue;
+			}
+
 			auto objDrawComp = obj->GetComponent<PNTStaticDraw>(false);
 			if (objDrawComp)
 			{
-				// 自身が引数のgameObjectと等しければ次にいく
-				if (!obj->FindTag(L"Wall"))
+				// 正面
+				if (IsWallHit(objDrawComp, startFSp, endFSp, transPos))
 				{
-					continue;
+					m_canGoForward = false;
 				}
 
-				if (obj == Other)
+				// 左
+				if (IsWallHit(objDrawComp, startLSp, endLSp, transPos))
 				{
-					continue;
+					m_canGoLeft = false;
 				}
 
-				if (!m_isRotated)
+				// 右
+				if (IsWallHit(objDrawComp, startRSp, endRSp, transPos))
 				{
-
-					// 左
-					if (IsWallHit(objDrawComp, startLSp, endLSp, transPos))
-					{
-						m_canGoLeft = false;
-					}
-
-					// 右
-					if (IsWallHit(objDrawComp, startRSp, endRSp, transPos))
-					{
-						m_canGoRight = false;
-					}
-
-					// 正面
-					if (IsWallHit(objDrawComp, startFSp, endFSp, transPos))
-					{
-						m_canGoForward = false;
-					}
+					m_canGoRight = false;
 				}
 			}
 		}
@@ -248,10 +233,12 @@ namespace basecross
 
 	void EnemyAlpaca::OnCollisionExit(shared_ptr<GameObject>& Other)
 	{
-		m_canGoForward = true;
-		m_canGoLeft = true;
-		m_canGoRight = true;
+		if (Other->FindTag(L"Wall"))
+		{
+			m_canGoForward = true;
+			m_canGoLeft = true;
+			m_canGoRight = true;
+		}
 	}
-
 }
 //end basecross
