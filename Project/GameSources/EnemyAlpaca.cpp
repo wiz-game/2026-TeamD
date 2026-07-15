@@ -14,7 +14,7 @@ namespace basecross
 	void EnemyAlpaca::OnCreate()
 	{
 		AddTag(L"Enemy");
-		AddTag(L"Fade");
+		//AddTag(L"Fade");
 		SetIsEditorSave(true);
 
 		m_transform = AddComponent<Transform>();
@@ -113,7 +113,7 @@ namespace basecross
 
 	void AngryState::Execute(const shared_ptr<EnemyBase>& Obj)
 	{
-		Obj->Tracking(Obj,3.0f);
+		Obj->Tracking(Obj);
 		Obj->DetectionRange(Obj);
 
 		if(!Obj->GetDetection())
@@ -141,7 +141,7 @@ namespace basecross
 
 	void ArrivalState::Execute(const shared_ptr<EnemyBase>& Obj)
 	{
-		Obj->EstimatedPlayerLocation(Obj, 3.0f);
+		Obj->EstimatedPlayerLocation(Obj);
 	}
 
 	void ArrivalState::Exit(const shared_ptr<EnemyBase>& Obj)
