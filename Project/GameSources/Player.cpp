@@ -318,10 +318,14 @@ namespace basecross
 		{
 		case PlayerState::Default:
 			m_isPlayerPowerUp = false;
+			SoundManager::Instance().StopBGM();
+			SoundManager::Instance().PlayBGM(L"GameStage_BGM");
 			break;
 		case PlayerState::PowerUp:
 			m_timer = Timer(12.0f);
 			m_timer.SetCounter();
+			SoundManager::Instance().StopBGM();
+			SoundManager::Instance().PlayBGM(L"Invincible_BGM");
 			m_isPlayerPowerUp = true;
 			break;
 		case PlayerState::Dead:
