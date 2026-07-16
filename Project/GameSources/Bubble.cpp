@@ -282,6 +282,7 @@ namespace basecross
 		else
 		{
 			ObjectHitEffect(GetComponent<Transform>()->GetPosition());
+			SoundManager::Instance().PlaySE(L"BubbleBursts_SE");
 			GetStage()->RemoveGameObject<Bubble>(GetThis<Bubble>());
 		}
 	}

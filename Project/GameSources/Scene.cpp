@@ -20,7 +20,7 @@ namespace basecross
 
 			// 各マネージャーを初期化
 			JoltManager::StaticInitialize();
-			GameManager::Instance().Initialize(true);// false);
+			GameManager::Instance().Initialize(false);
 			InputManager::Instance().Initialize();
 			StageEditor::Instance().Initialize();
 			EffectManager::Instance().CreateEfkInterface(20000);
@@ -40,7 +40,7 @@ namespace basecross
 
 	void Scene::OnCreate2()
 	{
-		GameManager::Instance().SetGameMode(ENUM_GameMode::Play);// Title);
+		GameManager::Instance().SetGameMode(ENUM_GameMode::Title);
 	}
 
 	void Scene::OnUpdate()

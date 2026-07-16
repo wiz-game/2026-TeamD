@@ -143,7 +143,6 @@ namespace basecross
 		shared_ptr<Stage> GetStage() { return m_stage; }
 		
 		// 汚れの関連
-		void SetDirt(const vector<shared_ptr<Dirt>>& dirts) { m_dirts = dirts; }
 		vector<shared_ptr<Dirt>> GetDirt();
 
 		// UISlider関連

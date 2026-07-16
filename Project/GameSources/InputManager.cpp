@@ -158,7 +158,9 @@ namespace basecross
 
 			// カーソルを移動
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP ||
-				m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+				m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN||
+				m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_RIGHT||
+				m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_LEFT)
 			{
 				MoveMenuCursor();
 			}
@@ -289,6 +291,8 @@ namespace basecross
 
 	void InputManager::GameStart()
 	{
+		SoundManager::Instance().PlaySE(L"Gurgle_SE");
+		SoundManager::Instance().PlaySE(L"Decide_SE");
 		GameManager::Instance().SetGameModeAfterTransition(ENUM_GameMode::Play);
 		auto startButton = App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetSharedGameObject<UIBlinking>(L"StartButton");
 		if (startButton) startButton->SetBlinkSpeed(5.0f);
@@ -296,11 +300,15 @@ namespace basecross
 
 	void InputManager::StageStart()
 	{
+		SoundManager::Instance().PlaySE(L"Gurgle_SE");
+		SoundManager::Instance().PlaySE(L"Decide_SE");
 		GameManager::Instance().SetGameModeAfterTransition(ENUM_GameMode::Play);
 	}
 
 	void InputManager::ReturnTitle()
 	{
+		SoundManager::Instance().PlaySE(L"Gurgle_SE");
+		SoundManager::Instance().PlaySE(L"Decide_SE");
 		GameManager::Instance().SetGameModeAfterTransition(ENUM_GameMode::Title);
 	}
 
@@ -451,15 +459,18 @@ namespace basecross
 		switch (MenuManager::Instance().GetMenuMode())
 		{
 		case ENUM_MenuMode::MenuStart:
+			SoundManager::Instance().PlaySE(L"Back_SE");
 			GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
 			break;
 
 		case ENUM_MenuMode::Setting:
+			SoundManager::Instance().PlaySE(L"Back_SE");
 			MenuManager::Instance().SetMenuMode(ENUM_MenuMode::MenuStart);
 			MenuManager::Instance().ChangeMenuMode();
 			break;
 
 		case ENUM_MenuMode::Howtoplay:
+			SoundManager::Instance().PlaySE(L"Back_SE");
 			MenuManager::Instance().SetMenuMode(ENUM_MenuMode::MenuStart);
 			MenuManager::Instance().ChangeMenuMode();
 			break;
@@ -497,15 +508,74 @@ namespace basecross
 			case ENUM_MenuMode::MenuStart:
 				if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP)
 				{
+					SoundManager::Instance().PlaySE(L"Select_SE");
 					MenuManager::Instance().ChangeSelectMenuMode(-1);
 				}
 				else if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
 				{
+					SoundManager::Instance().PlaySE(L"Select_SE");
 					MenuManager::Instance().ChangeSelectMenuMode(+1);
 				}
 				break;
 
 			case ENUM_MenuMode::Setting:
+				switch (m_pad.wPressedButtons & (XINPUT_GAMEPAD_DPAD_UP | XINPUT_GAMEPAD_DPAD_DOWN | XINPUT_GAMEPAD_DPAD_RIGHT | XINPUT_GAMEPAD_DPAD_LEFT))
+				{
+				case XINPUT_GAMEPAD_DPAD_UP:
+					if (MenuManager::Instance().GetSettingUI() == ENUM_Setting::Reset)
+					{
+						SoundManager::Instance().PlaySE(L"Select_SE");
+						MenuManager::Instance().ChangeSelectMenuMode(-2);
+					}
+					else if (MenuManager::Instance().GetSettingUI() == ENUM_Setting::BGM)
+					{
+						SoundManager::Instance().PlaySE(L"Select_SE");
+						MenuManager::Instance().ChangeSelectMenuMode(+2);
+					}
+					else
+					{
+						SoundManager::Instance().PlaySE(L"Select_SE");
+						MenuManager::Instance().ChangeSelectMenuMode(-1);
+					}
+					break;
+
+
+				case XINPUT_GAMEPAD_DPAD_DOWN:
+
+					if (MenuManager::Instance().GetSettingUI() == ENUM_Setting::Return ||
+						MenuManager::Instance().GetSettingUI() == ENUM_Setting::Reset)
+					{
+						SoundManager::Instance().PlaySE(L"Select_SE");
+						MenuManager::Instance().ChangeSelectMenuMode(+2);
+					}
+					else
+					{
+						SoundManager::Instance().PlaySE(L"Select_SE");
+						MenuManager::Instance().ChangeSelectMenuMode(+1);
+					}
+					break;
+
+
+				case XINPUT_GAMEPAD_DPAD_RIGHT:
+
+					if (MenuManager::Instance().GetSettingUI() == ENUM_Setting::Return)
+					{
+						SoundManager::Instance().PlaySE(L"Select_SE");
+						MenuManager::Instance().ChangeSelectMenuMode(+1);
+					}
+					break;
+
+
+				case XINPUT_GAMEPAD_DPAD_LEFT:
+
+					if (MenuManager::Instance().GetSettingUI() == ENUM_Setting::Reset)
+					{
+						SoundManager::Instance().PlaySE(L"Select_SE");
+						MenuManager::Instance().ChangeSelectMenuMode(-1);
+					}
+					break;
+				}
+
 				break;
 
 			case ENUM_MenuMode::Howtoplay:
@@ -531,11 +601,13 @@ namespace basecross
 
 		case ENUM_MenuStart::Setting:
 			MenuManager::Instance().ChangeUISize(0.25f);
+			SoundManager::Instance().PlaySE(L"Decide_SE");
 			EnterSetting();
 			break;
 
 		case ENUM_MenuStart::Howtoplay:
 			MenuManager::Instance().ChangeUISize(0.25f);
+			SoundManager::Instance().PlaySE(L"Decide_SE");
 			EnterHowtoplay();
 			break;
 
