@@ -33,7 +33,7 @@ namespace basecross
 			AddGameObject<UIBase>(STRUCT_UIParam(L"UI_TitleLogo", Vec3(220.0f, 135.0f, 0.0f), 0.45f, Col4(1.0f)));
 			auto startButton = AddGameObject<UIBlinking>(STRUCT_UIParam(L"UI_Start", Vec3(220.0f, -220.0f, 0.0f), 0.3f), 0.5f);
 			SetSharedGameObject(L"StartButton", startButton);
-			AddGameObject<UITransitionSlide>(STRUCT_UIParam(L"Awas", Vec3(0.0f, 0.0f, 0.0f), 1.3f), 600.0f);
+			AddGameObject<UITransitionSlide>(STRUCT_UIParam(L"Awas", Vec3(0.0f, 0.0f, 0.0f), 1.3f), 900.0f);
 		}
 		catch (...) 
 		{
