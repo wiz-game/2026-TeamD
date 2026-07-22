@@ -34,6 +34,10 @@ namespace basecross
 
 		float m_rotToHeadLeap;
 
+		float m_StunTime;
+		float m_InitStunTime;
+		bool m_isContactofBubble;
+
 		// 壁に触れたかどうか
 		bool m_isHitWall;
 
@@ -112,13 +116,15 @@ namespace basecross
 
 		void DetectionRange(const shared_ptr<GameObject>& gameObject); // 索敵範囲
 		void MazeWandering(const shared_ptr<GameObject>& gameObject); // 徘徊AI
-		void Tracking(const shared_ptr<GameObject>& gameObject,float speed); // 追跡AI
-		void EstimatedPlayerLocation(const shared_ptr<GameObject>& gameObject, float speed); // 推定プレイヤー位置に移動する
+		void Tracking(const shared_ptr<GameObject>& gameObject); // 追跡AI
+		void EstimatedPlayerLocation(const shared_ptr<GameObject>& gameObject); // 推定プレイヤー位置に移動する
 
 		// ヘルパー関数
 		// angleは度数法で書いてください
 		Vec3 CalculateEndPointRayAngle(const Vec3& startPos,const float& forwardAngle,const float& angle,float rayRange);
 		const bool IsWallHit(const shared_ptr<PNTStaticDraw>& staticDraw, const Vec3& startPos, const Vec3& endPos, const Vec3& basePos);
+
+		void Stun();
 
 		// ゲッターセッター関数
 		const bool GetDetection()
@@ -139,6 +145,16 @@ namespace basecross
 		const bool GetIsHitWall()
 		{
 			return m_isHitWall;
+		}
+
+		const float GetStunTime()
+		{
+			return m_StunTime;
+		}
+
+		void SetIsContactOfBubbleetStun(bool Contact)
+		{
+			m_isContactofBubble = Contact;
 		}
 
 		void SetPointPosition(const Vec3& pos1,const Vec3& pos2,const Vec3& pos3)

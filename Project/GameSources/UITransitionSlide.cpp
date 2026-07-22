@@ -14,7 +14,6 @@ namespace basecross
 	{
 		AddTag(L"UITransitionSlide");
 		UISlide::OnCreate();
-		SoundManager::Instance().PlaySE(L"Gurgle_SE");
 	}
 
 	void UITransitionSlide::OnUpdate()

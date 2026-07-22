@@ -23,11 +23,11 @@ namespace basecross
         m_canGoForward(true),
         m_targetRotY(0.0f),
         m_rayRange(1.6f),
-        m_rayDistanceRange(10.0f),
+        m_rayDistanceRange(2.4f),
         m_ExpectRange(3.0f),
 
         // 移動速度
-        m_Speed(10.0f),
+        m_Speed(0.0f),
         m_rotToHeadLeap(0.5f),
 
         // 壁を回避中かどうか
@@ -38,7 +38,12 @@ namespace basecross
         m_targetVec(),
 
         // 壁に触れたかどうか
-        m_isHitWall(false)
+        m_isHitWall(false),
+
+        m_isContactofBubble(false),
+        m_StunTime(0.0f),
+        m_InitStunTime(3.0f)
+
     {}
 
     void EnemyBase::OnCreate()
@@ -48,6 +53,38 @@ namespace basecross
 
     void EnemyBase::OnUpdate()
     {
+
+    }
+
+    void EnemyBase::Stun()
+    {
+        const float TIMER_ZERO = 0.0f, TIMER_SPEED = 1.0f;
+
+        // バブルに触れたとき
+        if (m_isContactofBubble)
+        {
+            // スタンのタイマーが0.0秒以下のとき
+            if (m_StunTime <= TIMER_ZERO)
+            {
+                m_StunTime = m_InitStunTime;
+            }
+
+            // 移動できなくする
+            m_Speed = 0.0f;
+            auto elapsedTime = App::GetApp()->GetElapsedTime();
+            m_StunTime -= elapsedTime * TIMER_SPEED;
+
+            if (m_StunTime <= TIMER_ZERO)
+            {
+                m_Speed = 5.0f;
+                m_isContactofBubble = false;
+                m_StunTime = TIMER_ZERO;
+            }
+        }
+        else
+        {
+            m_Speed = 5.0f;
+        }
 
     }
 
@@ -121,7 +158,7 @@ namespace basecross
     }
 
     // 追跡AI
-    void EnemyBase::Tracking(const shared_ptr<GameObject>& gameObject, float speed)
+    void EnemyBase::Tracking(const shared_ptr<GameObject>& gameObject)
     {
         // プレイヤーの位置を取得する
         auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
@@ -137,8 +174,8 @@ namespace basecross
         targetVec.normalize();
 		auto elapsedTime = App::GetApp()->GetElapsedTime();
 
-        transPos.x += targetVec.x * speed * elapsedTime;
-        transPos.z += targetVec.z * speed * elapsedTime;
+        transPos.x += targetVec.x * m_Speed * elapsedTime;
+        transPos.z += targetVec.z * m_Speed * elapsedTime;
         transComp->SetPosition(transPos);
         GetBehavior<UtilBehavior>()->RotToHead(targetVec, m_rotToHeadLeap);
 
@@ -247,7 +284,7 @@ namespace basecross
         // 上の座標に移動するStateに遷移する（ために多分フラグを立てるとおもう）
     }
 
-    void EnemyBase::EstimatedPlayerLocation(const shared_ptr<GameObject>& gameObject, float speed)
+    void EnemyBase::EstimatedPlayerLocation(const shared_ptr<GameObject>& gameObject)
     {
         auto transComp = gameObject->GetComponent<Transform>();
         auto transPos = transComp->GetPosition();
@@ -294,7 +331,7 @@ namespace basecross
             m_eStateMachine->ChangeState(IdleState::Instance());
             return;
         }
-        transPos += toTargetVec * speed * elpasedTime;
+        transPos += toTargetVec * m_Speed * elpasedTime;
         transPos.y = 0.0f;
         transComp->SetPosition(transPos);
         GetBehavior<UtilBehavior>()->RotToHead(toTargetVec, m_rotToHeadLeap);
@@ -609,7 +646,7 @@ namespace basecross
         if (staticDraw->HitTestStaticMeshSegmentTrianglesToAffine(startPos, endPos, hitPoint,tri, index))
         {
             Vec3 dir(hitPoint.x - basePos.x, 0.0f, hitPoint.z - basePos.z);
-            return true;
+            return dir.length() >= 0.1f && dir.length() <= m_rayRange;
         }
         return false;
     }

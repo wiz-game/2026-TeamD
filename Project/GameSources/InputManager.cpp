@@ -23,7 +23,6 @@ namespace basecross
 			// Aを押してゲームスタート
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
 			{
-				SoundManager::Instance().PlaySE(L"Decide_SE");
 				GameStart();
 			}
 			break;
@@ -51,13 +50,11 @@ namespace basecross
 			// Aを押してリトライ
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
 			{
-				SoundManager::Instance().PlaySE(L"Decide_SE");
 				StageStart();
 			}
 			// Bを押してタイトルへ
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_B)
 			{
-				SoundManager::Instance().PlaySE(L"Decide_SE");
 				ReturnTitle();
 			}
 			break;
@@ -65,13 +62,11 @@ namespace basecross
 			// Aを押してリトライ
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
 			{
-				SoundManager::Instance().PlaySE(L"Decide_SE");
 				StageStart();
 			}
 			// Bを押してタイトルへ
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_B)
 			{
-				SoundManager::Instance().PlaySE(L"Decide_SE");
 				ReturnTitle();
 			}
 			break;
@@ -296,6 +291,8 @@ namespace basecross
 
 	void InputManager::GameStart()
 	{
+		SoundManager::Instance().PlaySE(L"Gurgle_SE");
+		SoundManager::Instance().PlaySE(L"Decide_SE");
 		GameManager::Instance().SetGameModeAfterTransition(ENUM_GameMode::Play);
 		auto startButton = App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetSharedGameObject<UIBlinking>(L"StartButton");
 		if (startButton) startButton->SetBlinkSpeed(5.0f);
@@ -303,11 +300,15 @@ namespace basecross
 
 	void InputManager::StageStart()
 	{
+		SoundManager::Instance().PlaySE(L"Gurgle_SE");
+		SoundManager::Instance().PlaySE(L"Decide_SE");
 		GameManager::Instance().SetGameModeAfterTransition(ENUM_GameMode::Play);
 	}
 
 	void InputManager::ReturnTitle()
 	{
+		SoundManager::Instance().PlaySE(L"Gurgle_SE");
+		SoundManager::Instance().PlaySE(L"Decide_SE");
 		GameManager::Instance().SetGameModeAfterTransition(ENUM_GameMode::Title);
 	}
 
