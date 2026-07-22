@@ -27,7 +27,7 @@ namespace basecross
 		if (m_statuenum < statuenum)
 		{
 			//SetActive(true);
-			draw->SetTextureResource(L"UI_AwaPaka3");
+			draw->SetTextureResource(L"UI_AwaPaka2");
 			draw->SetDiffuse(Col4(0.6f, 0.6f, 0.6f, 1.0f));
 		}
 		else

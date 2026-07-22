@@ -187,7 +187,7 @@ namespace basecross
 	void GameStage::CreateGameUI()
 	{
 		auto uistatue0 = AddGameObject<UIStatueNum>(STRUCT_UIParam(
-			L"UI_AwaPaka3",
+			L"UI_AwaPaka2",
 			Vec3(600.0f, 320.0f, 0.0f),
 			0.12f,
 			Col4(1.0f)));
@@ -195,16 +195,16 @@ namespace basecross
 		m_uistatues.push_back(uistatue0);
 
 		auto uistatue1 = AddGameObject<UIStatueNum>(STRUCT_UIParam(
-			L"UI_AwaPaka3",
-			Vec3(550.0f, 320.0f, 0.0f),
+			L"UI_AwaPaka2",
+			Vec3(532.5f, 320.0f, 0.0f),
 			0.12f,
 			Col4(1.0f)));
 		uistatue1->SetStatueNum(1);
 		m_uistatues.push_back(uistatue1);
 
 		auto uistatue2 = AddGameObject<UIStatueNum>(STRUCT_UIParam(
-			L"UI_AwaPaka3",
-			Vec3(500.0f, 320.0f, 0.0f),
+			L"UI_AwaPaka2",
+			Vec3(465.0f, 320.0f, 0.0f),
 			0.12f,
 			Col4(1.0f)));
 		uistatue2->SetStatueNum(2);
