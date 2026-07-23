@@ -171,14 +171,9 @@ namespace basecross
 			return;
 		}
 
-		if (m_isRotated)
-		{
-			return;
-		}
-
-		m_canGoForward = true;
-		m_canGoLeft = true;
-		m_canGoRight = true;
+		SetCanGoForward(true);
+		SetCanGoLeft(true);
+		SetCanGoRight(true);
 
 		// 引数の情報を取得する
 		auto transComp = GetThis<EnemyAlpaca>()->GetComponent<Transform>();
@@ -208,8 +203,10 @@ namespace basecross
 			}
 
 			auto objDrawComp = obj->GetComponent<PNTStaticDraw>(false);
-			if (objDrawComp)
+
+			//if (!m_isRotated && !m_canGoForward)
 			{
+				Vec3 hitPos;
 				// 正面
 				if (IsWallHit(objDrawComp, startFSp, endFSp, transPos))
 				{
@@ -233,12 +230,6 @@ namespace basecross
 
 	void EnemyAlpaca::OnCollisionExit(shared_ptr<GameObject>& Other)
 	{
-		if (Other->FindTag(L"Wall"))
-		{
-			m_canGoForward = true;
-			m_canGoLeft = true;
-			m_canGoRight = true;
-		}
 	}
 }
 //end basecross
