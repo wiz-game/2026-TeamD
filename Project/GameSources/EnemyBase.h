@@ -157,6 +157,21 @@ namespace basecross
 			m_isContactofBubble = Contact;
 		}
 
+		void SetCanGoForward(bool scgf)
+		{
+			m_canGoForward = scgf;
+		}
+
+		void SetCanGoRight(bool scgr)
+		{
+			m_canGoRight = scgr;
+		}
+
+		void SetCanGoLeft(bool scgl)
+		{
+			m_canGoLeft = scgl;
+		}
+
 		void SetPointPosition(const Vec3& pos1,const Vec3& pos2,const Vec3& pos3)
 		{
 			PointPosition(1, pos1);
