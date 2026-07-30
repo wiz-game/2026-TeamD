@@ -40,6 +40,7 @@ namespace basecross
 		UIBase(const shared_ptr<Stage>& stage, const STRUCT_UIParam& uiParam);
 		virtual ~UIBase() {}
 
+
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 		void SetImageSizeRatio(float ratio);
