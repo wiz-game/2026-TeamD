@@ -153,6 +153,11 @@ namespace basecross
 			return m_StunTime;
 		}
 
+		const float GetContatofBubble()
+		{
+			return m_isContactofBubble;
+		}
+
 		void SetIsContactOfBubbleetStun(bool Contact)
 		{
 			m_isContactofBubble = Contact;
