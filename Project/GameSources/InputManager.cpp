@@ -591,7 +591,6 @@ namespace basecross
 
 	void InputManager::MoveSoundsCursor()
 	{
-		//*
 		if (m_pad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
 		{
 			if (MenuManager::Instance().GetSettingUI() == ENUM_Setting::BGM)
@@ -602,6 +601,7 @@ namespace basecross
 			{
 				MenuManager::Instance().ChangeUISoundsVol(1.0f);
 			}
+			//MenuManager::Instance().ChangeUISoundsVol(3.0f);
 		}
 		else if (m_pad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)
 		{
@@ -614,9 +614,8 @@ namespace basecross
 				MenuManager::Instance().ChangeUISoundsVol(-1.0f);
 			}
 
+			//MenuManager::Instance().ChangeUISoundsVol(-3.0f);
 		}
-		//*/
-
 	}
 
 	void InputManager::PressedAMenu()
@@ -671,10 +670,13 @@ namespace basecross
 				break;
 
 			case ENUM_Setting::Return:
+				MenuManager::Instance().ChangeUISize(0.25f);
 				ReturnGame();
 				break;
 
 			case ENUM_Setting::Reset:
+				MenuManager::Instance().ChangeUISize(0.25f);
+				ReturnDefault();
 				break;
 			}
 			break;
@@ -684,7 +686,13 @@ namespace basecross
 			break;
 		}
 
+	}
 
+	void InputManager::ReturnDefault()
+	{
+		MenuManager::Instance().SetBGMPos(125.0f);
+		MenuManager::Instance().SetSEPos(125.0f);
+		MenuManager::Instance().ChangeUISoundsVol(0.0f);
 	}
 
 	void InputManager::ObjectOperation()

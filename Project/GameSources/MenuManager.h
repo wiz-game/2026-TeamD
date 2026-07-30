@@ -50,8 +50,8 @@ namespace basecross
 
 		Col4 m_uidiffuse;
 		float m_uiscale;
-		float m_uiBGMpos = 0.0f;
-		float m_uiSEpos = 0.0f;
+		float m_uiBGMpos = 125.0f;
+		float m_uiSEpos = 125.0f;
 
 		ENUM_MenuMode m_menuMode = ENUM_MenuMode::Default;
 		ENUM_MenuStart m_menuUI = ENUM_MenuStart::Restart;
@@ -89,6 +89,11 @@ namespace basecross
 		void SetMenuMode(ENUM_MenuMode menumode);
 		void SetMenuUI(ENUM_MenuStart menuui);
 		void SetSettingUI(ENUM_Setting settingui);
+
+		void SetBGMPos(float pos);
+		void SetSEPos(float pos);
+		float GetBGMPos() const { return m_uiBGMpos; }
+		float GetSEPos() const { return m_uiSEpos; }
 
 		ENUM_MenuMode GetMenuMode() const { return m_menuMode; }
 		ENUM_MenuStart GetMenuUI() const { return m_menuUI; }

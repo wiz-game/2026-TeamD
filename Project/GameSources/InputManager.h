@@ -120,6 +120,7 @@ namespace basecross
 		void MoveSoundsCursor();
 		void PressedAMenu();
 		void ReleasedAMenu();
+		void ReturnDefault();
 
 		// GameMode：Editer用の入力関数
 		// ギズモによる操作

@@ -106,6 +106,19 @@ namespace basecross
 				if (m_uiSEpos >= 250.0f) m_uiSEpos = 250.0f;
 				if (m_uiSEpos <= 0.0f)m_uiSEpos = 0.0f;
 				break;
+
+			case ENUM_Setting::Reset:
+				if (i == 1)
+				{
+					m_uiBGMpos = 125.0f;
+					draw->SetPosition(m_uiBGMpos, 100.0f, 0.0f);
+				}
+				else if (i == 3)
+				{
+					m_uiSEpos = 125.0f;
+					draw->SetPosition(m_uiSEpos, -50.0f, 0.0f);
+				}
+				break;
 			}
 		}
 
@@ -140,6 +153,19 @@ namespace basecross
 
 			// 設定画面の時
 		case ENUM_MenuMode::Setting:
+			switch (GetSettingUI())
+			{
+			case ENUM_Setting::BGM:
+				break;
+			case ENUM_Setting::SE:
+				break;
+			case ENUM_Setting::Return:
+				SetUISize(4, m_uisettings, size);
+				break;
+			case ENUM_Setting::Reset:
+				SetUISize(5, m_uisettings, size);
+				break;
+			}
 			break;
 
 			// あそびかた画面の時
@@ -259,6 +285,8 @@ namespace basecross
 			break;
 
 		case ENUM_Setting::Reset:
+			SetUISoundsVol(1, m_uisettings, 0.0f);
+			SetUISoundsVol(3, m_uisettings, 0.0f);
 			break;
 		}
 	}
@@ -377,6 +405,14 @@ namespace basecross
 	void MenuManager::SetSettingUI(ENUM_Setting settingui)
 	{
 		m_settingUI = settingui;
+	}
+	void MenuManager::SetBGMPos(float pos)
+	{
+		m_uiBGMpos = pos;
+	}
+	void MenuManager::SetSEPos(float pos)
+	{
+		m_uiSEpos = pos;
 	}
 //--------------------------------------------------------------------------------------
 }
