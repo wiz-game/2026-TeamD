@@ -82,6 +82,7 @@ namespace basecross
 		case PlayerState::Default:
 			break;
 		case PlayerState::PowerUp :
+			EffectManager::Instance().SetPosition(m_effectHandle,GetComponent<Transform>()->GetPosition());
 			if (m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
 			{
 				SetPlayerState(PlayerState::Default);
@@ -289,6 +290,8 @@ namespace basecross
 
 	void Player::CreateBubble()
 	{
+		if (GetMoveStopFlag()) return;
+
 		OnRTriggerInput();
 		BubbleEffect();
 
@@ -318,10 +321,15 @@ namespace basecross
 		{
 		case PlayerState::Default:
 			m_isPlayerPowerUp = false;
+
+			SoundManager::Instance().PlayBGM(L"GameStage_BGM");
 			break;
 		case PlayerState::PowerUp:
 			m_timer = Timer(12.0f);
 			m_timer.SetCounter();
+			SoundManager::Instance().PlayBGM(L"Invincible_BGM");
+			m_effectHandle = EffectManager::Instance().PlayEffect(L"PowerUp", GetComponent<Transform>()->GetPosition());
+			EffectManager::Instance().SetScale(m_effectHandle, Vec3(0.7f));
 			m_isPlayerPowerUp = true;
 			break;
 		case PlayerState::Dead:
@@ -337,8 +345,11 @@ namespace basecross
 		switch (state)
 		{
 		case PlayerState::Default:
+			SoundManager::Instance().StopBGM();
 			break;
 		case PlayerState::PowerUp:
+			SoundManager::Instance().StopBGM();
+			EffectManager::Instance().StopEffect(m_effectHandle);
 			break;
 		case PlayerState::Dead:
 			break;
@@ -385,7 +396,6 @@ namespace basecross
 	void Player::OnRTriggerInput()
 	{
 		if (GetDeadFlag()) return;
-		if (GetMoveStopFlag()) return;
 	
 		 m_isBubbleAnimationEnd = false;
 		 PlayerChangeAnimation(L"Bubble");
