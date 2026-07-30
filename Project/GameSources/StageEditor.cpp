@@ -23,7 +23,7 @@ namespace basecross
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
 		auto gameObjs = stage->GetGameObjectVec();
 
-		for (auto& gameObj : gameObjs)
+		for (const auto& gameObj : gameObjs)
 		{
 			if (!gameObj) continue;
 			if (!gameObj->GetIsEditorSave()) continue;
