@@ -262,7 +262,7 @@ namespace basecross
 				break;
 
 			case MovieType::DirtClean:
-				startDist = -3.5;
+				startDist = -5.0;
 				startHeight = 3.5f;
 				ev.duration = 2.0f;
 				basePos = GetDirt()->GetComponent<Transform>()->GetPosition();;
@@ -380,15 +380,14 @@ namespace basecross
 	void MovieManager::SetUpdateActiveExceptTags(bool isActive)
 	{
 		auto objVec = GetStage()->GetGameObjectVec();
+
 		for (auto& gameObject : objVec)
 		{
-			if (MovieType::Play)
+			if (!gameObject->FindTag(L"Player") && !gameObject->FindTag(L"Fade") &&
+				!gameObject->FindTag(L"UITransitionSlide") && !gameObject->FindTag(L"Bubble") &&
+				!gameObject->FindTag(L"Dirt"))
 			{
-				if (!gameObject->FindTag(L"Player") && !gameObject->FindTag(L"Fade") &&
-					!gameObject->FindTag(L"UITransitionSlide"))
-				{
-					gameObject->SetUpdateActive(isActive);
-				}
+				gameObject->SetUpdateActive(isActive);
 			}
 		}
 	}
@@ -532,8 +531,9 @@ namespace basecross
 		case MovieType::EnemySpotted:
 			break;
 		case MovieType::DirtClean:
-			InitializeMovie(gameMode);
 			GetPlayer()->SetMoveStopFlag(true);
+			GetPlayer()->PlayerChangeAnimation(L"Idle");
+			GetPlayer()->SetBubbleAnimationEndFlag(true);
 			PlayMovie(MovieType::DirtClean);
 			break;
 		case MovieType::PlayMovieEnd:
@@ -577,6 +577,14 @@ namespace basecross
 		case MovieType::EnemySpotted:
 			break;
 		case MovieType::DirtClean:
+			break;
+		case MovieType::PlayMovieEnd:
+			break;
+		case MovieType::GameClearMovieEnd:
+			break;
+		case MovieType::GameOverMovieEnd:
+			break;
+		case MovieType::DirtCleanMovieEnd:
 			break;
 		default:
 			break;
