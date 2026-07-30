@@ -52,6 +52,7 @@ namespace basecross
 		auto loopFlag = true;
 		m_draw->AddAnimation(L"Idle", 0, 65, loopFlag, 60.0f);
 		m_draw->AddAnimation(L"Walk", 70, 80, loopFlag, 60.0f);
+		m_draw->AddAnimation(L"GameOver", 190, 60, !loopFlag, 60.0f);
 
 		m_draw->ChangeCurrentAnimation(L"Walk");
 	}
@@ -63,6 +64,19 @@ namespace basecross
 		m_draw->UpdateAnimation(App::GetApp()->GetElapsedTime());
 		DebugString();
 		Stun();
+
+		if (!GetContatofBubble())
+		{
+			if (m_draw->GetCurrentAnimation() != L"Walk")
+			{
+				m_draw->ChangeCurrentAnimation(L"Walk");
+			}
+			if (m_effectHandle)
+			{
+				EffectManager::Instance().StopEffect(m_effectHandle);
+				m_isStanEffectDraw = false;
+			}
+		}
 	}
 
 	void EnemyAlpaca::DebugString()
@@ -108,7 +122,6 @@ namespace basecross
 
 	void AngryState::Enter(const shared_ptr<EnemyBase>& Obj)
 	{
-
 	}
 
 	void AngryState::Execute(const shared_ptr<EnemyBase>& Obj)
@@ -124,7 +137,6 @@ namespace basecross
 
 	void AngryState::Exit(const shared_ptr<EnemyBase>& Obj)
 	{
-
 	}
 
 	// ステートマシンの処理
@@ -159,6 +171,15 @@ namespace basecross
 		{
 			if (bubble->GetBubblePowerUp())
 			{
+				if (!m_isStanEffectDraw)
+				{
+					SoundManager::Instance().PlaySE(L"Stan_SE");
+					m_draw->ChangeCurrentAnimation(L"GameOver");
+					auto pos = GetComponent<Transform>()->GetPosition();
+					m_effectHandle = EffectManager::Instance().PlayEffect(L"Stan", Vec3(pos.x, pos.y + 2.0f, pos.z));
+					EffectManager::Instance().SetScale(m_effectHandle, Vec3(0.4f));
+					m_isStanEffectDraw = true;
+				}
 				SetIsContactOfBubbleetStun(true);
 			}
 		}
@@ -171,14 +192,9 @@ namespace basecross
 			return;
 		}
 
-		if (m_isRotated)
-		{
-			return;
-		}
-
-		m_canGoForward = true;
-		m_canGoLeft = true;
-		m_canGoRight = true;
+		SetCanGoForward(true);
+		SetCanGoLeft(true);
+		SetCanGoRight(true);
 
 		// 引数の情報を取得する
 		auto transComp = GetThis<EnemyAlpaca>()->GetComponent<Transform>();
@@ -208,8 +224,10 @@ namespace basecross
 			}
 
 			auto objDrawComp = obj->GetComponent<PNTStaticDraw>(false);
-			if (objDrawComp)
+
+			//if (!m_isRotated && !m_canGoForward)
 			{
+				Vec3 hitPos;
 				// 正面
 				if (IsWallHit(objDrawComp, startFSp, endFSp, transPos))
 				{
@@ -233,12 +251,6 @@ namespace basecross
 
 	void EnemyAlpaca::OnCollisionExit(shared_ptr<GameObject>& Other)
 	{
-		if (Other->FindTag(L"Wall"))
-		{
-			m_canGoForward = true;
-			m_canGoLeft = true;
-			m_canGoRight = true;
-		}
 	}
 }
 //end basecross

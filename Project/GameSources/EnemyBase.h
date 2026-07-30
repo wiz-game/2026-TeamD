@@ -152,9 +152,29 @@ namespace basecross
 			return m_StunTime;
 		}
 
+		const float GetContatofBubble()
+		{
+			return m_isContactofBubble;
+		}
+
 		void SetIsContactOfBubbleetStun(bool Contact)
 		{
 			m_isContactofBubble = Contact;
+		}
+
+		void SetCanGoForward(bool scgf)
+		{
+			m_canGoForward = scgf;
+		}
+
+		void SetCanGoRight(bool scgr)
+		{
+			m_canGoRight = scgr;
+		}
+
+		void SetCanGoLeft(bool scgl)
+		{
+			m_canGoLeft = scgl;
 		}
 
 		void SetPointPosition(const Vec3& pos1,const Vec3& pos2,const Vec3& pos3)
