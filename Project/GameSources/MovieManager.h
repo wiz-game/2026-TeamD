@@ -45,7 +45,6 @@ namespace basecross
 		PlayMovieEnd,
 		GameClearMovieEnd,
 		GameOverMovieEnd,
-		DirtCleanMovieEnd,
 		Max
 	};
 
@@ -86,10 +85,9 @@ namespace basecross
 		shared_ptr<MyCamera> m_camera;
 		shared_ptr<Stage> m_stage;
 		shared_ptr<UITransitionSlide> m_uiAwasSlide;
-		shared_ptr<Dirt> m_dirt;
+		vector<shared_ptr<Dirt>> m_dirts;
 		Vec3 m_cachedPlayerPos;
 		Vec3 m_cachedPlayerForward;
-		Vec3 m_cleanDirtPos;
 		bool m_initialized = false;
 		bool m_isNotUISlideUp = false;
 		bool m_isSlidUpMax = false;
@@ -143,14 +141,14 @@ namespace basecross
 		// ステージ関連
 		void SetStage(const shared_ptr<Stage>& stage) { m_stage = stage; }
 		shared_ptr<Stage> GetStage() { return m_stage; }
+		
+		// 汚れの関連
+		vector<shared_ptr<Dirt>> GetDirt();
 
 		// UISlider関連
 		void SetUISlide(const shared_ptr<UITransitionSlide>& uiSlide) { m_uiAwasSlide = uiSlide; }
 		shared_ptr<UITransitionSlide> GetUISlide() { return m_uiAwasSlide; }
 		
-		void SetDirt(const shared_ptr<Dirt>& dirt) { m_dirt = dirt; }
-		shared_ptr<Dirt> GetDirt() { return m_dirt; }
-
 		void SetMovieType(MovieType gameMode);
 		void EnterMovieType(MovieType gameMode);
 		void ExitMovieType(MovieType gameMode);
