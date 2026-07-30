@@ -46,9 +46,12 @@ namespace basecross
 		vector<shared_ptr<UIBase>> m_uidefaults;
 		vector<shared_ptr<UIBase>> m_uisettings;
 		vector<shared_ptr<UIBase>> m_uihowtoplays;
+		vector<shared_ptr<UIBase>> m_uisounds;
 
 		Col4 m_uidiffuse;
 		float m_uiscale;
+		float m_uiBGMpos = 0.0f;
+		float m_uiSEpos = 0.0f;
 
 		ENUM_MenuMode m_menuMode = ENUM_MenuMode::Default;
 		ENUM_MenuStart m_menuUI = ENUM_MenuStart::Restart;
@@ -70,10 +73,12 @@ namespace basecross
 		void ChangeMenuMode();
 		void ChangeUISize(float size);
 		void ChangeUIParam();
+		void ChangeUISoundsVol(float num);
 		void ChangeSelectMenuMode(const int& num);
 
 		void SetUIDiffuse(int i, const vector<shared_ptr<UIBase>>& uipointers, const Col4& diffuse);
 		void SetUISize(int i, const vector<shared_ptr<UIBase>>& uipointers, const float& scale);
+		void SetUISoundsVol(int i, const vector<shared_ptr<UIBase>>& uipointers, const float& add);
 
 		void SetUIFrames(const vector<shared_ptr<UIBase>>& uiframes);
 		void SetUIDefaults(const vector<shared_ptr<UIBase>>& uidefaults);

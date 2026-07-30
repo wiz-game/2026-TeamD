@@ -117,6 +117,7 @@ namespace basecross
 		void EnterHowtoplay();
 		void ReturnOneMenu();
 		void MoveMenuCursor();
+		void MoveSoundsCursor();
 		void PressedAMenu();
 		void ReleasedAMenu();
 

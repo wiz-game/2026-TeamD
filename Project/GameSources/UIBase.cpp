@@ -65,4 +65,5 @@ namespace basecross
 		m_sPtrDraw->SetDiffuse(m_uiParam.Color);
 
 	}
+
 }

@@ -74,6 +74,43 @@ namespace basecross
 		ui->SetImageSizeRatio(scale);
 	}
 
+	void MenuManager::SetUISoundsVol(int i, const vector<shared_ptr<UIBase>>& uipointers, const float& add)
+	{
+		if (i < 0 || i >= uipointers.size()) return;
+
+		auto ui = uipointers[i];
+		if (!ui) return;
+
+		auto draw = ui->GetComponent<Transform>();
+		if (ui)
+		{
+			switch (GetSettingUI())
+			{
+			case ENUM_Setting::BGM:
+
+
+				m_uiBGMpos += add;
+				draw->SetPosition(m_uiBGMpos, 100.0f, 0.0f);
+
+				if (m_uiBGMpos >= 250.0f) m_uiBGMpos = 250.0f;
+				if (m_uiBGMpos <= 0.0f)m_uiBGMpos = 0.0f;
+
+				std::cout << m_uiBGMpos;
+				break;
+
+			case ENUM_Setting::SE:
+
+				m_uiSEpos += add;
+				draw->SetPosition(m_uiSEpos, -50.0f, 0.0f);
+
+				if (m_uiSEpos >= 250.0f) m_uiSEpos = 250.0f;
+				if (m_uiSEpos <= 0.0f)m_uiSEpos = 0.0f;
+				break;
+			}
+		}
+
+	}
+
 	void MenuManager::ChangeUISize(float size)
 	{
 		switch (GetMenuMode())
@@ -206,6 +243,26 @@ namespace basecross
 
 	}
 
+	void MenuManager::ChangeUISoundsVol(float num)
+	{
+		switch (GetSettingUI())
+		{
+		case ENUM_Setting::BGM:
+			SetUISoundsVol(1, m_uisettings, num);
+			break;
+			
+		case ENUM_Setting::SE:
+			SetUISoundsVol(3, m_uisettings, num);
+			break;
+
+		case ENUM_Setting::Return:
+			break;
+
+		case ENUM_Setting::Reset:
+			break;
+		}
+	}
+
 	// メニュー画面の切り替え
 	void MenuManager::ChangeMenuMode()
 	{
@@ -280,6 +337,8 @@ namespace basecross
 		}
 
 	}
+
+
 
 //----セッター関数群-------------------------------------------------------------------
 
