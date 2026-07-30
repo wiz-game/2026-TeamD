@@ -31,6 +31,7 @@ namespace basecross
 		bool m_isFirstTime;
 
 		float m_Speed;
+		float m_DefaultSpeed;
 
 		float m_rotToHeadLeap;
 

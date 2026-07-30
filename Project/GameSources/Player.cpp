@@ -272,10 +272,10 @@ namespace basecross
 			SetPlayerState(PlayerState::PowerUp);
 		}
 
-		if (Other->FindTag(L"Enemy"))
-		{
-			m_PlayerHP -= 10.0f;
-		}
+		//if (Other->FindTag(L"Enemy"))
+		//{
+		//	m_PlayerHP -= 10.0f;
+		//}
 	}
 
 	// “ü‚Á‚Ä‚¢‚é‚Æ‚«
