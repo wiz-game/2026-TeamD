@@ -111,6 +111,12 @@ namespace basecross
 		// Released
 		void ReleasedLTrigger();
 
+		// GameMode：GameClear用の入力関数
+		void ReleasedAClear();
+
+		// GameMode：GameOver用の入力関数
+		void ReleasedAGameOver();
+
 		// GameMode：Menu用の入力関数
 		void ReturnGame();
 		void EnterSetting();

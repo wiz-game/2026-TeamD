@@ -20,11 +20,13 @@ namespace basecross
 			break;
 		case ENUM_GameMode::GameClear:
 			scene->ChangeStage(L"GameClearStage");
+			InputManager::Instance().SetInputEnabled(true);
 			SoundManager::Instance().StopBGM();
 			SoundManager::Instance().PlaySE(L"GameClear_BGM");
 			break;
 		case ENUM_GameMode::GameOver:
 			scene->ChangeStage(L"GameOverStage");
+			InputManager::Instance().SetInputEnabled(true);
 			SoundManager::Instance().StopBGM();
 			SoundManager::Instance().PlaySE(L"GameOver_BGM");
 			break;

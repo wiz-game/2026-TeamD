@@ -126,6 +126,36 @@ namespace basecross
 
 	void MenuManager::ChangeUISize(float size)
 	{
+		switch (GameManager::Instance().GetGameMode())
+		{
+		case ENUM_GameMode::GameClear:
+			switch (GetClearMode())
+			{
+			case ENUM_ClearMode::Retry:
+				SetUISize(0, m_uiclears, size);
+				break;
+
+			case ENUM_ClearMode::Retitle:
+				SetUISize(1, m_uiclears, size);
+				break;
+			}
+			break;
+
+		case ENUM_GameMode::GameOver:
+			switch (GetGameOverMode())
+			{
+			case ENUM_GameOverMode::Retry:
+				SetUISize(0, m_uigameovers, size);
+				break;
+
+			case ENUM_GameOverMode::Retitle:
+				SetUISize(1, m_uigameovers, size);
+				break;
+			}
+			break;
+
+		}
+
 		switch (GetMenuMode())
 		{
 
@@ -181,13 +211,33 @@ namespace basecross
 		Col4 defaultCol = Col4(1.0f, 1.0f, 1.0f, 1.0f);
 		Col4 elseCol = Col4(0.7f, 0.7f, 0.7f, 1.0f);
 
-		// エミッシブ
-		Col4 defaultEmi = Col4(0.0f);
-		Col4 elseEmi = Col4(0.0f, 0.0f, 0.0f, 0.0f);
-
-		// スケール
-		float defaultScale = 0.25f;
-		float elseScale = 0.20f;
+		switch (GameManager::Instance().GetGameMode())
+		{
+		case ENUM_GameMode::GameClear:
+			switch (GetClearMode())
+			{
+			case ENUM_ClearMode::Retry:
+				SetUIDiffuse(0, m_uiclears, defaultCol);
+				SetUIDiffuse(1, m_uiclears, elseCol);
+				break;
+			case ENUM_ClearMode::Retitle:
+				SetUIDiffuse(0, m_uiclears, elseCol);
+				SetUIDiffuse(1, m_uiclears, defaultCol);
+			}
+			break;
+		case ENUM_GameMode::GameOver:
+			switch (GetGameOverMode())
+			{
+			case ENUM_GameOverMode::Retry:
+				SetUIDiffuse(0, m_uigameovers, defaultCol);
+				SetUIDiffuse(1, m_uigameovers, elseCol);
+				break;
+			case ENUM_GameOverMode::Retitle:
+				SetUIDiffuse(0, m_uigameovers, elseCol);
+				SetUIDiffuse(1, m_uigameovers, defaultCol);
+			}
+			break;
+		}
 
 		switch (GetMenuMode())
 		{
@@ -333,9 +383,33 @@ namespace basecross
 	// 上下入力時にメニューを切り替える関数
 	void MenuManager::ChangeSelectMenuMode(const int& num)
 	{
+		auto clearNow = GetClearMode();
+
+		auto overNow = GetGameOverMode();
+
 		auto menustartNow = GetMenuUI();
 
 		auto settingNow = GetSettingUI();
+
+		if (GameManager::Instance().GetGameMode() == ENUM_GameMode::GameClear)
+		{
+			int clearAfter = static_cast<int>(clearNow);
+			clearAfter += num;
+			if (clearAfter <= -1) clearAfter = 1;
+			if (clearAfter >= 2)clearAfter = 0;
+			ENUM_ClearMode setclearAfter = static_cast<ENUM_ClearMode>(clearAfter);
+			SetClearUI(setclearAfter);
+		}
+
+		if (GameManager::Instance().GetGameMode() == ENUM_GameMode::GameOver)
+		{
+			int overAfter = static_cast<int>(overNow);
+			overAfter += num;
+			if (overAfter <= -1) overAfter = 1;
+			if (overAfter >= 2)overAfter = 0;
+			ENUM_GameOverMode setoverAfter = static_cast<ENUM_GameOverMode>(overAfter);
+			SetGameOverUI(setoverAfter);
+		}
 
 		if (GetMenuMode() == ENUM_MenuMode::MenuStart)
 		{
@@ -394,6 +468,14 @@ namespace basecross
 	{
 		m_uiscale = uiscale;
 	}
+	void MenuManager::SetUIClears(const vector<shared_ptr<UIBase>>& uiclear)
+	{
+		m_uiclears = uiclear;
+	}
+	void MenuManager::SetUIGameOvers(const vector<shared_ptr<UIBase>>& uigameover)
+	{
+		m_uigameovers = uigameover;
+	}
 	void MenuManager::SetMenuMode(ENUM_MenuMode menumode)
 	{
 		m_menuMode = menumode;
@@ -405,6 +487,14 @@ namespace basecross
 	void MenuManager::SetSettingUI(ENUM_Setting settingui)
 	{
 		m_settingUI = settingui;
+	}
+	void MenuManager::SetClearUI(ENUM_ClearMode clearmode)
+	{
+		m_clearMode = clearmode;
+	}
+	void MenuManager::SetGameOverUI(ENUM_GameOverMode gameovermode)
+	{
+		m_gameoverMode = gameovermode;
 	}
 	void MenuManager::SetBGMPos(float pos)
 	{

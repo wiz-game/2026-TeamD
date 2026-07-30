@@ -47,28 +47,37 @@ namespace basecross
 			}
 			break;
 		case ENUM_GameMode::GameClear:
-			// Aを押してリトライ
+			// 上下でUI選択
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP ||
+				m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+			{
+				MoveMenuCursor();
+			}
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
 			{
-				StageStart();
+				MenuManager::Instance().ChangeUISize(0.235f);
 			}
-			// Bを押してタイトルへ
-			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_B)
+			if (m_pad.wReleasedButtons & XINPUT_GAMEPAD_A)
 			{
-				ReturnTitle();
+				ReleasedAClear();
 			}
 			break;
 		case ENUM_GameMode::GameOver:
-			// Aを押してリトライ
+			// 上下でUI選択
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP ||
+				m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+			{
+				MoveMenuCursor();
+			}
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
 			{
-				StageStart();
+				MenuManager::Instance().ChangeUISize(0.235f);
 			}
-			// Bを押してタイトルへ
-			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_B)
+			if (m_pad.wReleasedButtons & XINPUT_GAMEPAD_A)
 			{
-				ReturnTitle();
+				ReleasedAGameOver();
 			}
+
 			break;
 		case ENUM_GameMode::Play:
 			// プレイヤーの移動
@@ -456,6 +465,46 @@ namespace basecross
 		GetMyCamera()->SetIsAiming(false);
 	}
 
+	void InputManager::ReleasedAClear()
+	{
+		switch (MenuManager::Instance().GetClearMode())
+		{
+		case ENUM_ClearMode::Retry:
+			SetInputEnabled(false);
+			MenuManager::Instance().ChangeUISize(0.25f);
+			StageStart();
+			break;
+
+		case ENUM_ClearMode::Retitle:
+			SetInputEnabled(false);
+			MenuManager::Instance().ChangeUISize(0.25f);
+			ReturnTitle();
+			break;
+
+		}
+
+	}
+
+	void InputManager::ReleasedAGameOver()
+	{
+		switch (MenuManager::Instance().GetGameOverMode())
+		{
+		case ENUM_GameOverMode::Retry:
+			SetInputEnabled(false);
+			MenuManager::Instance().ChangeUISize(0.25f);
+			StageStart();
+			break;
+
+		case ENUM_GameOverMode::Retitle:
+			SetInputEnabled(false);
+			MenuManager::Instance().ChangeUISize(0.25f);
+			ReturnTitle();
+			break;
+
+		}
+
+	}
+
 	void InputManager::ReturnGame()
 	{
 		if (!m_isInputEnabled)return;
@@ -504,6 +553,34 @@ namespace basecross
 
 		if (!(m_pad.wLastButtons & XINPUT_GAMEPAD_A))
 		{
+			switch (GameManager::Instance().GetGameMode())
+			{
+			case ENUM_GameMode::GameClear:
+				if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP)
+				{
+					SoundManager::Instance().PlaySE(L"Select_SE");
+					MenuManager::Instance().ChangeSelectMenuMode(-1);
+				}
+				if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+				{
+					SoundManager::Instance().PlaySE(L"Select_SE");
+					MenuManager::Instance().ChangeSelectMenuMode(+1);
+				}
+				break;
+			case ENUM_GameMode::GameOver:
+				if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP)
+				{
+					SoundManager::Instance().PlaySE(L"Select_SE");
+					MenuManager::Instance().ChangeSelectMenuMode(-1);
+				}
+				if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+				{
+					SoundManager::Instance().PlaySE(L"Select_SE");
+					MenuManager::Instance().ChangeSelectMenuMode(+1);
+				}
+				break;
+			}
+
 			switch (MenuManager::Instance().GetMenuMode())
 			{
 			case ENUM_MenuMode::Default:

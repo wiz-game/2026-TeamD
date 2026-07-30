@@ -9,6 +9,18 @@
 
 namespace basecross
 {
+	enum class ENUM_ClearMode
+	{
+		Retry,
+		Retitle
+	};
+
+	enum class ENUM_GameOverMode
+	{
+		Retry,
+		Retitle
+	};
+
 	enum class ENUM_MenuMode
 	{
 		Default,
@@ -48,11 +60,16 @@ namespace basecross
 		vector<shared_ptr<UIBase>> m_uihowtoplays;
 		vector<shared_ptr<UIBase>> m_uisounds;
 
+		vector<shared_ptr<UIBase>> m_uiclears;
+		vector<shared_ptr<UIBase>> m_uigameovers;
+
 		Col4 m_uidiffuse;
-		float m_uiscale;
+		float m_uiscale = 0.0f;
 		float m_uiBGMpos = 125.0f;
 		float m_uiSEpos = 125.0f;
 
+		ENUM_ClearMode m_clearMode = ENUM_ClearMode::Retry;
+		ENUM_GameOverMode m_gameoverMode = ENUM_GameOverMode::Retry;
 		ENUM_MenuMode m_menuMode = ENUM_MenuMode::Default;
 		ENUM_MenuStart m_menuUI = ENUM_MenuStart::Restart;
 		ENUM_Setting m_settingUI = ENUM_Setting::BGM;
@@ -86,15 +103,24 @@ namespace basecross
 		void SetUIHowtoplays(const vector<shared_ptr<UIBase>>& uihowtoplays);
 		void SetUIDiffuse(const Col4& uidiffuse);
 		void SetUIScale(const float& uiscale);
+
+		void SetUIClears(const vector<shared_ptr<UIBase>>& uiclear);
+		void SetUIGameOvers(const vector<shared_ptr<UIBase>>& uigameover);
+
 		void SetMenuMode(ENUM_MenuMode menumode);
 		void SetMenuUI(ENUM_MenuStart menuui);
 		void SetSettingUI(ENUM_Setting settingui);
+
+		void SetClearUI(ENUM_ClearMode clearmode);
+		void SetGameOverUI(ENUM_GameOverMode gameovermode);
 
 		void SetBGMPos(float pos);
 		void SetSEPos(float pos);
 		float GetBGMPos() const { return m_uiBGMpos; }
 		float GetSEPos() const { return m_uiSEpos; }
 
+		ENUM_ClearMode GetClearMode() const { return m_clearMode; }
+		ENUM_GameOverMode GetGameOverMode() const { return m_gameoverMode; }
 		ENUM_MenuMode GetMenuMode() const { return m_menuMode; }
 		ENUM_MenuStart GetMenuUI() const { return m_menuUI; }
 		ENUM_Setting GetSettingUI() const { return m_settingUI; }
