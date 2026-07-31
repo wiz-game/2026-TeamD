@@ -472,12 +472,14 @@ namespace basecross
 		case ENUM_ClearMode::Retry:
 			SetInputEnabled(false);
 			MenuManager::Instance().ChangeUISize(0.25f);
+			SoundManager::Instance().PlaySE(L"Select_SE");
 			StageStart();
 			break;
 
 		case ENUM_ClearMode::Retitle:
 			SetInputEnabled(false);
 			MenuManager::Instance().ChangeUISize(0.25f);
+			SoundManager::Instance().PlaySE(L"Select_SE");
 			ReturnTitle();
 			break;
 
@@ -492,12 +494,14 @@ namespace basecross
 		case ENUM_GameOverMode::Retry:
 			SetInputEnabled(false);
 			MenuManager::Instance().ChangeUISize(0.25f);
+			SoundManager::Instance().PlaySE(L"Select_SE");
 			StageStart();
 			break;
 
 		case ENUM_GameOverMode::Retitle:
 			SetInputEnabled(false);
 			MenuManager::Instance().ChangeUISize(0.25f);
+			SoundManager::Instance().PlaySE(L"Select_SE");
 			ReturnTitle();
 			break;
 
@@ -713,6 +717,7 @@ namespace basecross
 			{
 			case ENUM_MenuStart::Restart:
 				MenuManager::Instance().ChangeUISize(0.25f);
+				SoundManager::Instance().PlaySE(L"Select_SE");
 				ReturnGame();
 				break;
 
@@ -731,6 +736,7 @@ namespace basecross
 			case ENUM_MenuStart::Retitle:
 				SetInputEnabled(false);
 				MenuManager::Instance().ChangeUISize(0.25f);
+				SoundManager::Instance().PlaySE(L"Select_SE");
 				ReturnTitle();
 				break;
 			}
@@ -748,11 +754,13 @@ namespace basecross
 
 			case ENUM_Setting::Return:
 				MenuManager::Instance().ChangeUISize(0.25f);
+				SoundManager::Instance().PlaySE(L"Select_SE");
 				ReturnGame();
 				break;
 
 			case ENUM_Setting::Reset:
 				MenuManager::Instance().ChangeUISize(0.25f);
+				SoundManager::Instance().PlaySE(L"Select_SE");
 				ReturnDefault();
 				break;
 			}
