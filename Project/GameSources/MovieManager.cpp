@@ -237,14 +237,56 @@ namespace basecross
 			float startHeight = 3.0f, endHeight = 1.0f;
 			float lookAtHeightStart = 1.5f, lookAtHeightEnd = 0.0f;
 
-			// type による微調整（必要なら追加）
-			if (type == MovieType::GameClear) { startDist = 10.0f; startHeight = 4.0f; }
-			else if (type == MovieType::GameOver) { startDist = 6.0f; startHeight = 2.5f; }
+			Vec3 basePos = playerPos;
+			Vec3 baseFwd = fwdXZ;
 
-			eyeStart = playerPos + fwdXZ * startDist + Vec3(0.0f, startHeight, 0.0f);
-			atStart = playerPos + Vec3(0.0f, lookAtHeightStart, 0.0f);
-			eyeEnd = playerPos + fwdXZ * endDist + Vec3(0.0f, endHeight, 0.0f);
-			atEnd = playerPos + Vec3(0.0f, lookAtHeightEnd, 0.0f);
+			// MovieType による調整を switch でまとめる
+			switch (type)
+			{
+			case MovieType::Play:
+				startDist = 6.0f;
+				startHeight = 2.5f;
+				ev.duration = 2.0f;
+				break;
+
+			case MovieType::GameClear:
+				startDist = 6.0f;
+				startHeight = 3.5;
+				ev.duration = 2.0f;
+				break;
+
+			case MovieType::GameOver:
+				startDist = 6.0f;
+				startHeight = 2.5f;
+				ev.duration = 2.0f;
+				break;
+
+			case MovieType::DirtClean:
+				startDist = -5.0;
+				startHeight = 3.5f;
+				ev.duration = 2.0f;
+				basePos = GetDirt()->GetComponent<Transform>()->GetPosition();
+				break;
+			default:
+				break;
+			}
+
+			if (type == MovieType::DirtClean)
+			{
+				auto dirtForward = GetDirt()->GetComponent<Transform>()->GetForward();
+				auto dirtFwdXZ = dirtForward;
+				eyeStart = basePos + dirtFwdXZ * startDist + Vec3(0.0f, startHeight, 0.0f);
+				atStart = basePos + Vec3(0.0f, lookAtHeightStart, 0.0f);
+				eyeEnd = basePos + dirtFwdXZ * endDist + Vec3(0.0f, endHeight, 0.0f);
+				atEnd = basePos + Vec3(0.0f, lookAtHeightEnd, 0.0f);
+			}
+			else
+			{
+				eyeStart = basePos + baseFwd * startDist + Vec3(0.0f, startHeight, 0.0f);
+				atStart = basePos + Vec3(0.0f, lookAtHeightStart, 0.0f);
+				eyeEnd = basePos + baseFwd * endDist + Vec3(0.0f, endHeight, 0.0f);
+				atEnd = basePos + Vec3(0.0f, lookAtHeightEnd, 0.0f);
+			}
 		}
 		else
 		{
@@ -255,21 +297,49 @@ namespace basecross
 			atEnd = Vec3(0.0f, 2.0f, 0.0f);
 		}
 
-		t.keys = {
-			{0.0f, eyeStart, atStart, 20.0f, 60.0f, CameraKeyframe::EaseInOut},
-			{ev.duration, eyeEnd, atEnd, 15.0f, 60.0f, CameraKeyframe::Linear}
-		};
+		if (type == MovieType::DirtClean)
+		{
+			t.keys = {
+				{0.0f,        eyeStart, atStart, 20.0f, 60.0f, CameraKeyframe::EaseInOut},
+				{ev.duration, eyeStart, atStart, 15.0f, 60.0f, CameraKeyframe::Linear}
+			};
+		}
+		else
+		{
+			t.keys = {
+				{0.0f,        eyeStart, atStart, 20.0f, 60.0f, CameraKeyframe::EaseInOut},
+				{ev.duration, eyeEnd,   atEnd,   15.0f, 60.0f, CameraKeyframe::Linear}
+			};
+		}
 		ev.cameraTrack = t;
 
-		// onComplete を type ごとに設定
-		if (type == MovieType::Play) {
-			ev.onComplete = []() { MovieManager::Instance().SetMovieType(MovieType::PlayMovieEnd); };
-		}
-		else if (type == MovieType::GameClear) {
-			ev.onComplete = []() { MovieManager::Instance().SetMovieType(MovieType::GameClearMovieEnd); };
-		}
-		else if (type == MovieType::GameOver) {
-			ev.onComplete = []() { MovieManager::Instance().SetMovieType(MovieType::GameOverMovieEnd); };
+		switch (type)
+		{
+		case MovieType::Play:
+			ev.onComplete = []() {
+				MovieManager::Instance().SetMovieType(MovieType::PlayMovieEnd);
+				};
+			break;
+
+		case MovieType::GameClear:
+			ev.onComplete = []() {
+				MovieManager::Instance().SetMovieType(MovieType::GameClearMovieEnd);
+				};
+			break;
+
+		case MovieType::GameOver:
+			ev.onComplete = []() {
+				MovieManager::Instance().SetMovieType(MovieType::GameOverMovieEnd);
+				};
+			break;
+		case MovieType::DirtClean:
+			ev.onComplete = []() {
+				MovieManager::Instance().SetMovieType(MovieType::DirtCleanMovieEnd);
+				};
+			break;
+
+		default:
+			break;
 		}
 
 		m_eventsPerMovie[idx] = { ev };
@@ -414,20 +484,7 @@ namespace basecross
 		return { safeEye, lookAt };
 	}
 
-	vector<shared_ptr<Dirt>> MovieManager::GetDirt()
-	{
-		vector<shared_ptr<Dirt>> dirts;
-		auto objVec = GetStage()->GetGameObjectVec();
-		for (auto& go : objVec)
-		{
-			if (auto d = dynamic_pointer_cast<Dirt>(go))
-			{
-				dirts.push_back(d);
-			}
 
-		}
-		return dirts;
-	}
 
 	void MovieManager::SetMovieType(MovieType gameMode)
 	{
@@ -477,8 +534,10 @@ namespace basecross
 		case MovieType::EnemySpotted:
 			break;
 		case MovieType::DirtClean:
-			InitializeMovie(gameMode);
+			// InitializeMovie(gameMode);
 			GetPlayer()->SetMoveStopFlag(true);
+			GetPlayer()->PlayerChangeAnimation(L"Idle");
+			GetPlayer()->SetBubbleAnimationEndFlag(true);
 			PlayMovie(MovieType::DirtClean);
 			break;
 		case MovieType::PlayMovieEnd:
@@ -493,6 +552,10 @@ namespace basecross
 			break;
 		case MovieType::GameOverMovieEnd:
 			GameManager::Instance().SetGameMode(ENUM_GameMode::GameOver);
+			break;
+		case MovieType::DirtCleanMovieEnd:
+			GetPlayer()->SetMoveStopFlag(false);
+			GameManager::Instance().SetGameMode(ENUM_GameMode::Play);
 			break;
 		default:
 			break;
@@ -518,6 +581,14 @@ namespace basecross
 		case MovieType::EnemySpotted:
 			break;
 		case MovieType::DirtClean:
+			break;
+		case MovieType::PlayMovieEnd:
+			break;
+		case MovieType::GameClearMovieEnd:
+			break;
+		case MovieType::GameOverMovieEnd:
+			break;
+		case MovieType::DirtCleanMovieEnd:
 			break;
 		default:
 			break;

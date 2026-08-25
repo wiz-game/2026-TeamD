@@ -27,7 +27,9 @@ namespace basecross
         m_ExpectRange(3.0f),
 
         // 移動速度
-        m_Speed(0.0f),
+        m_Speed(2.5),
+        m_DefaultSpeed(2.5),
+        
         m_rotToHeadLeap(0.5f),
 
         // 壁を回避中かどうか
@@ -76,14 +78,14 @@ namespace basecross
 
             if (m_StunTime <= TIMER_ZERO)
             {
-                m_Speed = 5.0f;
+                m_Speed = m_DefaultSpeed;
                 m_isContactofBubble = false;
                 m_StunTime = TIMER_ZERO;
             }
         }
         else
         {
-            m_Speed = 5.0f;
+            m_Speed = m_DefaultSpeed;
         }
 
     }
@@ -146,7 +148,6 @@ namespace basecross
                     if (drawComp->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endPSp, hitPoint, tri, index))
                     {
                         m_Detection = false;
-                        m_closePlayerPos = playerPos;
                         break;
                     }
                 }
@@ -246,49 +247,19 @@ namespace basecross
 
                 if (obj->FindTag(L"Wall"))
                 {
-                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endSp, hitPoint, tri, index))
+                    if (IsWallHit(modelObj, startReyPos, endSp, transPos))
                     {
-                        // 正面
-                        dirX = hitPoint.x - transPos.x;
-                        dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, 0.0f, dirZ);
-                        len = dir.length();
-
-                        if (len <= m_rayRange)
-                        {
-                            // 壁に触れた
-                            m_canGoForward = false;
-                        }
+                        m_canGoForward = false;
                     }
 
-                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endLSp, hitPoint, tri, index))
+                    if (IsWallHit(modelObj, startReyPos, endLSp, transPos))
                     {
-                        // 左
-                        dirX = hitPoint.x - transPos.x;
-                        dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, 0.0f, dirZ);
-                        len = dir.length();
-
-                        if (len <= m_rayRange)
-                        {
-                            // 壁に触れた
-                            m_canGoLeft = false;
-                        }
+                        m_canGoLeft = false;
                     }
 
-                    if (modelObj->HitTestStaticMeshSegmentTrianglesToAffine(startReyPos, endRSp, hitPoint, tri, index))
+                    if (IsWallHit(modelObj, startReyPos, endRSp, transPos))
                     {
-                        // 右
-                        dirX = hitPoint.x - transPos.x;
-                        dirZ = hitPoint.z - transPos.z;
-                        Vec3 dir(dirX, 0.0f, dirZ);
-                        len = dir.length();
-
-                        if (len <= m_rayRange)
-                        {
-                            // 壁に触れた
-                            m_canGoRight = false;
-                        }
+                        m_canGoRight = false;
                     }
                 }
             }
@@ -334,68 +305,13 @@ namespace basecross
         }
 
 
-        transPos.x += targetVec.x * m_Speed * App::GetApp()->GetElapsedTime();
-        transPos.z += targetVec.z * m_Speed * App::GetApp()->GetElapsedTime();
+        transPos += targetVec * m_Speed * App::GetApp()->GetElapsedTime();
         transComp->SetPosition(transPos);
         GetBehavior<UtilBehavior>()->RotToHead(targetVec, m_rotToHeadLeap);
 
         // デバッグ文字
         GameManager::Instance().AddDebugStr(L"m_isAvoiding", m_isAvoiding);
         GameManager::Instance().AddDebugStr(L"m_avoidTimer", m_avoidTimer);
-    }
-
-    void EnemyBase::EstimatedPlayerLocation(const shared_ptr<GameObject>& gameObject)
-    {
-        auto transComp = gameObject->GetComponent<Transform>();
-        auto transPos = transComp->GetPosition();
-
-        auto playerComp = GetStage()->GetSharedGameObject<Player>(L"Player")->GetComponent<Transform>();
-        auto playerPos = playerComp->GetPosition();
-
-        auto elpasedTime = App::GetApp()->GetElapsedTime();
-
-        // m_closePlayerに向かって移動する
-        Vec3 toTargetVec = m_closePlayerPos - transPos;
-        toTargetVec.y = 0.0f;
-        Vec3 distance = toTargetVec;
-        toTargetVec.normalize();
-
-        m_isHitWall = false;
-        float reyYOffSet = 0.3f;
-        Vec3 startPos = Vec3(transPos.x, transPos.y + reyYOffSet, transPos.z);
-        Vec3 playerEndPos = Vec3(playerPos.x, transPos.y + reyYOffSet, playerPos.z);
-        for (auto& obj : GetStage()->GetGameObjectVec())
-        {
-            if (!obj->FindTag(L"Wall")) continue;
-
-            auto drawComp = obj->GetComponent<PNTStaticDraw>(false);
-            if (!drawComp) continue;
-
-            if (drawComp->HitTestStaticMeshSegmentTrianglesToAffine(startPos, playerEndPos))
-            {
-                m_isHitWall = true;
-                break;
-            }
-        }
-
-        if (!m_isHitWall)
-        {
-            m_eStateMachine->ChangeState(AngryState::Instance());
-            return;
-        }
-
-        transPos += toTargetVec * m_Speed * elpasedTime;
-        transPos.y = 0.0f;
-        transComp->SetPosition(transPos);
-        GetBehavior<UtilBehavior>()->RotToHead(toTargetVec, m_rotToHeadLeap);
-
-        // m_closePlayerが一定値以下になったか
-        float arrivalDistance = 0.5f;
-        if (distance.length() <= arrivalDistance)
-        {
-            m_eStateMachine->ChangeState(IdleState::Instance());
-            return;
-        }
     }
 
     void EnemyBase::MazeWandering(const shared_ptr<GameObject>& gameObject)
