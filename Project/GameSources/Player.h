@@ -76,6 +76,8 @@ namespace basecross
 		bool m_isBubbleAnimationEnd;
 		bool m_isMoveStop;
 		bool m_isStartStop;
+
+		EffectHandle m_effectHandle;
 	public :
 		// ステージを引数にしたコンストラクタ【必須】
 		Player(const std::shared_ptr<Stage>& stage, const Vec3& position) :
@@ -199,6 +201,11 @@ namespace basecross
 		bool GetDeadFlag()
 		{
 			return m_isDead;
+		}
+
+		void SetBubbleAnimationEndFlag(bool flag)
+		{
+			m_isBubbleAnimationEnd = flag;
 		}
 
 		bool GetBubbleAnimationEndFlag()
