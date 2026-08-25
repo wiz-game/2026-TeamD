@@ -145,7 +145,7 @@ namespace basecross
 			Col4(1.0f))));
 		m_uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"Awa",
-			Vec3(0.0f, 100.0f, 0.0f),
+			Vec3(MenuManager::Instance().GetBGMPos(), 100.0f, 0.0f),
 			0.05f,
 			Col4(1.0f))));
 		m_uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
@@ -155,7 +155,7 @@ namespace basecross
 			Col4(1.0f))));
 		m_uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
 			L"Awa",
-			Vec3(0.0f, -50.0f, 0.0f),
+			Vec3(MenuManager::Instance().GetSEPos(), -50.0f, 0.0f),
 			0.05f,
 			Col4(1.0f))));
 		m_uisettings.push_back(AddGameObject<UIBase>(STRUCT_UIParam(

@@ -12,6 +12,8 @@ namespace basecross
 	class GameClearStage : public Stage
 	{
 	private:
+		vector<shared_ptr<UIBase>> m_uiclears;
+
 	public:
 		GameClearStage() : Stage() {}
 		virtual ~GameClearStage() {}
