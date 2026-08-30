@@ -44,8 +44,9 @@ namespace basecross
 
         m_isContactofBubble(false),
         m_StunTime(0.0f),
-        m_InitStunTime(3.0f)
+        m_InitStunTime(3.0f),
 
+        m_stuckTimer(0.0f)
     {}
 
     void EnemyBase::OnCreate()
@@ -186,16 +187,16 @@ namespace basecross
         // プレイヤーの位置から自分の位置を引いて正規化する
         Vec3 targetVec = playerPos - transPos;
         targetVec.y = 0.0f;
-        targetVec.normalize();
-
-        if (m_isAvoiding)
+        if (targetVec.length() > 0.0001f)
         {
-            targetVec = transComp->GetForward();
-            targetVec.y = 0.0f;
             targetVec.normalize();
         }
+        else
+        {
+            targetVec = transComp->GetForward();
+        }
 
-        float distanceRange = m_rayRange; // ここは最終的にメンバ変数にする
+        float distanceRange = m_rayRange;
         float distanceRangeFormat = 4.0f;
         float rangeHeight = 0.3f;
 
@@ -211,6 +212,7 @@ namespace basecross
         float angleL = currentAngle - XMConvertToRadians(45.0f);
 
         // targetVecに寄せた計算をする-------------------------------------------------------------
+        Vec3 dirF = targetVec;
         // 右
         Vec3 dirR(sinf(angleR), 0.0f, cosf(angleR));
         dirR.normalize();
@@ -240,11 +242,6 @@ namespace basecross
             auto modelObj = obj->GetComponent<PNTStaticDraw>(false);
             if (modelObj)
             {
-                Vec3 hitPoint;
-                TRIANGLE tri;
-                size_t index;
-                float dirX = 0.0f, dirZ = 0.0f, len = 0.0f;
-
                 if (obj->FindTag(L"Wall"))
                 {
                     if (IsWallHit(modelObj, startReyPos, endSp, transPos))
@@ -269,11 +266,12 @@ namespace basecross
         float delta = App::GetApp()->GetElapsedTime();
         if (!m_isAvoiding)
         {
-            if (m_canGoForward == false)
+            if (!m_canGoForward)
             {
                 m_isAvoiding = true;
                 m_avoidTimer = m_InitavoidTimer;
 
+                m_NumRandRot = static_cast<ENUM_RANDOMROT>(rand() % RandomRotNum);
             }
         }
 
@@ -286,20 +284,34 @@ namespace basecross
             }
             else
             {
-                if (m_canGoForward)
+                if (m_canGoLeft && m_canGoRight)
                 {
-                    targetVec = transComp->GetForward();
+
+                    switch (m_NumRandRot)
+                    {
+                    case RandomRotL:
+                    default:
+                        targetVec = dirL;
+                        break;
+
+                    case RandomRotR:
+                        targetVec = dirR;
+                        break;
+                    }
                 }
+
                 // 回避方向の決定
-                else if (m_canGoLeft)
+                else if (m_canGoLeft && !m_canGoRight)
                 {
                     targetVec = dirL;
-                    //targetVec.normalize();
                 }
-                else if (m_canGoRight)
+                else if (m_canGoRight && !m_canGoLeft)
                 {
                     targetVec = dirR;
-                    //targetVec.normalize();
+                }
+                else
+                {
+                    targetVec = -dirF;
                 }
             }
         }
@@ -308,10 +320,6 @@ namespace basecross
         transPos += targetVec * m_Speed * App::GetApp()->GetElapsedTime();
         transComp->SetPosition(transPos);
         GetBehavior<UtilBehavior>()->RotToHead(targetVec, m_rotToHeadLeap);
-
-        // デバッグ文字
-        GameManager::Instance().AddDebugStr(L"m_isAvoiding", m_isAvoiding);
-        GameManager::Instance().AddDebugStr(L"m_avoidTimer", m_avoidTimer);
     }
 
     void EnemyBase::MazeWandering(const shared_ptr<GameObject>& gameObject)
@@ -369,8 +377,37 @@ namespace basecross
                 m_targetRotY = m_rotY + XMConvertToRadians(180.0f);
                 m_isRotated = true;
             }
+        }
+
+        if (m_isRotated == false)
+        {
+            const float STUCK_RANGE = 0.85f;
+            const float TIMER_SPEED = 1.0f,STUCK_TIMERLIMIT = 3.0f,RESET_TIMER = 0.0f;
+            float delta = App::GetApp()->GetElapsedTime();
+            if (m_stuckTimer == RESET_TIMER)
+            {
+                m_lastPosition = transPos;
+            }
+
+            if ((transPos - m_lastPosition).length() < STUCK_RANGE)
+            {
+                m_stuckTimer += TIMER_SPEED * delta;
+                if (m_stuckTimer >= STUCK_TIMERLIMIT)
+                {
+                    m_stuckTimer = RESET_TIMER;
+                    m_targetRotY = m_rotY + XMConvertToRadians(180.0f);
+                    m_isRotated = true;
+                    m_lastPosition = transPos;
+                }
+            }
+            else
+            {
+                m_stuckTimer = RESET_TIMER;
+            }
 
         }
+
+        
 
         const float LIMIT_ANGLE = 360.0f, ZERO_ANGLE = 0.0f;
         if (m_isRotated)
