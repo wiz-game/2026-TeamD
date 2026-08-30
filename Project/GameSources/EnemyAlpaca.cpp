@@ -143,10 +143,14 @@ namespace basecross
 		distancePos.y = 0.0f;
 
 		float distanceRange = 7.0f;
-
 		// 索敵外から出たら徘徊に戻る
 		if (distancePos.length() >= distanceRange)
-		{	
+		{
+			Obj->SetDetection(false);
+		}
+
+		if (Obj->GetDetection() == false)
+		{
 			Obj->m_eStateMachine->ChangeState(IdleState::Instance());
 		}
 	}
@@ -240,7 +244,9 @@ namespace basecross
 
 			auto objDrawComp = obj->GetComponent<PNTStaticDraw>(false);
 
-			//if (!m_isRotated && !m_canGoForward)
+			Vec3 hitPos;
+			// 正面
+			if (IsWallHit(objDrawComp, startFSp, endFSp, transPos))
 			{
 				Vec3 hitPos;
 				// 正面
@@ -260,7 +266,21 @@ namespace basecross
 				{
 					SetCanGoRight(false);
 				}
+				SetCanGoForward(false);
 			}
+
+			// 左
+			if (IsWallHit(objDrawComp, startLSp, endLSp, transPos))
+			{
+				SetCanGoLeft(false);
+			}
+
+			// 右
+			if (IsWallHit(objDrawComp, startRSp, endRSp, transPos))
+			{
+				SetCanGoRight(false);
+			}
+
 		}
 	}
 
