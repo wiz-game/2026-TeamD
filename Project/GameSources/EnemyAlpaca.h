@@ -28,6 +28,9 @@ namespace basecross
 		float m_Speed;
 
 		int m_Num;
+
+		EffectHandle m_effectHandle;
+		bool m_isStanEffectDraw;
 	public:
 		// 構築と破棄
 		EnemyAlpaca(const shared_ptr<Stage>& stage,const STRUCT_ObjectParam& objectParam) :

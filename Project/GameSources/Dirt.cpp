@@ -113,8 +113,6 @@ namespace basecross
 			m_draw->SetTextureResource(L"T_AwaPaka_Gold");
 			EffectManager::Instance().PlayEffect(L"Clean", GetComponent<Transform>()->GetPosition());
 			SoundManager::Instance().PlaySE(L"Cleaned_SE");
-			MovieManager::Instance().SetDirt(GetThis<Dirt>());
-			GameManager::Instance().SetGameMode(ENUM_GameMode::DirtCleanMovie);
 			GetStage()->AddGameObject<PowerUpSoap>(Vec3(pos.x,pos.y,pos.z) + forward * -2.5f);
 			GameManager::Instance().SubDirt();
 			break;

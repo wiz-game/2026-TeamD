@@ -222,10 +222,10 @@ namespace basecross
 		if (idx >= m_eventsPerMovie.size()) return;
 
 		MovieEvent ev;
+		ev.duration = 2.0f;
 		CameraTrack t;
 
 		Vec3 eyeStart, atStart, eyeEnd, atEnd;
-
 		if (auto player = GetPlayer())
 		{
 			auto playerPos = player->GetComponent<Transform>()->GetPosition();
@@ -239,7 +239,7 @@ namespace basecross
 
 			Vec3 basePos = playerPos;
 			Vec3 baseFwd = fwdXZ;
-			
+
 			// MovieType による調整を switch でまとめる
 			switch (type)
 			{
@@ -250,8 +250,8 @@ namespace basecross
 				break;
 
 			case MovieType::GameClear:
-				startDist = 10.0f;
-				startHeight = 4.0f;
+				startDist = 6.0f;
+				startHeight = 3.5;
 				ev.duration = 2.0f;
 				break;
 
@@ -265,7 +265,7 @@ namespace basecross
 				startDist = -5.0;
 				startHeight = 3.5f;
 				ev.duration = 2.0f;
-				basePos = GetDirt()->GetComponent<Transform>()->GetPosition();;
+				basePos = GetDirt()->GetComponent<Transform>()->GetPosition();
 				break;
 			default:
 				break;
@@ -290,7 +290,7 @@ namespace basecross
 		}
 		else
 		{
-			// fallback
+			// フォールバック
 			eyeStart = Vec3(15.0f, 10.0f, 0.0f);
 			atStart = Vec3(0.0f, 4.0f, 0.0f);
 			eyeEnd = Vec3(5.0f, 4.0f, 0.0f);
@@ -311,7 +311,6 @@ namespace basecross
 				{ev.duration, eyeEnd,   atEnd,   15.0f, 60.0f, CameraKeyframe::Linear}
 			};
 		}
-
 		ev.cameraTrack = t;
 
 		switch (type)
@@ -380,14 +379,15 @@ namespace basecross
 	void MovieManager::SetUpdateActiveExceptTags(bool isActive)
 	{
 		auto objVec = GetStage()->GetGameObjectVec();
-
 		for (auto& gameObject : objVec)
 		{
-			if (!gameObject->FindTag(L"Player") && !gameObject->FindTag(L"Fade") &&
-				!gameObject->FindTag(L"UITransitionSlide") && !gameObject->FindTag(L"Bubble") &&
-				!gameObject->FindTag(L"Dirt"))
+			if (MovieType::Play)
 			{
-				gameObject->SetUpdateActive(isActive);
+				if (!gameObject->FindTag(L"Player") && !gameObject->FindTag(L"Fade") &&
+					!gameObject->FindTag(L"UITransitionSlide"))
+				{
+					gameObject->SetUpdateActive(isActive);
+				}
 			}
 		}
 	}
@@ -484,6 +484,8 @@ namespace basecross
 		return { safeEye, lookAt };
 	}
 
+
+
 	void MovieManager::SetMovieType(MovieType gameMode)
 	{
 		ExitMovieType(m_currentMovie);
@@ -499,6 +501,7 @@ namespace basecross
 		switch (gameMode)
 		{
 		case MovieType::None:
+
 			break;
 		case MovieType::Title:
 			break;
@@ -531,6 +534,7 @@ namespace basecross
 		case MovieType::EnemySpotted:
 			break;
 		case MovieType::DirtClean:
+			// InitializeMovie(gameMode);
 			GetPlayer()->SetMoveStopFlag(true);
 			GetPlayer()->PlayerChangeAnimation(L"Idle");
 			GetPlayer()->SetBubbleAnimationEndFlag(true);

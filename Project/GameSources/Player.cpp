@@ -82,8 +82,7 @@ namespace basecross
 		case PlayerState::Default:
 			break;
 		case PlayerState::PowerUp :
-			EffectManager::Instance().SetPosition(m_effectHandle,GetComponent<Transform>()->GetPosition());
-			if (m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
+			EffectManager::Instance().SetPosition(m_effectHandle, GetComponent<Transform>()->GetPosition());			if (m_timer.TimeCount(App::GetApp()->GetElapsedTime(), false))
 			{
 				SetPlayerState(PlayerState::Default);
 			}

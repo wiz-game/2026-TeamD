@@ -47,28 +47,37 @@ namespace basecross
 			}
 			break;
 		case ENUM_GameMode::GameClear:
-			// Aを押してリトライ
+			// 上下でUI選択
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP ||
+				m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+			{
+				MoveMenuCursor();
+			}
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
 			{
-				StageStart();
+				MenuManager::Instance().ChangeUISize(0.235f);
 			}
-			// Bを押してタイトルへ
-			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_B)
+			if (m_pad.wReleasedButtons & XINPUT_GAMEPAD_A)
 			{
-				ReturnTitle();
+				ReleasedAClear();
 			}
 			break;
 		case ENUM_GameMode::GameOver:
-			// Aを押してリトライ
+			// 上下でUI選択
+			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP ||
+				m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+			{
+				MoveMenuCursor();
+			}
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_A)
 			{
-				StageStart();
+				MenuManager::Instance().ChangeUISize(0.235f);
 			}
-			// Bを押してタイトルへ
-			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_B)
+			if (m_pad.wReleasedButtons & XINPUT_GAMEPAD_A)
 			{
-				ReturnTitle();
+				ReleasedAGameOver();
 			}
+
 			break;
 		case ENUM_GameMode::Play:
 			// プレイヤーの移動
@@ -163,6 +172,10 @@ namespace basecross
 				m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_LEFT)
 			{
 				MoveMenuCursor();
+			}
+			if (m_pad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT || m_pad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)
+			{
+				MoveSoundsCursor();
 			}
 
 			// 決定
@@ -452,6 +465,46 @@ namespace basecross
 		GetMyCamera()->SetIsAiming(false);
 	}
 
+	void InputManager::ReleasedAClear()
+	{
+		switch (MenuManager::Instance().GetClearMode())
+		{
+		case ENUM_ClearMode::Retry:
+			SetInputEnabled(false);
+			MenuManager::Instance().ChangeUISize(0.25f);
+			StageStart();
+			break;
+
+		case ENUM_ClearMode::Retitle:
+			SetInputEnabled(false);
+			MenuManager::Instance().ChangeUISize(0.25f);
+			ReturnTitle();
+			break;
+
+		}
+
+	}
+
+	void InputManager::ReleasedAGameOver()
+	{
+		switch (MenuManager::Instance().GetGameOverMode())
+		{
+		case ENUM_GameOverMode::Retry:
+			SetInputEnabled(false);
+			MenuManager::Instance().ChangeUISize(0.25f);
+			StageStart();
+			break;
+
+		case ENUM_GameOverMode::Retitle:
+			SetInputEnabled(false);
+			MenuManager::Instance().ChangeUISize(0.25f);
+			ReturnTitle();
+			break;
+
+		}
+
+	}
+
 	void InputManager::ReturnGame()
 	{
 		if (!m_isInputEnabled)return;
@@ -500,6 +553,34 @@ namespace basecross
 
 		if (!(m_pad.wLastButtons & XINPUT_GAMEPAD_A))
 		{
+			switch (GameManager::Instance().GetGameMode())
+			{
+			case ENUM_GameMode::GameClear:
+				if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP)
+				{
+					SoundManager::Instance().PlaySE(L"Select_SE");
+					MenuManager::Instance().ChangeSelectMenuMode(-1);
+				}
+				if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+				{
+					SoundManager::Instance().PlaySE(L"Select_SE");
+					MenuManager::Instance().ChangeSelectMenuMode(+1);
+				}
+				break;
+			case ENUM_GameMode::GameOver:
+				if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP)
+				{
+					SoundManager::Instance().PlaySE(L"Select_SE");
+					MenuManager::Instance().ChangeSelectMenuMode(-1);
+				}
+				if (m_pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+				{
+					SoundManager::Instance().PlaySE(L"Select_SE");
+					MenuManager::Instance().ChangeSelectMenuMode(+1);
+				}
+				break;
+			}
+
 			switch (MenuManager::Instance().GetMenuMode())
 			{
 			case ENUM_MenuMode::Default:
@@ -519,6 +600,7 @@ namespace basecross
 				break;
 
 			case ENUM_MenuMode::Setting:
+				
 				switch (m_pad.wPressedButtons & (XINPUT_GAMEPAD_DPAD_UP | XINPUT_GAMEPAD_DPAD_DOWN | XINPUT_GAMEPAD_DPAD_RIGHT | XINPUT_GAMEPAD_DPAD_LEFT))
 				{
 				case XINPUT_GAMEPAD_DPAD_UP:
@@ -575,7 +657,6 @@ namespace basecross
 					}
 					break;
 				}
-
 				break;
 
 			case ENUM_MenuMode::Howtoplay:
@@ -585,6 +666,35 @@ namespace basecross
 
 	}
 
+	void InputManager::MoveSoundsCursor()
+	{
+		if (m_pad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
+		{
+			if (MenuManager::Instance().GetSettingUI() == ENUM_Setting::BGM)
+			{
+				MenuManager::Instance().ChangeUISoundsVol(1.0f);
+			}
+			if (MenuManager::Instance().GetSettingUI() == ENUM_Setting::SE)
+			{
+				MenuManager::Instance().ChangeUISoundsVol(1.0f);
+			}
+			//MenuManager::Instance().ChangeUISoundsVol(3.0f);
+		}
+		else if (m_pad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)
+		{
+			if (MenuManager::Instance().GetSettingUI() == ENUM_Setting::BGM)
+			{
+				MenuManager::Instance().ChangeUISoundsVol(-1.0f);
+			}
+			if (MenuManager::Instance().GetSettingUI() == ENUM_Setting::SE)
+			{
+				MenuManager::Instance().ChangeUISoundsVol(-1.0f);
+			}
+
+			//MenuManager::Instance().ChangeUISoundsVol(-3.0f);
+		}
+	}
+
 	void InputManager::PressedAMenu()
 	{
 		MenuManager::Instance().ChangeUISize(0.235f);
@@ -592,32 +702,78 @@ namespace basecross
 
 	void InputManager::ReleasedAMenu()
 	{
-		switch (MenuManager::Instance().GetMenuUI())
+		switch (MenuManager::Instance().GetMenuMode())
 		{
-		case ENUM_MenuStart::Restart:
-			MenuManager::Instance().ChangeUISize(0.25f);
-			ReturnGame();
+		case ENUM_MenuMode::Default:
 			break;
 
-		case ENUM_MenuStart::Setting:
-			MenuManager::Instance().ChangeUISize(0.25f);
-			SoundManager::Instance().PlaySE(L"Decide_SE");
-			EnterSetting();
+		case ENUM_MenuMode::MenuStart:
+
+			switch (MenuManager::Instance().GetMenuUI())
+			{
+			case ENUM_MenuStart::Restart:
+				MenuManager::Instance().ChangeUISize(0.25f);
+				SoundManager::Instance().PlaySE(L"Select_SE");
+				ReturnGame();
+				break;
+
+			case ENUM_MenuStart::Setting:
+				MenuManager::Instance().ChangeUISize(0.25f);
+				SoundManager::Instance().PlaySE(L"Decide_SE");
+				EnterSetting();
+				break;
+
+			case ENUM_MenuStart::Howtoplay:
+				MenuManager::Instance().ChangeUISize(0.25f);
+				SoundManager::Instance().PlaySE(L"Decide_SE");
+				EnterHowtoplay();
+				break;
+
+			case ENUM_MenuStart::Retitle:
+				SetInputEnabled(false);
+				MenuManager::Instance().ChangeUISize(0.25f);
+				SoundManager::Instance().PlaySE(L"Select_SE");
+				ReturnTitle();
+				break;
+			}
+
 			break;
 
-		case ENUM_MenuStart::Howtoplay:
-			MenuManager::Instance().ChangeUISize(0.25f);
-			SoundManager::Instance().PlaySE(L"Decide_SE");
-			EnterHowtoplay();
+		case ENUM_MenuMode::Setting:
+			switch (MenuManager::Instance().GetSettingUI())
+			{
+			case ENUM_Setting::BGM:
+				break;
+
+			case ENUM_Setting::SE:
+				break;
+
+			case ENUM_Setting::Return:
+				MenuManager::Instance().ChangeUISize(0.25f);
+				SoundManager::Instance().PlaySE(L"Select_SE");
+				ReturnGame();
+				break;
+
+			case ENUM_Setting::Reset:
+				MenuManager::Instance().ChangeUISize(0.25f);
+				SoundManager::Instance().PlaySE(L"Select_SE");
+				ReturnDefault();
+				break;
+			}
 			break;
 
-		case ENUM_MenuStart::Retitle:
-			SetInputEnabled(false);
-			MenuManager::Instance().ChangeUISize(0.25f);
-			ReturnTitle();
+
+		case ENUM_MenuMode::Howtoplay:
 			break;
 		}
 
+	}
+
+	void InputManager::ReturnDefault()
+	{
+		MenuManager::Instance().SetBGMPos(125.0f);
+		MenuManager::Instance().SetSEPos(125.0f);
+		MenuManager::Instance().ChangeUISoundsVol(0.0f);
 	}
 
 	void InputManager::ObjectOperation()

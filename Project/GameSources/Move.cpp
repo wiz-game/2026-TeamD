@@ -10,7 +10,7 @@ namespace basecross
 {
 	Move::Move(const shared_ptr<GameObject>& gameObject) :
 		Component(gameObject),
-		m_Speed(20.0f)
+		m_Speed(10.0f) 
 	{
 	}
 

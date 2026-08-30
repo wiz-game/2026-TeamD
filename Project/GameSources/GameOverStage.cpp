@@ -31,8 +31,22 @@ namespace basecross
 			AddGameObject<Awapaka>(Vec3(-0.72f, 0.0f, -5.8f), Vec3(0.0f, 2.4f, 0.0f), L"GameOver");
 
 			AddGameObject<UIBase>(STRUCT_UIParam(L"UI_GameOver", Vec3(0.0f, 150.0f, 0.0f), 0.7f));
-			AddGameObject<UIBase>(STRUCT_UIParam(L"UI_OptionButton_5", Vec3(250.0f, -165.0f, 0.0f), 0.25f));
-			AddGameObject<UIBase>(STRUCT_UIParam(L"UI_OptionButton_4", Vec3(250.0f, -305.0f, 0.0f), 0.25f));
+
+			m_uigameovers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+				L"UI_OptionButton_5",
+				Vec3(250.0f, -165.0f, 0.0f),
+				0.25f,
+				Col4(1.0f))));
+
+			m_uigameovers.push_back(AddGameObject<UIBase>(STRUCT_UIParam(
+				L"UI_OptionButton_4",
+				Vec3(250.0f, -305.0f, 0.0f),
+				0.25f,
+				Col4(1.0f))));
+
+			MenuManager::Instance().SetUIGameOvers(m_uigameovers);
+
+
 		}
 		catch (...)
 		{
@@ -42,5 +56,6 @@ namespace basecross
 
 	void GameOverStage::OnUpdate()
 	{
+		MenuManager::Instance().ChangeUIParam();
 	}
 }

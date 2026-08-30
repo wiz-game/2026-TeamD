@@ -27,9 +27,9 @@ namespace basecross
         m_ExpectRange(3.0f),
 
         // 移動速度
-        m_Speed(5.0f),
-        m_DefaultSpeed(5.0f),
-
+        m_Speed(2.5),
+        m_DefaultSpeed(2.5),
+        
         m_rotToHeadLeap(0.5f),
 
         // 壁を回避中かどうか
@@ -183,7 +183,6 @@ namespace basecross
         auto transComp = gameObject->GetComponent<Transform>();
         auto transPos = transComp->GetPosition();
 
-
         // プレイヤーの位置から自分の位置を引いて正規化する
         Vec3 targetVec = playerPos - transPos;
         targetVec.y = 0.0f;
@@ -286,7 +285,6 @@ namespace basecross
                 m_isAvoiding = false;
             }
             else
-
             {
                 if (m_canGoForward)
                 {
@@ -305,6 +303,7 @@ namespace basecross
                 }
             }
         }
+
 
         transPos += targetVec * m_Speed * App::GetApp()->GetElapsedTime();
         transComp->SetPosition(transPos);
