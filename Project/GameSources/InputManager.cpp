@@ -110,17 +110,6 @@ namespace basecross
 				PressedA();
 			}
 
-			// 照準
-			if (m_pad.bLeftTrigger > LEFT_TRIGGER_DEADZONE)
-			{
-				PushLTrigger();
-			}
-			// 照準解除
-			else if (m_pad.bLeftTrigger <= LEFT_TRIGGER_DEADZONE)
-			{
-				ReleasedLTrigger();
-			}
-
 			// 泡発射
 			if (m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE)
 			{
@@ -135,20 +124,6 @@ namespace basecross
 			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_START)
 			{
 				PressedStart();
-			}
-
-			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER &&
-				!(m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE) &&
-				!(m_pad.wPressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER))
-			{
-				PressedRButton();
-			}
-
-			if (m_pad.wPressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER &&
-				!(m_pad.bRightTrigger > RIGHT_TRIGGER_DEADZONE) &&
-				!(m_pad.wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER))
-			{
-				PressedLButton();
 			}
 
 			break;
@@ -402,11 +377,6 @@ namespace basecross
 		);
 	}
 
-	void InputManager::PushLTrigger()
-	{
-		GetMyCamera()->SetIsAiming(true);
-	}
-
 	void InputManager::PushRTrigger()
 	{
 		// 泡を吐く
@@ -434,35 +404,6 @@ namespace basecross
 		SetInputEnabled(true);
 
 		GameManager::Instance().SetGameMode(ENUM_GameMode::Menu);
-	}
-
-	void InputManager::PressedRButton()
-	{
-		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-		auto player = stage->GetSharedGameObject<Player>(L"Player");
-		
-		if (player->GetEatSoap())
-		{
-			player->CreateBubble();
-			player->GetHaveBubble()->ApplyAblity(BubbleAbility::RideBubble);
-		}
-	}
-
-	void InputManager::PressedLButton()
-	{
-		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
-		auto player = stage->GetSharedGameObject<Player>(L"Player");
-		
-		if (player->GetEatSoap())
-		{
-			player->CreateBubble();
-			player->GetHaveBubble()->ApplyAblity(BubbleAbility::TranpolineBubble);
-		}
-	}
-
-	void InputManager::ReleasedLTrigger()
-	{
-		GetMyCamera()->SetIsAiming(false);
 	}
 
 	void InputManager::ReleasedAClear()

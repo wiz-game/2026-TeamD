@@ -98,18 +98,12 @@ namespace basecross
 		void MoveCamera();
 
 		// Push
-		void PushLTrigger();
 		void PushRTrigger();
 
 		// Pressed
 		void PressedA();
 		void PressedB();
 		void PressedStart();
-		void PressedRButton();
-		void PressedLButton();
-
-		// Released
-		void ReleasedLTrigger();
 
 		// GameMode：GameClear用の入力関数
 		void ReleasedAClear();
