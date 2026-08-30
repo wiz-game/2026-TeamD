@@ -99,6 +99,10 @@ namespace basecross
 		Vec3 m_closePlayerPos = Vec3();
 
 		vector<Vec3> m_PointPositions;
+
+		float m_stuckTimer;
+
+		Vec3 m_lastPosition;
 	public:
 		EnemyBase(const shared_ptr<Stage>& stage, const STRUCT_ObjectParam& objectParam);
 
@@ -118,7 +122,7 @@ namespace basecross
 		void DetectionRange(const shared_ptr<GameObject>& gameObject); // 索敵範囲
 		void MazeWandering(const shared_ptr<GameObject>& gameObject); // 徘徊AI
 		void Tracking(const shared_ptr<GameObject>& gameObject); // 追跡AI
-		void EstimatedPlayerLocation(const shared_ptr<GameObject>& gameObject); // 推定プレイヤー位置に移動する
+		//void EstimatedPlayerLocation(const shared_ptr<GameObject>& gameObject); // 推定プレイヤー位置に移動する
 
 		// ヘルパー関数
 		// angleは度数法で書いてください
@@ -131,6 +135,11 @@ namespace basecross
 		const bool GetDetection()
 		{
 			return m_Detection;
+		}
+
+		void SetDetection(bool detection)
+		{
+			m_Detection = detection;
 		}
 
 		const bool GetRotation()
@@ -156,6 +165,11 @@ namespace basecross
 		const float GetContatofBubble()
 		{
 			return m_isContactofBubble;
+		}
+
+		void SetStuckTime(float stuckTimer)
+		{
+			m_stuckTimer = stuckTimer;
 		}
 
 		void SetIsContactOfBubbleetStun(bool Contact)
