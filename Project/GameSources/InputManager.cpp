@@ -671,7 +671,7 @@ namespace basecross
 			case ENUM_MenuStart::Howtoplay:
 				MenuManager::Instance().ChangeUISize(0.25f);
 				SoundManager::Instance().PlaySE(L"Decide_SE");
-				EnterHowtoplay();
+				//EnterHowtoplay();
 				break;
 
 			case ENUM_MenuStart::Retitle:
