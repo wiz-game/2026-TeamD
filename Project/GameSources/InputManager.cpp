@@ -276,7 +276,7 @@ namespace basecross
 		if (m_pad.wButtons & XINPUT_GAMEPAD_START && m_pad.wButtons & XINPUT_GAMEPAD_BACK &&
 			m_pad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && m_pad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
 		{
-			GameManager::Instance().SetGameMode(ENUM_GameMode::Title);
+			ReturnTitle();
 		}
 
 		// マウスポイントの更新
