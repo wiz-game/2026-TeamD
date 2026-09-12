@@ -155,6 +155,8 @@ namespace basecross
 	{
 		if (m_transitionAfterGameMode != ENUM_GameMode::Null) return;
 
+		SoundManager::Instance().PlaySE(L"Gurgle_SE");
+		SoundManager::Instance().PlaySE(L"Decide_SE");
 		auto stage = App::GetApp()->GetScene<Scene>()->GetActiveStage();
 		stage->AddGameObject<UISlide>(STRUCT_UIParam(L"Awa", Vec3(10.0f, -1400.0f, 0.0f), 0.3f), 600.0f);
 		stage->AddGameObject<UISlide>(STRUCT_UIParam(L"Awa", Vec3(200.0f, -1200.0f, 0.0f), 0.3f), 600.0f);

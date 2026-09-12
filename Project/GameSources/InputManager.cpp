@@ -272,6 +272,13 @@ namespace basecross
 			PressedCKey();
 		}
 
+		// 強制的にタイトルに戻る
+		if (m_pad.wButtons & XINPUT_GAMEPAD_START && m_pad.wButtons & XINPUT_GAMEPAD_BACK &&
+			m_pad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && m_pad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+		{
+			GameManager::Instance().SetGameMode(ENUM_GameMode::Title);
+		}
+
 		// マウスポイントの更新
 		m_beforeMouseClientPoint = m_key.m_MouseClientPoint;
 		m_beforeWheelDelta = m_wheelDelta;
@@ -279,8 +286,6 @@ namespace basecross
 
 	void InputManager::GameStart()
 	{
-		SoundManager::Instance().PlaySE(L"Gurgle_SE");
-		SoundManager::Instance().PlaySE(L"Decide_SE");
 		GameManager::Instance().SetGameModeAfterTransition(ENUM_GameMode::Play);
 		auto startButton = App::GetApp()->GetScene<Scene>()->GetActiveStage()->GetSharedGameObject<UIBlinking>(L"StartButton");
 		if (startButton) startButton->SetBlinkSpeed(5.0f);
@@ -288,15 +293,11 @@ namespace basecross
 
 	void InputManager::StageStart()
 	{
-		SoundManager::Instance().PlaySE(L"Gurgle_SE");
-		SoundManager::Instance().PlaySE(L"Decide_SE");
 		GameManager::Instance().SetGameModeAfterTransition(ENUM_GameMode::Play);
 	}
 
 	void InputManager::ReturnTitle()
 	{
-		SoundManager::Instance().PlaySE(L"Gurgle_SE");
-		SoundManager::Instance().PlaySE(L"Decide_SE");
 		GameManager::Instance().SetGameModeAfterTransition(ENUM_GameMode::Title);
 	}
 
