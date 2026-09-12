@@ -409,6 +409,7 @@ namespace basecross
 
 	void InputManager::ReleasedAClear()
 	{
+		if (!m_isInputEnabled)return;
 		switch (MenuManager::Instance().GetClearMode())
 		{
 		case ENUM_ClearMode::Retry:
@@ -429,6 +430,7 @@ namespace basecross
 
 	void InputManager::ReleasedAGameOver()
 	{
+		if (!m_isInputEnabled)return;
 		switch (MenuManager::Instance().GetGameOverMode())
 		{
 		case ENUM_GameOverMode::Retry:
@@ -644,6 +646,7 @@ namespace basecross
 
 	void InputManager::ReleasedAMenu()
 	{
+		if (!m_isInputEnabled)return;
 		switch (MenuManager::Instance().GetMenuMode())
 		{
 		case ENUM_MenuMode::Default:
