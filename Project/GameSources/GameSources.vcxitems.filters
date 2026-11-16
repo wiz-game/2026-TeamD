@@ -196,6 +196,18 @@
     <Filter Include="Player\Awapaka">
       <UniqueIdentifier>{3f9e39f1-a7af-4924-8107-19596e903120}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemys\EnemyState">
+      <UniqueIdentifier>{dbe6166c-8043-46e6-baf0-211d39210c4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemys\EnemyState\ArrivalState">
+      <UniqueIdentifier>{0caa2c45-d5d2-4e1c-901a-3dc14d28e900}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemys\EnemyState\AngryState">
+      <UniqueIdentifier>{b768e69a-f816-48d1-8969-deceae41c401}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemys\EnemyState\IdleState">
+      <UniqueIdentifier>{ade6fec0-9370-4938-bcbd-7db0d23d8715}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
@@ -396,6 +408,15 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Awapaka.h">
       <Filter>Player\Awapaka</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ArrivalState.h">
+      <Filter>Enemys\EnemyState\ArrivalState</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AngryState.h">
+      <Filter>Enemys\EnemyState\AngryState</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)IdleState.h">
+      <Filter>Enemys\EnemyState\IdleState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
@@ -583,6 +604,15 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Awapaka.cpp">
       <Filter>Player\Awapaka</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ArrivalState.cpp">
+      <Filter>Enemys\EnemyState\ArrivalState</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AngryState.cpp">
+      <Filter>Enemys\EnemyState\AngryState</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)IdleState.cpp">
+      <Filter>Enemys\EnemyState\IdleState</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

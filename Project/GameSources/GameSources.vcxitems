@@ -14,7 +14,9 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AngryState.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Apple.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ArrivalState.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Awapaka.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BinaryFile.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Board.h" />
@@ -27,6 +29,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyAlpacaFixedMove.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Fence.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Foothold.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IdleState.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LoadMedia.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LongMushroom.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MenuManager.h" />
@@ -82,7 +85,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)UITransitionSlide.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AngryState.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Apple.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ArrivalState.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Awapaka.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Board.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Bubble.cpp" />
@@ -112,6 +117,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Gizmo.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Ground.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)IdleState.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)InputManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ItemBase.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltManager.cpp" />

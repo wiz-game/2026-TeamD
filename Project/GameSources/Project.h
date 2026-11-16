@@ -62,6 +62,11 @@
 #include "Player.h"
 #include "Awapaka.h"
 
+// ステート
+#include "IdleState.h"
+#include "AngryState.h"
+#include "ArrivalState.h"
+
 // アイテム
 #include "ItemBase.h"
 #include "PowerUpSoap.h"
